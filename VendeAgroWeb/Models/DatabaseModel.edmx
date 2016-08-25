@@ -1,0 +1,1219 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="VendeAgroModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Anuncio">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" Nullable="false" />
+          <Property Name="titulo" Type="varchar" MaxLength="30" Nullable="false" />
+          <Property Name="descripcion" Type="varchar" MaxLength="250" Nullable="false" />
+          <Property Name="precio" Type="float" Nullable="false" />
+          <Property Name="activo" Type="bit" Nullable="false" />
+          <Property Name="idUsuario" Type="int" />
+          <Property Name="idSubcategoria" Type="int" />
+          <Property Name="idCiudad" Type="int" />
+          <Property Name="clicks" Type="int" />
+          <Property Name="vistas" Type="int" />
+          <Property Name="estado" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Anuncio_Beneficio">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" Nullable="false" />
+          <Property Name="idAnuncio" Type="int" Nullable="false" />
+          <Property Name="idBeneficio" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Anuncio_Plazo">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" Nullable="false" />
+          <Property Name="idAnuncio" Type="int" Nullable="false" />
+          <Property Name="idPlazo" Type="int" Nullable="false" />
+          <Property Name="fechaInicio" Type="date" Nullable="false" />
+          <Property Name="fechaFin" Type="date" Nullable="false" />
+          <Property Name="activo" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Beneficio">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" Nullable="false" />
+          <Property Name="descripcion" Type="varchar" MaxLength="250" Nullable="false" />
+          <Property Name="precio" Type="float" Nullable="false" />
+          <Property Name="tipo" Type="int" Nullable="false" />
+          <Property Name="numero" Type="int" />
+        </EntityType>
+        <EntityType Name="Categoria">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" Nullable="false" />
+          <Property Name="nombre" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="activo" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Ciudad">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" Nullable="false" />
+          <Property Name="nombre" Type="varchar" MaxLength="30" Nullable="false" />
+          <Property Name="idEstado" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Estado">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" Nullable="false" />
+          <Property Name="nombre" Type="varchar" MaxLength="30" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Fotos_Anuncio">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" Nullable="false" />
+          <Property Name="ruta" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="idAnuncio" Type="int" Nullable="false" />
+          <Property Name="principal" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Metricas">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" Nullable="false" />
+          <Property Name="visitas" Type="int" Nullable="false" />
+          <Property Name="fecha" Type="date" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Pago">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" Nullable="false" />
+          <Property Name="idUsuario" Type="int" Nullable="false" />
+          <Property Name="tipoTarjeta" Type="int" Nullable="false" />
+          <Property Name="digitosTarjeta" Type="int" Nullable="false" />
+          <Property Name="total" Type="float" Nullable="false" />
+          <Property Name="fecha" Type="date" Nullable="false" />
+          <Property Name="tipo" Type="int" Nullable="false" />
+          <Property Name="Referencia" Type="varchar" MaxLength="40" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Pago_Concepto">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" Nullable="false" />
+          <Property Name="idPago" Type="int" Nullable="false" />
+          <Property Name="idPlazo" Type="int" />
+          <Property Name="idBeneficio" Type="int" />
+          <Property Name="tipo" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Plazo">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" Nullable="false" />
+          <Property Name="meses" Type="int" Nullable="false" />
+          <Property Name="precio" Type="float" Nullable="false" />
+          <Property Name="porcentajeAhorro" Type="float" Nullable="false" />
+          <Property Name="activo" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="PlazoBase">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" Nullable="false" />
+          <Property Name="precioBase" Type="float" Nullable="false" />
+          <Property Name="fechaModificacion" Type="date" Nullable="false" />
+          <Property Name="activo" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Subcategoria">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" Nullable="false" />
+          <Property Name="nombre" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="activo" Type="bit" Nullable="false" />
+          <Property Name="idCategoria" Type="int" />
+        </EntityType>
+        <EntityType Name="Usuario">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" Nullable="false" />
+          <Property Name="nombre" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="apellidos" Type="varchar" MaxLength="80" Nullable="false" />
+          <Property Name="telefono" Type="int" Nullable="false" />
+          <Property Name="email" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="password" Type="varchar" MaxLength="40" Nullable="false" />
+          <Property Name="confirmaEmail" Type="bit" Nullable="false" />
+          <Property Name="token" Type="varchar" MaxLength="40" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Usuario_Administrador">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" Nullable="false" />
+          <Property Name="nombre" Type="varchar" MaxLength="30" />
+          <Property Name="email" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="token" Type="varchar" MaxLength="40" Nullable="false" />
+          <Property Name="confirmaEmail" Type="bit" Nullable="false" />
+          <Property Name="password" Type="varchar" MaxLength="40" Nullable="false" />
+          <Property Name="activo" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Usuario_Tarjeta">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" Nullable="false" />
+          <Property Name="tipoTarjeta" Type="int" Nullable="false" />
+          <Property Name="digitosTarjeta" Type="int" Nullable="false" />
+          <Property Name="fechaVencimiento" Type="date" Nullable="false" />
+          <Property Name="tokenTarjeta" Type="varchar" MaxLength="40" Nullable="false" />
+          <Property Name="idUsuario" Type="int" Nullable="false" />
+          <Property Name="activo" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Videos_Anuncio">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" Nullable="false" />
+          <Property Name="ruta" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="idAnuncio" Type="int" Nullable="false" />
+        </EntityType>
+        <Association Name="FK__Anuncio__idCiuda__47DBAE45">
+          <End Role="Ciudad" Type="Self.Ciudad" Multiplicity="0..1" />
+          <End Role="Anuncio" Type="Self.Anuncio" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Ciudad">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Anuncio">
+              <PropertyRef Name="idCiudad" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Anuncio__idSubca__45F365D3">
+          <End Role="Subcategoria" Type="Self.Subcategoria" Multiplicity="0..1" />
+          <End Role="Anuncio" Type="Self.Anuncio" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Subcategoria">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Anuncio">
+              <PropertyRef Name="idSubcategoria" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Anuncio__idUsuar__44FF419A">
+          <End Role="Usuario" Type="Self.Usuario" Multiplicity="0..1" />
+          <End Role="Anuncio" Type="Self.Anuncio" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Usuario">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Anuncio">
+              <PropertyRef Name="idUsuario" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Anuncio_B__idAnu__48CFD27E">
+          <End Role="Anuncio" Type="Self.Anuncio" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Anuncio_Beneficio" Type="Self.Anuncio_Beneficio" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Anuncio">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Anuncio_Beneficio">
+              <PropertyRef Name="idAnuncio" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Anuncio_B__idBen__49C3F6B7">
+          <End Role="Beneficio" Type="Self.Beneficio" Multiplicity="1" />
+          <End Role="Anuncio_Beneficio" Type="Self.Anuncio_Beneficio" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Beneficio">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Anuncio_Beneficio">
+              <PropertyRef Name="idBeneficio" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Anuncio_P__idAnu__4AB81AF0">
+          <End Role="Anuncio" Type="Self.Anuncio" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Anuncio_Plazo" Type="Self.Anuncio_Plazo" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Anuncio">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Anuncio_Plazo">
+              <PropertyRef Name="idAnuncio" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Anuncio_P__idPla__4BAC3F29">
+          <End Role="Plazo" Type="Self.Plazo" Multiplicity="1" />
+          <End Role="Anuncio_Plazo" Type="Self.Anuncio_Plazo" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Plazo">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Anuncio_Plazo">
+              <PropertyRef Name="idPlazo" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Ciudad__idEstado__4E88ABD4">
+          <End Role="Estado" Type="Self.Estado" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Ciudad" Type="Self.Ciudad" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Estado">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Ciudad">
+              <PropertyRef Name="idEstado" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Fotos_Anu__idAnu__4F7CD00D">
+          <End Role="Anuncio" Type="Self.Anuncio" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Fotos_Anuncio" Type="Self.Fotos_Anuncio" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Anuncio">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Fotos_Anuncio">
+              <PropertyRef Name="idAnuncio" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Pago__idUsuario__5BE2A6F2">
+          <End Role="Usuario" Type="Self.Usuario" Multiplicity="1" />
+          <End Role="Pago" Type="Self.Pago" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Usuario">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Pago">
+              <PropertyRef Name="idUsuario" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Pago_Conc__idBen__5441852A">
+          <End Role="Beneficio" Type="Self.Beneficio" Multiplicity="0..1" />
+          <End Role="Pago_Concepto" Type="Self.Pago_Concepto" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Beneficio">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Pago_Concepto">
+              <PropertyRef Name="idBeneficio" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Pago_Conc__idPag__5CD6CB2B">
+          <End Role="Pago" Type="Self.Pago" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Pago_Concepto" Type="Self.Pago_Concepto" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Pago">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Pago_Concepto">
+              <PropertyRef Name="idPago" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Pago_Conc__idPla__534D60F1">
+          <End Role="Plazo" Type="Self.Plazo" Multiplicity="0..1" />
+          <End Role="Pago_Concepto" Type="Self.Pago_Concepto" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Plazo">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Pago_Concepto">
+              <PropertyRef Name="idPlazo" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Subcatego__idCat__5629CD9C">
+          <End Role="Categoria" Type="Self.Categoria" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Subcategoria" Type="Self.Subcategoria" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Categoria">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Subcategoria">
+              <PropertyRef Name="idCategoria" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Usuario_T__idUsu__5DCAEF64">
+          <End Role="Usuario" Type="Self.Usuario" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Usuario_Tarjeta" Type="Self.Usuario_Tarjeta" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Usuario">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Usuario_Tarjeta">
+              <PropertyRef Name="idUsuario" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Videos_An__idAnu__5EBF139D">
+          <End Role="Anuncio" Type="Self.Anuncio" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Videos_Anuncio" Type="Self.Videos_Anuncio" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Anuncio">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Videos_Anuncio">
+              <PropertyRef Name="idAnuncio" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="VendeAgroModelStoreContainer">
+          <EntitySet Name="Anuncio" EntityType="Self.Anuncio" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Anuncio_Beneficio" EntityType="Self.Anuncio_Beneficio" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Anuncio_Plazo" EntityType="Self.Anuncio_Plazo" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Beneficio" EntityType="Self.Beneficio" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Categoria" EntityType="Self.Categoria" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Ciudad" EntityType="Self.Ciudad" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Estado" EntityType="Self.Estado" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Fotos_Anuncio" EntityType="Self.Fotos_Anuncio" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Metricas" EntityType="Self.Metricas" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Pago" EntityType="Self.Pago" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Pago_Concepto" EntityType="Self.Pago_Concepto" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Plazo" EntityType="Self.Plazo" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="PlazoBase" EntityType="Self.PlazoBase" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Subcategoria" EntityType="Self.Subcategoria" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Usuario" EntityType="Self.Usuario" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Usuario_Administrador" EntityType="Self.Usuario_Administrador" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Usuario_Tarjeta" EntityType="Self.Usuario_Tarjeta" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Videos_Anuncio" EntityType="Self.Videos_Anuncio" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK__Anuncio__idCiuda__47DBAE45" Association="Self.FK__Anuncio__idCiuda__47DBAE45">
+            <End Role="Ciudad" EntitySet="Ciudad" />
+            <End Role="Anuncio" EntitySet="Anuncio" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Anuncio__idSubca__45F365D3" Association="Self.FK__Anuncio__idSubca__45F365D3">
+            <End Role="Subcategoria" EntitySet="Subcategoria" />
+            <End Role="Anuncio" EntitySet="Anuncio" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Anuncio__idUsuar__44FF419A" Association="Self.FK__Anuncio__idUsuar__44FF419A">
+            <End Role="Usuario" EntitySet="Usuario" />
+            <End Role="Anuncio" EntitySet="Anuncio" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Anuncio_B__idAnu__48CFD27E" Association="Self.FK__Anuncio_B__idAnu__48CFD27E">
+            <End Role="Anuncio" EntitySet="Anuncio" />
+            <End Role="Anuncio_Beneficio" EntitySet="Anuncio_Beneficio" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Anuncio_B__idBen__49C3F6B7" Association="Self.FK__Anuncio_B__idBen__49C3F6B7">
+            <End Role="Beneficio" EntitySet="Beneficio" />
+            <End Role="Anuncio_Beneficio" EntitySet="Anuncio_Beneficio" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Anuncio_P__idAnu__4AB81AF0" Association="Self.FK__Anuncio_P__idAnu__4AB81AF0">
+            <End Role="Anuncio" EntitySet="Anuncio" />
+            <End Role="Anuncio_Plazo" EntitySet="Anuncio_Plazo" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Anuncio_P__idPla__4BAC3F29" Association="Self.FK__Anuncio_P__idPla__4BAC3F29">
+            <End Role="Plazo" EntitySet="Plazo" />
+            <End Role="Anuncio_Plazo" EntitySet="Anuncio_Plazo" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Ciudad__idEstado__4E88ABD4" Association="Self.FK__Ciudad__idEstado__4E88ABD4">
+            <End Role="Estado" EntitySet="Estado" />
+            <End Role="Ciudad" EntitySet="Ciudad" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Fotos_Anu__idAnu__4F7CD00D" Association="Self.FK__Fotos_Anu__idAnu__4F7CD00D">
+            <End Role="Anuncio" EntitySet="Anuncio" />
+            <End Role="Fotos_Anuncio" EntitySet="Fotos_Anuncio" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Pago__idUsuario__5BE2A6F2" Association="Self.FK__Pago__idUsuario__5BE2A6F2">
+            <End Role="Usuario" EntitySet="Usuario" />
+            <End Role="Pago" EntitySet="Pago" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Pago_Conc__idBen__5441852A" Association="Self.FK__Pago_Conc__idBen__5441852A">
+            <End Role="Beneficio" EntitySet="Beneficio" />
+            <End Role="Pago_Concepto" EntitySet="Pago_Concepto" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Pago_Conc__idPag__5CD6CB2B" Association="Self.FK__Pago_Conc__idPag__5CD6CB2B">
+            <End Role="Pago" EntitySet="Pago" />
+            <End Role="Pago_Concepto" EntitySet="Pago_Concepto" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Pago_Conc__idPla__534D60F1" Association="Self.FK__Pago_Conc__idPla__534D60F1">
+            <End Role="Plazo" EntitySet="Plazo" />
+            <End Role="Pago_Concepto" EntitySet="Pago_Concepto" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Subcatego__idCat__5629CD9C" Association="Self.FK__Subcatego__idCat__5629CD9C">
+            <End Role="Categoria" EntitySet="Categoria" />
+            <End Role="Subcategoria" EntitySet="Subcategoria" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Usuario_T__idUsu__5DCAEF64" Association="Self.FK__Usuario_T__idUsu__5DCAEF64">
+            <End Role="Usuario" EntitySet="Usuario" />
+            <End Role="Usuario_Tarjeta" EntitySet="Usuario_Tarjeta" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Videos_An__idAnu__5EBF139D" Association="Self.FK__Videos_An__idAnu__5EBF139D">
+            <End Role="Anuncio" EntitySet="Anuncio" />
+            <End Role="Videos_Anuncio" EntitySet="Videos_Anuncio" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="VendeAgroModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Anuncio">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" />
+          <Property Name="titulo" Type="String" MaxLength="30" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="descripcion" Type="String" MaxLength="250" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="precio" Type="Double" Nullable="false" />
+          <Property Name="activo" Type="Boolean" Nullable="false" />
+          <Property Name="idUsuario" Type="Int32" />
+          <Property Name="idSubcategoria" Type="Int32" />
+          <Property Name="idCiudad" Type="Int32" />
+          <Property Name="clicks" Type="Int32" />
+          <Property Name="vistas" Type="Int32" />
+          <Property Name="estado" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Ciudad" Relationship="Self.FK__Anuncio__idCiuda__47DBAE45" FromRole="Anuncio" ToRole="Ciudad" />
+          <NavigationProperty Name="Subcategoria" Relationship="Self.FK__Anuncio__idSubca__45F365D3" FromRole="Anuncio" ToRole="Subcategoria" />
+          <NavigationProperty Name="Usuario" Relationship="Self.FK__Anuncio__idUsuar__44FF419A" FromRole="Anuncio" ToRole="Usuario" />
+          <NavigationProperty Name="Anuncio_Beneficio" Relationship="Self.FK__Anuncio_B__idAnu__48CFD27E" FromRole="Anuncio" ToRole="Anuncio_Beneficio" />
+          <NavigationProperty Name="Anuncio_Plazo" Relationship="Self.FK__Anuncio_P__idAnu__4AB81AF0" FromRole="Anuncio" ToRole="Anuncio_Plazo" />
+          <NavigationProperty Name="Fotos_Anuncio" Relationship="Self.FK__Fotos_Anu__idAnu__4F7CD00D" FromRole="Anuncio" ToRole="Fotos_Anuncio" />
+          <NavigationProperty Name="Videos_Anuncio" Relationship="Self.FK__Videos_An__idAnu__5EBF139D" FromRole="Anuncio" ToRole="Videos_Anuncio" />
+        </EntityType>
+        <EntityType Name="Anuncio_Beneficio">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" />
+          <Property Name="idAnuncio" Type="Int32" Nullable="false" />
+          <Property Name="idBeneficio" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Anuncio" Relationship="Self.FK__Anuncio_B__idAnu__48CFD27E" FromRole="Anuncio_Beneficio" ToRole="Anuncio" />
+          <NavigationProperty Name="Beneficio" Relationship="Self.FK__Anuncio_B__idBen__49C3F6B7" FromRole="Anuncio_Beneficio" ToRole="Beneficio" />
+        </EntityType>
+        <EntityType Name="Anuncio_Plazo">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" />
+          <Property Name="idAnuncio" Type="Int32" Nullable="false" />
+          <Property Name="idPlazo" Type="Int32" Nullable="false" />
+          <Property Name="fechaInicio" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="fechaFin" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="activo" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="Anuncio" Relationship="Self.FK__Anuncio_P__idAnu__4AB81AF0" FromRole="Anuncio_Plazo" ToRole="Anuncio" />
+          <NavigationProperty Name="Plazo" Relationship="Self.FK__Anuncio_P__idPla__4BAC3F29" FromRole="Anuncio_Plazo" ToRole="Plazo" />
+        </EntityType>
+        <EntityType Name="Beneficio">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" />
+          <Property Name="descripcion" Type="String" MaxLength="250" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="precio" Type="Double" Nullable="false" />
+          <Property Name="tipo" Type="Int32" Nullable="false" />
+          <Property Name="numero" Type="Int32" />
+          <NavigationProperty Name="Anuncio_Beneficio" Relationship="Self.FK__Anuncio_B__idBen__49C3F6B7" FromRole="Beneficio" ToRole="Anuncio_Beneficio" />
+          <NavigationProperty Name="Pago_Concepto" Relationship="Self.FK__Pago_Conc__idBen__5441852A" FromRole="Beneficio" ToRole="Pago_Concepto" />
+        </EntityType>
+        <EntityType Name="Categoria">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" />
+          <Property Name="nombre" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="activo" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="Subcategorias" Relationship="Self.FK__Subcatego__idCat__5629CD9C" FromRole="Categoria" ToRole="Subcategoria" />
+        </EntityType>
+        <EntityType Name="Ciudad">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" />
+          <Property Name="nombre" Type="String" MaxLength="30" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="idEstado" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Anuncios" Relationship="Self.FK__Anuncio__idCiuda__47DBAE45" FromRole="Ciudad" ToRole="Anuncio" />
+          <NavigationProperty Name="Estado" Relationship="Self.FK__Ciudad__idEstado__4E88ABD4" FromRole="Ciudad" ToRole="Estado" />
+        </EntityType>
+        <EntityType Name="Estado">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" />
+          <Property Name="nombre" Type="String" MaxLength="30" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="Ciudads" Relationship="Self.FK__Ciudad__idEstado__4E88ABD4" FromRole="Estado" ToRole="Ciudad" />
+        </EntityType>
+        <EntityType Name="Fotos_Anuncio">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" />
+          <Property Name="ruta" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="idAnuncio" Type="Int32" Nullable="false" />
+          <Property Name="principal" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="Anuncio" Relationship="Self.FK__Fotos_Anu__idAnu__4F7CD00D" FromRole="Fotos_Anuncio" ToRole="Anuncio" />
+        </EntityType>
+        <EntityType Name="Metrica">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" />
+          <Property Name="visitas" Type="Int32" Nullable="false" />
+          <Property Name="fecha" Type="DateTime" Nullable="false" Precision="0" />
+        </EntityType>
+        <EntityType Name="Pago">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" />
+          <Property Name="idUsuario" Type="Int32" Nullable="false" />
+          <Property Name="tipoTarjeta" Type="Int32" Nullable="false" />
+          <Property Name="digitosTarjeta" Type="Int32" Nullable="false" />
+          <Property Name="total" Type="Double" Nullable="false" />
+          <Property Name="fecha" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="tipo" Type="Int32" Nullable="false" />
+          <Property Name="Referencia" Type="String" MaxLength="40" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="Usuario" Relationship="Self.FK__Pago__idUsuario__5BE2A6F2" FromRole="Pago" ToRole="Usuario" />
+          <NavigationProperty Name="Pago_Concepto" Relationship="Self.FK__Pago_Conc__idPag__5CD6CB2B" FromRole="Pago" ToRole="Pago_Concepto" />
+        </EntityType>
+        <EntityType Name="Pago_Concepto">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" />
+          <Property Name="idPago" Type="Int32" Nullable="false" />
+          <Property Name="idPlazo" Type="Int32" />
+          <Property Name="idBeneficio" Type="Int32" />
+          <Property Name="tipo" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="Beneficio" Relationship="Self.FK__Pago_Conc__idBen__5441852A" FromRole="Pago_Concepto" ToRole="Beneficio" />
+          <NavigationProperty Name="Pago" Relationship="Self.FK__Pago_Conc__idPag__5CD6CB2B" FromRole="Pago_Concepto" ToRole="Pago" />
+          <NavigationProperty Name="Plazo" Relationship="Self.FK__Pago_Conc__idPla__534D60F1" FromRole="Pago_Concepto" ToRole="Plazo" />
+        </EntityType>
+        <EntityType Name="Plazo">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" />
+          <Property Name="meses" Type="Int32" Nullable="false" />
+          <Property Name="precio" Type="Double" Nullable="false" />
+          <Property Name="porcentajeAhorro" Type="Double" Nullable="false" />
+          <Property Name="activo" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="Anuncio_Plazo" Relationship="Self.FK__Anuncio_P__idPla__4BAC3F29" FromRole="Plazo" ToRole="Anuncio_Plazo" />
+          <NavigationProperty Name="Pago_Concepto" Relationship="Self.FK__Pago_Conc__idPla__534D60F1" FromRole="Plazo" ToRole="Pago_Concepto" />
+        </EntityType>
+        <EntityType Name="PlazoBase">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" />
+          <Property Name="precioBase" Type="Double" Nullable="false" />
+          <Property Name="fechaModificacion" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="activo" Type="Boolean" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Subcategoria">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" />
+          <Property Name="nombre" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="activo" Type="Boolean" Nullable="false" />
+          <Property Name="idCategoria" Type="Int32" />
+          <NavigationProperty Name="Anuncios" Relationship="Self.FK__Anuncio__idSubca__45F365D3" FromRole="Subcategoria" ToRole="Anuncio" />
+          <NavigationProperty Name="Categoria" Relationship="Self.FK__Subcatego__idCat__5629CD9C" FromRole="Subcategoria" ToRole="Categoria" />
+        </EntityType>
+        <EntityType Name="Usuario">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" />
+          <Property Name="nombre" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="apellidos" Type="String" MaxLength="80" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="telefono" Type="Int32" Nullable="false" />
+          <Property Name="email" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="password" Type="String" MaxLength="40" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="confirmaEmail" Type="Boolean" Nullable="false" />
+          <Property Name="token" Type="String" MaxLength="40" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="Anuncios" Relationship="Self.FK__Anuncio__idUsuar__44FF419A" FromRole="Usuario" ToRole="Anuncio" />
+          <NavigationProperty Name="Pagoes" Relationship="Self.FK__Pago__idUsuario__5BE2A6F2" FromRole="Usuario" ToRole="Pago" />
+          <NavigationProperty Name="Usuario_Tarjeta" Relationship="Self.FK__Usuario_T__idUsu__5DCAEF64" FromRole="Usuario" ToRole="Usuario_Tarjeta" />
+        </EntityType>
+        <EntityType Name="Usuario_Administrador">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" />
+          <Property Name="nombre" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="email" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="token" Type="String" MaxLength="40" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="confirmaEmail" Type="Boolean" Nullable="false" />
+          <Property Name="password" Type="String" MaxLength="40" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="activo" Type="Boolean" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Usuario_Tarjeta">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" />
+          <Property Name="tipoTarjeta" Type="Int32" Nullable="false" />
+          <Property Name="digitosTarjeta" Type="Int32" Nullable="false" />
+          <Property Name="fechaVencimiento" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="tokenTarjeta" Type="String" MaxLength="40" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="idUsuario" Type="Int32" Nullable="false" />
+          <Property Name="activo" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="Usuario" Relationship="Self.FK__Usuario_T__idUsu__5DCAEF64" FromRole="Usuario_Tarjeta" ToRole="Usuario" />
+        </EntityType>
+        <EntityType Name="Videos_Anuncio">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" />
+          <Property Name="ruta" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="idAnuncio" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Anuncio" Relationship="Self.FK__Videos_An__idAnu__5EBF139D" FromRole="Videos_Anuncio" ToRole="Anuncio" />
+        </EntityType>
+        <Association Name="FK__Anuncio__idCiuda__47DBAE45">
+          <End Role="Ciudad" Type="Self.Ciudad" Multiplicity="0..1" />
+          <End Role="Anuncio" Type="Self.Anuncio" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Ciudad">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Anuncio">
+              <PropertyRef Name="idCiudad" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Anuncio__idSubca__45F365D3">
+          <End Role="Subcategoria" Type="Self.Subcategoria" Multiplicity="0..1" />
+          <End Role="Anuncio" Type="Self.Anuncio" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Subcategoria">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Anuncio">
+              <PropertyRef Name="idSubcategoria" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Anuncio__idUsuar__44FF419A">
+          <End Role="Usuario" Type="Self.Usuario" Multiplicity="0..1" />
+          <End Role="Anuncio" Type="Self.Anuncio" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Usuario">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Anuncio">
+              <PropertyRef Name="idUsuario" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Anuncio_B__idAnu__48CFD27E">
+          <End Role="Anuncio" Type="Self.Anuncio" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Anuncio_Beneficio" Type="Self.Anuncio_Beneficio" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Anuncio">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Anuncio_Beneficio">
+              <PropertyRef Name="idAnuncio" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Anuncio_P__idAnu__4AB81AF0">
+          <End Role="Anuncio" Type="Self.Anuncio" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Anuncio_Plazo" Type="Self.Anuncio_Plazo" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Anuncio">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Anuncio_Plazo">
+              <PropertyRef Name="idAnuncio" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Fotos_Anu__idAnu__4F7CD00D">
+          <End Role="Anuncio" Type="Self.Anuncio" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Fotos_Anuncio" Type="Self.Fotos_Anuncio" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Anuncio">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Fotos_Anuncio">
+              <PropertyRef Name="idAnuncio" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Videos_An__idAnu__5EBF139D">
+          <End Role="Anuncio" Type="Self.Anuncio" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Videos_Anuncio" Type="Self.Videos_Anuncio" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Anuncio">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Videos_Anuncio">
+              <PropertyRef Name="idAnuncio" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Anuncio_B__idBen__49C3F6B7">
+          <End Role="Beneficio" Type="Self.Beneficio" Multiplicity="1" />
+          <End Role="Anuncio_Beneficio" Type="Self.Anuncio_Beneficio" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Beneficio">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Anuncio_Beneficio">
+              <PropertyRef Name="idBeneficio" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Anuncio_P__idPla__4BAC3F29">
+          <End Role="Plazo" Type="Self.Plazo" Multiplicity="1" />
+          <End Role="Anuncio_Plazo" Type="Self.Anuncio_Plazo" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Plazo">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Anuncio_Plazo">
+              <PropertyRef Name="idPlazo" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Pago_Conc__idBen__5441852A">
+          <End Role="Beneficio" Type="Self.Beneficio" Multiplicity="0..1" />
+          <End Role="Pago_Concepto" Type="Self.Pago_Concepto" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Beneficio">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Pago_Concepto">
+              <PropertyRef Name="idBeneficio" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Subcatego__idCat__5629CD9C">
+          <End Role="Categoria" Type="Self.Categoria" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Subcategoria" Type="Self.Subcategoria" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Categoria">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Subcategoria">
+              <PropertyRef Name="idCategoria" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Ciudad__idEstado__4E88ABD4">
+          <End Role="Estado" Type="Self.Estado" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Ciudad" Type="Self.Ciudad" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Estado">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Ciudad">
+              <PropertyRef Name="idEstado" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Pago__idUsuario__5BE2A6F2">
+          <End Role="Usuario" Type="Self.Usuario" Multiplicity="1" />
+          <End Role="Pago" Type="Self.Pago" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Usuario">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Pago">
+              <PropertyRef Name="idUsuario" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Pago_Conc__idPag__5CD6CB2B">
+          <End Role="Pago" Type="Self.Pago" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Pago_Concepto" Type="Self.Pago_Concepto" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Pago">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Pago_Concepto">
+              <PropertyRef Name="idPago" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Pago_Conc__idPla__534D60F1">
+          <End Role="Plazo" Type="Self.Plazo" Multiplicity="0..1" />
+          <End Role="Pago_Concepto" Type="Self.Pago_Concepto" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Plazo">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Pago_Concepto">
+              <PropertyRef Name="idPlazo" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Usuario_T__idUsu__5DCAEF64">
+          <End Role="Usuario" Type="Self.Usuario" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Usuario_Tarjeta" Type="Self.Usuario_Tarjeta" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Usuario">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Usuario_Tarjeta">
+              <PropertyRef Name="idUsuario" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="VendeAgroEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Anuncios" EntityType="Self.Anuncio" />
+          <EntitySet Name="Anuncio_Beneficio" EntityType="Self.Anuncio_Beneficio" />
+          <EntitySet Name="Anuncio_Plazo" EntityType="Self.Anuncio_Plazo" />
+          <EntitySet Name="Beneficios" EntityType="Self.Beneficio" />
+          <EntitySet Name="Categorias" EntityType="Self.Categoria" />
+          <EntitySet Name="Ciudads" EntityType="Self.Ciudad" />
+          <EntitySet Name="Estadoes" EntityType="Self.Estado" />
+          <EntitySet Name="Fotos_Anuncio" EntityType="Self.Fotos_Anuncio" />
+          <EntitySet Name="Metricas" EntityType="Self.Metrica" />
+          <EntitySet Name="Pagoes" EntityType="Self.Pago" />
+          <EntitySet Name="Pago_Concepto" EntityType="Self.Pago_Concepto" />
+          <EntitySet Name="Plazoes" EntityType="Self.Plazo" />
+          <EntitySet Name="PlazoBases" EntityType="Self.PlazoBase" />
+          <EntitySet Name="Subcategorias" EntityType="Self.Subcategoria" />
+          <EntitySet Name="Usuarios" EntityType="Self.Usuario" />
+          <EntitySet Name="Usuario_Administrador" EntityType="Self.Usuario_Administrador" />
+          <EntitySet Name="Usuario_Tarjeta" EntityType="Self.Usuario_Tarjeta" />
+          <EntitySet Name="Videos_Anuncio" EntityType="Self.Videos_Anuncio" />
+          <AssociationSet Name="FK__Anuncio__idCiuda__47DBAE45" Association="Self.FK__Anuncio__idCiuda__47DBAE45">
+            <End Role="Ciudad" EntitySet="Ciudads" />
+            <End Role="Anuncio" EntitySet="Anuncios" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Anuncio__idSubca__45F365D3" Association="Self.FK__Anuncio__idSubca__45F365D3">
+            <End Role="Subcategoria" EntitySet="Subcategorias" />
+            <End Role="Anuncio" EntitySet="Anuncios" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Anuncio__idUsuar__44FF419A" Association="Self.FK__Anuncio__idUsuar__44FF419A">
+            <End Role="Usuario" EntitySet="Usuarios" />
+            <End Role="Anuncio" EntitySet="Anuncios" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Anuncio_B__idAnu__48CFD27E" Association="Self.FK__Anuncio_B__idAnu__48CFD27E">
+            <End Role="Anuncio" EntitySet="Anuncios" />
+            <End Role="Anuncio_Beneficio" EntitySet="Anuncio_Beneficio" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Anuncio_P__idAnu__4AB81AF0" Association="Self.FK__Anuncio_P__idAnu__4AB81AF0">
+            <End Role="Anuncio" EntitySet="Anuncios" />
+            <End Role="Anuncio_Plazo" EntitySet="Anuncio_Plazo" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Fotos_Anu__idAnu__4F7CD00D" Association="Self.FK__Fotos_Anu__idAnu__4F7CD00D">
+            <End Role="Anuncio" EntitySet="Anuncios" />
+            <End Role="Fotos_Anuncio" EntitySet="Fotos_Anuncio" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Videos_An__idAnu__5EBF139D" Association="Self.FK__Videos_An__idAnu__5EBF139D">
+            <End Role="Anuncio" EntitySet="Anuncios" />
+            <End Role="Videos_Anuncio" EntitySet="Videos_Anuncio" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Anuncio_B__idBen__49C3F6B7" Association="Self.FK__Anuncio_B__idBen__49C3F6B7">
+            <End Role="Beneficio" EntitySet="Beneficios" />
+            <End Role="Anuncio_Beneficio" EntitySet="Anuncio_Beneficio" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Anuncio_P__idPla__4BAC3F29" Association="Self.FK__Anuncio_P__idPla__4BAC3F29">
+            <End Role="Plazo" EntitySet="Plazoes" />
+            <End Role="Anuncio_Plazo" EntitySet="Anuncio_Plazo" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Pago_Conc__idBen__5441852A" Association="Self.FK__Pago_Conc__idBen__5441852A">
+            <End Role="Beneficio" EntitySet="Beneficios" />
+            <End Role="Pago_Concepto" EntitySet="Pago_Concepto" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Subcatego__idCat__5629CD9C" Association="Self.FK__Subcatego__idCat__5629CD9C">
+            <End Role="Categoria" EntitySet="Categorias" />
+            <End Role="Subcategoria" EntitySet="Subcategorias" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Ciudad__idEstado__4E88ABD4" Association="Self.FK__Ciudad__idEstado__4E88ABD4">
+            <End Role="Estado" EntitySet="Estadoes" />
+            <End Role="Ciudad" EntitySet="Ciudads" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Pago__idUsuario__5BE2A6F2" Association="Self.FK__Pago__idUsuario__5BE2A6F2">
+            <End Role="Usuario" EntitySet="Usuarios" />
+            <End Role="Pago" EntitySet="Pagoes" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Pago_Conc__idPag__5CD6CB2B" Association="Self.FK__Pago_Conc__idPag__5CD6CB2B">
+            <End Role="Pago" EntitySet="Pagoes" />
+            <End Role="Pago_Concepto" EntitySet="Pago_Concepto" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Pago_Conc__idPla__534D60F1" Association="Self.FK__Pago_Conc__idPla__534D60F1">
+            <End Role="Plazo" EntitySet="Plazoes" />
+            <End Role="Pago_Concepto" EntitySet="Pago_Concepto" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Usuario_T__idUsu__5DCAEF64" Association="Self.FK__Usuario_T__idUsu__5DCAEF64">
+            <End Role="Usuario" EntitySet="Usuarios" />
+            <End Role="Usuario_Tarjeta" EntitySet="Usuario_Tarjeta" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="VendeAgroModelStoreContainer" CdmEntityContainer="VendeAgroEntities">
+          <EntitySetMapping Name="Anuncios">
+            <EntityTypeMapping TypeName="VendeAgroModel.Anuncio">
+              <MappingFragment StoreEntitySet="Anuncio">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="titulo" ColumnName="titulo" />
+                <ScalarProperty Name="descripcion" ColumnName="descripcion" />
+                <ScalarProperty Name="precio" ColumnName="precio" />
+                <ScalarProperty Name="activo" ColumnName="activo" />
+                <ScalarProperty Name="idUsuario" ColumnName="idUsuario" />
+                <ScalarProperty Name="idSubcategoria" ColumnName="idSubcategoria" />
+                <ScalarProperty Name="idCiudad" ColumnName="idCiudad" />
+                <ScalarProperty Name="clicks" ColumnName="clicks" />
+                <ScalarProperty Name="vistas" ColumnName="vistas" />
+                <ScalarProperty Name="estado" ColumnName="estado" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Anuncio_Beneficio">
+            <EntityTypeMapping TypeName="VendeAgroModel.Anuncio_Beneficio">
+              <MappingFragment StoreEntitySet="Anuncio_Beneficio">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="idAnuncio" ColumnName="idAnuncio" />
+                <ScalarProperty Name="idBeneficio" ColumnName="idBeneficio" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Anuncio_Plazo">
+            <EntityTypeMapping TypeName="VendeAgroModel.Anuncio_Plazo">
+              <MappingFragment StoreEntitySet="Anuncio_Plazo">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="idAnuncio" ColumnName="idAnuncio" />
+                <ScalarProperty Name="idPlazo" ColumnName="idPlazo" />
+                <ScalarProperty Name="fechaInicio" ColumnName="fechaInicio" />
+                <ScalarProperty Name="fechaFin" ColumnName="fechaFin" />
+                <ScalarProperty Name="activo" ColumnName="activo" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Beneficios">
+            <EntityTypeMapping TypeName="VendeAgroModel.Beneficio">
+              <MappingFragment StoreEntitySet="Beneficio">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="descripcion" ColumnName="descripcion" />
+                <ScalarProperty Name="precio" ColumnName="precio" />
+                <ScalarProperty Name="tipo" ColumnName="tipo" />
+                <ScalarProperty Name="numero" ColumnName="numero" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Categorias">
+            <EntityTypeMapping TypeName="VendeAgroModel.Categoria">
+              <MappingFragment StoreEntitySet="Categoria">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="nombre" ColumnName="nombre" />
+                <ScalarProperty Name="activo" ColumnName="activo" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Ciudads">
+            <EntityTypeMapping TypeName="VendeAgroModel.Ciudad">
+              <MappingFragment StoreEntitySet="Ciudad">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="nombre" ColumnName="nombre" />
+                <ScalarProperty Name="idEstado" ColumnName="idEstado" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Estadoes">
+            <EntityTypeMapping TypeName="VendeAgroModel.Estado">
+              <MappingFragment StoreEntitySet="Estado">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="nombre" ColumnName="nombre" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Fotos_Anuncio">
+            <EntityTypeMapping TypeName="VendeAgroModel.Fotos_Anuncio">
+              <MappingFragment StoreEntitySet="Fotos_Anuncio">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="ruta" ColumnName="ruta" />
+                <ScalarProperty Name="idAnuncio" ColumnName="idAnuncio" />
+                <ScalarProperty Name="principal" ColumnName="principal" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Metricas">
+            <EntityTypeMapping TypeName="VendeAgroModel.Metrica">
+              <MappingFragment StoreEntitySet="Metricas">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="visitas" ColumnName="visitas" />
+                <ScalarProperty Name="fecha" ColumnName="fecha" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Pagoes">
+            <EntityTypeMapping TypeName="VendeAgroModel.Pago">
+              <MappingFragment StoreEntitySet="Pago">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="idUsuario" ColumnName="idUsuario" />
+                <ScalarProperty Name="tipoTarjeta" ColumnName="tipoTarjeta" />
+                <ScalarProperty Name="digitosTarjeta" ColumnName="digitosTarjeta" />
+                <ScalarProperty Name="total" ColumnName="total" />
+                <ScalarProperty Name="fecha" ColumnName="fecha" />
+                <ScalarProperty Name="tipo" ColumnName="tipo" />
+                <ScalarProperty Name="Referencia" ColumnName="Referencia" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Pago_Concepto">
+            <EntityTypeMapping TypeName="VendeAgroModel.Pago_Concepto">
+              <MappingFragment StoreEntitySet="Pago_Concepto">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="idPago" ColumnName="idPago" />
+                <ScalarProperty Name="idPlazo" ColumnName="idPlazo" />
+                <ScalarProperty Name="idBeneficio" ColumnName="idBeneficio" />
+                <ScalarProperty Name="tipo" ColumnName="tipo" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Plazoes">
+            <EntityTypeMapping TypeName="VendeAgroModel.Plazo">
+              <MappingFragment StoreEntitySet="Plazo">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="meses" ColumnName="meses" />
+                <ScalarProperty Name="precio" ColumnName="precio" />
+                <ScalarProperty Name="porcentajeAhorro" ColumnName="porcentajeAhorro" />
+                <ScalarProperty Name="activo" ColumnName="activo" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PlazoBases">
+            <EntityTypeMapping TypeName="VendeAgroModel.PlazoBase">
+              <MappingFragment StoreEntitySet="PlazoBase">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="precioBase" ColumnName="precioBase" />
+                <ScalarProperty Name="fechaModificacion" ColumnName="fechaModificacion" />
+                <ScalarProperty Name="activo" ColumnName="activo" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Subcategorias">
+            <EntityTypeMapping TypeName="VendeAgroModel.Subcategoria">
+              <MappingFragment StoreEntitySet="Subcategoria">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="nombre" ColumnName="nombre" />
+                <ScalarProperty Name="activo" ColumnName="activo" />
+                <ScalarProperty Name="idCategoria" ColumnName="idCategoria" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Usuarios">
+            <EntityTypeMapping TypeName="VendeAgroModel.Usuario">
+              <MappingFragment StoreEntitySet="Usuario">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="nombre" ColumnName="nombre" />
+                <ScalarProperty Name="apellidos" ColumnName="apellidos" />
+                <ScalarProperty Name="telefono" ColumnName="telefono" />
+                <ScalarProperty Name="email" ColumnName="email" />
+                <ScalarProperty Name="password" ColumnName="password" />
+                <ScalarProperty Name="confirmaEmail" ColumnName="confirmaEmail" />
+                <ScalarProperty Name="token" ColumnName="token" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Usuario_Administrador">
+            <EntityTypeMapping TypeName="VendeAgroModel.Usuario_Administrador">
+              <MappingFragment StoreEntitySet="Usuario_Administrador">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="nombre" ColumnName="nombre" />
+                <ScalarProperty Name="email" ColumnName="email" />
+                <ScalarProperty Name="token" ColumnName="token" />
+                <ScalarProperty Name="confirmaEmail" ColumnName="confirmaEmail" />
+                <ScalarProperty Name="password" ColumnName="password" />
+                <ScalarProperty Name="activo" ColumnName="activo" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Usuario_Tarjeta">
+            <EntityTypeMapping TypeName="VendeAgroModel.Usuario_Tarjeta">
+              <MappingFragment StoreEntitySet="Usuario_Tarjeta">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="tipoTarjeta" ColumnName="tipoTarjeta" />
+                <ScalarProperty Name="digitosTarjeta" ColumnName="digitosTarjeta" />
+                <ScalarProperty Name="fechaVencimiento" ColumnName="fechaVencimiento" />
+                <ScalarProperty Name="tokenTarjeta" ColumnName="tokenTarjeta" />
+                <ScalarProperty Name="idUsuario" ColumnName="idUsuario" />
+                <ScalarProperty Name="activo" ColumnName="activo" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Videos_Anuncio">
+            <EntityTypeMapping TypeName="VendeAgroModel.Videos_Anuncio">
+              <MappingFragment StoreEntitySet="Videos_Anuncio">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="ruta" ColumnName="ruta" />
+                <ScalarProperty Name="idAnuncio" ColumnName="idAnuncio" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
