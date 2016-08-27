@@ -18,12 +18,37 @@ namespace VendeAgroWeb.Controllers.Administrador
         // GET: Usuario_Administrador
         public async Task<ActionResult> Index()
         {
-            return View(await db.Usuario_Administrador.ToListAsync());
+            return View(Startup.GetAplicacionUsuariosManager().UsuarioAdministradorActual);
         }
 
         public async Task<ActionResult> Login()
         {
             return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> Login(Models.Administrador.LoginViewModel model, string redirectUrl)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+
+            var resultado = await Startup.GetAplicacionUsuariosManager().LoginAdministradorAsync(model.Email, AplicacionUsuariosManager.Hash(model.Password));
+            switch (resultado)
+            {
+                case LoginStatus.Exitoso:
+                    return RedirectToAction("Index", "Administrador");
+                case LoginStatus.ConfirmacionMail:
+                    ModelState.AddModelError("", "Confirmacion de email pendiente.");
+                    return View(model);
+                case LoginStatus.Incorrecto:
+                default:
+                    ModelState.AddModelError("", "Usuario o contraseña incorrecto.");
+                    return View(model);
+            }
+
         }
 
         // GET: Usuario_Administrador/Details/5
