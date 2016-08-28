@@ -27,15 +27,27 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
-    <EntitySetMapping Name="Anuncio_Plazo">
-      <EntityTypeMapping TypeName="VendeAgroModel.Anuncio_Plazo">
-        <MappingFragment StoreEntitySet="Anuncio_Plazo">
+    <EntitySetMapping Name="Anuncio_Paquete">
+      <EntityTypeMapping TypeName="VendeAgroModel.Anuncio_Paquete">
+        <MappingFragment StoreEntitySet="Anuncio_Paquete">
           <ScalarProperty Name="id" ColumnName="id" />
           <ScalarProperty Name="idAnuncio" ColumnName="idAnuncio" />
-          <ScalarProperty Name="idPlazo" ColumnName="idPlazo" />
+          <ScalarProperty Name="idPaquete" ColumnName="idPaquete" />
           <ScalarProperty Name="fechaInicio" ColumnName="fechaInicio" />
           <ScalarProperty Name="fechaFin" ColumnName="fechaFin" />
           <ScalarProperty Name="activo" ColumnName="activo" />
+          <ScalarProperty Name="folio" ColumnName="folio" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Banners">
+      <EntityTypeMapping TypeName="VendeAgroModel.Banner">
+        <MappingFragment StoreEntitySet="Banner">
+          <ScalarProperty Name="id" ColumnName="id" />
+          <ScalarProperty Name="ruta" ColumnName="ruta" />
+          <ScalarProperty Name="link" ColumnName="link" />
+          <ScalarProperty Name="activo" ColumnName="activo" />
+          <ScalarProperty Name="tipo" ColumnName="tipo" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -65,6 +77,18 @@
           <ScalarProperty Name="id" ColumnName="id" />
           <ScalarProperty Name="nombre" ColumnName="nombre" />
           <ScalarProperty Name="idEstado" ColumnName="idEstado" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Conekta_Paquete">
+      <EntityTypeMapping TypeName="VendeAgroModel.Conekta_Paquete">
+        <MappingFragment StoreEntitySet="Conekta_Paquete">
+          <ScalarProperty Name="id" ColumnName="id" />
+          <ScalarProperty Name="idPaquete" ColumnName="idPaquete" />
+          <ScalarProperty Name="idUsuario" ColumnName="idUsuario" />
+          <ScalarProperty Name="idConekta" ColumnName="idConekta" />
+          <ScalarProperty Name="fechaRenovacion" ColumnName="fechaRenovacion" />
+          <ScalarProperty Name="folio" ColumnName="folio" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -114,7 +138,7 @@
         <MappingFragment StoreEntitySet="Pago_Concepto">
           <ScalarProperty Name="id" ColumnName="id" />
           <ScalarProperty Name="idPago" ColumnName="idPago" />
-          <ScalarProperty Name="idPlazo" ColumnName="idPlazo" />
+          <ScalarProperty Name="idPaquete" ColumnName="idPaquete" />
           <ScalarProperty Name="idBeneficio" ColumnName="idBeneficio" />
           <ScalarProperty Name="tipo" ColumnName="tipo" />
         </MappingFragment>
@@ -122,20 +146,14 @@
     </EntitySetMapping>
     <EntitySetMapping Name="Paquetes">
       <EntityTypeMapping TypeName="VendeAgroModel.Paquete">
-        <MappingFragment StoreEntitySet="Plazo">
+        <MappingFragment StoreEntitySet="Paquete">
           <ScalarProperty Name="id" ColumnName="id" />
+          <ScalarProperty Name="nombre" ColumnName="nombre" />
           <ScalarProperty Name="meses" ColumnName="meses" />
+          <ScalarProperty Name="numeroAnuncios" ColumnName="numeroAnuncios" />
           <ScalarProperty Name="precio" ColumnName="precio" />
-          <ScalarProperty Name="porcentajeAhorro" ColumnName="porcentajeAhorro" />
-          <ScalarProperty Name="activo" ColumnName="activo" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
-    <EntitySetMapping Name="PlazoBases">
-      <EntityTypeMapping TypeName="VendeAgroModel.PlazoBase">
-        <MappingFragment StoreEntitySet="PlazoBase">
-          <ScalarProperty Name="id" ColumnName="id" />
-          <ScalarProperty Name="precioBase" ColumnName="precioBase" />
+          <ScalarProperty Name="descripcion" ColumnName="descripcion" />
+          <ScalarProperty Name="paqueteBase" ColumnName="paqueteBase" />
           <ScalarProperty Name="fechaModificacion" ColumnName="fechaModificacion" />
           <ScalarProperty Name="activo" ColumnName="activo" />
         </MappingFragment>
@@ -161,7 +179,8 @@
           <ScalarProperty Name="email" ColumnName="email" />
           <ScalarProperty Name="password" ColumnName="password" />
           <ScalarProperty Name="confirmaEmail" ColumnName="confirmaEmail" />
-          <ScalarProperty Name="token" ColumnName="token" />
+          <ScalarProperty Name="tokenEmail" ColumnName="tokenEmail" />
+          <ScalarProperty Name="tokenSesion" ColumnName="tokenSesion" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -171,7 +190,8 @@
           <ScalarProperty Name="id" ColumnName="id" />
           <ScalarProperty Name="nombre" ColumnName="nombre" />
           <ScalarProperty Name="email" ColumnName="email" />
-          <ScalarProperty Name="token" ColumnName="token" />
+          <ScalarProperty Name="tokenEmail" ColumnName="tokenEmail" />
+          <ScalarProperty Name="tokenSesion" ColumnName="tokenSesion" />
           <ScalarProperty Name="confirmaEmail" ColumnName="confirmaEmail" />
           <ScalarProperty Name="password" ColumnName="password" />
           <ScalarProperty Name="activo" ColumnName="activo" />
