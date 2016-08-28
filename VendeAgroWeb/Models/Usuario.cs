@@ -18,6 +18,7 @@ namespace VendeAgroWeb.Models
         public Usuario()
         {
             this.Anuncios = new HashSet<Anuncio>();
+            this.Conekta_Paquete = new HashSet<Conekta_Paquete>();
             this.Pagoes = new HashSet<Pago>();
             this.Usuario_Tarjeta = new HashSet<Usuario_Tarjeta>();
         }
@@ -29,10 +30,13 @@ namespace VendeAgroWeb.Models
         public string email { get; set; }
         public string password { get; set; }
         public bool confirmaEmail { get; set; }
-        public string token { get; set; }
+        public string tokenEmail { get; set; }
+        public string tokenSesion { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Anuncio> Anuncios { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Conekta_Paquete> Conekta_Paquete { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Pago> Pagoes { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

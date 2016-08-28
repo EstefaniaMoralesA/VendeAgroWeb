@@ -18,7 +18,7 @@ namespace VendeAgroWeb.Models
         public Anuncio()
         {
             this.Anuncio_Beneficio = new HashSet<Anuncio_Beneficio>();
-            this.Anuncio_Plazo = new HashSet<Anuncio_Plazo>();
+            this.Anuncio_Paquete = new HashSet<Anuncio_Paquete>();
             this.Fotos_Anuncio = new HashSet<Fotos_Anuncio>();
             this.Videos_Anuncio = new HashSet<Videos_Anuncio>();
         }
@@ -41,7 +41,7 @@ namespace VendeAgroWeb.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Anuncio_Beneficio> Anuncio_Beneficio { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Anuncio_Plazo> Anuncio_Plazo { get; set; }
+        public virtual ICollection<Anuncio_Paquete> Anuncio_Paquete { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Fotos_Anuncio> Fotos_Anuncio { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

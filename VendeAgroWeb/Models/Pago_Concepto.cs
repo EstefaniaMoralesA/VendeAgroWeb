@@ -16,12 +16,12 @@ namespace VendeAgroWeb.Models
     {
         public int id { get; set; }
         public int idPago { get; set; }
-        public Nullable<int> idPlazo { get; set; }
+        public Nullable<int> idPaquete { get; set; }
         public Nullable<int> idBeneficio { get; set; }
         public bool tipo { get; set; }
     
         public virtual Beneficio Beneficio { get; set; }
         public virtual Pago Pago { get; set; }
-        public virtual Plazo Plazo { get; set; }
+        public virtual Paquete Paquete { get; set; }
     }
 }

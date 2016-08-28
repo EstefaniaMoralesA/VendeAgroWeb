@@ -21,7 +21,6 @@ namespace VendeAgroWeb.Models
         public System.DateTime fechaFin { get; set; }
         public bool activo { get; set; }
     
-        public virtual Anuncio Anuncio { get; set; }
         public virtual Plazo Plazo { get; set; }
     }
 }

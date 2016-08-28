@@ -131,7 +131,7 @@
     <NavigationProperty Name="Pago" Relationship="Self.FK__Pago_Conc__idPag__5CD6CB2B" FromRole="Pago_Concepto" ToRole="Pago" />
     <NavigationProperty Name="Plazo" Relationship="Self.FK__Pago_Conc__idPla__534D60F1" FromRole="Pago_Concepto" ToRole="Plazo" />
   </EntityType>
-  <EntityType Name="Plazo">
+  <EntityType Name="Paquete">
     <Key>
       <PropertyRef Name="id" />
     </Key>
@@ -318,7 +318,7 @@
     </ReferentialConstraint>
   </Association>
   <Association Name="FK__Anuncio_P__idPla__4BAC3F29">
-    <End Role="Plazo" Type="Self.Plazo" Multiplicity="1" />
+    <End Role="Plazo" Type="VendeAgroModel.Paquete" Multiplicity="1" />
     <End Role="Anuncio_Plazo" Type="Self.Anuncio_Plazo" Multiplicity="*" />
     <ReferentialConstraint>
       <Principal Role="Plazo">
@@ -396,7 +396,7 @@
     </ReferentialConstraint>
   </Association>
   <Association Name="FK__Pago_Conc__idPla__534D60F1">
-    <End Role="Plazo" Type="Self.Plazo" Multiplicity="0..1" />
+    <End Role="Plazo" Type="VendeAgroModel.Paquete" Multiplicity="0..1" />
     <End Role="Pago_Concepto" Type="Self.Pago_Concepto" Multiplicity="*" />
     <ReferentialConstraint>
       <Principal Role="Plazo">
@@ -433,7 +433,7 @@
     <EntitySet Name="Metricas" EntityType="Self.Metrica" />
     <EntitySet Name="Pagoes" EntityType="Self.Pago" />
     <EntitySet Name="Pago_Concepto" EntityType="Self.Pago_Concepto" />
-    <EntitySet Name="Plazoes" EntityType="Self.Plazo" />
+    <EntitySet Name="Paquetes" EntityType="VendeAgroModel.Paquete" />
     <EntitySet Name="PlazoBases" EntityType="Self.PlazoBase" />
     <EntitySet Name="Subcategorias" EntityType="Self.Subcategoria" />
     <EntitySet Name="Usuarios" EntityType="Self.Usuario" />
@@ -473,7 +473,7 @@
       <End Role="Anuncio_Beneficio" EntitySet="Anuncio_Beneficio" />
     </AssociationSet>
     <AssociationSet Name="FK__Anuncio_P__idPla__4BAC3F29" Association="Self.FK__Anuncio_P__idPla__4BAC3F29">
-      <End Role="Plazo" EntitySet="Plazoes" />
+      <End Role="Plazo" EntitySet="Paquetes" />
       <End Role="Anuncio_Plazo" EntitySet="Anuncio_Plazo" />
     </AssociationSet>
     <AssociationSet Name="FK__Pago_Conc__idBen__5441852A" Association="Self.FK__Pago_Conc__idBen__5441852A">
@@ -497,7 +497,7 @@
       <End Role="Pago_Concepto" EntitySet="Pago_Concepto" />
     </AssociationSet>
     <AssociationSet Name="FK__Pago_Conc__idPla__534D60F1" Association="Self.FK__Pago_Conc__idPla__534D60F1">
-      <End Role="Plazo" EntitySet="Plazoes" />
+      <End Role="Plazo" EntitySet="Paquetes" />
       <End Role="Pago_Concepto" EntitySet="Pago_Concepto" />
     </AssociationSet>
     <AssociationSet Name="FK__Usuario_T__idUsu__5DCAEF64" Association="Self.FK__Usuario_T__idUsu__5DCAEF64">

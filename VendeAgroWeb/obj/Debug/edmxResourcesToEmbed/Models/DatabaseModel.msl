@@ -120,8 +120,8 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
-    <EntitySetMapping Name="Plazoes">
-      <EntityTypeMapping TypeName="VendeAgroModel.Plazo">
+    <EntitySetMapping Name="Paquetes">
+      <EntityTypeMapping TypeName="VendeAgroModel.Paquete">
         <MappingFragment StoreEntitySet="Plazo">
           <ScalarProperty Name="id" ColumnName="id" />
           <ScalarProperty Name="meses" ColumnName="meses" />
