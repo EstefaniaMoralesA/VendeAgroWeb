@@ -1,5 +1,6 @@
 ﻿using Microsoft.Owin;
 using Owin;
+using System.Web;
 
 [assembly: OwinStartupAttribute(typeof(VendeAgroWeb.Startup))]
 namespace VendeAgroWeb
@@ -10,7 +11,7 @@ namespace VendeAgroWeb
         public void Configuration(IAppBuilder app)
         {
             ConfigureAuth(app);
-            _usuariosManager = new AplicacionUsuariosManager(new Models.VendeAgroEntities());
+            _usuariosManager = new AplicacionUsuariosManager();
         }
 
         public static AplicacionUsuariosManager GetAplicacionUsuariosManager()

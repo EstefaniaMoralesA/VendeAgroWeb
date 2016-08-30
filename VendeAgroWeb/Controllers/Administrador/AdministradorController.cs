@@ -18,11 +18,19 @@ namespace VendeAgroWeb.Controllers.Administrador
         // GET: Usuario_Administrador
         public async Task<ActionResult> Index()
         {
+            if(await Startup.GetAplicacionUsuariosManager().VerificarAdminSesionAsync() == LoginStatus.Incorrecto)
+            {
+                return RedirectToAction("Login", "Administrador");
+            }
             return View(Startup.GetAplicacionUsuariosManager().UsuarioAdministradorActual);
         }
 
         public async Task<ActionResult> Login()
         {
+            if (await Startup.GetAplicacionUsuariosManager().VerificarAdminSesionAsync() == LoginStatus.Exitoso)
+            {
+                return RedirectToAction("Index", "Administrador");
+            }
             return View();
         }
 
