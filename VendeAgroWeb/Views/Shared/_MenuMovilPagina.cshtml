@@ -1,0 +1,30 @@
+﻿
+<div class="col-sm-12">
+    <div class="menu-movil-top row">
+        <div class="col-xs-6">
+            <a class="logo-movil" href="/Home"><img src="~/img/logo.png" /> </a>
+        </div>
+        <div class="col-xs-6 login-menu-movil-container">
+            @Html.Partial("_LoginPartial")
+        </div>
+    </div>
+    <div class="menu-movil-middle row">
+        <div class="col-xs-12">
+            <form role="search" class="form-horizontal movil-forma-busqueda">
+                <div class="input-group">
+                    <input type="text" class="form-control" id="buscar" placeholder="Buscar">
+                    <div class="input-group-btn">
+                        <a class="btn btn-default busqueda">
+                            <span class="glyphicon glyphicon-search"></span>
+                        </a>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="menu-movil-bottom row">
+        <div class="col-xs-12">
+            @Html.Partial("_MenuPaginaTabs")
+        </div>
+    </div>
+</div>

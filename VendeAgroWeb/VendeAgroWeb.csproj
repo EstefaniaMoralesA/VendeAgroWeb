@@ -213,7 +213,7 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\Administrador\AdministradorController.cs" />
-    <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\Pagina\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -270,6 +270,7 @@
     <Compile Include="Models\Metrica.cs">
       <DependentUpon>DatabaseModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\Pagina\PaginaViewModels.cs" />
     <Compile Include="Models\Pago.cs">
       <DependentUpon>DatabaseModel.tt</DependentUpon>
     </Compile>
@@ -305,6 +306,7 @@
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
+    <Content Include="img\logo.png" />
     <Content Include="Models\DatabaseModel.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <DependentUpon>DatabaseModel.edmx</DependentUpon>
@@ -354,8 +356,8 @@
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
-    <Content Include="Views\Home\About.cshtml" />
-    <Content Include="Views\Home\Contact.cshtml" />
+    <Content Include="Views\Home\OfertasDelDia.cshtml" />
+    <Content Include="Views\Home\Anunciate.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Account\_ExternalLoginsListPartial.cshtml" />
     <Content Include="Views\Account\ConfirmEmail.cshtml" />
@@ -379,6 +381,10 @@
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
     <Content Include="Views\Administrador\Login.cshtml" />
     <Content Include="Views\Administrador\Index.cshtml" />
+    <Content Include="Views\Home\Contacto.cshtml" />
+    <Content Include="Views\Shared\_MenuPagina.cshtml" />
+    <Content Include="Views\Shared\_MenuMovilPagina.cshtml" />
+    <Content Include="Views\Shared\_MenuPaginaTabs.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
