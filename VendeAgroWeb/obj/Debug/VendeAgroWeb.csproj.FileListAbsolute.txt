@@ -173,3 +173,4 @@ C:\Users\estef\Documents\Visual Studio 2015\Projects\VendeAgroWeb\VendeAgroWeb\b
 C:\Users\estef\Documents\Visual Studio 2015\Projects\VendeAgroWeb\VendeAgroWeb\bin\Microsoft.Owin.Security.MicrosoftAccount.xml
 C:\Users\estef\Documents\Visual Studio 2015\Projects\VendeAgroWeb\VendeAgroWeb\obj\Debug\VendeAgroWeb.dll
 C:\Users\estef\Documents\Visual Studio 2015\Projects\VendeAgroWeb\VendeAgroWeb\obj\Debug\VendeAgroWeb.pdb
+C:\Users\estef\Documents\Visual Studio 2015\Projects\VendeAgroWeb\VendeAgroWeb\obj\Debug\VendeAgroWeb.csprojResolveAssemblyReference.cache
