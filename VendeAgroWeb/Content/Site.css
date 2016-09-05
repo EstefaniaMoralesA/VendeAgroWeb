@@ -4,8 +4,9 @@
 
 /* Set padding to keep content from hitting the edges */
 .body-content {
-    padding-left: 15px;
-    padding-right: 15px;
+    padding-left: 60px;
+    padding-right: 60px;
+    width:100% !important;
 }
 
 /* Override the default bootstrap behavior where horizontal description lists 
@@ -22,6 +23,10 @@
 .menu-container {
     background-color: black;
     position: relative;
+}
+
+.menu-row{
+    margin:0px !important;
 }
 
 .menu-tabs {
@@ -127,13 +132,21 @@
     padding: 10px 0px 0px 0px;
 }
 
-.busqueda-avanzada-container {
+.home-body-container {
     margin-top: 20px;
+}
+
+.busqueda-avanzada-container {
     border: 1px solid #ccc;
     background-color: #eee;
-    padding-bottom: 10px;
+    padding-bottom: 20px;
     border-radius: 5px;
 }
+
+    .busqueda-avanzada-container h3 {
+        margin: 20px 10px 10px 10px;
+        font-size: 20px;
+    }
 
 .dropdown {
     margin-top: 10px;
@@ -156,4 +169,66 @@
 
 .slider-container {
     margin-top: 10px;
+}
+
+.price-container {
+    position: relative;
+    min-height: 25px;
+    margin: 0 !important;
+}
+
+.precio-izq {
+    position: absolute;
+    left: 0;
+}
+
+.precio-der {
+    position: absolute;
+    right: 0;
+}
+
+.anuncio-container {
+    border: 1px solid #1C3E7E;
+}
+
+.anuncio-contenido {
+    margin: 10px 0px 10px 0px;
+}
+
+    .anuncio-contenido a img {
+        width: 100%; 
+     }
+
+.anuncio-titulo {
+    background-color: #1C3E7E;
+    position: relative;
+    min-height: 25px;
+    margin: 0 !important;
+}
+
+    .anuncio-titulo p {
+        margin-bottom: 0;
+        color: white;
+        font-weight: bold;
+        font-size: 16px;
+    }
+
+        .anuncio-titulo .titulo {
+            position: absolute;
+            left: 0;
+            padding: 1px 0px 1px 15px;
+        }
+
+        .anuncio-titulo .precio {
+            position: absolute;
+            right: 0;
+            padding: 1px 15px 1px 0px;
+        }
+
+.anuncio-contenido .imagen-container {
+    padding: 0px 10px 0px 0px;
+}
+
+.anuncio-contenido p {
+    font-size: 12px;
 }
