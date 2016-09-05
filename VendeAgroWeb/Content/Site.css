@@ -126,3 +126,22 @@
 .movil-forma-busqueda {
     padding: 10px 0px 0px 0px;
 }
+
+.dropdown {
+    margin-top: 10px;
+}
+
+    .dropdown button {
+        width: 100%;
+    }
+
+    .dropdown .dropdown-menu {
+        width: 100%;
+    }
+
+    .dropdown button .caret {
+        position: absolute;
+        right: 10px;
+        top: 50%;
+        transform: translate(0, -50%);
+    }

@@ -16,15 +16,24 @@
         @Html.Partial("_MenuMovilPagina")
     </div>
     <div class="container body-content">
-        @RenderBody()
-        <hr />
-        <footer>
-            <p>&copy; @DateTime.Now.Year - VendeAgro, Inc., Todos los derechos reservados.</p>
-        </footer>
+        <div class="row">
+            @RenderBody()
+
+
+        </div>
+        <div class="row">
+            <div class="col-sm-12">
+                <hr />
+                <footer>
+                    <p>&copy; @DateTime.Now.Year - VendeAgro, Inc., Todos los derechos reservados.</p>
+                </footer>
+            </div>
+        </div>
+        
     </div>
 
     @Scripts.Render("~/bundles/jquery")
-    @Scripts.Render("~/bundles/bootstrap")
+    @Scripts.Render("~/bundles/bootstrap")  
     @RenderSection("scripts", required: false)
 </body>
 </html>
