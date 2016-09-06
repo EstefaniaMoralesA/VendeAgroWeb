@@ -38,6 +38,7 @@ namespace VendeAgroWeb.Models
         public virtual DbSet<Metrica> Metricas { get; set; }
         public virtual DbSet<Pago> Pagoes { get; set; }
         public virtual DbSet<Pago_Concepto> Pago_Concepto { get; set; }
+        public virtual DbSet<Pai> Pais { get; set; }
         public virtual DbSet<Paquete> Paquetes { get; set; }
         public virtual DbSet<Subcategoria> Subcategorias { get; set; }
         public virtual DbSet<Usuario> Usuarios { get; set; }

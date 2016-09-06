@@ -89,6 +89,7 @@
     </Key>
     <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="nombre" Type="varchar" MaxLength="30" Nullable="false" />
+    <Property Name="idPais" Type="int" Nullable="false" />
   </EntityType>
   <EntityType Name="Fotos_Anuncio">
     <Key>
@@ -129,6 +130,13 @@
     <Property Name="idPaquete" Type="int" />
     <Property Name="idBeneficio" Type="int" />
     <Property Name="tipo" Type="bit" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Pais">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="nombre" Type="varchar" MaxLength="50" Nullable="false" />
   </EntityType>
   <EntityType Name="Paquete">
     <Key>
@@ -330,6 +338,20 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
+  <Association Name="FK__Estado__idPais__6FE99F9F">
+    <End Role="Pais" Type="Self.Pais" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="Estado" Type="Self.Estado" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Pais">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="Estado">
+        <PropertyRef Name="idPais" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
   <Association Name="FK__Fotos_Anu__idAnu__628FA481">
     <End Role="Anuncio" Type="Self.Anuncio" Multiplicity="1">
       <OnDelete Action="Cascade" />
@@ -450,6 +472,7 @@
     <EntitySet Name="Metricas" EntityType="Self.Metricas" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Pago" EntityType="Self.Pago" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Pago_Concepto" EntityType="Self.Pago_Concepto" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Pais" EntityType="Self.Pais" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Paquete" EntityType="Self.Paquete" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Subcategoria" EntityType="Self.Subcategoria" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Usuario" EntityType="Self.Usuario" Schema="dbo" store:Type="Tables" />
@@ -495,6 +518,10 @@
     <AssociationSet Name="FK__Conekta_P__idUsu__619B8048" Association="Self.FK__Conekta_P__idUsu__619B8048">
       <End Role="Usuario" EntitySet="Usuario" />
       <End Role="Conekta_Paquete" EntitySet="Conekta_Paquete" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Estado__idPais__6FE99F9F" Association="Self.FK__Estado__idPais__6FE99F9F">
+      <End Role="Pais" EntitySet="Pais" />
+      <End Role="Estado" EntitySet="Estado" />
     </AssociationSet>
     <AssociationSet Name="FK__Fotos_Anu__idAnu__628FA481" Association="Self.FK__Fotos_Anu__idAnu__628FA481">
       <End Role="Anuncio" EntitySet="Anuncio" />

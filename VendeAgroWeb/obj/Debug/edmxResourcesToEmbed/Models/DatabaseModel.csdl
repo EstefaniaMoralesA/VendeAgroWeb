@@ -107,7 +107,9 @@
     </Key>
     <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
     <Property Name="nombre" Type="String" MaxLength="30" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="idPais" Type="Int32" Nullable="false" />
     <NavigationProperty Name="Ciudads" Relationship="Self.FK__Ciudad__idEstado__5FB337D6" FromRole="Estado" ToRole="Ciudad" />
+    <NavigationProperty Name="Pai" Relationship="Self.FK__Estado__idPais__6FE99F9F" FromRole="Estado" ToRole="Pais" />
   </EntityType>
   <EntityType Name="Fotos_Anuncio">
     <Key>
@@ -154,6 +156,14 @@
     <NavigationProperty Name="Beneficio" Relationship="Self.FK__Pago_Conc__idBen__66603565" FromRole="Pago_Concepto" ToRole="Beneficio" />
     <NavigationProperty Name="Pago" Relationship="Self.FK__Pago_Conc__idPag__6477ECF3" FromRole="Pago_Concepto" ToRole="Pago" />
     <NavigationProperty Name="Paquete" Relationship="Self.FK__Pago_Conc__idPaq__656C112C" FromRole="Pago_Concepto" ToRole="Paquete" />
+  </EntityType>
+  <EntityType Name="Pai">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="nombre" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <NavigationProperty Name="Estadoes" Relationship="Self.FK__Estado__idPais__6FE99F9F" FromRole="Pais" ToRole="Estado" />
   </EntityType>
   <EntityType Name="Paquete">
     <Key>
@@ -420,6 +430,20 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
+  <Association Name="FK__Estado__idPais__6FE99F9F">
+    <End Role="Pais" Type="Self.Pai" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="Estado" Type="Self.Estado" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Pais">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="Estado">
+        <PropertyRef Name="idPais" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
   <Association Name="FK__Pago__idUsuario__6383C8BA">
     <End Role="Usuario" Type="Self.Usuario" Multiplicity="1" />
     <End Role="Pago" Type="Self.Pago" Multiplicity="*" />
@@ -486,6 +510,7 @@
     <EntitySet Name="Metricas" EntityType="Self.Metrica" />
     <EntitySet Name="Pagoes" EntityType="Self.Pago" />
     <EntitySet Name="Pago_Concepto" EntityType="Self.Pago_Concepto" />
+    <EntitySet Name="Pais" EntityType="Self.Pai" />
     <EntitySet Name="Paquetes" EntityType="Self.Paquete" />
     <EntitySet Name="Subcategorias" EntityType="Self.Subcategoria" />
     <EntitySet Name="Usuarios" EntityType="Self.Usuario" />
@@ -547,6 +572,10 @@
     <AssociationSet Name="FK__Conekta_P__idUsu__619B8048" Association="Self.FK__Conekta_P__idUsu__619B8048">
       <End Role="Usuario" EntitySet="Usuarios" />
       <End Role="Conekta_Paquete" EntitySet="Conekta_Paquete" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Estado__idPais__6FE99F9F" Association="Self.FK__Estado__idPais__6FE99F9F">
+      <End Role="Pais" EntitySet="Pais" />
+      <End Role="Estado" EntitySet="Estadoes" />
     </AssociationSet>
     <AssociationSet Name="FK__Pago__idUsuario__6383C8BA" Association="Self.FK__Pago__idUsuario__6383C8BA">
       <End Role="Usuario" EntitySet="Usuarios" />

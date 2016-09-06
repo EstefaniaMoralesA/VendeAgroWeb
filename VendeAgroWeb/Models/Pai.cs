@@ -12,20 +12,18 @@ namespace VendeAgroWeb.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class Estado
+    public partial class Pai
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public Estado()
+        public Pai()
         {
-            this.Ciudads = new HashSet<Ciudad>();
+            this.Estadoes = new HashSet<Estado>();
         }
     
         public int id { get; set; }
         public string nombre { get; set; }
-        public int idPais { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Ciudad> Ciudads { get; set; }
-        public virtual Pai Pai { get; set; }
+        public virtual ICollection<Estado> Estadoes { get; set; }
     }
 }
