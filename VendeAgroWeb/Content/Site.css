@@ -2,18 +2,22 @@
     padding-bottom: 20px;
 }
 
-/* Set padding to keep content from hitting the edges */
 .body-content {
-    padding-left: 60px;
-    padding-right: 60px;
-    width:100% !important;
+    padding-left: 15px;
+    padding-right: 15px;
+    width: 80% !important;
 }
 
-/* Override the default bootstrap behavior where horizontal description lists 
-   will truncate terms that are too long to fit in the left column 
-*/
 .dl-horizontal dt {
     white-space: normal;
+}
+
+* {
+    border-radius: 0 !important;
+    -o-border-radius: 0 !important;
+    -ms-border-radius: 0 !important;
+    -webkit-border-radius: 0 !important;
+    -moz-border-radius: 0 !important;
 }
 
 .forma-busqueda {
@@ -25,8 +29,8 @@
     position: relative;
 }
 
-.menu-row{
-    margin:0px !important;
+.menu-row {
+    margin: 0px !important;
 }
 
 .menu-tabs {
@@ -113,20 +117,20 @@
 .login-menu-movil-container ul {
     width: 100%;
 }
-    
+
     .login-menu-movil-container ul li {
         display: table-cell;
         float: right;
     }
 
-    .login-menu-movil-container ul li a {
-        padding-top: 2px;
-        padding-bottom: 2px;
-        padding-right: 10px;
-        line-height: 20px;
-        padding-left: 10px;
-        font-size: 12px;
-    }
+        .login-menu-movil-container ul li a {
+            padding-top: 2px;
+            padding-bottom: 2px;
+            padding-right: 10px;
+            line-height: 20px;
+            padding-left: 10px;
+            font-size: 12px;
+        }
 
 .movil-forma-busqueda {
     padding: 10px 0px 0px 0px;
@@ -137,7 +141,6 @@
 }
 
 .busqueda-avanzada-container {
-    border: 1px solid #ccc;
     background-color: #eee;
     padding-bottom: 20px;
     border-radius: 5px;
@@ -154,6 +157,8 @@
 
     .dropdown button {
         width: 100%;
+        background-color: #d1d1d1;
+        border: none !important;
     }
 
     .dropdown .dropdown-menu {
@@ -187,19 +192,52 @@
     right: 0;
 }
 
+.titulos {
+    padding-top: 10px;
+    padding-bottom: 10px;
+    border-top: 4px solid #1C3E7E;
+}
+
+    .titulos h3 {
+        margin: 0px;
+        font-size: 20px;
+    }
+
+.busqueda-titulo-container {
+    background-color: #eee;
+}
+
+.destacados-titulo-container {
+    background-color: gray;
+}
+
+.anuncio-desktop {
+    margin-top: 20px;
+    position: relative;
+    left: 50%;
+    transform: translate(-50%, 0%);
+    -webkit-transform: translate(-50%, 0%);
+    -moz-transform: translate(-50%, 0%);
+    -o-transform: translate(-50%, 0%);
+    -ms-transform: translate(-50%, 0%);
+    width: 95%;
+}
+
 .anuncio-container {
-    border: 1px solid #1C3E7E;
 }
 
 .anuncio-contenido {
-    margin: 10px 0px 10px 0px;
+    padding-bottom: 10px;
+    box-shadow: 0 4px 10px -7px gray;
 }
 
     .anuncio-contenido a img {
-        width: 100%; 
-     }
+        width: 100%;
+    }
 
 .anuncio-titulo {
+    padding-top: 5px;
+    padding-bottom: 5px;
     background-color: #1C3E7E;
     position: relative;
     min-height: 25px;
@@ -213,17 +251,17 @@
         font-size: 16px;
     }
 
-        .anuncio-titulo .titulo {
-            position: absolute;
-            left: 0;
-            padding: 1px 0px 1px 15px;
-        }
+    .anuncio-titulo .titulo {
+        position: absolute;
+        left: 0;
+        padding: 1px 0px 1px 15px;
+    }
 
-        .anuncio-titulo .precio {
-            position: absolute;
-            right: 0;
-            padding: 1px 15px 1px 0px;
-        }
+    .anuncio-titulo .precio {
+        position: relative;
+        float: right;
+        padding: 1px 15px 1px 0px;
+    }
 
 .anuncio-contenido .imagen-container {
     padding: 0px 10px 0px 0px;
