@@ -277,6 +277,9 @@
     <Compile Include="Models\Pago_Concepto.cs">
       <DependentUpon>DatabaseModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\Pai.cs">
+      <DependentUpon>DatabaseModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\Paquete.cs">
       <DependentUpon>DatabaseModel.tt</DependentUpon>
     </Compile>
