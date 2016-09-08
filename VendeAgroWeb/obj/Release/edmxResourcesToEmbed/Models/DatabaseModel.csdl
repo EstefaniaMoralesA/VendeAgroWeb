@@ -4,7 +4,7 @@
     <Key>
       <PropertyRef Name="id" />
     </Key>
-    <Property Name="id" Type="Int32" Nullable="false" />
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
     <Property Name="titulo" Type="String" MaxLength="30" FixedLength="false" Unicode="false" Nullable="false" />
     <Property Name="descripcion" Type="String" MaxLength="250" FixedLength="false" Unicode="false" Nullable="false" />
     <Property Name="precio" Type="Double" Nullable="false" />
@@ -15,91 +15,117 @@
     <Property Name="clicks" Type="Int32" />
     <Property Name="vistas" Type="Int32" />
     <Property Name="estado" Type="Int32" Nullable="false" />
-    <NavigationProperty Name="Ciudad" Relationship="Self.FK__Anuncio__idCiuda__47DBAE45" FromRole="Anuncio" ToRole="Ciudad" />
-    <NavigationProperty Name="Subcategoria" Relationship="Self.FK__Anuncio__idSubca__45F365D3" FromRole="Anuncio" ToRole="Subcategoria" />
-    <NavigationProperty Name="Usuario" Relationship="Self.FK__Anuncio__idUsuar__44FF419A" FromRole="Anuncio" ToRole="Usuario" />
-    <NavigationProperty Name="Anuncio_Beneficio" Relationship="Self.FK__Anuncio_B__idAnu__48CFD27E" FromRole="Anuncio" ToRole="Anuncio_Beneficio" />
-    <NavigationProperty Name="Anuncio_Plazo" Relationship="Self.FK__Anuncio_P__idAnu__4AB81AF0" FromRole="Anuncio" ToRole="Anuncio_Plazo" />
-    <NavigationProperty Name="Fotos_Anuncio" Relationship="Self.FK__Fotos_Anu__idAnu__4F7CD00D" FromRole="Anuncio" ToRole="Fotos_Anuncio" />
-    <NavigationProperty Name="Videos_Anuncio" Relationship="Self.FK__Videos_An__idAnu__5EBF139D" FromRole="Anuncio" ToRole="Videos_Anuncio" />
+    <NavigationProperty Name="Ciudad" Relationship="Self.FK__Anuncio__idCiuda__5AEE82B9" FromRole="Anuncio" ToRole="Ciudad" />
+    <NavigationProperty Name="Subcategoria" Relationship="Self.FK__Anuncio__idSubca__59FA5E80" FromRole="Anuncio" ToRole="Subcategoria" />
+    <NavigationProperty Name="Usuario" Relationship="Self.FK__Anuncio__idUsuar__59063A47" FromRole="Anuncio" ToRole="Usuario" />
+    <NavigationProperty Name="Anuncio_Beneficio" Relationship="Self.FK__Anuncio_B__idAnu__5BE2A6F2" FromRole="Anuncio" ToRole="Anuncio_Beneficio" />
+    <NavigationProperty Name="Anuncio_Paquete" Relationship="Self.FK__Anuncio_P__idAnu__5DCAEF64" FromRole="Anuncio" ToRole="Anuncio_Paquete" />
+    <NavigationProperty Name="Fotos_Anuncio" Relationship="Self.FK__Fotos_Anu__idAnu__628FA481" FromRole="Anuncio" ToRole="Fotos_Anuncio" />
+    <NavigationProperty Name="Videos_Anuncio" Relationship="Self.FK__Videos_An__idAnu__693CA210" FromRole="Anuncio" ToRole="Videos_Anuncio" />
   </EntityType>
   <EntityType Name="Anuncio_Beneficio">
     <Key>
       <PropertyRef Name="id" />
     </Key>
-    <Property Name="id" Type="Int32" Nullable="false" />
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
     <Property Name="idAnuncio" Type="Int32" Nullable="false" />
     <Property Name="idBeneficio" Type="Int32" Nullable="false" />
-    <NavigationProperty Name="Anuncio" Relationship="Self.FK__Anuncio_B__idAnu__48CFD27E" FromRole="Anuncio_Beneficio" ToRole="Anuncio" />
-    <NavigationProperty Name="Beneficio" Relationship="Self.FK__Anuncio_B__idBen__49C3F6B7" FromRole="Anuncio_Beneficio" ToRole="Beneficio" />
+    <NavigationProperty Name="Anuncio" Relationship="Self.FK__Anuncio_B__idAnu__5BE2A6F2" FromRole="Anuncio_Beneficio" ToRole="Anuncio" />
+    <NavigationProperty Name="Beneficio" Relationship="Self.FK__Anuncio_B__idBen__5CD6CB2B" FromRole="Anuncio_Beneficio" ToRole="Beneficio" />
   </EntityType>
-  <EntityType Name="Anuncio_Plazo">
+  <EntityType Name="Anuncio_Paquete">
     <Key>
       <PropertyRef Name="id" />
     </Key>
-    <Property Name="id" Type="Int32" Nullable="false" />
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
     <Property Name="idAnuncio" Type="Int32" Nullable="false" />
-    <Property Name="idPlazo" Type="Int32" Nullable="false" />
+    <Property Name="idPaquete" Type="Int32" Nullable="false" />
     <Property Name="fechaInicio" Type="DateTime" Nullable="false" Precision="0" />
     <Property Name="fechaFin" Type="DateTime" Nullable="false" Precision="0" />
     <Property Name="activo" Type="Boolean" Nullable="false" />
-    <NavigationProperty Name="Anuncio" Relationship="Self.FK__Anuncio_P__idAnu__4AB81AF0" FromRole="Anuncio_Plazo" ToRole="Anuncio" />
-    <NavigationProperty Name="Plazo" Relationship="Self.FK__Anuncio_P__idPla__4BAC3F29" FromRole="Anuncio_Plazo" ToRole="Plazo" />
+    <Property Name="folio" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+    <NavigationProperty Name="Anuncio" Relationship="Self.FK__Anuncio_P__idAnu__5DCAEF64" FromRole="Anuncio_Paquete" ToRole="Anuncio" />
+    <NavigationProperty Name="Paquete" Relationship="Self.FK__Anuncio_P__idPaq__5EBF139D" FromRole="Anuncio_Paquete" ToRole="Paquete" />
+  </EntityType>
+  <EntityType Name="Banner">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="ruta" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="link" Type="String" MaxLength="150" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="activo" Type="Boolean" Nullable="false" />
+    <Property Name="tipo" Type="Int32" Nullable="false" />
   </EntityType>
   <EntityType Name="Beneficio">
     <Key>
       <PropertyRef Name="id" />
     </Key>
-    <Property Name="id" Type="Int32" Nullable="false" />
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
     <Property Name="descripcion" Type="String" MaxLength="250" FixedLength="false" Unicode="false" Nullable="false" />
     <Property Name="precio" Type="Double" Nullable="false" />
     <Property Name="tipo" Type="Int32" Nullable="false" />
     <Property Name="numero" Type="Int32" />
-    <NavigationProperty Name="Anuncio_Beneficio" Relationship="Self.FK__Anuncio_B__idBen__49C3F6B7" FromRole="Beneficio" ToRole="Anuncio_Beneficio" />
-    <NavigationProperty Name="Pago_Concepto" Relationship="Self.FK__Pago_Conc__idBen__5441852A" FromRole="Beneficio" ToRole="Pago_Concepto" />
+    <NavigationProperty Name="Anuncio_Beneficio" Relationship="Self.FK__Anuncio_B__idBen__5CD6CB2B" FromRole="Beneficio" ToRole="Anuncio_Beneficio" />
+    <NavigationProperty Name="Pago_Concepto" Relationship="Self.FK__Pago_Conc__idBen__66603565" FromRole="Beneficio" ToRole="Pago_Concepto" />
   </EntityType>
   <EntityType Name="Categoria">
     <Key>
       <PropertyRef Name="id" />
     </Key>
-    <Property Name="id" Type="Int32" Nullable="false" />
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
     <Property Name="nombre" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
     <Property Name="activo" Type="Boolean" Nullable="false" />
-    <NavigationProperty Name="Subcategorias" Relationship="Self.FK__Subcatego__idCat__5629CD9C" FromRole="Categoria" ToRole="Subcategoria" />
+    <NavigationProperty Name="Subcategorias" Relationship="Self.FK__Subcatego__idCat__6754599E" FromRole="Categoria" ToRole="Subcategoria" />
   </EntityType>
   <EntityType Name="Ciudad">
     <Key>
       <PropertyRef Name="id" />
     </Key>
-    <Property Name="id" Type="Int32" Nullable="false" />
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
     <Property Name="nombre" Type="String" MaxLength="30" FixedLength="false" Unicode="false" Nullable="false" />
     <Property Name="idEstado" Type="Int32" Nullable="false" />
-    <NavigationProperty Name="Anuncios" Relationship="Self.FK__Anuncio__idCiuda__47DBAE45" FromRole="Ciudad" ToRole="Anuncio" />
-    <NavigationProperty Name="Estado" Relationship="Self.FK__Ciudad__idEstado__4E88ABD4" FromRole="Ciudad" ToRole="Estado" />
+    <NavigationProperty Name="Anuncios" Relationship="Self.FK__Anuncio__idCiuda__5AEE82B9" FromRole="Ciudad" ToRole="Anuncio" />
+    <NavigationProperty Name="Estado" Relationship="Self.FK__Ciudad__idEstado__5FB337D6" FromRole="Ciudad" ToRole="Estado" />
+  </EntityType>
+  <EntityType Name="Conekta_Paquete">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="idPaquete" Type="Int32" Nullable="false" />
+    <Property Name="idUsuario" Type="Int32" Nullable="false" />
+    <Property Name="idConekta" Type="Int32" Nullable="false" />
+    <Property Name="fechaRenovacion" Type="DateTime" Nullable="false" Precision="0" />
+    <Property Name="folio" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+    <NavigationProperty Name="Paquete" Relationship="Self.FK__Conekta_P__idPaq__60A75C0F" FromRole="Conekta_Paquete" ToRole="Paquete" />
+    <NavigationProperty Name="Usuario" Relationship="Self.FK__Conekta_P__idUsu__619B8048" FromRole="Conekta_Paquete" ToRole="Usuario" />
   </EntityType>
   <EntityType Name="Estado">
     <Key>
       <PropertyRef Name="id" />
     </Key>
-    <Property Name="id" Type="Int32" Nullable="false" />
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
     <Property Name="nombre" Type="String" MaxLength="30" FixedLength="false" Unicode="false" Nullable="false" />
-    <NavigationProperty Name="Ciudads" Relationship="Self.FK__Ciudad__idEstado__4E88ABD4" FromRole="Estado" ToRole="Ciudad" />
+    <Property Name="idPais" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="Ciudads" Relationship="Self.FK__Ciudad__idEstado__5FB337D6" FromRole="Estado" ToRole="Ciudad" />
+    <NavigationProperty Name="Pai" Relationship="Self.FK__Estado__idPais__6FE99F9F" FromRole="Estado" ToRole="Pais" />
   </EntityType>
   <EntityType Name="Fotos_Anuncio">
     <Key>
       <PropertyRef Name="id" />
     </Key>
-    <Property Name="id" Type="Int32" Nullable="false" />
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
     <Property Name="ruta" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
     <Property Name="idAnuncio" Type="Int32" Nullable="false" />
     <Property Name="principal" Type="Boolean" Nullable="false" />
-    <NavigationProperty Name="Anuncio" Relationship="Self.FK__Fotos_Anu__idAnu__4F7CD00D" FromRole="Fotos_Anuncio" ToRole="Anuncio" />
+    <NavigationProperty Name="Anuncio" Relationship="Self.FK__Fotos_Anu__idAnu__628FA481" FromRole="Fotos_Anuncio" ToRole="Anuncio" />
   </EntityType>
   <EntityType Name="Metrica">
     <Key>
       <PropertyRef Name="id" />
     </Key>
-    <Property Name="id" Type="Int32" Nullable="false" />
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
     <Property Name="visitas" Type="Int32" Nullable="false" />
     <Property Name="fecha" Type="DateTime" Nullable="false" Precision="0" />
   </EntityType>
@@ -107,7 +133,7 @@
     <Key>
       <PropertyRef Name="id" />
     </Key>
-    <Property Name="id" Type="Int32" Nullable="false" />
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
     <Property Name="idUsuario" Type="Int32" Nullable="false" />
     <Property Name="tipoTarjeta" Type="Int32" Nullable="false" />
     <Property Name="digitosTarjeta" Type="Int32" Nullable="false" />
@@ -115,78 +141,85 @@
     <Property Name="fecha" Type="DateTime" Nullable="false" Precision="0" />
     <Property Name="tipo" Type="Int32" Nullable="false" />
     <Property Name="Referencia" Type="String" MaxLength="40" FixedLength="false" Unicode="false" Nullable="false" />
-    <NavigationProperty Name="Usuario" Relationship="Self.FK__Pago__idUsuario__5BE2A6F2" FromRole="Pago" ToRole="Usuario" />
-    <NavigationProperty Name="Pago_Concepto" Relationship="Self.FK__Pago_Conc__idPag__5CD6CB2B" FromRole="Pago" ToRole="Pago_Concepto" />
+    <NavigationProperty Name="Usuario" Relationship="Self.FK__Pago__idUsuario__6383C8BA" FromRole="Pago" ToRole="Usuario" />
+    <NavigationProperty Name="Pago_Concepto" Relationship="Self.FK__Pago_Conc__idPag__6477ECF3" FromRole="Pago" ToRole="Pago_Concepto" />
   </EntityType>
   <EntityType Name="Pago_Concepto">
     <Key>
       <PropertyRef Name="id" />
     </Key>
-    <Property Name="id" Type="Int32" Nullable="false" />
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
     <Property Name="idPago" Type="Int32" Nullable="false" />
-    <Property Name="idPlazo" Type="Int32" />
+    <Property Name="idPaquete" Type="Int32" />
     <Property Name="idBeneficio" Type="Int32" />
     <Property Name="tipo" Type="Boolean" Nullable="false" />
-    <NavigationProperty Name="Beneficio" Relationship="Self.FK__Pago_Conc__idBen__5441852A" FromRole="Pago_Concepto" ToRole="Beneficio" />
-    <NavigationProperty Name="Pago" Relationship="Self.FK__Pago_Conc__idPag__5CD6CB2B" FromRole="Pago_Concepto" ToRole="Pago" />
-    <NavigationProperty Name="Plazo" Relationship="Self.FK__Pago_Conc__idPla__534D60F1" FromRole="Pago_Concepto" ToRole="Plazo" />
+    <NavigationProperty Name="Beneficio" Relationship="Self.FK__Pago_Conc__idBen__66603565" FromRole="Pago_Concepto" ToRole="Beneficio" />
+    <NavigationProperty Name="Pago" Relationship="Self.FK__Pago_Conc__idPag__6477ECF3" FromRole="Pago_Concepto" ToRole="Pago" />
+    <NavigationProperty Name="Paquete" Relationship="Self.FK__Pago_Conc__idPaq__656C112C" FromRole="Pago_Concepto" ToRole="Paquete" />
   </EntityType>
-  <EntityType Name="Plazo">
+  <EntityType Name="Pai">
     <Key>
       <PropertyRef Name="id" />
     </Key>
-    <Property Name="id" Type="Int32" Nullable="false" />
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="nombre" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <NavigationProperty Name="Estadoes" Relationship="Self.FK__Estado__idPais__6FE99F9F" FromRole="Pais" ToRole="Estado" />
+  </EntityType>
+  <EntityType Name="Paquete">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="nombre" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
     <Property Name="meses" Type="Int32" Nullable="false" />
+    <Property Name="numeroAnuncios" Type="Int32" Nullable="false" />
     <Property Name="precio" Type="Double" Nullable="false" />
-    <Property Name="porcentajeAhorro" Type="Double" Nullable="false" />
-    <Property Name="activo" Type="Boolean" Nullable="false" />
-    <NavigationProperty Name="Anuncio_Plazo" Relationship="Self.FK__Anuncio_P__idPla__4BAC3F29" FromRole="Plazo" ToRole="Anuncio_Plazo" />
-    <NavigationProperty Name="Pago_Concepto" Relationship="Self.FK__Pago_Conc__idPla__534D60F1" FromRole="Plazo" ToRole="Pago_Concepto" />
-  </EntityType>
-  <EntityType Name="PlazoBase">
-    <Key>
-      <PropertyRef Name="id" />
-    </Key>
-    <Property Name="id" Type="Int32" Nullable="false" />
-    <Property Name="precioBase" Type="Double" Nullable="false" />
+    <Property Name="descripcion" Type="String" MaxLength="200" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="paqueteBase" Type="Boolean" Nullable="false" />
     <Property Name="fechaModificacion" Type="DateTime" Nullable="false" Precision="0" />
     <Property Name="activo" Type="Boolean" Nullable="false" />
+    <NavigationProperty Name="Anuncio_Paquete" Relationship="Self.FK__Anuncio_P__idPaq__5EBF139D" FromRole="Paquete" ToRole="Anuncio_Paquete" />
+    <NavigationProperty Name="Conekta_Paquete" Relationship="Self.FK__Conekta_P__idPaq__60A75C0F" FromRole="Paquete" ToRole="Conekta_Paquete" />
+    <NavigationProperty Name="Pago_Concepto" Relationship="Self.FK__Pago_Conc__idPaq__656C112C" FromRole="Paquete" ToRole="Pago_Concepto" />
   </EntityType>
   <EntityType Name="Subcategoria">
     <Key>
       <PropertyRef Name="id" />
     </Key>
-    <Property Name="id" Type="Int32" Nullable="false" />
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
     <Property Name="nombre" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
     <Property Name="activo" Type="Boolean" Nullable="false" />
     <Property Name="idCategoria" Type="Int32" />
-    <NavigationProperty Name="Anuncios" Relationship="Self.FK__Anuncio__idSubca__45F365D3" FromRole="Subcategoria" ToRole="Anuncio" />
-    <NavigationProperty Name="Categoria" Relationship="Self.FK__Subcatego__idCat__5629CD9C" FromRole="Subcategoria" ToRole="Categoria" />
+    <NavigationProperty Name="Anuncios" Relationship="Self.FK__Anuncio__idSubca__59FA5E80" FromRole="Subcategoria" ToRole="Anuncio" />
+    <NavigationProperty Name="Categoria" Relationship="Self.FK__Subcatego__idCat__6754599E" FromRole="Subcategoria" ToRole="Categoria" />
   </EntityType>
   <EntityType Name="Usuario">
     <Key>
       <PropertyRef Name="id" />
     </Key>
-    <Property Name="id" Type="Int32" Nullable="false" />
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
     <Property Name="nombre" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
     <Property Name="apellidos" Type="String" MaxLength="80" FixedLength="false" Unicode="false" Nullable="false" />
     <Property Name="telefono" Type="Int32" Nullable="false" />
     <Property Name="email" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
     <Property Name="password" Type="String" MaxLength="40" FixedLength="false" Unicode="false" Nullable="false" />
     <Property Name="confirmaEmail" Type="Boolean" Nullable="false" />
-    <Property Name="token" Type="String" MaxLength="40" FixedLength="false" Unicode="false" Nullable="false" />
-    <NavigationProperty Name="Anuncios" Relationship="Self.FK__Anuncio__idUsuar__44FF419A" FromRole="Usuario" ToRole="Anuncio" />
-    <NavigationProperty Name="Pagoes" Relationship="Self.FK__Pago__idUsuario__5BE2A6F2" FromRole="Usuario" ToRole="Pago" />
-    <NavigationProperty Name="Usuario_Tarjeta" Relationship="Self.FK__Usuario_T__idUsu__5DCAEF64" FromRole="Usuario" ToRole="Usuario_Tarjeta" />
+    <Property Name="tokenEmail" Type="String" MaxLength="40" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="tokenSesion" Type="String" MaxLength="40" FixedLength="false" Unicode="false" Nullable="false" />
+    <NavigationProperty Name="Anuncios" Relationship="Self.FK__Anuncio__idUsuar__59063A47" FromRole="Usuario" ToRole="Anuncio" />
+    <NavigationProperty Name="Conekta_Paquete" Relationship="Self.FK__Conekta_P__idUsu__619B8048" FromRole="Usuario" ToRole="Conekta_Paquete" />
+    <NavigationProperty Name="Pagoes" Relationship="Self.FK__Pago__idUsuario__6383C8BA" FromRole="Usuario" ToRole="Pago" />
+    <NavigationProperty Name="Usuario_Tarjeta" Relationship="Self.FK__Usuario_T__idUsu__68487DD7" FromRole="Usuario" ToRole="Usuario_Tarjeta" />
   </EntityType>
   <EntityType Name="Usuario_Administrador">
     <Key>
       <PropertyRef Name="id" />
     </Key>
-    <Property Name="id" Type="Int32" Nullable="false" />
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
     <Property Name="nombre" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
     <Property Name="email" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
-    <Property Name="token" Type="String" MaxLength="40" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="tokenEmail" Type="String" MaxLength="40" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="tokenSesion" Type="String" MaxLength="40" FixedLength="false" Unicode="false" Nullable="false" />
     <Property Name="confirmaEmail" Type="Boolean" Nullable="false" />
     <Property Name="password" Type="String" MaxLength="40" FixedLength="false" Unicode="false" Nullable="false" />
     <Property Name="activo" Type="Boolean" Nullable="false" />
@@ -195,25 +228,25 @@
     <Key>
       <PropertyRef Name="id" />
     </Key>
-    <Property Name="id" Type="Int32" Nullable="false" />
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
     <Property Name="tipoTarjeta" Type="Int32" Nullable="false" />
     <Property Name="digitosTarjeta" Type="Int32" Nullable="false" />
     <Property Name="fechaVencimiento" Type="DateTime" Nullable="false" Precision="0" />
     <Property Name="tokenTarjeta" Type="String" MaxLength="40" FixedLength="false" Unicode="false" Nullable="false" />
     <Property Name="idUsuario" Type="Int32" Nullable="false" />
     <Property Name="activo" Type="Boolean" Nullable="false" />
-    <NavigationProperty Name="Usuario" Relationship="Self.FK__Usuario_T__idUsu__5DCAEF64" FromRole="Usuario_Tarjeta" ToRole="Usuario" />
+    <NavigationProperty Name="Usuario" Relationship="Self.FK__Usuario_T__idUsu__68487DD7" FromRole="Usuario_Tarjeta" ToRole="Usuario" />
   </EntityType>
   <EntityType Name="Videos_Anuncio">
     <Key>
       <PropertyRef Name="id" />
     </Key>
-    <Property Name="id" Type="Int32" Nullable="false" />
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
     <Property Name="ruta" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
     <Property Name="idAnuncio" Type="Int32" Nullable="false" />
-    <NavigationProperty Name="Anuncio" Relationship="Self.FK__Videos_An__idAnu__5EBF139D" FromRole="Videos_Anuncio" ToRole="Anuncio" />
+    <NavigationProperty Name="Anuncio" Relationship="Self.FK__Videos_An__idAnu__693CA210" FromRole="Videos_Anuncio" ToRole="Anuncio" />
   </EntityType>
-  <Association Name="FK__Anuncio__idCiuda__47DBAE45">
+  <Association Name="FK__Anuncio__idCiuda__5AEE82B9">
     <End Role="Ciudad" Type="Self.Ciudad" Multiplicity="0..1" />
     <End Role="Anuncio" Type="Self.Anuncio" Multiplicity="*" />
     <ReferentialConstraint>
@@ -225,7 +258,7 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
-  <Association Name="FK__Anuncio__idSubca__45F365D3">
+  <Association Name="FK__Anuncio__idSubca__59FA5E80">
     <End Role="Subcategoria" Type="Self.Subcategoria" Multiplicity="0..1" />
     <End Role="Anuncio" Type="Self.Anuncio" Multiplicity="*" />
     <ReferentialConstraint>
@@ -237,7 +270,7 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
-  <Association Name="FK__Anuncio__idUsuar__44FF419A">
+  <Association Name="FK__Anuncio__idUsuar__59063A47">
     <End Role="Usuario" Type="Self.Usuario" Multiplicity="0..1" />
     <End Role="Anuncio" Type="Self.Anuncio" Multiplicity="*" />
     <ReferentialConstraint>
@@ -249,7 +282,7 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
-  <Association Name="FK__Anuncio_B__idAnu__48CFD27E">
+  <Association Name="FK__Anuncio_B__idAnu__5BE2A6F2">
     <End Role="Anuncio" Type="Self.Anuncio" Multiplicity="1">
       <OnDelete Action="Cascade" />
     </End>
@@ -263,21 +296,21 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
-  <Association Name="FK__Anuncio_P__idAnu__4AB81AF0">
+  <Association Name="FK__Anuncio_P__idAnu__5DCAEF64">
     <End Role="Anuncio" Type="Self.Anuncio" Multiplicity="1">
       <OnDelete Action="Cascade" />
     </End>
-    <End Role="Anuncio_Plazo" Type="Self.Anuncio_Plazo" Multiplicity="*" />
+    <End Role="Anuncio_Paquete" Type="Self.Anuncio_Paquete" Multiplicity="*" />
     <ReferentialConstraint>
       <Principal Role="Anuncio">
         <PropertyRef Name="id" />
       </Principal>
-      <Dependent Role="Anuncio_Plazo">
+      <Dependent Role="Anuncio_Paquete">
         <PropertyRef Name="idAnuncio" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
-  <Association Name="FK__Fotos_Anu__idAnu__4F7CD00D">
+  <Association Name="FK__Fotos_Anu__idAnu__628FA481">
     <End Role="Anuncio" Type="Self.Anuncio" Multiplicity="1">
       <OnDelete Action="Cascade" />
     </End>
@@ -291,7 +324,7 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
-  <Association Name="FK__Videos_An__idAnu__5EBF139D">
+  <Association Name="FK__Videos_An__idAnu__693CA210">
     <End Role="Anuncio" Type="Self.Anuncio" Multiplicity="1">
       <OnDelete Action="Cascade" />
     </End>
@@ -305,7 +338,7 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
-  <Association Name="FK__Anuncio_B__idBen__49C3F6B7">
+  <Association Name="FK__Anuncio_B__idBen__5CD6CB2B">
     <End Role="Beneficio" Type="Self.Beneficio" Multiplicity="1" />
     <End Role="Anuncio_Beneficio" Type="Self.Anuncio_Beneficio" Multiplicity="*" />
     <ReferentialConstraint>
@@ -317,19 +350,19 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
-  <Association Name="FK__Anuncio_P__idPla__4BAC3F29">
-    <End Role="Plazo" Type="Self.Plazo" Multiplicity="1" />
-    <End Role="Anuncio_Plazo" Type="Self.Anuncio_Plazo" Multiplicity="*" />
+  <Association Name="FK__Anuncio_P__idPaq__5EBF139D">
+    <End Role="Paquete" Type="Self.Paquete" Multiplicity="1" />
+    <End Role="Anuncio_Paquete" Type="Self.Anuncio_Paquete" Multiplicity="*" />
     <ReferentialConstraint>
-      <Principal Role="Plazo">
+      <Principal Role="Paquete">
         <PropertyRef Name="id" />
       </Principal>
-      <Dependent Role="Anuncio_Plazo">
-        <PropertyRef Name="idPlazo" />
+      <Dependent Role="Anuncio_Paquete">
+        <PropertyRef Name="idPaquete" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
-  <Association Name="FK__Pago_Conc__idBen__5441852A">
+  <Association Name="FK__Pago_Conc__idBen__66603565">
     <End Role="Beneficio" Type="Self.Beneficio" Multiplicity="0..1" />
     <End Role="Pago_Concepto" Type="Self.Pago_Concepto" Multiplicity="*" />
     <ReferentialConstraint>
@@ -341,7 +374,7 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
-  <Association Name="FK__Subcatego__idCat__5629CD9C">
+  <Association Name="FK__Subcatego__idCat__6754599E">
     <End Role="Categoria" Type="Self.Categoria" Multiplicity="0..1">
       <OnDelete Action="Cascade" />
     </End>
@@ -355,7 +388,7 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
-  <Association Name="FK__Ciudad__idEstado__4E88ABD4">
+  <Association Name="FK__Ciudad__idEstado__5FB337D6">
     <End Role="Estado" Type="Self.Estado" Multiplicity="1">
       <OnDelete Action="Cascade" />
     </End>
@@ -369,7 +402,49 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
-  <Association Name="FK__Pago__idUsuario__5BE2A6F2">
+  <Association Name="FK__Conekta_P__idPaq__60A75C0F">
+    <End Role="Paquete" Type="Self.Paquete" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="Conekta_Paquete" Type="Self.Conekta_Paquete" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Paquete">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="Conekta_Paquete">
+        <PropertyRef Name="idPaquete" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Conekta_P__idUsu__619B8048">
+    <End Role="Usuario" Type="Self.Usuario" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="Conekta_Paquete" Type="Self.Conekta_Paquete" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Usuario">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="Conekta_Paquete">
+        <PropertyRef Name="idUsuario" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Estado__idPais__6FE99F9F">
+    <End Role="Pais" Type="Self.Pai" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="Estado" Type="Self.Estado" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Pais">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="Estado">
+        <PropertyRef Name="idPais" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Pago__idUsuario__6383C8BA">
     <End Role="Usuario" Type="Self.Usuario" Multiplicity="1" />
     <End Role="Pago" Type="Self.Pago" Multiplicity="*" />
     <ReferentialConstraint>
@@ -381,7 +456,7 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
-  <Association Name="FK__Pago_Conc__idPag__5CD6CB2B">
+  <Association Name="FK__Pago_Conc__idPag__6477ECF3">
     <End Role="Pago" Type="Self.Pago" Multiplicity="1">
       <OnDelete Action="Cascade" />
     </End>
@@ -395,19 +470,19 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
-  <Association Name="FK__Pago_Conc__idPla__534D60F1">
-    <End Role="Plazo" Type="Self.Plazo" Multiplicity="0..1" />
+  <Association Name="FK__Pago_Conc__idPaq__656C112C">
+    <End Role="Paquete" Type="Self.Paquete" Multiplicity="0..1" />
     <End Role="Pago_Concepto" Type="Self.Pago_Concepto" Multiplicity="*" />
     <ReferentialConstraint>
-      <Principal Role="Plazo">
+      <Principal Role="Paquete">
         <PropertyRef Name="id" />
       </Principal>
       <Dependent Role="Pago_Concepto">
-        <PropertyRef Name="idPlazo" />
+        <PropertyRef Name="idPaquete" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
-  <Association Name="FK__Usuario_T__idUsu__5DCAEF64">
+  <Association Name="FK__Usuario_T__idUsu__68487DD7">
     <End Role="Usuario" Type="Self.Usuario" Multiplicity="1">
       <OnDelete Action="Cascade" />
     </End>
@@ -424,83 +499,97 @@
   <EntityContainer Name="VendeAgroEntities" annotation:LazyLoadingEnabled="true">
     <EntitySet Name="Anuncios" EntityType="Self.Anuncio" />
     <EntitySet Name="Anuncio_Beneficio" EntityType="Self.Anuncio_Beneficio" />
-    <EntitySet Name="Anuncio_Plazo" EntityType="Self.Anuncio_Plazo" />
+    <EntitySet Name="Anuncio_Paquete" EntityType="Self.Anuncio_Paquete" />
+    <EntitySet Name="Banners" EntityType="Self.Banner" />
     <EntitySet Name="Beneficios" EntityType="Self.Beneficio" />
     <EntitySet Name="Categorias" EntityType="Self.Categoria" />
     <EntitySet Name="Ciudads" EntityType="Self.Ciudad" />
+    <EntitySet Name="Conekta_Paquete" EntityType="Self.Conekta_Paquete" />
     <EntitySet Name="Estadoes" EntityType="Self.Estado" />
     <EntitySet Name="Fotos_Anuncio" EntityType="Self.Fotos_Anuncio" />
     <EntitySet Name="Metricas" EntityType="Self.Metrica" />
     <EntitySet Name="Pagoes" EntityType="Self.Pago" />
     <EntitySet Name="Pago_Concepto" EntityType="Self.Pago_Concepto" />
-    <EntitySet Name="Plazoes" EntityType="Self.Plazo" />
-    <EntitySet Name="PlazoBases" EntityType="Self.PlazoBase" />
+    <EntitySet Name="Pais" EntityType="Self.Pai" />
+    <EntitySet Name="Paquetes" EntityType="Self.Paquete" />
     <EntitySet Name="Subcategorias" EntityType="Self.Subcategoria" />
     <EntitySet Name="Usuarios" EntityType="Self.Usuario" />
     <EntitySet Name="Usuario_Administrador" EntityType="Self.Usuario_Administrador" />
     <EntitySet Name="Usuario_Tarjeta" EntityType="Self.Usuario_Tarjeta" />
     <EntitySet Name="Videos_Anuncio" EntityType="Self.Videos_Anuncio" />
-    <AssociationSet Name="FK__Anuncio__idCiuda__47DBAE45" Association="Self.FK__Anuncio__idCiuda__47DBAE45">
+    <AssociationSet Name="FK__Anuncio__idCiuda__5AEE82B9" Association="Self.FK__Anuncio__idCiuda__5AEE82B9">
       <End Role="Ciudad" EntitySet="Ciudads" />
       <End Role="Anuncio" EntitySet="Anuncios" />
     </AssociationSet>
-    <AssociationSet Name="FK__Anuncio__idSubca__45F365D3" Association="Self.FK__Anuncio__idSubca__45F365D3">
+    <AssociationSet Name="FK__Anuncio__idSubca__59FA5E80" Association="Self.FK__Anuncio__idSubca__59FA5E80">
       <End Role="Subcategoria" EntitySet="Subcategorias" />
       <End Role="Anuncio" EntitySet="Anuncios" />
     </AssociationSet>
-    <AssociationSet Name="FK__Anuncio__idUsuar__44FF419A" Association="Self.FK__Anuncio__idUsuar__44FF419A">
+    <AssociationSet Name="FK__Anuncio__idUsuar__59063A47" Association="Self.FK__Anuncio__idUsuar__59063A47">
       <End Role="Usuario" EntitySet="Usuarios" />
       <End Role="Anuncio" EntitySet="Anuncios" />
     </AssociationSet>
-    <AssociationSet Name="FK__Anuncio_B__idAnu__48CFD27E" Association="Self.FK__Anuncio_B__idAnu__48CFD27E">
+    <AssociationSet Name="FK__Anuncio_B__idAnu__5BE2A6F2" Association="Self.FK__Anuncio_B__idAnu__5BE2A6F2">
       <End Role="Anuncio" EntitySet="Anuncios" />
       <End Role="Anuncio_Beneficio" EntitySet="Anuncio_Beneficio" />
     </AssociationSet>
-    <AssociationSet Name="FK__Anuncio_P__idAnu__4AB81AF0" Association="Self.FK__Anuncio_P__idAnu__4AB81AF0">
+    <AssociationSet Name="FK__Anuncio_P__idAnu__5DCAEF64" Association="Self.FK__Anuncio_P__idAnu__5DCAEF64">
       <End Role="Anuncio" EntitySet="Anuncios" />
-      <End Role="Anuncio_Plazo" EntitySet="Anuncio_Plazo" />
+      <End Role="Anuncio_Paquete" EntitySet="Anuncio_Paquete" />
     </AssociationSet>
-    <AssociationSet Name="FK__Fotos_Anu__idAnu__4F7CD00D" Association="Self.FK__Fotos_Anu__idAnu__4F7CD00D">
+    <AssociationSet Name="FK__Fotos_Anu__idAnu__628FA481" Association="Self.FK__Fotos_Anu__idAnu__628FA481">
       <End Role="Anuncio" EntitySet="Anuncios" />
       <End Role="Fotos_Anuncio" EntitySet="Fotos_Anuncio" />
     </AssociationSet>
-    <AssociationSet Name="FK__Videos_An__idAnu__5EBF139D" Association="Self.FK__Videos_An__idAnu__5EBF139D">
+    <AssociationSet Name="FK__Videos_An__idAnu__693CA210" Association="Self.FK__Videos_An__idAnu__693CA210">
       <End Role="Anuncio" EntitySet="Anuncios" />
       <End Role="Videos_Anuncio" EntitySet="Videos_Anuncio" />
     </AssociationSet>
-    <AssociationSet Name="FK__Anuncio_B__idBen__49C3F6B7" Association="Self.FK__Anuncio_B__idBen__49C3F6B7">
+    <AssociationSet Name="FK__Anuncio_B__idBen__5CD6CB2B" Association="Self.FK__Anuncio_B__idBen__5CD6CB2B">
       <End Role="Beneficio" EntitySet="Beneficios" />
       <End Role="Anuncio_Beneficio" EntitySet="Anuncio_Beneficio" />
     </AssociationSet>
-    <AssociationSet Name="FK__Anuncio_P__idPla__4BAC3F29" Association="Self.FK__Anuncio_P__idPla__4BAC3F29">
-      <End Role="Plazo" EntitySet="Plazoes" />
-      <End Role="Anuncio_Plazo" EntitySet="Anuncio_Plazo" />
+    <AssociationSet Name="FK__Anuncio_P__idPaq__5EBF139D" Association="Self.FK__Anuncio_P__idPaq__5EBF139D">
+      <End Role="Paquete" EntitySet="Paquetes" />
+      <End Role="Anuncio_Paquete" EntitySet="Anuncio_Paquete" />
     </AssociationSet>
-    <AssociationSet Name="FK__Pago_Conc__idBen__5441852A" Association="Self.FK__Pago_Conc__idBen__5441852A">
+    <AssociationSet Name="FK__Pago_Conc__idBen__66603565" Association="Self.FK__Pago_Conc__idBen__66603565">
       <End Role="Beneficio" EntitySet="Beneficios" />
       <End Role="Pago_Concepto" EntitySet="Pago_Concepto" />
     </AssociationSet>
-    <AssociationSet Name="FK__Subcatego__idCat__5629CD9C" Association="Self.FK__Subcatego__idCat__5629CD9C">
+    <AssociationSet Name="FK__Subcatego__idCat__6754599E" Association="Self.FK__Subcatego__idCat__6754599E">
       <End Role="Categoria" EntitySet="Categorias" />
       <End Role="Subcategoria" EntitySet="Subcategorias" />
     </AssociationSet>
-    <AssociationSet Name="FK__Ciudad__idEstado__4E88ABD4" Association="Self.FK__Ciudad__idEstado__4E88ABD4">
+    <AssociationSet Name="FK__Ciudad__idEstado__5FB337D6" Association="Self.FK__Ciudad__idEstado__5FB337D6">
       <End Role="Estado" EntitySet="Estadoes" />
       <End Role="Ciudad" EntitySet="Ciudads" />
     </AssociationSet>
-    <AssociationSet Name="FK__Pago__idUsuario__5BE2A6F2" Association="Self.FK__Pago__idUsuario__5BE2A6F2">
+    <AssociationSet Name="FK__Conekta_P__idPaq__60A75C0F" Association="Self.FK__Conekta_P__idPaq__60A75C0F">
+      <End Role="Paquete" EntitySet="Paquetes" />
+      <End Role="Conekta_Paquete" EntitySet="Conekta_Paquete" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Conekta_P__idUsu__619B8048" Association="Self.FK__Conekta_P__idUsu__619B8048">
+      <End Role="Usuario" EntitySet="Usuarios" />
+      <End Role="Conekta_Paquete" EntitySet="Conekta_Paquete" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Estado__idPais__6FE99F9F" Association="Self.FK__Estado__idPais__6FE99F9F">
+      <End Role="Pais" EntitySet="Pais" />
+      <End Role="Estado" EntitySet="Estadoes" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Pago__idUsuario__6383C8BA" Association="Self.FK__Pago__idUsuario__6383C8BA">
       <End Role="Usuario" EntitySet="Usuarios" />
       <End Role="Pago" EntitySet="Pagoes" />
     </AssociationSet>
-    <AssociationSet Name="FK__Pago_Conc__idPag__5CD6CB2B" Association="Self.FK__Pago_Conc__idPag__5CD6CB2B">
+    <AssociationSet Name="FK__Pago_Conc__idPag__6477ECF3" Association="Self.FK__Pago_Conc__idPag__6477ECF3">
       <End Role="Pago" EntitySet="Pagoes" />
       <End Role="Pago_Concepto" EntitySet="Pago_Concepto" />
     </AssociationSet>
-    <AssociationSet Name="FK__Pago_Conc__idPla__534D60F1" Association="Self.FK__Pago_Conc__idPla__534D60F1">
-      <End Role="Plazo" EntitySet="Plazoes" />
+    <AssociationSet Name="FK__Pago_Conc__idPaq__656C112C" Association="Self.FK__Pago_Conc__idPaq__656C112C">
+      <End Role="Paquete" EntitySet="Paquetes" />
       <End Role="Pago_Concepto" EntitySet="Pago_Concepto" />
     </AssociationSet>
-    <AssociationSet Name="FK__Usuario_T__idUsu__5DCAEF64" Association="Self.FK__Usuario_T__idUsu__5DCAEF64">
+    <AssociationSet Name="FK__Usuario_T__idUsu__68487DD7" Association="Self.FK__Usuario_T__idUsu__68487DD7">
       <End Role="Usuario" EntitySet="Usuarios" />
       <End Role="Usuario_Tarjeta" EntitySet="Usuario_Tarjeta" />
     </AssociationSet>

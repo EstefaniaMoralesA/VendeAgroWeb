@@ -310,9 +310,13 @@
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
+    <Content Include="img\banner.png" />
+    <Content Include="img\bannerLat.jpg" />
     <Content Include="img\caballo.jpg" />
+    <Content Include="img\caballoespanol.jpg" />
     <Content Include="img\horses.jpg" />
     <Content Include="img\logo.png" />
+    <Content Include="img\yegua.jpg" />
     <Content Include="Models\DatabaseModel.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <DependentUpon>DatabaseModel.edmx</DependentUpon>
@@ -392,6 +396,10 @@
     <Content Include="Views\Shared\_MenuPagina.cshtml" />
     <Content Include="Views\Shared\_MenuMovilPagina.cshtml" />
     <Content Include="Views\Shared\_MenuPaginaTabs.cshtml" />
+    <Content Include="Views\Shared\_BannerCentral.cshtml" />
+    <Content Include="Views\Shared\_Anuncios.cshtml" />
+    <Content Include="Views\Shared\_BannerLateral.cshtml" />
+    <Content Include="Views\Shared\_AdministradorLayout.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
