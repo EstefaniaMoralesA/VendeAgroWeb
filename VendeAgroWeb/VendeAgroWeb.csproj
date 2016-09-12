@@ -215,6 +215,7 @@
     <Compile Include="Controllers\Administrador\AdministradorController.cs" />
     <Compile Include="Controllers\Pagina\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
+    <Compile Include="Controllers\Portal\PortalController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -283,6 +284,7 @@
     <Compile Include="Models\Paquete.cs">
       <DependentUpon>DatabaseModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\Portal\PortalViewModels.cs" />
     <Compile Include="Models\Subcategoria.cs">
       <DependentUpon>DatabaseModel.tt</DependentUpon>
     </Compile>
@@ -400,6 +402,7 @@
     <Content Include="Views\Shared\_Anuncios.cshtml" />
     <Content Include="Views\Shared\_BannerLateral.cshtml" />
     <Content Include="Views\Shared\_AdministradorLayout.cshtml" />
+    <Content Include="Views\Portal\Registro.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

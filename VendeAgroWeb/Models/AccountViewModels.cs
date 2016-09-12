@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace VendeAgroWeb.Models
@@ -10,7 +11,7 @@ namespace VendeAgroWeb.Models
         public string Email { get; set; }
     }
 
-    public class ExternalLoginListViewModel
+    public class ExternalLoginListViewModels
     {
         public string ReturnUrl { get; set; }
     }

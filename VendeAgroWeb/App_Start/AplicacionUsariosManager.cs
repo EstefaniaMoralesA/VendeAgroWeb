@@ -56,6 +56,49 @@ namespace VendeAgroWeb
             
         }
 
+        public async Task<RegistroStatus> RegistroUsuarioAsync(Models.Portal.RegistroViewModel model)
+        {
+            HttpResponse response = HttpContext.Current.Response;
+            return await Task.Run(() =>
+            {
+                using (var _dbContext = new VendeAgroEntities())
+                {
+                    var usuario = _dbContext.Usuarios.Where(u => u.email == model.Email).FirstOrDefault();
+                    if (usuario != null)
+                    {
+                        return RegistroStatus.MailOcupado;
+                    }
+
+                    usuario = _dbContext.Usuarios.Where(u => u.telefono == model.Celular).FirstOrDefault();
+
+                    if (usuario != null)
+                    {
+                        return RegistroStatus.TelefonoOcupado;
+                    }
+
+                    _dbContext.Usuarios.Add(new Usuario
+                    {
+                        
+                        nombre = model.Nombre,
+                        apellidos = model.Apellidos,
+                        telefono = model.Celular,
+                        password = Hash(model.Password),
+                        email = model.Email,
+                        confirmaEmail = true,
+                        tokenSesion = " ",
+                        tokenEmail = " ",
+
+                    });
+                    _dbContext.SaveChanges();
+                    this._usuarioAdministradorActual = new AdministradorUsuario(1, model.Email, model.Nombre + model.Apellidos);
+                    
+                    return RegistroStatus.Exitoso;
+                }
+
+            });
+
+        }
+
         public async Task<LoginStatus> VerificarAdminSesionAsync()
         {
             if (_usuarioAdministradorActual != null) return LoginStatus.Exitoso;
@@ -132,6 +175,14 @@ namespace VendeAgroWeb
     {
         Exitoso,
         ConfirmacionMail,
+        Incorrecto
+    }
+
+    public enum RegistroStatus
+    {
+        Exitoso,
+        MailOcupado,
+        TelefonoOcupado,
         Incorrecto
     }
 }
