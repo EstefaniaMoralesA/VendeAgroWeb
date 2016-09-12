@@ -394,7 +394,6 @@ a {
 .detalles {
   color: white;
   background-color: #04612d;
-  float: right;
 }
 
     .detalles:hover {
@@ -404,6 +403,9 @@ a {
 
 .preguntar {
     margin-top: 10px;
-    float: right;
     font-size: 14px;
+}
+
+.acciones-container {
+    float: right;
 }

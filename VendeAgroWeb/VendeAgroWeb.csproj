@@ -316,6 +316,9 @@
     <Content Include="img\caballoespanol.jpg" />
     <Content Include="img\horses.jpg" />
     <Content Include="img\logo.png" />
+    <Content Include="img\logo2.png" />
+    <Content Include="img\logo200x200.png" />
+    <Content Include="img\VendeAgroHoriz.png" />
     <Content Include="img\yegua.jpg" />
     <Content Include="Models\DatabaseModel.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
@@ -354,6 +357,7 @@
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
     <Content Include="Scripts\_references.js" />
+    <Content Include="Views\Shared\VendeAgro.png" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
