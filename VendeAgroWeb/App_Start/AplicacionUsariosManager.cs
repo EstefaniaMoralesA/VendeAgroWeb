@@ -12,12 +12,21 @@ namespace VendeAgroWeb
     public class AplicacionUsuariosManager
     {
         private AdministradorUsuario _usuarioAdministradorActual;
+        private PortalUsuario _usuarioPortalActual;
 
         public AdministradorUsuario UsuarioAdministradorActual
         {
             get
             {
                 return _usuarioAdministradorActual;
+            }
+        }
+
+        public PortalUsuario UsuarioPortalActual
+        {
+            get
+            {
+                return _usuarioPortalActual;
             }
         }
 
@@ -46,7 +55,7 @@ namespace VendeAgroWeb
                     }
 
                     _usuarioAdministradorActual = new AdministradorUsuario(usuario.id, usuario.email, usuario.nombre);
-                    usuario.tokenSesion = getSessionToken();
+                    usuario.tokenSesion = getToken();
                     setCookie("AdminVendeAgro", usuario.tokenSesion, response);
                     _dbContext.SaveChanges();
                     return LoginStatus.Exitoso;
@@ -76,22 +85,26 @@ namespace VendeAgroWeb
                         return RegistroStatus.TelefonoOcupado;
                     }
 
+                    string tokenSesion = getToken();
+
                     _dbContext.Usuarios.Add(new Usuario
                     {
-                        
                         nombre = model.Nombre,
                         apellidos = model.Apellidos,
                         telefono = model.Celular,
                         password = Hash(model.Password),
                         email = model.Email,
                         confirmaEmail = true,
-                        tokenSesion = " ",
-                        tokenEmail = " ",
+                        tokenSesion = tokenSesion,
+                        tokenEmail = getToken(),
 
                     });
+
                     _dbContext.SaveChanges();
-                    this._usuarioAdministradorActual = new AdministradorUsuario(1, model.Email, model.Nombre + model.Apellidos);
-                    
+                    setCookie("VendeAgroUser", tokenSesion, response);
+
+                    var usuarioRegistrado = _dbContext.Usuarios.Where(u => u.email == model.Email).FirstOrDefault();
+                    _usuarioPortalActual = new PortalUsuario(usuarioRegistrado.id, model.Email, model.Nombre, model.Apellidos, model.Celular.ToString());
                     return RegistroStatus.Exitoso;
                 }
 
@@ -134,7 +147,7 @@ namespace VendeAgroWeb
             });
         }
 
-        private string getSessionToken()
+        private string getToken()
         {
             StringBuilder sb = new StringBuilder();
             Random random = new Random();

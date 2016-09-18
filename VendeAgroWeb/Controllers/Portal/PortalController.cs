@@ -43,7 +43,7 @@ namespace VendeAgroWeb.Controllers.Administrador
             switch (resultado)
             {
                 case RegistroStatus.Exitoso:
-                    return RedirectToAction("Index", "Administrador");
+                    return RedirectToAction("Index", "Home");
                 case RegistroStatus.MailOcupado:
                     ModelState.AddModelError("", "El email ya esta registrado.");
                     return View(model);
