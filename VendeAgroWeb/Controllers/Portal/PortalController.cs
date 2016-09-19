@@ -89,6 +89,15 @@ namespace VendeAgroWeb.Controllers.Administrador
 
         }
 
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult LogOut()
+        {
+            Startup.GetAplicacionUsuariosManager().LogoutPortal();
+            return RedirectToAction("Index", "Home");
+        }
+        
+
         // GET: Usuario_Administrador/Details/5
         public async Task<ActionResult> Details(int? id)
         {

@@ -1,13 +1,13 @@
 ﻿@using Microsoft.AspNet.Identity
-@if (Request.IsAuthenticated)
+@if (Startup.GetAplicacionUsuariosManager().VerificarPortalSesion() == LoginStatus.Exitoso)
 {
-    using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
+    using (Html.BeginForm("LogOut", "Portal", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
     {
     @Html.AntiForgeryToken()
 
     <ul class="nav navbar-nav navbar-right login-container">
         <li>
-            @Html.ActionLink("Hola " + Startup.GetAplicacionUsuariosManager().UsuarioPortalActual.Nombre + "!", "Index", "Manage", routeValues: null, htmlAttributes: new { title = "Manage" })
+            @Html.ActionLink(Startup.GetAplicacionUsuariosManager().UsuarioPortalActual.Nombre, "Index", "Manage", routeValues: null, htmlAttributes: new { title = "Manage" })
         </li>
         <li><a href="javascript:document.getElementById('logoutForm').submit()">Log off</a></li>
     </ul>
@@ -16,7 +16,7 @@
 else
 {
     <ul class="nav navbar-nav navbar-right login-container">
-        <li>@Html.ActionLink("Regístrate", "Register", "Account", routeValues: null, htmlAttributes: new { id = "registerLink" })</li>
+        <li>@Html.ActionLink("Regístrate", "Registro", "Portal", routeValues: null, htmlAttributes: new { id = "registerLink" })</li>
         <li>@Html.ActionLink("Log in", "Login", "Administrador", routeValues: null, htmlAttributes: new { id = "loginLink" })</li>
     </ul>
 }
