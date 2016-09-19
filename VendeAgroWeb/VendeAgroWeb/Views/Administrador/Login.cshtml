@@ -1,0 +1,43 @@
+﻿@model VendeAgroWeb.Models.Administrador.LoginViewModel
+
+@{
+    ViewBag.Title = "Administración Login";
+    Layout = "Shared/_LoginLayout.cshtml";
+}
+
+<div class="row">
+    <div class="col-lg-6 col-lg-offset-3">
+        <div class="login-form">
+            @using (Html.BeginForm())
+            {
+                @Html.AntiForgeryToken()
+
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                <div class="form-group">
+                    @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control", placeholder = "Introduce tu email", id = "login-email" } })
+                    @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
+                    <label class="login-field-icon glyphicon glyphicon-user" for="login-email"></label>
+                </div>
+
+                <div class="form-group">
+                    @Html.EditorFor(model => model.Password, new { htmlAttributes = new { @class = "form-control", placeholder = "Introduce tu contraseña", id = "login-pass" } })
+                    @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })
+                    <label class="login-field-icon glyphicon glyphicon-lock" for="login-pass"></label>
+                </div>
+
+                <div class="form-group" style="display: table; width: 100%;">
+                    <div class="col-sm-offset-3 col-sm-6" style="text-align: center;">
+                        <input type="submit" value="Login" class="btn btn-primary btn-lg btn-login" />
+                    </div>
+                </div>
+            }
+        </div>
+        <div class="col-sm-12 login-boton-container" style="margin-top: 20px;">
+            <a class="login-link" href="/Administrador/OlvidoContrasena">¿Olvidaste tu contraseña?</a>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

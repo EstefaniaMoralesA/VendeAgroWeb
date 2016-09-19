@@ -1,0 +1,38 @@
+﻿@model VendeAgroWeb.Models.Administrador.OlvidoContrasenaViewModel
+
+@{
+    ViewBag.Title = "Recuperar Contraseña";
+    Layout = "Shared/_LoginLayout.cshtml";
+}
+
+<div class="row">
+    <div class="col-lg-6 col-lg-offset-3">
+        <div class="login-form">
+            @using (Html.BeginForm())
+            {
+                @Html.AntiForgeryToken()
+
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                <div class="form-group">
+                    @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control", placeholder = "Introduce tu email", id = "login-email" } })
+                    @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
+                    <label class="login-field-icon glyphicon glyphicon-user" for="login-email"></label>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-sm-6 col-sm-offset-3 login-boton-container">
+                        <input type="submit" value="Recuperar contraseña" class="btn btn-primary btn-lg btn-login" />
+                    </div>
+                </div>
+            }
+
+            <div class="col-sm-6 col-sm-offset-3 login-boton-container">
+                <a class="btn btn-default btn-lg btn-login" href="/Administrador/Login" style="margin-top:10px">Cancelar</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
