@@ -108,7 +108,7 @@ namespace VendeAgroWeb
                     string mailMensaje = "<p>Estimado {0} gracias por registrarte en vendeagro.com</p>" +
                     "<p>Para completar tu registro y poder hacer login da click <a href=\'http://localhost:50827/Portal/ConfirmarMail?token=" + "{1}\'>AQUÍ</a></p>";
 
-                    var result = Startup.GetServicioEmail().SendAsync(string.Format(mailMensaje, model.Nombre + model.Apellidos, tokenEmail), "Registro VendeAgro", model.Email);
+                    var result = Startup.GetServicioEmail().SendAsync(string.Format(mailMensaje, model.Nombre + " " + model.Apellidos, tokenEmail), "Registro VendeAgro", model.Email);
                     return RegistroStatus.Exitoso;
                 }
 
