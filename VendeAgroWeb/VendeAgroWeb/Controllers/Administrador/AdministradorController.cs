@@ -50,9 +50,9 @@ namespace VendeAgroWeb.Controllers.Administrador
                 return View(model);
             }
 
-            var resultado = await Startup.GetAplicacionUsuariosManager().OlvidoContrasenaAdminAsync();
-
-            return View(model);
+            var resultado = await Startup.GetAplicacionUsuariosManager().OlvidoContrasenaAdminAsync(model.Email);
+            ViewData["ResultadoMail"] = resultado.ToString();
+            return View();
         }
 
         public ActionResult CambiarContrasena()

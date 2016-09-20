@@ -67,11 +67,12 @@ namespace VendeAgroWeb
 
         public async Task<OlvidoContrasenaStatus> OlvidoContrasenaAdminAsync(string email)
         {
-            return OlvidoContrasenaStatus.MailEnviado;
             return await Task.Run(() =>
             {
                 using(var _dbContext = new VendeAgroEntities())
                 {
+                    _dbContext.Database.Connection.Open();
+
                     if(_dbContext.Database.Connection.State != System.Data.ConnectionState.Open)
                     {
                         return OlvidoContrasenaStatus.Error;
@@ -86,7 +87,7 @@ namespace VendeAgroWeb
                     string mailMensaje = "<p>Estimado {0},</p>" +
                     "<p>Para cambiar tu contraseña da click <a href=\'http://localhost:50827/Administrador/CambiarContrasena?token=" + "{1}\'>AQUÍ</a></p>";
 
-                    var result = Startup.GetServicioEmail().SendAsync(string.Format(mailMensaje, usuario.nombre, usuario.password), "Registro VendeAgro", usuario.email);
+                    var result = Startup.GetServicioEmail().SendAsync(string.Format(mailMensaje, usuario.nombre, usuario.password), "Recuperar Contraseña VendeAgro", usuario.email);
                     return OlvidoContrasenaStatus.MailEnviado;
 
                 }
