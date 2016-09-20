@@ -65,6 +65,35 @@ namespace VendeAgroWeb
 
         }
 
+        public async Task<OlvidoContrasenaStatus> OlvidoContrasenaAdminAsync(string email)
+        {
+            return OlvidoContrasenaStatus.MailEnviado;
+            return await Task.Run(() =>
+            {
+                using(var _dbContext = new VendeAgroEntities())
+                {
+                    if(_dbContext.Database.Connection.State != System.Data.ConnectionState.Open)
+                    {
+                        return OlvidoContrasenaStatus.Error;
+                    }
+
+                    var usuario = _dbContext.Usuario_Administrador.Where(u => u.email == email).FirstOrDefault();
+                    if(usuario == null)
+                    {
+                        return OlvidoContrasenaStatus.MailInexistente;
+                    }
+
+                    string mailMensaje = "<p>Estimado {0},</p>" +
+                    "<p>Para cambiar tu contraseña da click <a href=\'http://localhost:50827/Administrador/CambiarContrasena?token=" + "{1}\'>AQUÍ</a></p>";
+
+                    var result = Startup.GetServicioEmail().SendAsync(string.Format(mailMensaje, usuario.nombre, usuario.password), "Registro VendeAgro", usuario.email);
+                    return OlvidoContrasenaStatus.MailEnviado;
+
+                }
+            });
+
+        }
+
         public async Task<RegistroStatus> RegistroUsuarioAsync(Models.Portal.RegistroViewModel model)
         {
             HttpResponse response = HttpContext.Current.Response;
@@ -263,5 +292,12 @@ namespace VendeAgroWeb
         MailOcupado,
         TelefonoOcupado,
         Incorrecto
+    }
+
+    public enum OlvidoContrasenaStatus
+    {
+        MailInexistente,
+        Error,
+        MailEnviado
     }
 }
