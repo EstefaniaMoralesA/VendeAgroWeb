@@ -8,6 +8,7 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using VendeAgroWeb.Models;
+using VendeAgroWeb.Models.Administrador;
 
 namespace VendeAgroWeb.Controllers.Administrador
 {
@@ -36,6 +37,21 @@ namespace VendeAgroWeb.Controllers.Administrador
 
         public ActionResult OlvidoContrasena()
         {
+            return View();
+        }
+
+        [HttpPost]
+        [AllowAnonymous]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> OlvidoContrasena(OlvidoContrasenaViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+
+            var resultado = await Startup.GetAplicacionUsuariosManager().OlvidoContrasenaAdminAsync(model.Email);
+            ViewData["ResultadoMail"] = resultado.ToString();
             return View();
         }
 

@@ -5,6 +5,24 @@
     Layout = "Shared/_LoginLayout.cshtml";
 }
 
+@{ 
+    if(ViewData["ResultadoMail"] as string == VendeAgroWeb.OlvidoContrasenaStatus.MailEnviado.ToString())
+    {
+        <p>Mail Enviado</p>
+    }
+    else if(ViewData["ResultadoMail"] as string == OlvidoContrasenaStatus.MailInexistente.ToString())
+    {
+        <p>El mail no existe</p>
+    }
+    else
+    {
+        if (ViewData["ResultadoMail"] != null)
+        {
+            <p>Error con la base de datos</p>
+        }
+    }
+}
+
 <div class="row">
     <div class="col-lg-6 col-lg-offset-3">
         <div class="login-form">
