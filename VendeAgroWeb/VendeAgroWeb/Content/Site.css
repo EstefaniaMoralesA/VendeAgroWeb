@@ -569,7 +569,18 @@ a {
     padding-right: 35px;
 }
 
-.usuario-pago {
+.usuario-activar {
+    padding-left:38px;
+    padding-right: 38px;
+}
+
+.btn-usuario-anuncios {
+    padding-left:36px;
+    padding-right: 36px;
+}
+
+
+.btn-usuario-pagos {
     padding-left: 44px;
     padding-right: 44px;
 }
