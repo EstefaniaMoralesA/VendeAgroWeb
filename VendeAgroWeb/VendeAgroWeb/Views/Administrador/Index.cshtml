@@ -1,16 +1,119 @@
-﻿@model VendeAgroWeb.Models.AdministradorUsuario
+﻿@model VendeAgroWeb.Models.Administrador.UsuariosViewModel
 
 @{
-    ViewBag.Title = "VendeAgro Administracion";
-    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Title = "Administración Usuarios";
+    Layout = "Shared/_AdministradorLayout.cshtml";
 }
 
-<div class="row" style="margin-top:30px;">
-    <div class="col-sm-12">
-        <h2>Bienvenido, @Model.Nombre</h2>
+<div class="row">
+    <div class="col-sm-offset-1 col-sm-10">
+        <ul class="nav nav-tabs">
+            <li><a href="#administrador" data-toggle="tab">Administrador</a></li>
+            <li><a href="#clientes" data-toggle="tab">Clientes</a></li>
+        </ul>
+    </div>
+</div>
+
+<div class="row" style="margin-top:30px">
+    <div class="col-sm-offset-1 col-sm-10">
+        <div class="tab-content" id="tabs">
+            <div class="tab-pane" id="administrador">
+                <div class="table-responsive">
+                    <table class="table table-striped table-responsive">
+                        <thead>
+                            <tr>
+                                <th>Nombre</th>
+                                <th>Email</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Samuel Lopez</td>
+                                <td>samuel@hotmail.com</td>
+                                <td><a class="btn btn-danger usuario-desactivar">desactivar</a></td>
+                            </tr>
+                            <tr>
+                                <td>Estefania Morales Abud</td>
+                                <td>estefi_ma94@hotmail.com</td>
+                                <td><a class="btn btn-danger usuario-desactivar">desactivar</a></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="tab-pane" id="clientes">
+                <div class="col-sm-12">
+                    <form role="search" class="form-horizontal forma-busqueda">
+                        <div class="input-group">
+                            <input type="text" class="form-control" id="buscar" placeholder="Buscar cliente">
+                            <div class="input-group-btn">
+                                <a class="btn btn-default busqueda">
+                                    <span class="glyphicon glyphicon-search"></span>
+                                </a>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="col-sm-12 table-responsive" id="clientes" style="margin-top:20px">
+                    <table class="table table-striped table-responsive">
+                        <thead>
+                            <tr>
+                                <th>Nombre</th>
+                                <th>Apellidos</th>
+                                <th>Teléfono</th>
+                                <th>Email</th>
+                                <th></th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="filtro">Estefania</td>
+                                <td class="filtro">Morales Abud</td>
+                                <td>2221143403</td>
+                                <td class="filtro">estefima94@hotmail.com</td>
+                                <td><a class="btn btn-primary usuario-desactivar">anuncios</a></td>
+                                <td><a class="btn btn-success usuario-pago">pagos</a></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
 }
+
+<script>
+    $(document).ready(function () {
+        activaTab('administrador');
+    });
+
+    $('#buscar').keyup(function () {
+        var query = $(this).val();
+        query = query.toLowerCase();
+        
+        $('#clientes tbody tr').each(function () {
+            var actual = $(this);
+            var hijos = actual.children('.filtro');
+            actual.hide();
+            for (var i = 0; i < hijos.length; i++)
+            {
+                var texto = $(hijos[i]).html().toLowerCase();
+                if (texto.indexOf(query) != -1)
+                {
+                    $(hijos[i]).parent().show();
+                    break;
+                }
+            }
+        });
+    });
+
+    function activaTab(tab) {
+        $('.nav-tabs a[href="#' + tab + '"]').tab('show');
+    };
+</script>

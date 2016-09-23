@@ -23,7 +23,7 @@ namespace VendeAgroWeb.Controllers.Administrador
             {
                 return RedirectToAction("Login", "Administrador");
             }
-            return View(Startup.GetAplicacionUsuariosManager().UsuarioAdministradorActual);
+            return View();
         }
 
         public async Task<ActionResult> Login()
@@ -69,6 +69,31 @@ namespace VendeAgroWeb.Controllers.Administrador
         {
             var resultado = await Startup.GetAplicacionUsuariosManager().CambiarContrasenaAdminAsync(AplicacionUsuariosManager.Hash(model.Password), model.Token);
             ViewData["ResultadoUrl"] = resultado.ToString();
+            return View();
+        }
+
+        public ActionResult Categorias()
+        {
+            return View();
+        }
+
+        public ActionResult NuevaCategoria()
+        {
+            return View();
+        }
+
+        public ActionResult Subcategorias()
+        {
+            return View();
+        }
+
+        public ActionResult NuevaSubcategoria()
+        {
+            return View();
+        }
+
+        public ActionResult Beneficios()
+        {
             return View();
         }
 

@@ -14,11 +14,55 @@
             <div class="logo-container" style="position:absolute !important;">
                 <img class="logo-home" src="~/img/logoHorizontal.png">
             </div>
+
+            <div class="boton-container">
+                <a class="menu-boton cafe">☰</a>
+            </div>
+            
+            <div class="menu cerrado">
+                <div class="row" style="margin-top: 20px;">
+                    <div class="col-sm-12">
+                        <img src="~/img/icon.png" style="height:60px;">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-12 opciones">
+                        <ul class="menu-opciones">
+                            <li><a href="/Administrador/Index"><span class="glyphicon glyphicon-user"></span>&nbsp;&nbsp;USUARIOS</a></li>
+                            <li><a><span class="glyphicon glyphicon-th-large"></span>&nbsp;&nbsp;ANUNCIOS</a></li>
+                            <li><a href="/Administrador/Categorias"><span class="glyphicon glyphicon-tag"></span>&nbsp;&nbsp;CATEGORIAS</a></li>
+                            <li><a href="/Administrador/Subcategorias"><span class="glyphicon glyphicon-tag"></span>&nbsp;&nbsp;SUBCATEGORIAS</a></li>
+                            <li><a><span class="glyphicon glyphicon-check"></span>&nbsp;&nbsp;BENEFICIOS</a></li>
+                            <li><a><span class="glyphicon glyphicon-thumbs-up"></span>&nbsp;&nbsp;METRICAS</a></li>
+                            <li><a><span class="glyphicon glyphicon-bullhorn"></span>&nbsp;&nbsp;BANNERS</a></li>
+                            <li><a><span class="glyphicon glyphicon-share"></span>&nbsp;&nbsp;REPORTES DE VENTA</a></li>
+                            <li><a><span class="glyphicon glyphicon-edit"></span>&nbsp;&nbsp;PERFIL</a></li>
+                            <li><a><span class="glyphicon glyphicon-log-out"></span>&nbsp;&nbsp;LOGOUT</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        @Scripts.Render("~/bundles/jquery")
+        @Scripts.Render("~/bundles/bootstrap")
+        @RenderSection("scripts", required: false)
+
+        <script>
+        $(".menu-boton").click(function () {
+            if ($(".menu").hasClass('abierto')) {
+                $(".menu").removeClass('abierto').addClass('cerrado');
+                return;
+            }
+            $(".menu").removeClass('cerrado').addClass('abierto');
+        });
+        </script>
+
+        <div class="row" style="margin-top:120px">
+            <div class="col-sm-12">
+                @RenderBody()
+            </div>
         </div>
     </div>
-
-    @Scripts.Render("~/bundles/jquery")
-    @Scripts.Render("~/bundles/bootstrap")
-    @RenderSection("scripts", required: false)
 </body>
 </html>
