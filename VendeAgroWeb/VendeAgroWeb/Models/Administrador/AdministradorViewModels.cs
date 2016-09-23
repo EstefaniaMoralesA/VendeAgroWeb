@@ -40,6 +40,8 @@ namespace VendeAgroWeb.Models.Administrador
         [Compare("Password", ErrorMessage = "La contraseña y su confirmacion no son iguales.")]
         [Display(Name = "ConfirmaContraseña")]
         public string ConfirmaPassword { get; set; }
+
+        public string Token { get; set; }
     }
 
     public class AnunciosViewModel {

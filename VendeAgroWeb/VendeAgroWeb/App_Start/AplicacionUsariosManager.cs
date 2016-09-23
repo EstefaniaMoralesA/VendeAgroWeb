@@ -85,7 +85,7 @@ namespace VendeAgroWeb
                     }
 
                     string mailMensaje = "<p>Estimado {0},</p>" +
-                    "<p>Para cambiar tu contraseña da click <a href=\'http://localhost:50827/Administrador/CambiarContrasena?token=" + "{1}\'>AQUÍ</a></p>";
+                    "<p>Para cambiar tu contraseña da click <a href=\'"+Startup.getBaseUrl()+"/Administrador/CambiarContrasena?token=" + "{1}\'>AQUÍ</a></p>";
 
                     var result = Startup.GetServicioEmail().SendAsync(string.Format(mailMensaje, usuario.nombre, usuario.password), "Recuperar Contraseña VendeAgro", usuario.email);
                     return OlvidoContrasenaStatus.MailEnviado;
@@ -93,6 +93,67 @@ namespace VendeAgroWeb
                 }
             });
 
+        }
+
+        public async Task<CambiarContrasenaStatus> VerificarTokenCambiarContrasenaAdminAsync(string token)
+        {
+            return await Task.Run(() =>
+            {
+                if(token == null)
+                {
+                    return CambiarContrasenaStatus.TokenInvalido;
+                }
+
+                using(var _dbContext = new VendeAgroEntities())
+                {
+                    _dbContext.Database.Connection.Open();
+                    if(_dbContext.Database.Connection.State != System.Data.ConnectionState.Open)
+                    {
+                        return CambiarContrasenaStatus.Error;
+                    }
+
+                    var usuario = _dbContext.Usuario_Administrador.Where(u => u.password == token).FirstOrDefault();
+                    
+                    if(usuario == null)
+                    {
+                        return CambiarContrasenaStatus.TokenInvalido;
+                    }
+
+                    return CambiarContrasenaStatus.UrlValido;
+                }
+            });
+        }
+
+        public async Task<CambiarContrasenaStatus> CambiarContrasenaAdminAsync(string password, string token)
+        {
+            return await Task.Run(() =>
+            {
+                if (token == null)
+                {
+                    return CambiarContrasenaStatus.TokenInvalido;
+                }
+
+                using (var _dbContext = new VendeAgroEntities())
+                {
+                    _dbContext.Database.Connection.Open();
+                    if (_dbContext.Database.Connection.State != System.Data.ConnectionState.Open)
+                    {
+                        return CambiarContrasenaStatus.Error;
+                    }
+
+                    var usuario = _dbContext.Usuario_Administrador.Where(u => u.password == token).FirstOrDefault();
+
+                    if (usuario == null)
+                    {
+                        return CambiarContrasenaStatus.TokenInvalido;
+                    }
+
+                    usuario.password = password;
+                    _dbContext.SaveChanges();
+
+                    return CambiarContrasenaStatus.ContrasenaActualizada;
+                }
+            });
         }
 
         public async Task<RegistroStatus> RegistroUsuarioAsync(Models.Portal.RegistroViewModel model)
@@ -136,7 +197,7 @@ namespace VendeAgroWeb
                     var usuarioRegistrado = _dbContext.Usuarios.Where(u => u.email == model.Email).FirstOrDefault();
                     _usuarioPortalActual = new PortalUsuario(usuarioRegistrado.id, model.Email, model.Nombre, model.Apellidos, model.Celular.ToString());
                     string mailMensaje = "<p>Estimado {0} gracias por registrarte en vendeagro.com</p>" +
-                    "<p>Para completar tu registro y poder hacer login da click <a href=\'http://localhost:50827/Portal/ConfirmarMail?token=" + "{1}\'>AQUÍ</a></p>";
+                    "<p>Para completar tu registro y poder hacer login da click <a href=\'"+ Startup.getBaseUrl() +"/Portal/ConfirmarMail?token=" + "{1}\'>AQUÍ</a></p>";
 
                     var result = Startup.GetServicioEmail().SendAsync(string.Format(mailMensaje, model.Nombre + " " + model.Apellidos, tokenEmail), "Registro VendeAgro", model.Email);
                     return RegistroStatus.Exitoso;
@@ -300,5 +361,13 @@ namespace VendeAgroWeb
         MailInexistente,
         Error,
         MailEnviado
+    }
+
+    public enum CambiarContrasenaStatus
+    {
+        TokenInvalido,
+        UrlValido,
+        Error,
+        ContrasenaActualizada
     }
 }

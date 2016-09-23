@@ -55,8 +55,20 @@ namespace VendeAgroWeb.Controllers.Administrador
             return View();
         }
 
-        public ActionResult CambiarContrasena()
+        public async Task<ActionResult> CambiarContrasena(string token)
         {
+            var resultado = await Startup.GetAplicacionUsuariosManager().VerificarTokenCambiarContrasenaAdminAsync(token);
+            ViewData["ResultadoUrl"] = resultado.ToString();
+            ViewData["Token"] = token;
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> CambiarContrasena(CambiarContrasenaViewModel model)
+        {
+            var resultado = await Startup.GetAplicacionUsuariosManager().CambiarContrasenaAdminAsync(AplicacionUsuariosManager.Hash(model.Password), model.Token);
+            ViewData["ResultadoUrl"] = resultado.ToString();
             return View();
         }
 
