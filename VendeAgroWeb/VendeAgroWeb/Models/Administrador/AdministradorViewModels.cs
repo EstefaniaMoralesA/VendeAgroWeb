@@ -42,6 +42,38 @@ namespace VendeAgroWeb.Models.Administrador
         public string ConfirmaPassword { get; set; }
     }
 
+    public class UsuariosViewModel {
+    }
+
     public class AnunciosViewModel {
+    }
+
+    public class CategoriasViewModel {
+        [Required(ErrorMessage = "Campo requerido")]
+        [Display(Name = "ModificarNombre")]
+        public string Nombre { get; set; }
+    }
+
+    public class NuevaCategoriaViewModel {
+        [Required(ErrorMessage = "Campo requerido")]
+        [Display(Name = "NuevoNombre")]
+        public string Nombre { get; set; }
+    }
+
+    public class SubcategoriasViewModel {
+        [Required(ErrorMessage = "Campo requerido")]
+        [Display(Name = "ModificarNombre")]
+        public string Nombre { get; set; }
+    }
+
+    public class NuevaSubcategoriaViewModel
+    {
+        [Required(ErrorMessage = "Campo requerido")]
+        [Display(Name = "NuevoNombre")]
+        public string Nombre { get; set; }
+    }
+
+    public class BeneficiosViewModel
+    {
     }
 }

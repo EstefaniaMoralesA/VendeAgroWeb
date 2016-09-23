@@ -320,6 +320,7 @@
     <Content Include="img\horses.jpg" />
     <Content Include="img\logo.png" />
     <Content Include="img\logoHorizontal.png" />
+    <Content Include="img\icon.png" />
     <Content Include="img\yegua.jpg" />
     <Content Include="Models\DatabaseModel.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
@@ -410,6 +411,10 @@
     <Content Include="Views\Administrador\Shared\_LoginLayout.cshtml" />
     <Content Include="Views\Administrador\CambiarContrasena.cshtml" />
     <Content Include="Views\Administrador\Shared\_AdministradorLayout.cshtml" />
+    <Content Include="Views\Administrador\Categorias.cshtml" />
+    <Content Include="Views\Administrador\NuevaCategoria.cshtml" />
+    <Content Include="Views\Administrador\Subcategorias.cshtml" />
+    <Content Include="Views\Administrador\NuevaSubcategoria.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
