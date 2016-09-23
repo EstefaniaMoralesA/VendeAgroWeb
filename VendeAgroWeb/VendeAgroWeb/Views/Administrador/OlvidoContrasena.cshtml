@@ -5,51 +5,61 @@
     Layout = "Shared/_LoginLayout.cshtml";
 }
 
-@{ 
-    if(ViewData["ResultadoMail"] as string == VendeAgroWeb.OlvidoContrasenaStatus.MailEnviado.ToString())
+@{
+    if (ViewData["ResultadoMail"] as string == OlvidoContrasenaStatus.MailEnviado.ToString())
     {
-        <p>Mail Enviado</p>
-    }
-    else if(ViewData["ResultadoMail"] as string == OlvidoContrasenaStatus.MailInexistente.ToString())
-    {
-        <p>El mail no existe</p>
+        <div class="row" style="margin-top:20px;">
+            <div class="col-lg-6 col-lg-offset-3">
+                <div class="alert alert-success" style="text-align:center;">
+                   Mail enviado correctamente.<strong>   <span class="glyphicon glyphicon-check"></span></strong>
+                </div>
+            </div>
+        </div>
     }
     else
     {
-        if (ViewData["ResultadoMail"] != null)
-        {
-            <p>Error con la base de datos</p>
-        }
-    }
-}
+        <div class="row">
+            <div class="col-lg-6 col-lg-offset-3">
+                @if (ViewData["ResultadoMail"] != null)
+                {
+                    <div class="alert alert-danger" style="margin-top:20px;">
+                        @if(ViewData["ResultadoMail"] as string == OlvidoContrasenaStatus.MailInexistente.ToString())
+                        {
+                            <strong>Error!</strong><span> el mail que introdujo no existe.</span>
+                        }
+                        else
+                        {
+                            <span>Error con la base de datos vuelva a intentarlo.</span>
+                        }
+                    </div>
+                }
+                <div class="login-form">
+                    @using (Html.BeginForm())
+                    {
+                        @Html.AntiForgeryToken()
 
-<div class="row">
-    <div class="col-lg-6 col-lg-offset-3">
-        <div class="login-form">
-            @using (Html.BeginForm())
-            {
-                @Html.AntiForgeryToken()
+                        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                        <div class="form-group">
+                            @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control", placeholder = "Introduce tu email", id = "login-email" } })
+                            @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
+                            <label class="login-field-icon glyphicon glyphicon-user" for="login-email"></label>
+                        </div>
 
-                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-                <div class="form-group">
-                    @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control", placeholder = "Introduce tu email", id = "login-email" } })
-                    @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
-                    <label class="login-field-icon glyphicon glyphicon-user" for="login-email"></label>
-                </div>
+                        <div class="form-group">
+                            <div class="col-sm-6 col-sm-offset-3 login-boton-container">
+                                <input type="submit" value="Recuperar contraseña" class="btn btn-primary btn-lg btn-login" />
+                            </div>
+                        </div>
+                    }
 
-                <div class="form-group">
                     <div class="col-sm-6 col-sm-offset-3 login-boton-container">
-                        <input type="submit" value="Recuperar contraseña" class="btn btn-primary btn-lg btn-login" />
+                        <a class="btn btn-default btn-lg btn-login" href="/Administrador/Login" style="margin-top:10px">Cancelar</a>
                     </div>
                 </div>
-            }
-
-            <div class="col-sm-6 col-sm-offset-3 login-boton-container">
-                <a class="btn btn-default btn-lg btn-login" href="/Administrador/Login" style="margin-top:10px">Cancelar</a>
             </div>
         </div>
-    </div>
-</div>
+    }
+}
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
