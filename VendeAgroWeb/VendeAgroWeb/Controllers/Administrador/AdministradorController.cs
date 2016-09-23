@@ -16,7 +16,6 @@ namespace VendeAgroWeb.Controllers.Administrador
     {
         private VendeAgroEntities db = new VendeAgroEntities();
 
-        // GET: Usuario_Administrador
         public async Task<ActionResult> Index()
         {
             if(await Startup.GetAplicacionUsuariosManager().VerificarAdminSesionAsync() == LoginStatus.Incorrecto)
@@ -24,6 +23,66 @@ namespace VendeAgroWeb.Controllers.Administrador
                 return RedirectToAction("Login", "Administrador");
             }
             return View();
+        }
+
+        public async Task<ActionResult> UsuariosAdministradorPartial()
+        {
+            UsuariosViewModel model = new UsuariosViewModel(0, await ObtenerUsuariosAdmin(), null);
+            return PartialView("UsuariosAdministradorPartial",model);
+        }
+
+        public async Task<ActionResult> UsuariosPortalPartial()
+        {
+            UsuariosViewModel model = new UsuariosViewModel(1, null, await ObtenerUsuariosPortal());
+            return PartialView("UsuariosPortalPartial", model);
+        }
+
+        public async Task<ICollection<UsuarioPortalViewModel>> ObtenerUsuariosPortal()
+        {
+            return await Task.Run(() =>
+            {
+                using (var _dbContext = new VendeAgroEntities())
+                {
+                    _dbContext.Database.Connection.Open();
+                    if (_dbContext.Database.Connection.State != ConnectionState.Open)
+                    {
+                        return null;
+                    }
+
+                    List<UsuarioPortalViewModel> lista = new List<UsuarioPortalViewModel>();
+                    var usuarios = _dbContext.Usuarios;
+                    foreach (var item in usuarios)
+                    {
+                        lista.Add(new UsuarioPortalViewModel(item.id, item.nombre,item.apellidos, item.telefono.ToString(), item.email));
+                    }
+
+                    return lista;
+                }
+            });
+        }
+
+        public async Task<ICollection<UsuarioAdministradorViewModel>> ObtenerUsuariosAdmin()
+        {
+            return await Task.Run(() => 
+            {
+                using(var _dbContext = new VendeAgroEntities())
+                {
+                    _dbContext.Database.Connection.Open();
+                    if(_dbContext.Database.Connection.State != ConnectionState.Open)
+                    {
+                        return null;
+                    }
+
+                    List<UsuarioAdministradorViewModel> lista = new List<UsuarioAdministradorViewModel>();
+                    var usuarios = _dbContext.Usuario_Administrador;
+                    foreach (var item in usuarios)
+                    {
+                        lista.Add(new UsuarioAdministradorViewModel(item.id, item.nombre, item.email, item.activo));
+                    }
+                
+                    return lista;
+                }
+            });
         }
 
         public async Task<ActionResult> Login()

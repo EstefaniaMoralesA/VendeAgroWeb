@@ -44,7 +44,150 @@ namespace VendeAgroWeb.Models.Administrador
         public string Token { get; set; }
     }
 
+    public class UsuarioAdministradorViewModel
+    {
+        private int _id;
+        private string _nombre;
+        private string _email;
+        private bool _activo;
+
+        public int Id
+        {
+            get
+            {
+                return _id;
+            }
+        }
+
+        public string Nombre
+        {
+            get
+            {
+                return _nombre;
+            }
+        }
+
+        public string Email
+        {
+            get
+            {
+                return _email;
+            }
+
+        }
+
+        public bool Activo
+        {
+            get
+            {
+                return _activo;
+            }
+        }
+
+        public UsuarioAdministradorViewModel(int id, string nombre, string email, bool activo)
+        {
+            _id = id;
+            _nombre = nombre;
+            _email = email;
+            _activo = activo;
+        }
+    }
+
+    public class UsuarioPortalViewModel
+    {
+        private int _id;
+        private string _nombre;
+        private string _apellidos;
+        private string _telefono;
+        private string _email;
+
+        public int Id
+        {
+            get
+            {
+                return _id;
+            }
+        }
+
+        public string Nombre
+        {
+            get
+            {
+                return _nombre;
+            }
+        }
+
+        public string Apellidos
+        {
+            get
+            {
+                return _apellidos;
+            }
+        }
+
+        public string Telefono
+        {
+            get
+            {
+                return _telefono;
+            }
+
+        }
+
+        public string Email
+        {
+            get
+            {
+                return _email;
+            }
+        }
+
+        public UsuarioPortalViewModel(int id, string nombre, string apellidos, string telefono, string email)
+        {
+            _id = id;
+            _nombre = nombre;
+            _apellidos = apellidos;
+            _telefono = telefono;
+            _email = email;
+        }
+    }
+
     public class UsuariosViewModel {
+
+        private int _tipo;
+        private ICollection<UsuarioAdministradorViewModel> _usuariosAdministrador;
+        private ICollection<UsuarioPortalViewModel> _usuariosPortal;
+
+        public UsuariosViewModel(int tipo, ICollection<UsuarioAdministradorViewModel> usuariosAdmin, ICollection<UsuarioPortalViewModel> usuariosPortal)
+        {
+            _tipo = tipo;
+            _usuariosAdministrador = usuariosAdmin;
+            _usuariosPortal = usuariosPortal;
+        }
+
+        public int Tipo
+        {
+            get
+            {
+                return _tipo;
+            }
+        }
+
+        public ICollection<UsuarioAdministradorViewModel> UsuariosAdministrador
+        {
+            get
+            {
+                return _usuariosAdministrador;
+            }
+        }
+
+        public ICollection<UsuarioPortalViewModel> UsuariosPortal
+        {
+            get
+            {
+                return _usuariosPortal;
+            }
+        }
     }
 
     public class AnunciosViewModel {

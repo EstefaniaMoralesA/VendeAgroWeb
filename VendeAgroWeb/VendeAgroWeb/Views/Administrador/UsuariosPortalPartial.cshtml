@@ -1,0 +1,45 @@
+﻿@model VendeAgroWeb.Models.Administrador.UsuariosViewModel
+<div class="col-sm-12">
+    <form role="search" class="form-horizontal forma-busqueda">
+        <div class="input-group">
+            <input type="text" class="form-control" id="buscar" placeholder="Buscar cliente">
+            <div class="input-group-btn">
+                <a class="btn btn-default busqueda">
+                    <span class="glyphicon glyphicon-search"></span>
+                </a>
+            </div>
+        </div>
+    </form>
+</div>
+<div class="col-sm-12 table-responsive" id="clientes" style="margin-top:20px">
+    <table class="table table-striped table-responsive">
+        <thead>
+            <tr>
+                <th>Nombre</th>
+                <th>Apellidos</th>
+                <th>Teléfono</th>
+                <th>Email</th>
+                <th></th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @{
+                    if(Model.Tipo == 1)
+                    {
+                        foreach (var item in Model.UsuariosPortal)
+                        {
+                            <tr>
+                                <td class="filtro">@item.Nombre</td>
+                                <td class="filtro">@item.Apellidos</td>
+                                <td class="filtro">@item.Telefono</td>
+                                <td class="filtro">@item.Email</td>
+                                <td><a data-id="@item.Id" class="btn btn-primary btn-usuario-anuncios">anuncios</a></td>
+                                <td><a data-id="@item.Id" class="btn btn-success btn-usuario-pagos">pagos</a></td>
+                            </tr>
+                        }
+                    }
+                }
+        </tbody>
+    </table>
+</div>

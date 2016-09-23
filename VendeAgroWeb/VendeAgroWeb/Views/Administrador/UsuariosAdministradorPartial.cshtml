@@ -1,0 +1,36 @@
+﻿@model VendeAgroWeb.Models.Administrador.UsuariosViewModel
+<div class="table-responsive">
+    <table class="table table-striped table-responsive">
+        <thead>
+            <tr>
+                <th>Nombre</th>
+                <th>Email</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @{
+                if (Model.Tipo == 0)
+                {
+                    foreach (var item in Model.UsuariosAdministrador)
+                    {
+                        <tr>
+                            <td>@item.Nombre</td>
+                            <td>@item.Email</td>
+                            @{
+                                if (item.Activo)
+                                {
+                                    <td><a data-id="@item.Id" class="btn btn-danger usuario-desactivar">desactivar</a></td>
+                                }
+                                else
+                                {
+                                    <td><a data-id="@item.Id" class="btn btn-success usuario-activar">activar</a></td>
+                                }
+                            }
+                        </tr>
+                   }
+               }
+            }
+        </tbody>
+    </table>
+</div>

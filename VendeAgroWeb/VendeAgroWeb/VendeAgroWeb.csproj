@@ -415,6 +415,8 @@
     <Content Include="Views\Administrador\NuevaCategoria.cshtml" />
     <Content Include="Views\Administrador\Subcategorias.cshtml" />
     <Content Include="Views\Administrador\NuevaSubcategoria.cshtml" />
+    <Content Include="Views\Administrador\UsuariosAdministradorPartial.cshtml" />
+    <Content Include="Views\Administrador\UsuariosPortalPartial.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
