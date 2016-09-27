@@ -1,7 +1,6 @@
 ﻿namespace VendeAgroWeb
 {
-    public enum EstadoAnuncio
-    {
+    public enum EstadoAnuncio {
         Vacio = 0,
         Aprobado = 1,
         PendientePorAprobar = 2,
