@@ -1,0 +1,28 @@
+﻿@model VendeAgroWeb.Models.Administrador.AnuncioViewModel
+
+@{
+    ViewBag.Title = "Administración Anuncio Detalles";
+    Layout = "Shared/_AdministradorLayout.cshtml";
+    @Styles.Render("~/bundles/owlcarousel")
+}
+
+<div class="col-sm-offset-1 col-sm-10">
+    <div id="owl-demo" class="owl-carousel owl-theme">
+        <div class="owl-wrapper-outer">
+            <div class="owl-wrapper">
+                <div class="owl-item" style="width: 400px;">
+                    <div class="item">
+                        <div class="col-sm-4 foto-producto">
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/owlcarousel")
+}
+
