@@ -196,12 +196,12 @@ namespace VendeAgroWeb.Models.Administrador
         private int _id;
         private string _titulo;
         private string _usuario;
-        private float _precio;
+        private double _precio;
         private string _categoria;
         private string _subcategoria;
         private string _estado;
         private string _ciudad;
-        private int _clicks;
+        private int? _clicks;
 
         public string Titulo
         {
@@ -211,7 +211,7 @@ namespace VendeAgroWeb.Models.Administrador
             }
         }
 
-        public float Precio
+        public double Precio
         {
             get
             {
@@ -241,11 +241,6 @@ namespace VendeAgroWeb.Models.Administrador
             {
                 return _estado;
             }
-
-            set
-            {
-                _estado = value;
-            }
         }
 
         public string Ciudad
@@ -256,7 +251,7 @@ namespace VendeAgroWeb.Models.Administrador
             }
         }
 
-        public int Clicks
+        public int? Clicks
         {
             get
             {
@@ -280,7 +275,7 @@ namespace VendeAgroWeb.Models.Administrador
             }
         }
 
-        public AnuncioViewModel(int id, string titulo, string usuario,  float precio, string categoria, string subcategoria, string estado, string ciudad, int clicks) {
+        public AnuncioViewModel(int id, string titulo, string usuario,  double precio, string categoria, string subcategoria, string estado, string ciudad, int? clicks) {
             _id = id;
             _titulo = titulo;
             _usuario = usuario;

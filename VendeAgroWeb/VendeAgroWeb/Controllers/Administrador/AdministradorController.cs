@@ -402,23 +402,23 @@ namespace VendeAgroWeb.Controllers.Administrador
 
         public async Task<ActionResult> AnunciosActivosPartial()
         {
-            AnunciosViewModel model = new AnunciosViewModel(await ObtenerAnunciosAprobados(), null, null);
+            AnunciosViewModel model = new AnunciosViewModel(await ObtenerAnunciosAprobados());
             return PartialView("AnunciosActivosPartial", model);
         }
 
         public async Task<ActionResult> AnunciosVencidosPartial()
         {
-            AnunciosViewModel model = new AnunciosViewModel(null, await ObtenerAnunciosAprobados(), null);
+            AnunciosViewModel model = new AnunciosViewModel(await ObtenerAnunciosAprobados());
             return PartialView("AnunciosVencidosPartial", model);
         }
 
         public async Task<ActionResult> AnunciosPendientesPartial()
         {
-            AnunciosViewModel model = new AnunciosViewModel(null, null, new List<AnunciosPendientesViewModel>());
+            AnunciosViewModel model = new AnunciosViewModel(await ObtenerAnunciosAprobados());
             return PartialView("AnunciosPendientesPartial", model);
         }
 
-        public async Task<ICollection<AnunciosAprobadosViewModel>> ObtenerAnunciosAprobados()
+        public async Task<ICollection<AnuncioViewModel>> ObtenerAnunciosAprobados()
         {
             return await Task.Run(() =>
             {
@@ -430,11 +430,15 @@ namespace VendeAgroWeb.Controllers.Administrador
                         return null;
                     }
 
-                    List<AnunciosAprobadosViewModel> lista = new List<AnunciosAprobadosViewModel>();
+                    List<AnuncioViewModel> lista = new List<AnuncioViewModel>();
                     var anuncios = _dbContext.Anuncios.Where(a => a.activo == true && a.estado == 1);
                     foreach (var item in anuncios)
                     {
-                        lista.Add(new AnunciosAprobadosViewModel());
+                        var categoria = _dbContext.Categorias.Where(c => c.id == item.Subcategoria.idCategoria).FirstOrDefault()?.nombre;
+
+                        var estado = _dbContext.Estadoes.Where(e => e.id == item.Ciudad.idEstado).FirstOrDefault()?.nombre;
+
+                        lista.Add(new AnuncioViewModel(item.id, item.titulo, item.Usuario.nombre, item.precio,categoria, item.Subcategoria.nombre,estado, item.Ciudad.nombre, item.clicks));
                     }
 
                     return lista;

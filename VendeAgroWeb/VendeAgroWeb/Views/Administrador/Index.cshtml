@@ -78,25 +78,7 @@
         });
     }
 
-    $('#buscar').keyup(function () {
-        var query = $(this).val();
-        query = query.toLowerCase();
-        
-        $('#clientes tbody tr').each(function () {
-            var actual = $(this);
-            var hijos = actual.children('.filtro');
-            actual.hide();
-            for (var i = 0; i < hijos.length; i++)
-            {
-                var texto = $(hijos[i]).html().toLowerCase();
-                if (texto.indexOf(query) != -1)
-                {
-                    $(hijos[i]).parent().show();
-                    break;
-                }
-            }
-        });
-    });
+    
 
     function activaTab(tab) {
         $('.nav-tabs a[href="#' + tab + '"]').tab('show');
