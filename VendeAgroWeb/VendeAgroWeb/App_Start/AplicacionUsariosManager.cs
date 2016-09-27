@@ -204,6 +204,37 @@ namespace VendeAgroWeb
             return LoginStatus.Incorrecto;
         }
 
+        public void LogoutAdmin()
+        {
+            HttpRequest request = HttpContext.Current.Request;
+            if (request.Cookies["AdminVendeAgro"] != null)
+            {
+                var token = request.Cookies["AdminVendeAgro"]["token"];
+                if (token != null)
+                {
+                    borrarCookie(HttpContext.Current.Response, "AdminVendeAgro");
+                    using (var _dbContext = new VendeAgroEntities())
+                    {
+                        _dbContext.Database.Connection.Open();
+                        if (_dbContext.Database.Connection.State != System.Data.ConnectionState.Open)
+                        {
+                            return;
+                        }
+                        var usuario = _dbContext.Usuario_Administrador.Where(u => u.tokenSesion == token).FirstOrDefault();
+                        if (usuario == null)
+                        {
+                            return;
+                        }
+
+                        usuario.tokenSesion = "";
+                        _dbContext.SaveChanges();
+
+                    }
+
+                }
+            }
+        }
+
         public void LogoutPortal()
         {
             HttpRequest request = HttpContext.Current.Request;
@@ -212,8 +243,14 @@ namespace VendeAgroWeb
                 var token = request.Cookies["VendeAgroUser"]["token"];
                 if (token != null)
                 {
+                    borrarCookie(HttpContext.Current.Response, "VendeAgroUser");
                     using (var _dbContext = new VendeAgroEntities())
                     {
+                        _dbContext.Database.Connection.Open();
+                        if(_dbContext.Database.Connection.State != System.Data.ConnectionState.Open)
+                        {
+                            return;
+                        }
                         var usuario = _dbContext.Usuarios.Where(u => u.tokenSesion == token).FirstOrDefault();
                         if (usuario == null)
                         {
@@ -226,7 +263,6 @@ namespace VendeAgroWeb
                     }
 
                 }
-                borrarCookie(HttpContext.Current.Response, "VendeAgroUser");
             }
         }
 

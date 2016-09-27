@@ -442,6 +442,12 @@ namespace VendeAgroWeb.Controllers.Administrador
             });
         }
 
+        public ActionResult Logout()
+        {
+            Startup.GetAplicacionUsuariosManager().LogoutAdmin();
+            return RedirectToAction("Index", "Administrador");
+        }
+
 
         public ActionResult Beneficios()
         {
