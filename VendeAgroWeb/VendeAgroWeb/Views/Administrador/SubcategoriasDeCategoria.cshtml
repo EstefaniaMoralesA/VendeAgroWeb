@@ -1,14 +1,14 @@
 ﻿@model VendeAgroWeb.Models.Administrador.SubcategoriasViewModel
 
 @{
-    ViewBag.Title = "Administración Subcategorías";
+    ViewBag.Title = "Administración Subcategorías de Categoría";
     Layout = "Shared/_AdministradorLayout.cshtml";
 }
 
 <div class="row" style="margin-top:30px">
     <div class="col-sm-offset-1 col-sm-10">
         <div class="row">
-            <a class="btn btn-success btn-lg btn-sistema" href="/Administrador/NuevaSubcategoria" id="agregar"><span class="glyphicon glyphicon-plus-sign" style="top: 3px;"></span> <span class="texto">nueva subcategoría</span></a>
+            <p><a href="/Administrador/Categorias">@Model.Subcategorias.ElementAt(0).NombreCategoria</a><span> > </span><span>Subcategorías</span></p>
         </div>
         <div class="row" style="margin-top:20px">
             <div class="table-responsive">

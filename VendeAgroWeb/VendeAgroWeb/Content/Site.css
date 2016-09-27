@@ -613,10 +613,6 @@ a {
     display:none;
 }
 
-.hide-subcategoria-categoria {
-    display:none;
-}
-
 @media (min-width:768px) and (max-width:868px){
     .table-responsive{
         overflow-x:scroll !important;

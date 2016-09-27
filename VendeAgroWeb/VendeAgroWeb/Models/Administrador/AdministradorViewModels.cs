@@ -152,7 +152,9 @@ namespace VendeAgroWeb.Models.Administrador
         }
     }
 
-    public class UsuariosViewModel {
+
+    public class UsuariosViewModel
+    {
 
         private int _tipo;
         private ICollection<UsuarioAdministradorViewModel> _usuariosAdministrador;
@@ -190,7 +192,47 @@ namespace VendeAgroWeb.Models.Administrador
         }
     }
 
+    public class AnunciosAprobadosViewModel {
+    }
+
+    public class AnunciosPendientesViewModel {
+    }
+
     public class AnunciosViewModel {
+        private ICollection<AnunciosAprobadosViewModel> _anunciosActivos;
+        private ICollection<AnunciosAprobadosViewModel> _anunciosVencidos;
+        private ICollection<AnunciosPendientesViewModel> _anunciosPendientes;
+
+        public AnunciosViewModel(ICollection<AnunciosAprobadosViewModel> anunciosActivos, ICollection<AnunciosAprobadosViewModel> anunciosVencidos, ICollection<AnunciosPendientesViewModel> anunciosPendientes)
+        {
+            _anunciosActivos = anunciosActivos;
+            _anunciosVencidos = anunciosVencidos;
+            _anunciosPendientes = anunciosPendientes;
+        }
+
+        public ICollection<AnunciosAprobadosViewModel> AnunciosActivos
+        {
+            get
+            {
+                return _anunciosActivos;
+            }
+        }
+
+        public ICollection<AnunciosAprobadosViewModel> AnunciosVencidos
+        {
+            get
+            {
+                return _anunciosVencidos;
+            }
+        }
+
+        public ICollection<AnunciosPendientesViewModel> AnunciosPendientes
+        {
+            get
+            {
+                return _anunciosPendientes;
+            }
+        }
     }
 
     public class SubcategoriasViewModel {
@@ -226,6 +268,7 @@ namespace VendeAgroWeb.Models.Administrador
         private int _id;
         private string _nombre;
         private bool _activo;
+        private string _nombreCategoria;
 
         public int Id
         {
@@ -243,6 +286,14 @@ namespace VendeAgroWeb.Models.Administrador
             }
         }
 
+        public string NombreCategoria
+        {
+            get
+            {
+                return _nombreCategoria;
+            }
+        }
+
         public bool Activo
         {
             get
@@ -251,10 +302,11 @@ namespace VendeAgroWeb.Models.Administrador
             }
         }
 
-        public SubcategoriaViewModel(int id, string nombre, bool activo) {
+        public SubcategoriaViewModel(int id, string nombre, bool activo, string nombreCategoria) {
             _id = id;
             _nombre = nombre;
             _activo = activo;
+            _nombreCategoria = nombreCategoria;
         }
     }
 
@@ -300,6 +352,8 @@ namespace VendeAgroWeb.Models.Administrador
         private int _id;
         private string _nombre;
         private bool _activo;
+        private int _numSubcategorias;
+        private int _numAnuncios;
 
         public int Id
         {
@@ -325,11 +379,28 @@ namespace VendeAgroWeb.Models.Administrador
             }
         }
 
-        public CategoriaViewModel(int id, string nombre, bool activo)
+        public int NumSubcategorias
+        {
+            get
+            {
+                return _numSubcategorias;
+            }
+        }
+
+        public int NumAnuncios
+        {
+            get
+            {
+                return _numAnuncios;
+            }
+        }
+
+        public CategoriaViewModel(int id, string nombre, bool activo, int numSubcategorias)
         {
             _id = id;
             _nombre = nombre;
             _activo = activo;
+            _numSubcategorias = numSubcategorias;
         }
     }
 

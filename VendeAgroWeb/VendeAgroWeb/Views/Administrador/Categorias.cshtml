@@ -31,9 +31,27 @@
                             {
                                 <tr>
                                     <td>@item.Nombre</td>
-                                    <td><a data-id="@item.Id" class="btn btn-primary btn-13-caracteres btn-categorias-subcategorias">subcategorías</a></td>
-                                    <td><a class="btn btn-primary btn-8-caracteres categorias-anuncios">anuncios</a></td>
                                     @{
+                                        if (item.NumSubcategorias > 0)
+                                        {
+                                            <td><a href="/Administrador/SubcategoriasDeCategoria?id=@item.Id" class="btn btn-primary btn-13-caracteres btn-categorias-subcategorias"><span>@item.NumSubcategorias </span>subcategorías</a></td>
+                                        }
+                                        else
+                                        {
+                                            <td><a class="btn btn-default btn-13-caracteres btn-categorias-subcategorias" style="cursor:not-allowed;"><span>@item.NumSubcategorias </span>subcategorías</a></td>
+
+                                        }
+
+                                        if (item.NumAnuncios > 0)
+                                        {
+                                            <td><a href="/Administrador/SubcategoriasDeCategoria?id=@item.Id" class="btn btn-primary btn-8-caracteres btn-categorias-anuncios"><span>@item.NumAnuncios </span>anuncios</a></td>
+                                        }
+                                        else
+                                        {
+                                            <td><a class="btn btn-default btn-8-caracteres btn-categorias-anuncios" style="cursor:not-allowed;"><span>@item.NumAnuncios </span>anuncios</a></td>
+
+                                        }
+
                                         if (item.Activo)
                                         {
                                             <td><a data-id="@item.Id" class="btn btn-danger btn-10-caracteres btn-categorias-desactivar">desactivar</a></td>

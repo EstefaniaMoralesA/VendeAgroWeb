@@ -1,0 +1,128 @@
+﻿@{
+    ViewBag.Title = "Administración Anuncios";
+    Layout = "Shared/_AdministradorLayout.cshtml";
+}
+
+<div class="row">
+    <div class="col-sm-offset-1 col-sm-10">
+        <ul class="nav nav-tabs">
+            <li><a id="activos-tab" href="#activos" data-toggle="tab">Activos</a></li>
+            <li><a id="vencidos-tab" href="#vencidos" data-toggle="tab">Vencidos</a></li>
+            <li><a id="pendientes-tab" href="#pendientes" data-toggle="tab">Pendientes por Aprobar</a></li>
+        </ul>
+    </div>
+</div>
+
+<div class="row" style="margin-top:30px">
+    <div class="col-sm-offset-1 col-sm-10">
+        <div class="tab-content" id="tabs">
+            <div class="tab-pane" id="activos">
+
+            </div>
+            <div class="tab-pane" id="vencidos">
+
+            </div>
+            <div class="tab-pane" id="pendientes">
+
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
+
+<script>
+    $(document).ready(function () {
+        activaTab('activos');
+    });
+
+    $(window).load(function () {
+        getActivos();
+    });
+
+    $("#activos-tab").click(function () {
+        activaTab('activos');
+        getActivos();
+    });
+
+    $("#vencidos-tab").click(function () {
+        activaTab('vencidos');
+        getVencidos();
+    });
+
+    $("#pendientes-tab").click(function () {
+        activaTab('pendientes');
+        getPendientes();
+    });
+
+    function getActivos() {
+        $.ajax({
+            type: "POST",
+            data: {},
+            url: '/Administrador/AnunciosActivosPartial',
+            success: function (result) {
+                $("#activos").html(result);
+            },
+            error: function (msg) {
+                console.log(msg);
+                alert("Error en anuncios activos: " + msg);
+            }
+        });
+    }
+
+    function getVencidos() {
+        $.ajax({
+            type: "POST",
+            data: {},
+            url: '/Administrador/AnunciosVencidosPartial',
+            success: function (result) {
+                $("#vencidos").html(result);
+            },
+            error: function (msg) {
+                console.log(msg);
+                alert("Error en anuncios vencidos: " + msg);
+            }
+        });
+    }
+
+    function getPendientes() {
+        $.ajax({
+            type: "POST",
+            data: {},
+            url: '/Administrador/AnunciosPendientesPartial',
+            success: function (result) {
+                $("#pendientes").html(result);
+            },
+            error: function (msg) {
+                console.log(msg);
+                alert("Error en anuncios pendientes: " + msg);
+            }
+        });
+    }
+
+    /*$('#buscar').keyup(function () {
+        var query = $(this).val();
+        query = query.toLowerCase();
+        
+        $('#clientes tbody tr').each(function () {
+            var actual = $(this);
+            var hijos = actual.children('.filtro');
+            actual.hide();
+            for (var i = 0; i < hijos.length; i++)
+            {
+                var texto = $(hijos[i]).html().toLowerCase();
+                if (texto.indexOf(query) != -1)
+                {
+                    $(hijos[i]).parent().show();
+                    break;
+                }
+            }
+        });
+    });*/
+
+    function activaTab(tab) {
+        $('.nav-tabs a[href="#' + tab + '"]').tab('show');
+    };
+</script>

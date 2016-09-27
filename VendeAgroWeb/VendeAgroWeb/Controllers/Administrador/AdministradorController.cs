@@ -85,6 +85,21 @@ namespace VendeAgroWeb.Controllers.Administrador
             });
         }
 
+        public async Task<ActionResult> SubcategoriasDeCategoria(int? id)
+        {
+            if (await Startup.GetAplicacionUsuariosManager().VerificarAdminSesionAsync() == LoginStatus.Incorrecto)
+            {
+                return RedirectToAction("Login", "Administrador");
+            }
+            if(id == null)
+            {
+                return RedirectToAction("Categorias", "Administrador");
+            }
+            SubcategoriasViewModel model = new SubcategoriasViewModel(await ObtenerSubcategoriasDeCategoria(id));
+
+            return View(model);
+        }
+
         public async Task<ICollection<SubcategoriaViewModel>> ObtenerSubcategoriasDeCategoria(int? id)
         {
             return await Task.Run(() =>
@@ -99,15 +114,59 @@ namespace VendeAgroWeb.Controllers.Administrador
 
                     List<SubcategoriaViewModel> lista = new List<SubcategoriaViewModel>();
                     var subcategorias = _dbContext.Subcategorias.Where(s => s.idCategoria == id);
+                    var nombreCategoria = _dbContext.Categorias.Where(c => c.id == id).FirstOrDefault()?.nombre;
                     foreach (var item in subcategorias)
                     {
-                        lista.Add(new SubcategoriaViewModel(item.id, item.nombre, item.activo));
+                        lista.Add(new SubcategoriaViewModel(item.id, item.nombre, item.activo, nombreCategoria));
                     }
                     
                     return lista;
                 }
             });
         }
+
+        /*public async Task<ActionResult> AnunciosDeCategoria(int? id)
+        {
+            if (await Startup.GetAplicacionUsuariosManager().VerificarAdminSesionAsync() == LoginStatus.Incorrecto)
+            {
+                return RedirectToAction("Login", "Administrador");
+            }
+            if (id == null)
+            {
+                return RedirectToAction("Categorias", "Administrador");
+            }
+            AnunciosViewModel model = new AnunciosViewModel(await ObtenerAnunciosDeCategoria(id));
+
+            return View(model);
+        }
+
+        public async Task<ICollection<AnunciosViewModel>> ObtenerAnunciosDeCategoria(int? id)
+        {
+            return await Task.Run(() =>
+            {
+                using (var _dbContext = new VendeAgroEntities())
+                {
+                    _dbContext.Database.Connection.Open();
+                    if (_dbContext.Database.Connection.State != ConnectionState.Open)
+                    {
+                        return null;
+                    }
+
+                    List<AnunciosViewModel> lista = new List<AnunciosViewModel>();
+                    var subcategorias = _dbContext.Subcategorias.Where(s => s.idCategoria == id);
+                    foreach (var item in subcategorias)
+                    {
+                        var anuncios = _dbContext.Anuncios.Where(a => a.idSubcategoria == item.id);
+                        foreach (var anuncio in anuncios)
+                        {
+                            lista.Add(new AnuncioViewModel(item.id, item.nombre, item.activo));
+                        }
+                    }
+
+                    return lista;
+                }
+            });
+        }*/
 
         [HttpPost]
         [AllowAnonymous]
@@ -264,7 +323,8 @@ namespace VendeAgroWeb.Controllers.Administrador
                     var categorias = _dbContext.Categorias;
                     foreach (var item in categorias)
                     {
-                        lista.Add(new CategoriaViewModel(item.id, item.nombre, item.activo));
+                        var numSubcategorias = _dbContext.Subcategorias.Where(s => s.idCategoria == item.id).ToList().Count;
+                        lista.Add(new CategoriaViewModel(item.id, item.nombre, item.activo, numSubcategorias));
                     }
 
                     return lista;
@@ -314,9 +374,11 @@ namespace VendeAgroWeb.Controllers.Administrador
 
                     List<SubcategoriaViewModel> lista = new List<SubcategoriaViewModel>();
                     var subcategorias = _dbContext.Subcategorias;
+                    
                     foreach (var item in subcategorias)
                     {
-                        lista.Add(new SubcategoriaViewModel(item.id, item.nombre, item.activo));
+                        var nombreCategoria = _dbContext.Categorias.Where(c => c.id == item.idCategoria).FirstOrDefault()?.nombre;
+                        lista.Add(new SubcategoriaViewModel(item.id, item.nombre, item.activo, nombreCategoria));
                     }
 
                     return lista;
@@ -328,6 +390,58 @@ namespace VendeAgroWeb.Controllers.Administrador
         {
             return View();
         }
+
+        public async Task<ActionResult> Anuncios()
+        {
+            if (await Startup.GetAplicacionUsuariosManager().VerificarAdminSesionAsync() == LoginStatus.Incorrecto)
+            {
+                return RedirectToAction("Login", "Administrador");
+            }
+            return View();
+        }
+
+        public async Task<ActionResult> AnunciosActivosPartial()
+        {
+            AnunciosViewModel model = new AnunciosViewModel(await ObtenerAnunciosAprobados(), null, null);
+            return PartialView("AnunciosActivosPartial", model);
+        }
+
+        public async Task<ActionResult> AnunciosVencidosPartial()
+        {
+            AnunciosViewModel model = new AnunciosViewModel(null, await ObtenerAnunciosAprobados(), null);
+            return PartialView("AnunciosVencidosPartial", model);
+        }
+
+        public async Task<ActionResult> AnunciosPendientesPartial()
+        {
+            AnunciosViewModel model = new AnunciosViewModel(null, null, new List<AnunciosPendientesViewModel>());
+            return PartialView("AnunciosPendientesPartial", model);
+        }
+
+        public async Task<ICollection<AnunciosAprobadosViewModel>> ObtenerAnunciosAprobados()
+        {
+            return await Task.Run(() =>
+            {
+                using (var _dbContext = new VendeAgroEntities())
+                {
+                    _dbContext.Database.Connection.Open();
+                    if (_dbContext.Database.Connection.State != ConnectionState.Open)
+                    {
+                        return null;
+                    }
+
+                    List<AnunciosAprobadosViewModel> lista = new List<AnunciosAprobadosViewModel>();
+                    var anuncios = _dbContext.Anuncios.Where(a => a.activo == true && a.estado == 1);
+                    foreach (var item in anuncios)
+                    {
+                        lista.Add(new AnunciosAprobadosViewModel());
+                    }
+
+                    return lista;
+                }
+            });
+        }
+
 
         public ActionResult Beneficios()
         {
