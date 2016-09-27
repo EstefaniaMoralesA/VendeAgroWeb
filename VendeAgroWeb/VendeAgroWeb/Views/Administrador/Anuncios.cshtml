@@ -9,6 +9,7 @@
             <li><a id="activos-tab" href="#activos" data-toggle="tab">Activos</a></li>
             <li><a id="vencidos-tab" href="#vencidos" data-toggle="tab">Vencidos</a></li>
             <li><a id="pendientes-tab" href="#pendientes" data-toggle="tab">Pendientes por Aprobar</a></li>
+            <li><a id="noaprobados-tab" href="#noaprobados" data-toggle="tab">No Aprobados</a></li>
         </ul>
     </div>
 </div>
@@ -23,6 +24,9 @@
 
             </div>
             <div class="tab-pane" id="pendientes">
+
+            </div>
+            <div class="tab-pane" id="noaprobados">
 
             </div>
         </div>
@@ -55,6 +59,11 @@
     $("#pendientes-tab").click(function () {
         activaTab('pendientes');
         getPendientes();
+    });
+
+    $("#noaprobados-tab").click(function () {
+        activaTab('noaprobados');
+        getNoAprobados();
     });
 
     function getActivos() {
@@ -98,6 +107,21 @@
             error: function (msg) {
                 console.log(msg);
                 alert("Error en anuncios pendientes: " + msg);
+            }
+        });
+    }
+
+    function getNoAprobados() {
+        $.ajax({
+            type: "POST",
+            data: {},
+            url: '/Administrador/AnunciosNoAprobadosPartial',
+            success: function (result) {
+                $("#noaprobados").html(result);
+            },
+            error: function (msg) {
+                console.log(msg);
+                alert("Error en anuncios no aprobados: " + msg);
             }
         });
     }

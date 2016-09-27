@@ -17,20 +17,28 @@
         </thead>
         <tbody>
             @{
-                foreach (var item in Model.Anuncios)
+                if (Model.Anuncios.Count < 1)
                 {
-                    <tr>
-                        <td>@item.Titulo</td>
-                        <td>@item.Precio</td>
-                        <td>@item.Usuario</td>
-                        <td>@item.Categoria</td>
-                        <td>@item.Subcategoria</td>
-                        <td>@item.Estado</td>
-                        <td>@item.Ciudad</td>
-                        <td>@item.Clicks</td>
-                        <td><a class="btn btn-primary btn-8-caracteres">detalles</a></td>
-                    </tr>
-                }          
+                    <tr><td colspan="9" >No hay anuncios en esta modalidad.</td></tr>
+                }
+                else
+                {
+                    foreach (var item in Model.Anuncios)
+                    {
+                        <tr>
+                            <td>@item.Titulo</td>
+                            <td>@item.Precio</td>
+                            <td>@item.Usuario</td>
+                            <td>@item.Categoria</td>
+                            <td>@item.Subcategoria</td>
+                            <td>@item.Estado</td>
+                            <td>@item.Ciudad</td>
+                            <td>@item.Clicks</td>
+                            <td><a class="btn btn-primary btn-8-caracteres">detalles</a></td>
+                        </tr>
+                    }
+                }
+
             }
         </tbody>
     </table>

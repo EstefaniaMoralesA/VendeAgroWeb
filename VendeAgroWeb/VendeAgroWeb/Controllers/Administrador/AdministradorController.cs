@@ -403,19 +403,25 @@ namespace VendeAgroWeb.Controllers.Administrador
         public async Task<ActionResult> AnunciosActivosPartial()
         {
             AnunciosViewModel model = new AnunciosViewModel(await ObtenerAnunciosAprobados());
-            return PartialView("AnunciosActivosPartial", model);
+            return PartialView("AnunciosPartial", model);
         }
 
         public async Task<ActionResult> AnunciosVencidosPartial()
         {
-            AnunciosViewModel model = new AnunciosViewModel(await ObtenerAnunciosAprobados());
-            return PartialView("AnunciosVencidosPartial", model);
+            AnunciosViewModel model = new AnunciosViewModel(await ObtenerAnunciosVencidos());
+            return PartialView("AnunciosPartial", model);
         }
 
         public async Task<ActionResult> AnunciosPendientesPartial()
         {
-            AnunciosViewModel model = new AnunciosViewModel(await ObtenerAnunciosAprobados());
-            return PartialView("AnunciosPendientesPartial", model);
+            AnunciosViewModel model = new AnunciosViewModel(await ObtenerAnunciosPorAprobar());
+            return PartialView("AnunciosPartial", model);
+        }
+
+        public async Task<ActionResult> AnunciosNoAprobadosPartial()
+        {
+            AnunciosViewModel model = new AnunciosViewModel(await ObtenerAnunciosNoAprobados());
+            return PartialView("AnunciosPartial", model);
         }
 
         public async Task<ICollection<AnuncioViewModel>> ObtenerAnunciosAprobados()
@@ -430,20 +436,79 @@ namespace VendeAgroWeb.Controllers.Administrador
                         return null;
                     }
 
-                    List<AnuncioViewModel> lista = new List<AnuncioViewModel>();
-                    var anuncios = _dbContext.Anuncios.Where(a => a.activo == true && a.estado == 1);
-                    foreach (var item in anuncios)
-                    {
-                        var categoria = _dbContext.Categorias.Where(c => c.id == item.Subcategoria.idCategoria).FirstOrDefault()?.nombre;
-
-                        var estado = _dbContext.Estadoes.Where(e => e.id == item.Ciudad.idEstado).FirstOrDefault()?.nombre;
-
-                        lista.Add(new AnuncioViewModel(item.id, item.titulo, item.Usuario.nombre, item.precio,categoria, item.Subcategoria.nombre,estado, item.Ciudad.nombre, item.clicks));
-                    }
-
-                    return lista;
+                    var anuncios = _dbContext.Anuncios.Where(a => a.activo == true && a.estado == (int)EstadoAnuncio.Aprobado);
+                    return CreaAnuncios(anuncios, _dbContext);
                 }
             });
+        }
+
+        public async Task<ICollection<AnuncioViewModel>> ObtenerAnunciosVencidos()
+        {
+            return await Task.Run(() =>
+            {
+                using (var _dbContext = new VendeAgroEntities())
+                {
+                    _dbContext.Database.Connection.Open();
+                    if (_dbContext.Database.Connection.State != ConnectionState.Open)
+                    {
+                        return null;
+                    }
+
+                    var anuncios = _dbContext.Anuncios.Where(a => a.activo == false && a.estado == (int)EstadoAnuncio.Aprobado);
+                    return CreaAnuncios(anuncios, _dbContext);
+                }
+            });
+        }
+
+        public async Task<ICollection<AnuncioViewModel>> ObtenerAnunciosPorAprobar()
+        {
+            return await Task.Run(() =>
+            {
+                using (var _dbContext = new VendeAgroEntities())
+                {
+                    _dbContext.Database.Connection.Open();
+                    if (_dbContext.Database.Connection.State != ConnectionState.Open)
+                    {
+                        return null;
+                    }
+
+                    var anuncios = _dbContext.Anuncios.Where(a => a.activo == false && a.estado == (int)EstadoAnuncio.PendientePorAprobar);
+                    return CreaAnuncios(anuncios, _dbContext);
+                }
+            });
+        }
+
+        public async Task<ICollection<AnuncioViewModel>> ObtenerAnunciosNoAprobados()
+        {
+            return await Task.Run(() =>
+            {
+                using (var _dbContext = new VendeAgroEntities())
+                {
+                    _dbContext.Database.Connection.Open();
+                    if (_dbContext.Database.Connection.State != ConnectionState.Open)
+                    {
+                        return null;
+                    }
+
+                    var anuncios = _dbContext.Anuncios.Where(a => a.estado == (int)EstadoAnuncio.NoAprobado);
+                    return CreaAnuncios(anuncios, _dbContext);
+                }
+            });
+        }
+
+        private List<AnuncioViewModel> CreaAnuncios(IQueryable<Anuncio> anuncios, VendeAgroEntities _dbContext)
+        {
+            List<AnuncioViewModel> lista = new List<AnuncioViewModel>();
+            foreach (var item in anuncios)
+            {
+                var categoria = _dbContext.Categorias.Where(c => c.id == item.Subcategoria.idCategoria).FirstOrDefault()?.nombre;
+
+                var estado = _dbContext.Estadoes.Where(e => e.id == item.Ciudad.idEstado).FirstOrDefault()?.nombre;
+
+                lista.Add(new AnuncioViewModel(item.id, item.titulo, item.Usuario.nombre, item.precio, categoria, item.Subcategoria.nombre, estado, item.Ciudad.nombre, item.clicks));
+            }
+
+            return lista;
         }
 
         public ActionResult Logout()

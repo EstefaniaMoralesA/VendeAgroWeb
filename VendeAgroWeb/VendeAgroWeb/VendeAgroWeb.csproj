@@ -264,6 +264,7 @@
     <Compile Include="Models\Estado.cs">
       <DependentUpon>DatabaseModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\EstadoAnuncio.cs" />
     <Compile Include="Models\Fotos_Anuncio.cs">
       <DependentUpon>DatabaseModel.tt</DependentUpon>
     </Compile>
