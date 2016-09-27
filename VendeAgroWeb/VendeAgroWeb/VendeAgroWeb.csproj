@@ -418,10 +418,9 @@
     <Content Include="Views\Administrador\UsuariosAdministradorPartial.cshtml" />
     <Content Include="Views\Administrador\UsuariosPortalPartial.cshtml" />
     <Content Include="Views\Administrador\SubcategoriasDeCategoria.cshtml" />
-    <Content Include="Views\Administrador\AnunciosActivosPartial.cshtml" />
-    <Content Include="Views\Administrador\AnunciosPendientesPartial.cshtml" />
+    <Content Include="Views\Administrador\AnunciosPartial.cshtml" />
     <Content Include="Views\Administrador\Anuncios.cshtml" />
-    <Content Include="Views\Administrador\AnunciosVencidosPartial.cshtml" />
+    <Content Include="Views\Administrador\AnuncioDetalles.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
