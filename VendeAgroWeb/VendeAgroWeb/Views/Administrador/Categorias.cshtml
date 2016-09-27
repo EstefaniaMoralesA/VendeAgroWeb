@@ -26,32 +26,47 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td>Equino</td>
-                            <td><a class="btn btn-primary categorias-subcategorias">subcategorías</a></td>
-                            <td><a class="btn btn-primary categorias-anuncios">83 anuncios</a></td>
-                            <td><a class="btn btn-danger categorias-desactivar">desactivar</a></td>
-                            <td class="hide-modificar-boton"><a class="btn btn-success categorias-anuncios modificar-boton">modificar</a></td>
-                                @using (Html.BeginForm())
-                                {
-                                    @Html.AntiForgeryToken()
+                        @{
+                            foreach (var item in Model.Categorias)
+                            {
+                                <tr>
+                                    <td>@item.Nombre</td>
+                                    <td><a data-id="@item.Id" class="btn btn-primary btn-13-caracteres btn-categorias-subcategorias">subcategorías</a></td>
+                                    <td><a class="btn btn-primary btn-8-caracteres categorias-anuncios">anuncios</a></td>
+                                    @{
+                                        if (item.Activo)
+                                        {
+                                            <td><a data-id="@item.Id" class="btn btn-danger btn-10-caracteres btn-categorias-desactivar">desactivar</a></td>
+                                        }
+                                        else
+                                        {
+                                            <td><a data-id="@item.Id" class="btn btn-success btn-7-caracteres btn-categorias-activar">activar</a></td>
+                                        }
+                                    }
+                                    <td class="hide-modificar-boton"><a class="btn btn-success btn-9-caracteres modificar-boton">modificar</a></td>
+                                    @using (Html.BeginForm())
+                                    {
+                                        @Html.AntiForgeryToken()
 
-                                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                                        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
-                                    <td class="hide-modificar">
-                                        <div class="form-group">
-                                            @Html.EditorFor(model => model.Nombre, new { htmlAttributes = new { @class = "form-control", style = "width: 120px;" } })
-                                            @Html.ValidationMessageFor(model => model.Nombre, "", new { @class = "text-danger" })
-                                        </div>
-                                    </td>
-                                    <td class="hide-modificar">
-                                        <div class="form-group">
-                                            <input type="submit" value="guardar" class="btn btn-success usuario-desactivar" />
-                                        </div>
-                                    </td>
-                                }
-                            <td class="hide-modificar"><a class="btn btn-default cancelar-boton">cancelar</a></td>
-                        </tr>
+                                        <td class="hide-modificar">
+                                            <div class="form-group">
+                                                @Html.EditorFor(model => model.Titulo, new { htmlAttributes = new { @class = "form-control", style = "width: 120px;" } })
+                                                @Html.ValidationMessageFor(model => model.Titulo, "", new { @class = "text-danger" })
+                                            </div>
+                                        </td>
+                                        <td class="hide-modificar">
+                                            <div class="form-group">
+                                                <input type="submit" value="guardar" class="btn btn-success btn-7-caracteres categorias-guardar" />
+                                                <input type="hidden" value="@item.Id" name="Id"/>
+                                            </div>
+                                        </td>
+                                    }
+                                    <td class="hide-modificar"><a class="btn btn-default btn-8-caracteres categorias-cancelar">cancelar</a></td>
+                                </tr>
+                            }
+                        }
                     </tbody>
                 </table>
             </div>
@@ -78,9 +93,78 @@
         $(".hide-modificar-boton").hide();
     });
 
-    $(".cancelar-boton").click(function () {
+    $(".categorias-cancelar").click(function () {
         $(".hide-modificar").hide();
         $(".hide-modificar-boton").show();
     });
 
+    $(".btn-categorias-desactivar").click(function () {
+        var id = $(this).data('id');
+
+        $.ajax({
+            type: "POST",
+            url: "/Administrador/CambiarEstadoCategoria?id=" + id + "&tipo=" + 0,
+            data: {},
+            success: function (result) {
+                if(result){
+                    location.reload();
+                }
+                else {
+                    $('.error-row').show(' ');
+                }
+            },
+            error: function (msg) {
+                console.log(msg);
+            }
+        });
+    });
+
+    $(".btn-categorias-activar").click(function () {
+        var id = $(this).data('id');
+
+        $.ajax({
+            type: "POST",
+            url: "/Administrador/CambiarEstadoCategoria?id=" + id + "&tipo=" + 1,
+            data: {},
+            success: function (result) {
+                if (result) {
+                    location.reload();
+                }
+                else {
+                    $('.error-row').show(' ');
+                }
+            },
+            error: function (msg) {
+                console.log(msg);
+            }
+        });
+    });
+
+    $(".btn-categorias-subcategorias").click(function () {
+        var id = $(this).data('id');
+
+        $.ajax({
+            type: "GET",
+            url: "/Administrador/ObtenerSubcategoriasDeCategoria?id=" + id,
+            data: { get_param: 'value' },
+            dataType: 'json',
+            success: function (result) {
+                if (result) {
+                    console.log(result);
+                    var json = $.parseJSON(j);
+                    $(json).each(function(i,val){
+                        $.each(val, function (k, v) {
+                            console.log(k + " : " + v);
+                        });
+                        });
+                }
+                else {
+                    console.log(result);
+                }
+            },
+            error: function (msg) {
+                console.log(msg);
+            }
+        });
+    });
 </script>

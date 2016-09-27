@@ -1,4 +1,9 @@
 ﻿@model VendeAgroWeb.Models.Administrador.UsuariosViewModel
+<div class="error-row">
+        <div class="alert alert-danger" style="text-align:center;">
+            <strong>¡Error!</strong> se produjo un error, vuelva a intentarlo.
+    </div>
+</div>
 <div class="table-responsive">
     <table class="table table-striped table-responsive">
         <thead>
@@ -18,19 +23,70 @@
                             <td>@item.Nombre</td>
                             <td>@item.Email</td>
                             @{
-                                if (item.Activo)
+                                if (Startup.GetAplicacionUsuariosManager().UsuarioAdministradorActual.Id == item.Id)
                                 {
-                                    <td><a data-id="@item.Id" class="btn btn-danger usuario-desactivar">desactivar</a></td>
+                                    <td><p style="padding-left: 20px; padding-top: 6px; padding-bottom: 6px; margin: 0px;">Usuario Actual</p></td>
                                 }
                                 else
                                 {
-                                    <td><a data-id="@item.Id" class="btn btn-success usuario-activar">activar</a></td>
+                                    if (item.Activo)
+                                    {
+                                        <td><a data-id="@item.Id" class="btn btn-danger btn-10-caracteres btn-usuario-desactivar">desactivar</a></td>
+                                    }
+                                    else
+                                    {
+                                        <td><a data-id="@item.Id" class="btn btn-success btn-7-caracteres btn-usuario-activar">activar</a></td>
+                                    }
                                 }
                             }
                         </tr>
-                   }
-               }
+                    }
+                }
             }
         </tbody>
     </table>
 </div>
+
+<script>
+    $(".btn-usuario-desactivar").click(function () {
+        var id = $(this).data('id');
+
+        $.ajax({
+            type: "POST",
+            url: "/Administrador/CambiarEstadoUsuarioAdmin?id=" + id + "&tipo=" + 0,
+            data: {},
+            success: function (result) {
+                if(result){
+                    location.reload();
+                }
+                else {
+                    $('.error-row').show(' ');
+                }
+            },
+            error: function (msg) {
+                console.log(msg);
+            }
+        });
+    });
+
+    $(".btn-usuario-activar").click(function () {
+        var id = $(this).data('id');
+
+        $.ajax({
+            type: "POST",
+            url: "/Administrador/CambiarEstadoUsuarioAdmin?id=" + id + "&tipo=" + 1,
+            data: {},
+            success: function (result) {
+                if (result) {
+                    location.reload();
+                }
+                else {
+                    $('.error-row').show(' ');
+                }
+            },
+            error: function (msg) {
+                console.log(msg);
+            }
+        });
+    });
+</script>

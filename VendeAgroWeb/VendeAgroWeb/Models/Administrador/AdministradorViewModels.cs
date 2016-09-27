@@ -193,10 +193,69 @@ namespace VendeAgroWeb.Models.Administrador
     public class AnunciosViewModel {
     }
 
-    public class CategoriasViewModel {
+    public class SubcategoriasViewModel {
+        private ICollection<SubcategoriaViewModel> _subcategorias;
+        private int _id;
+
+        public SubcategoriasViewModel(ICollection<SubcategoriaViewModel> subcategorias) {
+            _subcategorias = subcategorias;
+        }  
+
         [Required(ErrorMessage = "Campo requerido")]
         [Display(Name = "ModificarNombre")]
-        public string Nombre { get; set; }
+        public string Titulo { get; set; }
+
+        public ICollection<SubcategoriaViewModel> Subcategorias
+        {
+            get
+            {
+                return _subcategorias;
+            }
+        }
+
+        public int Id
+        {
+            get
+            {
+                return _id;
+            }
+        }
+    }
+
+    public class SubcategoriaViewModel {
+        private int _id;
+        private string _nombre;
+        private bool _activo;
+
+        public int Id
+        {
+            get
+            {
+                return _id;
+            }
+        }
+
+        public string Nombre
+        {
+            get
+            {
+                return _nombre;
+            }
+        }
+
+        public bool Activo
+        {
+            get
+            {
+                return _activo;
+            }
+        }
+
+        public SubcategoriaViewModel(int id, string nombre, bool activo) {
+            _id = id;
+            _nombre = nombre;
+            _activo = activo;
+        }
     }
 
     public class NuevaCategoriaViewModel {
@@ -205,10 +264,73 @@ namespace VendeAgroWeb.Models.Administrador
         public string Nombre { get; set; }
     }
 
-    public class SubcategoriasViewModel {
+    public class CategoriasViewModel
+    {
+        private ICollection<CategoriaViewModel> _categorias;
+        private int _id;
+
+        public CategoriasViewModel(ICollection<CategoriaViewModel> categorias)
+        {
+            _categorias = categorias;
+        }
+
         [Required(ErrorMessage = "Campo requerido")]
         [Display(Name = "ModificarNombre")]
-        public string Nombre { get; set; }
+        public string Titulo { get; set; }
+
+        public ICollection<CategoriaViewModel> Categorias
+        {
+            get
+            {
+                return _categorias;
+            }
+        }
+
+        public int Id
+        {
+            get
+            {
+                return _id;
+            }
+        }
+    }
+
+    public class CategoriaViewModel
+    {
+        private int _id;
+        private string _nombre;
+        private bool _activo;
+
+        public int Id
+        {
+            get
+            {
+                return _id;
+            }
+        }
+
+        public string Nombre
+        {
+            get
+            {
+                return _nombre;
+            }
+        }
+
+        public bool Activo
+        {
+            get
+            {
+                return _activo;
+            }
+        }
+
+        public CategoriaViewModel(int id, string nombre, bool activo)
+        {
+            _id = id;
+            _nombre = nombre;
+            _activo = activo;
+        }
     }
 
     public class NuevaSubcategoriaViewModel

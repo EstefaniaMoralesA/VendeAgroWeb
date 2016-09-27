@@ -564,45 +564,34 @@ a {
                     color: white !important;
                 }
 
-.usuario-desactivar {
+.btn-5-caracteres {
+    padding-left: 48px;
+    padding-right: 48px;
+}
+
+.btn-7-caracteres {
+    padding-left: 46px;
+    padding-right: 46px;
+}
+
+.btn-8-caracteres {
+    padding-left: 39px;
+    padding-right: 39px;
+}
+
+.btn-9-caracteres {
+    padding-left: 38px;
+    padding-right: 38px;
+}
+
+.btn-10-caracteres {
     padding-left:35px;
     padding-right: 35px;
 }
 
-.usuario-activar {
-    padding-left:38px;
-    padding-right: 38px;
-}
-
-.btn-usuario-anuncios {
-    padding-left:36px;
-    padding-right: 36px;
-}
-
-
-.btn-usuario-pagos {
-    padding-left: 44px;
-    padding-right: 44px;
-}
-
-.categorias-subcategorias {
-    padding-left: 28px;
-    padding-right: 28px;
-}
-
-.categorias-anuncios {
-    padding-left: 34px;
-    padding-right: 34px;
-}
-
-.categorias-desactivar {
-    padding-left: 40px;
-    padding-right: 40px;
-}
-
-.cancelar-boton {
-    padding-left: 33px;
-    padding-right: 33px;
+.btn-13-caracteres {
+    padding-left: 23px;
+    padding-right: 23px;
 }
 
 .hide-modificar {
@@ -618,6 +607,14 @@ a {
     display: table; 
     width: 100%;
     margin-bottom: 0px;
+}
+
+.error-row {
+    display:none;
+}
+
+.hide-subcategoria-categoria {
+    display:none;
 }
 
 @media (min-width:768px) and (max-width:868px){
