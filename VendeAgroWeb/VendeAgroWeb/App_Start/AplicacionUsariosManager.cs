@@ -11,24 +11,6 @@ namespace VendeAgroWeb
 {
     public class AplicacionUsuariosManager
     {
-        private AdministradorUsuario _usuarioAdministradorActual;
-        private PortalUsuario _usuarioPortalActual;
-
-        public AdministradorUsuario UsuarioAdministradorActual
-        {
-            get
-            {
-                return _usuarioAdministradorActual;
-            }
-        }
-
-        public PortalUsuario UsuarioPortalActual
-        {
-            get
-            {
-                return _usuarioPortalActual;
-            }
-        }
 
         public async Task<LoginStatus> LoginAdministradorAsync(string email, string password)
         {
@@ -54,7 +36,6 @@ namespace VendeAgroWeb
                         return LoginStatus.Incorrecto;
                     }
 
-                    _usuarioAdministradorActual = new AdministradorUsuario(usuario.id, usuario.email, usuario.nombre);
                     usuario.tokenSesion = getToken();
                     setCookie("AdminVendeAgro", usuario.tokenSesion, response);
                     _dbContext.SaveChanges();
@@ -195,7 +176,6 @@ namespace VendeAgroWeb
                     setCookie("VendeAgroUser", tokenSesion, response);
 
                     var usuarioRegistrado = _dbContext.Usuarios.Where(u => u.email == model.Email).FirstOrDefault();
-                    _usuarioPortalActual = new PortalUsuario(usuarioRegistrado.id, model.Email, model.Nombre, model.Apellidos, model.Celular.ToString());
                     string mailMensaje = "<p>Estimado {0} gracias por registrarte en vendeagro.com</p>" +
                     "<p>Para completar tu registro y poder hacer login da click <a href=\'"+ Startup.getBaseUrl() +"/Portal/ConfirmarMail?token=" + "{1}\'>AQUÍ</a></p>";
 
@@ -209,70 +189,23 @@ namespace VendeAgroWeb
 
         public async Task<LoginStatus> VerificarAdminSesionAsync()
         {
-            if (_usuarioAdministradorActual != null) return LoginStatus.Exitoso;
 
             HttpRequest request = HttpContext.Current.Request;
             return await Task.Run(() =>
             {
-                if (request.Cookies["AdminVendeAgro"] != null)
-                {
-                    var token = request.Cookies["AdminVendeAgro"]["token"];
-                    if (token != null)
-                    {
-                        using (var _dbContext = new VendeAgroEntities())
-                        {
-                            var usuario = _dbContext.Usuario_Administrador.Where(u => u.tokenSesion == token).FirstOrDefault();
-                            if (usuario == null)
-                            {
-                                return LoginStatus.Incorrecto;
-                            }
-
-                            if (!usuario.activo)
-                            {
-                                return LoginStatus.Incorrecto;
-                            }
-
-                            _usuarioAdministradorActual = new AdministradorUsuario(usuario.id, usuario.email, usuario.nombre);
-                            return LoginStatus.Exitoso;
-                        }
-
-                    }
-                }
+                if (getUsuarioAdministradorActual(request) != null) return LoginStatus.Exitoso;
                 return LoginStatus.Incorrecto;
             });
         }
 
         public LoginStatus VerificarPortalSesion()
         {
-            if (_usuarioPortalActual != null) return LoginStatus.Exitoso;
-
-            HttpRequest request = HttpContext.Current.Request;
-            if (request.Cookies["VendeAgroUser"] != null)
-            {
-                var token = request.Cookies["VendeAgroUser"]["token"];
-                if (token != null)
-                {
-                    using (var _dbContext = new VendeAgroEntities())
-                    {
-                        var usuario = _dbContext.Usuarios.Where(u => u.tokenSesion == token).FirstOrDefault();
-                        if (usuario == null)
-                        {
-                            return LoginStatus.Incorrecto;
-                        }
-
-                        _usuarioPortalActual = new PortalUsuario(usuario.id, usuario.email, usuario.nombre, usuario.apellidos, usuario.telefono.ToString());
-                        return LoginStatus.Exitoso;
-                    }
-
-                }
-            }
-
+            if (getUsuarioPortalActual(HttpContext.Current.Request) != null) return LoginStatus.Exitoso;
             return LoginStatus.Incorrecto;
         }
 
         public void LogoutPortal()
         {
-            _usuarioPortalActual = null;
             HttpRequest request = HttpContext.Current.Request;
             if (request.Cookies["VendeAgroUser"] != null)
             {
@@ -331,6 +264,92 @@ namespace VendeAgroWeb
             HttpCookie temp = response.Cookies[nombre];
             temp.Expires = DateTime.Now.AddDays(-1D);
             response.Cookies.Add(temp);
+        }
+
+        public AdministradorUsuario getUsuarioAdministradorActual(HttpRequestBase request)
+        {
+            return getUsuarioAdministradorActual(request.Cookies);
+        }
+
+        public AdministradorUsuario getUsuarioAdministradorActual(HttpRequest request)
+        {
+            return getUsuarioAdministradorActual(request.Cookies);
+        }
+
+        private AdministradorUsuario getUsuarioAdministradorActual(HttpCookieCollection Cookies)
+        {
+            if (Cookies["AdminVendeAgro"] != null)
+            {
+                var token = Cookies["AdminVendeAgro"]["token"];
+                if (token != null)
+                {
+                    using (var _dbContext = new VendeAgroEntities())
+                    {
+                        _dbContext.Database.Connection.Open();
+                        if(_dbContext.Database.Connection.State != System.Data.ConnectionState.Open)
+                        {
+                            return null;
+                        }
+
+                        var usuario = _dbContext.Usuario_Administrador.Where(u => u.tokenSesion == token).FirstOrDefault();
+                        if (usuario == null)
+                        {
+                            return null;
+                        }
+
+                        if (!usuario.activo)
+                        {
+                            return null;
+                        }
+
+                        var resultado = new AdministradorUsuario(usuario.id, usuario.email, usuario.nombre);
+                        return resultado;
+                    }
+
+                }
+            }
+            return null;
+        }
+
+        public PortalUsuario getUsuarioPortalActual(HttpRequestBase request)
+        {
+            return getUsuarioPortalActual(request.Cookies);
+        }
+
+        public PortalUsuario getUsuarioPortalActual(HttpRequest request)
+        {
+            return getUsuarioPortalActual(request.Cookies);
+        }
+
+        private PortalUsuario getUsuarioPortalActual(HttpCookieCollection Cookies)
+        {
+            if (Cookies["VendeAgroUser"] != null)
+            {
+                var token = Cookies["VendeAgroUser"]["token"];
+                if (token != null)
+                {
+                    using (var _dbContext = new VendeAgroEntities())
+                    {
+                        _dbContext.Database.Connection.Open();
+                        if(_dbContext.Database.Connection.State != System.Data.ConnectionState.Open)
+                        {
+                            return null;
+                        }
+
+                        var usuario = _dbContext.Usuarios.Where(u => u.tokenSesion == token).FirstOrDefault();
+
+                        if (usuario == null)
+                        {
+                            return null;
+                        }
+
+                        var resultado = new PortalUsuario(usuario.id, usuario.email, usuario.nombre, usuario.apellidos, usuario.telefono.ToString());
+                        return resultado;
+                    }
+
+                }
+            }
+            return null;
         }
 
         public static string Hash(string input)

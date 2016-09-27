@@ -23,7 +23,7 @@
                             <td>@item.Nombre</td>
                             <td>@item.Email</td>
                             @{
-                                if (Startup.GetAplicacionUsuariosManager().UsuarioAdministradorActual.Id == item.Id)
+                                if (Startup.GetAplicacionUsuariosManager().getUsuarioAdministradorActual(Request).Id == item.Id)
                                 {
                                     <td><p style="padding-left: 20px; padding-top: 6px; padding-bottom: 6px; margin: 0px;">Usuario Actual</p></td>
                                 }

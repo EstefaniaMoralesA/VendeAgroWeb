@@ -22,7 +22,8 @@ namespace VendeAgroWeb.Controllers.Administrador
             {
                 return RedirectToAction("Login", "Administrador");
             }
-            return View(Startup.GetAplicacionUsuariosManager().UsuarioAdministradorActual);
+            
+            return View(Startup.GetAplicacionUsuariosManager().getUsuarioAdministradorActual(Request));
         }
 
         public ActionResult Registro()
