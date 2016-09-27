@@ -192,45 +192,123 @@ namespace VendeAgroWeb.Models.Administrador
         }
     }
 
-    public class AnunciosAprobadosViewModel {
+    public class AnuncioViewModel {
+        private int _id;
+        private string _titulo;
+        private string _usuario;
+        private float _precio;
+        private string _categoria;
+        private string _subcategoria;
+        private string _estado;
+        private string _ciudad;
+        private int _clicks;
+
+        public string Titulo
+        {
+            get
+            {
+                return _titulo;
+            }
+        }
+
+        public float Precio
+        {
+            get
+            {
+                return _precio;
+            }
+        }
+
+        public string Categoria
+        {
+            get
+            {
+                return _categoria;
+            }
+        }
+
+        public string Subcategoria
+        {
+            get
+            {
+                return _subcategoria;
+            }
+        }
+
+        public string Estado
+        {
+            get
+            {
+                return _estado;
+            }
+
+            set
+            {
+                _estado = value;
+            }
+        }
+
+        public string Ciudad
+        {
+            get
+            {
+                return _ciudad;
+            }
+        }
+
+        public int Clicks
+        {
+            get
+            {
+                return _clicks;
+            }
+        }
+
+        public string Usuario
+        {
+            get
+            {
+                return _usuario;
+            }
+        }
+
+        public int Id
+        {
+            get
+            {
+                return _id;
+            }
+        }
+
+        public AnuncioViewModel(int id, string titulo, string usuario,  float precio, string categoria, string subcategoria, string estado, string ciudad, int clicks) {
+            _id = id;
+            _titulo = titulo;
+            _usuario = usuario;
+            _precio = precio;
+            _categoria = categoria;
+            _subcategoria = subcategoria;
+            _estado = estado;
+            _ciudad = ciudad;
+            _clicks = clicks;
+        }
     }
 
     public class AnunciosPendientesViewModel {
     }
 
     public class AnunciosViewModel {
-        private ICollection<AnunciosAprobadosViewModel> _anunciosActivos;
-        private ICollection<AnunciosAprobadosViewModel> _anunciosVencidos;
-        private ICollection<AnunciosPendientesViewModel> _anunciosPendientes;
+        private ICollection<AnuncioViewModel> _anuncios;
 
-        public AnunciosViewModel(ICollection<AnunciosAprobadosViewModel> anunciosActivos, ICollection<AnunciosAprobadosViewModel> anunciosVencidos, ICollection<AnunciosPendientesViewModel> anunciosPendientes)
+        public AnunciosViewModel(ICollection<AnuncioViewModel> anuncios)
         {
-            _anunciosActivos = anunciosActivos;
-            _anunciosVencidos = anunciosVencidos;
-            _anunciosPendientes = anunciosPendientes;
+            _anuncios = anuncios;
         }
 
-        public ICollection<AnunciosAprobadosViewModel> AnunciosActivos
+        public ICollection<AnuncioViewModel> Anuncios
         {
             get
             {
-                return _anunciosActivos;
-            }
-        }
-
-        public ICollection<AnunciosAprobadosViewModel> AnunciosVencidos
-        {
-            get
-            {
-                return _anunciosVencidos;
-            }
-        }
-
-        public ICollection<AnunciosPendientesViewModel> AnunciosPendientes
-        {
-            get
-            {
-                return _anunciosPendientes;
+                return _anuncios;
             }
         }
     }

@@ -4,15 +4,31 @@
     <table class="table table-striped table-responsive">
         <thead>
             <tr>
-                <th>Activos</th>
+                <th>Titulo</th>
+                <th>Precio</th>
+                <th>Usuario</th>
+                <th>Categoría</th>
+                <th>Subcategoría</th>
+                <th>Estado</th>
+                <th>Ciudad</th>
+                <th>Clicks</th>
                 <th></th>
             </tr>
         </thead>
         <tbody>
             @{
-                foreach (var item in Model.AnunciosActivos)
+                foreach (var item in Model.Anuncios)
                 {
                     <tr>
+                        <td>@item.Titulo</td>
+                        <td>@item.Precio</td>
+                        <td>@item.Usuario</td>
+                        <td>@item.Categoria</td>
+                        <td>@item.Subcategoria</td>
+                        <td>@item.Estado</td>
+                        <td>@item.Ciudad</td>
+                        <td>@item.Clicks</td>
+                        <td><a class="btn btn-primary btn-8-caracteres">detalles</a></td>
                     </tr>
                 }          
             }
