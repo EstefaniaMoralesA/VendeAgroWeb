@@ -5,6 +5,9 @@
 
 <div class="row">
     <div class="col-sm-offset-1 col-sm-10">
+        <div class="row">
+
+        </div>
         <ul class="nav nav-tabs">
             <li><a id="activos-tab" href="#activos" data-toggle="tab">Activos</a></li>
             <li><a id="vencidos-tab" href="#vencidos" data-toggle="tab">Vencidos</a></li>
@@ -38,13 +41,35 @@
 }
 
 <script>
+
+    var _id;
+    var _tipo;
+    var paramsUrl;
+
     $(document).ready(function () {
         activaTab('activos');
     });
 
     $(window).load(function () {
+        _id = getUrlParameter('id');
+        if (typeof _id == 'undefined') {
+            _id = "";
+        }
+        _tipo = getUrlParameter('tipo');
+        if (typeof _tipo == 'undefined') {
+            _tipo = "";
+        }
+
+        paramsUrl = setParamsString();
         getActivos();
     });
+
+    function setParamsString() {
+        if (_id == "" && _tipo == "") {
+            return "";
+        }
+        return ("?id="+ _id + "&tipo=" + _tipo); 
+    }
 
     $("#activos-tab").click(function () {
         activaTab('activos');
@@ -66,11 +91,27 @@
         getNoAprobados();
     });
 
+
+    var getUrlParameter = function getUrlParameter(sParam) {
+        var sPageURL = decodeURIComponent(window.location.search.substring(1)),
+            sURLVariables = sPageURL.split('&'),
+            sParameterName,
+            i;
+
+        for (i = 0; i < sURLVariables.length; i++) {
+            sParameterName = sURLVariables[i].split('=');
+
+            if (sParameterName[0] === sParam) {
+                return sParameterName[1] === undefined ? true : sParameterName[1];
+            }
+        }
+    };
+
     function getActivos() {
         $.ajax({
             type: "POST",
             data: {},
-            url: '/Administrador/AnunciosActivosPartial',
+            url: '/Administrador/AnunciosActivosPartial' + paramsUrl,
             success: function (result) {
                 $("#activos").html(result);
             },
@@ -85,7 +126,7 @@
         $.ajax({
             type: "POST",
             data: {},
-            url: '/Administrador/AnunciosVencidosPartial',
+            url: '/Administrador/AnunciosVencidosPartial' + paramsUrl,
             success: function (result) {
                 $("#vencidos").html(result);
             },
@@ -100,7 +141,7 @@
         $.ajax({
             type: "POST",
             data: {},
-            url: '/Administrador/AnunciosPendientesPartial',
+            url: '/Administrador/AnunciosPendientesPartial' + paramsUrl,
             success: function (result) {
                 $("#pendientes").html(result);
             },
@@ -115,7 +156,7 @@
         $.ajax({
             type: "POST",
             data: {},
-            url: '/Administrador/AnunciosNoAprobadosPartial',
+            url: '/Administrador/AnunciosNoAprobadosPartial' + paramsUrl,
             success: function (result) {
                 $("#noaprobados").html(result);
             },

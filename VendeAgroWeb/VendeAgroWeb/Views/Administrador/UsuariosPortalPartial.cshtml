@@ -25,21 +25,28 @@
         </thead>
         <tbody>
             @{
-                    if(Model.Tipo == 1)
+                if (Model.Tipo == 1)
+                {
+                    foreach (var item in Model.UsuariosPortal)
                     {
-                        foreach (var item in Model.UsuariosPortal)
-                        {
-                            <tr>
-                                <td class="filtro">@item.Nombre</td>
-                                <td class="filtro">@item.Apellidos</td>
-                                <td class="filtro">@item.Telefono</td>
-                                <td class="filtro">@item.Email</td>
-                                <td><a data-id="@item.Id" class="btn btn-primary btn-8-caracteres btn-usuario-anuncios">anuncios</a></td>
-                                <td><a data-id="@item.Id" class="btn btn-success btn-5-caracteres btn-usuario-pagos">pagos</a></td>
-                            </tr>
-                        }
+                        <tr>
+                            <td class="filtro">@item.Nombre</td>
+                            <td class="filtro">@item.Apellidos</td>
+                            <td class="filtro">@item.Telefono</td>
+                            <td class="filtro">@item.Email</td>
+                            @if (item.NumAnuncios > 0)
+                            {
+                                <td><a href="/Administrador/Anuncios?id=@item.Id&tipo=usuario" class="btn btn-primary btn-8-caracteres btn-categorias-anuncios"><span>@item.NumAnuncios </span>anuncios</a></td>
+                            }
+                            else
+                            {
+                                <td><a class="btn btn-default btn-8-caracteres btn-categorias-anuncios" style="cursor:not-allowed;"><span>@item.NumAnuncios </span>anuncios</a></td>
+                            }
+                            <td><a data-id="@item.Id" class="btn btn-success btn-5-caracteres btn-usuario-pagos">pagos</a></td>
+                        </tr>
                     }
                 }
+            }
         </tbody>
     </table>
 </div>

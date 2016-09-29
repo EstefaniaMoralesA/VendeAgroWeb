@@ -30,8 +30,16 @@
                             {
                                 <tr>
                                     <td>@item.Nombre</td>
-                                    <td><a class="btn btn-primary btn-8-caracteres subcategorias-anuncios">anuncios</a></td>
                                     @{
+                                        if (item.NumAnuncios > 0)
+                                        {
+                                            <td><a href="/Administrador/Anuncios?id=@item.Id&tipo=subcat" class="btn btn-primary btn-8-caracteres btn-categorias-anuncios"><span>@item.NumAnuncios </span>anuncios</a></td>
+                                        }
+                                        else
+                                        {
+                                            <td><a class="btn btn-default btn-8-caracteres btn-categorias-anuncios" style="cursor:not-allowed;"><span>@item.NumAnuncios </span>anuncios</a></td>
+
+                                        }
                                         if (item.Activo)
                                         {
                                             <td><a data-id="@item.Id" class="btn btn-danger btn-10-caracteres subcategorias-desactivar">desactivar</a></td>

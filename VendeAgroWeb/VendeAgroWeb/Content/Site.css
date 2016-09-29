@@ -613,6 +613,14 @@ a {
     display:none;
 }
 
+.hide-categoria-de-anuncio {
+    display: none;
+}
+
+.hide-subcategoria-de-anuncio {
+    display: none;
+}
+
 @media (min-width:768px) and (max-width:868px){
     .table-responsive{
         overflow-x:scroll !important;

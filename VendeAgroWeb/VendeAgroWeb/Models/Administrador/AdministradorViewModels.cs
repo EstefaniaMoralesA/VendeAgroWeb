@@ -100,6 +100,7 @@ namespace VendeAgroWeb.Models.Administrador
         private string _apellidos;
         private string _telefono;
         private string _email;
+        private int _numAnuncios;
 
         public int Id
         {
@@ -142,13 +143,22 @@ namespace VendeAgroWeb.Models.Administrador
             }
         }
 
-        public UsuarioPortalViewModel(int id, string nombre, string apellidos, string telefono, string email)
+        public int NumAnuncios
+        {
+            get
+            {
+                return _numAnuncios;
+            }
+        }
+
+        public UsuarioPortalViewModel(int id, string nombre, string apellidos, string telefono, string email, int numAnuncios)
         {
             _id = id;
             _nombre = nombre;
             _apellidos = apellidos;
             _telefono = telefono;
             _email = email;
+            _numAnuncios = numAnuncios;
         }
     }
 
@@ -342,6 +352,7 @@ namespace VendeAgroWeb.Models.Administrador
         private string _nombre;
         private bool _activo;
         private string _nombreCategoria;
+        private int _numAnuncios;
 
         public int Id
         {
@@ -375,11 +386,20 @@ namespace VendeAgroWeb.Models.Administrador
             }
         }
 
-        public SubcategoriaViewModel(int id, string nombre, bool activo, string nombreCategoria) {
+        public int NumAnuncios
+        {
+            get
+            {
+                return _numAnuncios;
+            }
+        }
+
+        public SubcategoriaViewModel(int id, string nombre, bool activo, string nombreCategoria, int numAnuncios) {
             _id = id;
             _nombre = nombre;
             _activo = activo;
             _nombreCategoria = nombreCategoria;
+            _numAnuncios = numAnuncios;
         }
     }
 
@@ -468,12 +488,13 @@ namespace VendeAgroWeb.Models.Administrador
             }
         }
 
-        public CategoriaViewModel(int id, string nombre, bool activo, int numSubcategorias)
+        public CategoriaViewModel(int id, string nombre, bool activo, int numSubcategorias, int numAnuncios)
         {
             _id = id;
             _nombre = nombre;
             _activo = activo;
             _numSubcategorias = numSubcategorias;
+            _numAnuncios = numAnuncios;
         }
     }
 

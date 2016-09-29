@@ -53,7 +53,8 @@ namespace VendeAgroWeb.Controllers.Administrador
                     var usuarios = _dbContext.Usuarios;
                     foreach (var item in usuarios)
                     {
-                        lista.Add(new UsuarioPortalViewModel(item.id, item.nombre,item.apellidos, item.telefono.ToString(), item.email));
+                        var numAnuncios = item.Anuncios.Count;
+                        lista.Add(new UsuarioPortalViewModel(item.id, item.nombre,item.apellidos, item.telefono.ToString(), item.email, numAnuncios));
                     }
 
                     return lista;
@@ -117,7 +118,7 @@ namespace VendeAgroWeb.Controllers.Administrador
                     var nombreCategoria = _dbContext.Categorias.Where(c => c.id == id).FirstOrDefault()?.nombre;
                     foreach (var item in subcategorias)
                     {
-                        lista.Add(new SubcategoriaViewModel(item.id, item.nombre, item.activo, nombreCategoria));
+                        lista.Add(new SubcategoriaViewModel(item.id, item.nombre, item.activo, nombreCategoria, item.Anuncios.Count()));
                     }
                     
                     return lista;
@@ -323,8 +324,13 @@ namespace VendeAgroWeb.Controllers.Administrador
                     var categorias = _dbContext.Categorias;
                     foreach (var item in categorias)
                     {
-                        var numSubcategorias = _dbContext.Subcategorias.Where(s => s.idCategoria == item.id).ToList().Count;
-                        lista.Add(new CategoriaViewModel(item.id, item.nombre, item.activo, numSubcategorias));
+                        var numSubcategorias = _dbContext.Subcategorias.Where(s => s.idCategoria == item.id).ToList();
+                        var numAnuncios = 0;
+
+                        foreach (var subcategoria in numSubcategorias) {
+                            numAnuncios += subcategoria.Anuncios.Count();
+                        }
+                        lista.Add(new CategoriaViewModel(item.id, item.nombre, item.activo, numSubcategorias.Count(), numAnuncios));
                     }
 
                     return lista;
@@ -378,7 +384,7 @@ namespace VendeAgroWeb.Controllers.Administrador
                     foreach (var item in subcategorias)
                     {
                         var nombreCategoria = _dbContext.Categorias.Where(c => c.id == item.idCategoria).FirstOrDefault()?.nombre;
-                        lista.Add(new SubcategoriaViewModel(item.id, item.nombre, item.activo, nombreCategoria));
+                        lista.Add(new SubcategoriaViewModel(item.id, item.nombre, item.activo, nombreCategoria, item.Anuncios.Count()));
                     }
 
                     return lista;
@@ -400,31 +406,53 @@ namespace VendeAgroWeb.Controllers.Administrador
             return View();
         }
 
-        public async Task<ActionResult> AnunciosActivosPartial()
+        public async Task<ActionResult> AnunciosActivosPartial(int? id, string tipo)
         {
-            AnunciosViewModel model = new AnunciosViewModel(await ObtenerAnunciosAprobados());
+            AnunciosViewModel model = new AnunciosViewModel(await ObtenerAnunciosAprobados(id, tipo));
             return PartialView("AnunciosPartial", model);
         }
 
-        public async Task<ActionResult> AnunciosVencidosPartial()
+        public async Task<ActionResult> AnunciosVencidosPartial(int? id, string tipo)
         {
-            AnunciosViewModel model = new AnunciosViewModel(await ObtenerAnunciosVencidos());
+            AnunciosViewModel model = new AnunciosViewModel(await ObtenerAnunciosVencidos(id, tipo));
             return PartialView("AnunciosPartial", model);
         }
 
-        public async Task<ActionResult> AnunciosPendientesPartial()
+        public async Task<ActionResult> AnunciosPendientesPartial(int? id, string tipo)
         {
-            AnunciosViewModel model = new AnunciosViewModel(await ObtenerAnunciosPorAprobar());
+            AnunciosViewModel model = new AnunciosViewModel(await ObtenerAnunciosPorAprobar(id, tipo));
             return PartialView("AnunciosPartial", model);
         }
 
-        public async Task<ActionResult> AnunciosNoAprobadosPartial()
+        public async Task<ActionResult> AnunciosNoAprobadosPartial(int? id, string tipo)
         {
-            AnunciosViewModel model = new AnunciosViewModel(await ObtenerAnunciosNoAprobados());
+            AnunciosViewModel model = new AnunciosViewModel(await ObtenerAnunciosNoAprobados(id, tipo));
             return PartialView("AnunciosPartial", model);
         }
 
-        public async Task<ICollection<AnuncioViewModel>> ObtenerAnunciosAprobados()
+        private IQueryable<Anuncio> FiltraAnuncios(int? id, string tipo, IQueryable<Anuncio> anuncios, VendeAgroEntities _dbContext) {
+            
+            switch (tipo)
+            {
+                case "cat":
+                    var subcategorias = _dbContext.Subcategorias.Where(s => s.idCategoria == id).ToList();
+                    List<Anuncio> anunciosFiltrados = new List<Anuncio>();
+                    foreach (var subc in subcategorias) {
+                        var subcId = subc.id;
+                        var anunciosTemp = anuncios.Where(a => a.idSubcategoria == subcId).ToList();
+                        anunciosFiltrados = anunciosFiltrados.Concat(anunciosTemp).ToList();
+                    }
+                    return anunciosFiltrados.AsQueryable();
+                case "subcat":
+                    return anuncios.Where(a => a.idSubcategoria == id);
+                case "usuario":
+                    return anuncios.Where(a => a.idUsuario == id);
+                default:
+                    return null;
+            }
+        }
+
+        public async Task<ICollection<AnuncioViewModel>> ObtenerAnunciosAprobados(int? id, string tipo)
         {
             return await Task.Run(() =>
             {
@@ -437,12 +465,18 @@ namespace VendeAgroWeb.Controllers.Administrador
                     }
 
                     var anuncios = _dbContext.Anuncios.Where(a => a.activo == true && a.estado == (int)EstadoAnuncio.Aprobado);
-                    return CreaAnuncios(anuncios, _dbContext);
+
+                    if (id == null && tipo == null) {
+                        return CreaAnuncios(anuncios, _dbContext);
+                    }
+
+                    return CreaAnuncios(FiltraAnuncios(id, tipo, anuncios, _dbContext), _dbContext);
+                    
                 }
             });
         }
 
-        public async Task<ICollection<AnuncioViewModel>> ObtenerAnunciosVencidos()
+        public async Task<ICollection<AnuncioViewModel>> ObtenerAnunciosVencidos(int? id, string tipo)
         {
             return await Task.Run(() =>
             {
@@ -455,12 +489,18 @@ namespace VendeAgroWeb.Controllers.Administrador
                     }
 
                     var anuncios = _dbContext.Anuncios.Where(a => a.activo == false && a.estado == (int)EstadoAnuncio.Aprobado);
-                    return CreaAnuncios(anuncios, _dbContext);
+
+                    if (id == null && tipo == null)
+                    {
+                        return CreaAnuncios(anuncios, _dbContext);
+                    }
+
+                    return CreaAnuncios(FiltraAnuncios(id, tipo, anuncios, _dbContext), _dbContext);
                 }
             });
         }
 
-        public async Task<ICollection<AnuncioViewModel>> ObtenerAnunciosPorAprobar()
+        public async Task<ICollection<AnuncioViewModel>> ObtenerAnunciosPorAprobar(int? id, string tipo)
         {
             return await Task.Run(() =>
             {
@@ -473,12 +513,18 @@ namespace VendeAgroWeb.Controllers.Administrador
                     }
 
                     var anuncios = _dbContext.Anuncios.Where(a => a.activo == false && a.estado == (int)EstadoAnuncio.PendientePorAprobar);
-                    return CreaAnuncios(anuncios, _dbContext);
+
+                    if (id == null && tipo == null)
+                    {
+                        return CreaAnuncios(anuncios, _dbContext);
+                    }
+
+                    return CreaAnuncios(FiltraAnuncios(id, tipo, anuncios, _dbContext), _dbContext);
                 }
             });
         }
 
-        public async Task<ICollection<AnuncioViewModel>> ObtenerAnunciosNoAprobados()
+        public async Task<ICollection<AnuncioViewModel>> ObtenerAnunciosNoAprobados(int? id, string tipo)
         {
             return await Task.Run(() =>
             {
@@ -491,7 +537,13 @@ namespace VendeAgroWeb.Controllers.Administrador
                     }
 
                     var anuncios = _dbContext.Anuncios.Where(a => a.estado == (int)EstadoAnuncio.NoAprobado);
-                    return CreaAnuncios(anuncios, _dbContext);
+
+                    if (id == null && tipo == null)
+                    {
+                        return CreaAnuncios(anuncios, _dbContext);
+                    }
+
+                    return CreaAnuncios(FiltraAnuncios(id, tipo, anuncios, _dbContext), _dbContext);
                 }
             });
         }
@@ -509,6 +561,15 @@ namespace VendeAgroWeb.Controllers.Administrador
             }
 
             return lista;
+        }
+
+        public async Task<ActionResult> AnuncioDetalles()
+        {
+            if (await Startup.GetAplicacionUsuariosManager().VerificarAdminSesionAsync() == LoginStatus.Incorrecto)
+            {
+                return RedirectToAction("Login", "Administrador");
+            }
+            return View();
         }
 
         public ActionResult Logout()
