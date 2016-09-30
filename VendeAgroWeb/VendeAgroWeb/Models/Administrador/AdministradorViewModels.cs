@@ -303,10 +303,16 @@ namespace VendeAgroWeb.Models.Administrador
 
     public class AnunciosViewModel {
         private ICollection<AnuncioViewModel> _anuncios;
+        private string _nombreCategoria;
+        private string _nombreSubcategoria;
+        private string _nombreUsuario;
 
-        public AnunciosViewModel(ICollection<AnuncioViewModel> anuncios)
+        public AnunciosViewModel(ICollection<AnuncioViewModel> anuncios, string nombreCategoria, string nombreSubcategoria, string nombreUsuario)
         {
             _anuncios = anuncios;
+            _nombreCategoria = nombreCategoria;
+            _nombreSubcategoria = nombreSubcategoria;
+            _nombreUsuario = nombreUsuario;
         }
 
         public ICollection<AnuncioViewModel> Anuncios
@@ -314,6 +320,30 @@ namespace VendeAgroWeb.Models.Administrador
             get
             {
                 return _anuncios;
+            }
+        }
+
+        public string NombreCategoria
+        {
+            get
+            {
+                return _nombreCategoria;
+            }
+        }
+
+        public string NombreSubcategoria
+        {
+            get
+            {
+                return _nombreSubcategoria;
+            }
+        }
+
+        public string NombreUsuario
+        {
+            get
+            {
+                return _nombreUsuario;
             }
         }
     }

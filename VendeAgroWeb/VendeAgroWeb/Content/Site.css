@@ -613,11 +613,15 @@ a {
     display:none;
 }
 
-.hide-categoria-de-anuncio {
+.hide-anuncios-de-categoria {
     display: none;
 }
 
-.hide-subcategoria-de-anuncio {
+.hide-anuncios-de-subcategoria{
+    display: none;
+}
+
+.hide-anuncios-de-usuario{
     display: none;
 }
 

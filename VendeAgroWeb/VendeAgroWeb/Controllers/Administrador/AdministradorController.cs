@@ -126,49 +126,6 @@ namespace VendeAgroWeb.Controllers.Administrador
             });
         }
 
-        /*public async Task<ActionResult> AnunciosDeCategoria(int? id)
-        {
-            if (await Startup.GetAplicacionUsuariosManager().VerificarAdminSesionAsync() == LoginStatus.Incorrecto)
-            {
-                return RedirectToAction("Login", "Administrador");
-            }
-            if (id == null)
-            {
-                return RedirectToAction("Categorias", "Administrador");
-            }
-            AnunciosViewModel model = new AnunciosViewModel(await ObtenerAnunciosDeCategoria(id));
-
-            return View(model);
-        }
-
-        public async Task<ICollection<AnunciosViewModel>> ObtenerAnunciosDeCategoria(int? id)
-        {
-            return await Task.Run(() =>
-            {
-                using (var _dbContext = new VendeAgroEntities())
-                {
-                    _dbContext.Database.Connection.Open();
-                    if (_dbContext.Database.Connection.State != ConnectionState.Open)
-                    {
-                        return null;
-                    }
-
-                    List<AnunciosViewModel> lista = new List<AnunciosViewModel>();
-                    var subcategorias = _dbContext.Subcategorias.Where(s => s.idCategoria == id);
-                    foreach (var item in subcategorias)
-                    {
-                        var anuncios = _dbContext.Anuncios.Where(a => a.idSubcategoria == item.id);
-                        foreach (var anuncio in anuncios)
-                        {
-                            lista.Add(new AnuncioViewModel(item.id, item.nombre, item.activo));
-                        }
-                    }
-
-                    return lista;
-                }
-            });
-        }*/
-
         [HttpPost]
         [AllowAnonymous]
         public async Task<bool> CambiarEstadoUsuarioAdmin(int? id, int tipo) {
@@ -406,27 +363,85 @@ namespace VendeAgroWeb.Controllers.Administrador
             return View();
         }
 
+        private async Task<string> ObtenerCategoriaNombre(int? id, string tipo)
+        {
+            if (tipo != "cat") return string.Empty;
+
+            return await Task.Run(() =>
+            {
+                using (var _dbContext = new VendeAgroEntities())
+                {
+                    _dbContext.Database.Connection.Open();
+                    if (_dbContext.Database.Connection.State != ConnectionState.Open)
+                    {
+                        return null;
+                    }
+
+                     return _dbContext.Categorias.Where(c => c.id == id).FirstOrDefault()?.nombre;
+                }
+            });
+        }
+
+        private async Task<string> ObtenerSubcategoriaNombre(int? id, string tipo)
+        {
+            if (tipo != "subcat") return string.Empty;
+
+            return await Task.Run(() =>
+            {
+                using (var _dbContext = new VendeAgroEntities())
+                {
+                    _dbContext.Database.Connection.Open();
+                    if (_dbContext.Database.Connection.State != ConnectionState.Open)
+                    {
+                        return null;
+                    }
+
+                    return _dbContext.Subcategorias.Where(sc => sc.id == id).FirstOrDefault()?.nombre;
+                }
+            });
+        }
+
+        private async Task<string> ObtenerUsuarioNombre(int? id, string tipo)
+        {
+            if (tipo != "usuario") return string.Empty;
+
+            return await Task.Run(() =>
+            {
+                using (var _dbContext = new VendeAgroEntities())
+                {
+                    _dbContext.Database.Connection.Open();
+                    if (_dbContext.Database.Connection.State != ConnectionState.Open)
+                    {
+                        return null;
+                    }
+
+                    return _dbContext.Usuarios.Where(u => u.id == id).FirstOrDefault()?.nombre;
+                }
+            });
+        }
+       
+
         public async Task<ActionResult> AnunciosActivosPartial(int? id, string tipo)
         {
-            AnunciosViewModel model = new AnunciosViewModel(await ObtenerAnunciosAprobados(id, tipo));
+            AnunciosViewModel model = new AnunciosViewModel(await ObtenerAnunciosAprobados(id, tipo), await ObtenerCategoriaNombre(id, tipo), await ObtenerSubcategoriaNombre(id, tipo), await ObtenerUsuarioNombre(id, tipo));
             return PartialView("AnunciosPartial", model);
         }
 
         public async Task<ActionResult> AnunciosVencidosPartial(int? id, string tipo)
         {
-            AnunciosViewModel model = new AnunciosViewModel(await ObtenerAnunciosVencidos(id, tipo));
+            AnunciosViewModel model = new AnunciosViewModel(await ObtenerAnunciosVencidos(id, tipo), "", "", "");
             return PartialView("AnunciosPartial", model);
         }
 
         public async Task<ActionResult> AnunciosPendientesPartial(int? id, string tipo)
         {
-            AnunciosViewModel model = new AnunciosViewModel(await ObtenerAnunciosPorAprobar(id, tipo));
+            AnunciosViewModel model = new AnunciosViewModel(await ObtenerAnunciosPorAprobar(id, tipo), "", "", "");
             return PartialView("AnunciosPartial", model);
         }
 
         public async Task<ActionResult> AnunciosNoAprobadosPartial(int? id, string tipo)
         {
-            AnunciosViewModel model = new AnunciosViewModel(await ObtenerAnunciosNoAprobados(id, tipo));
+            AnunciosViewModel model = new AnunciosViewModel(await ObtenerAnunciosNoAprobados(id, tipo), "", "", "");
             return PartialView("AnunciosPartial", model);
         }
 

@@ -1,6 +1,26 @@
 ﻿@model VendeAgroWeb.Models.Administrador.AnunciosViewModel
 
-<div class="table-responsive">
+<div class="row">
+    @{
+        <p class="anuncios-de-categoria" style="display:none;"><a href="/Administrador/Categorias">@Model.NombreCategoria</a><span> > </span><span>Anuncios</span></p>
+        <p class="anuncios-de-subcategoria" style="display:none;"><a href="/Administrador/Subcategorias">@Model.NombreSubcategoria</a><span> > </span><span>Anuncios</span></p>
+        <p class="anuncios-de-usuario" style="display:none;"><a href="/Administrador">@Model.NombreUsuario</a><span> > </span><span>Anuncios</span></p>
+
+    }
+</div>
+<div class="buscador-anuncios" style="margin-bottom:20px">
+    <form role="search" class="form-horizontal forma-busqueda">
+        <div class="input-group">
+            <input type="text" class="form-control buscar" placeholder="Buscar anuncio">
+            <div class="input-group-btn">
+                <a class="btn btn-default busqueda">
+                    <span class="glyphicon glyphicon-search"></span>
+                </a>
+            </div>
+        </div>
+    </form>
+</div>
+<div class="table-responsive" id="anuncios">
     <table class="table table-striped table-responsive">
         <thead>
             <tr>
@@ -19,20 +39,20 @@
             @{
                 if (Model.Anuncios.Count < 1)
                 {
-                    <tr><td colspan="9" >No hay anuncios en esta modalidad.</td></tr>
+                    <tr><td colspan="9">No hay anuncios en esta modalidad.</td></tr>
                 }
                 else
                 {
                     foreach (var item in Model.Anuncios)
                     {
                         <tr>
-                            <td>@item.Titulo</td>
+                            <td class="filtro">@item.Titulo</td>
                             <td>@item.Precio</td>
                             <td>@item.Usuario</td>
                             <td>@item.Categoria</td>
                             <td>@item.Subcategoria</td>
-                            <td>@item.Estado</td>
-                            <td>@item.Ciudad</td>
+                            <td class="filtro">@item.Estado</td>
+                            <td class="filtro">@item.Ciudad</td>
                             <td>@item.Clicks</td>
                             <td><a class="btn btn-primary btn-8-caracteres" href="/Administrador/AnuncioDetalles">detalles</a></td>
                         </tr>
@@ -43,3 +63,28 @@
         </tbody>
     </table>
 </div>
+
+<script>
+    $('.buscar').keyup(function () {
+        var query = $(this).val();
+        query = query.toLowerCase();
+
+        $('#anuncios tbody tr').each(function () {
+            var actual = $(this);
+            var hijos = actual.children('.filtro');
+            actual.hide();
+            for (var i = 0; i < hijos.length; i++) {
+                var texto = $(hijos[i]).html().toLowerCase();
+                if (texto.indexOf(query) != -1) {
+                    $(hijos[i]).parent().show();
+                    break;
+                }
+            }
+        });
+    });
+
+    $('.hide-anuncios-de-categoria').html($('.anuncios-de-categoria').html());
+    $('.hide-anuncios-de-subcategoria').html($('.anuncios-de-subcategoria').html());
+    $('.hide-anuncios-de-usuario').html($('.anuncios-de-usuario').html());
+
+</script>

@@ -170,11 +170,6 @@
                 if (result) {
                     console.log(result);
                     var json = $.parseJSON(j);
-                    $(json).each(function(i,val){
-                        $.each(val, function (k, v) {
-                            console.log(k + " : " + v);
-                        });
-                        });
                 }
                 else {
                     console.log(result);
