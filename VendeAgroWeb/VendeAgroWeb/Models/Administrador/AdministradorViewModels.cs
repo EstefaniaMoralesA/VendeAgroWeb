@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
+using System.Web.Mvc;
 
 namespace VendeAgroWeb.Models.Administrador
 {
@@ -37,7 +38,7 @@ namespace VendeAgroWeb.Models.Administrador
 
         [Required(ErrorMessage = "Campo requerido")]
         [DataType(DataType.Password)]
-        [Compare("Password", ErrorMessage = "La contraseña y su confirmacion no son iguales.")]
+        [System.ComponentModel.DataAnnotations.Compare("Password", ErrorMessage = "La contraseña y su confirmacion no son iguales.")]
         [Display(Name = "ConfirmaContraseña")]
         public string ConfirmaPassword { get; set; }
 
@@ -434,6 +435,7 @@ namespace VendeAgroWeb.Models.Administrador
     }
 
     public class NuevaCategoriaViewModel {
+
         [Required(ErrorMessage = "Campo requerido")]
         [Display(Name = "NuevoNombre")]
         public string Nombre { get; set; }
@@ -530,6 +532,12 @@ namespace VendeAgroWeb.Models.Administrador
 
     public class NuevaSubcategoriaViewModel
     {
+        public List<SelectListItem> Categorias{ get; set; }
+
+        [Required(ErrorMessage = "Campo requerido")]
+        [Display(Name = "Categoria")]
+        public int Categoria { get; set; }
+
         [Required(ErrorMessage = "Campo requerido")]
         [Display(Name = "NuevoNombre")]
         public string Nombre { get; set; }

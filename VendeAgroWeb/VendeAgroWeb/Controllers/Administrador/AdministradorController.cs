@@ -18,7 +18,7 @@ namespace VendeAgroWeb.Controllers.Administrador
 
         public async Task<ActionResult> Index()
         {
-            if(await Startup.GetAplicacionUsuariosManager().VerificarAdminSesionAsync() == LoginStatus.Incorrecto)
+            if (await Startup.GetAplicacionUsuariosManager().VerificarAdminSesionAsync() == LoginStatus.Incorrecto)
             {
                 return RedirectToAction("Login", "Administrador");
             }
@@ -28,7 +28,7 @@ namespace VendeAgroWeb.Controllers.Administrador
         public async Task<ActionResult> UsuariosAdministradorPartial()
         {
             UsuariosViewModel model = new UsuariosViewModel(0, await ObtenerUsuariosAdmin(), null);
-            return PartialView("UsuariosAdministradorPartial",model);
+            return PartialView("UsuariosAdministradorPartial", model);
         }
 
         public async Task<ActionResult> UsuariosPortalPartial()
@@ -54,9 +54,10 @@ namespace VendeAgroWeb.Controllers.Administrador
                     foreach (var item in usuarios)
                     {
                         var numAnuncios = item.Anuncios.Count;
-                        lista.Add(new UsuarioPortalViewModel(item.id, item.nombre,item.apellidos, item.telefono.ToString(), item.email, numAnuncios));
+                        lista.Add(new UsuarioPortalViewModel(item.id, item.nombre, item.apellidos, item.telefono.ToString(), item.email, numAnuncios));
                     }
 
+                    _dbContext.Database.Connection.Close();
                     return lista;
                 }
             });
@@ -64,12 +65,12 @@ namespace VendeAgroWeb.Controllers.Administrador
 
         public async Task<ICollection<UsuarioAdministradorViewModel>> ObtenerUsuariosAdmin()
         {
-            return await Task.Run(() => 
+            return await Task.Run(() =>
             {
-                using(var _dbContext = new VendeAgroEntities())
+                using (var _dbContext = new VendeAgroEntities())
                 {
                     _dbContext.Database.Connection.Open();
-                    if(_dbContext.Database.Connection.State != ConnectionState.Open)
+                    if (_dbContext.Database.Connection.State != ConnectionState.Open)
                     {
                         return null;
                     }
@@ -80,7 +81,8 @@ namespace VendeAgroWeb.Controllers.Administrador
                     {
                         lista.Add(new UsuarioAdministradorViewModel(item.id, item.nombre, item.email, item.activo));
                     }
-                
+
+                    _dbContext.Database.Connection.Close();
                     return lista;
                 }
             });
@@ -92,7 +94,7 @@ namespace VendeAgroWeb.Controllers.Administrador
             {
                 return RedirectToAction("Login", "Administrador");
             }
-            if(id == null)
+            if (id == null)
             {
                 return RedirectToAction("Categorias", "Administrador");
             }
@@ -120,7 +122,8 @@ namespace VendeAgroWeb.Controllers.Administrador
                     {
                         lista.Add(new SubcategoriaViewModel(item.id, item.nombre, item.activo, nombreCategoria, item.Anuncios.Count()));
                     }
-                    
+
+                    _dbContext.Database.Connection.Close();
                     return lista;
                 }
             });
@@ -128,7 +131,8 @@ namespace VendeAgroWeb.Controllers.Administrador
 
         [HttpPost]
         [AllowAnonymous]
-        public async Task<bool> CambiarEstadoUsuarioAdmin(int? id, int tipo) {
+        public async Task<bool> CambiarEstadoUsuarioAdmin(int? id, int tipo)
+        {
 
             if (id == null)
             {
@@ -149,16 +153,20 @@ namespace VendeAgroWeb.Controllers.Administrador
 
                     if (usuario == null)
                     {
+                        _dbContext.Database.Connection.Close();
                         return false;
                     }
 
-                    if (tipo == 0) {
+                    if (tipo == 0)
+                    {
                         usuario.activo = false;
                     }
-                    else {
+                    else
+                    {
                         usuario.activo = true;
                     }
                     _dbContext.SaveChanges();
+                    _dbContext.Database.Connection.Close();
                 }
                 return true;
             });
@@ -189,6 +197,7 @@ namespace VendeAgroWeb.Controllers.Administrador
 
                     if (categoria == null)
                     {
+                        _dbContext.Database.Connection.Close();
                         return false;
                     }
 
@@ -201,6 +210,8 @@ namespace VendeAgroWeb.Controllers.Administrador
                         categoria.activo = true;
                     }
                     _dbContext.SaveChanges();
+                    _dbContext.Database.Connection.Close();
+
                 }
                 return true;
             });
@@ -284,12 +295,14 @@ namespace VendeAgroWeb.Controllers.Administrador
                         var numSubcategorias = _dbContext.Subcategorias.Where(s => s.idCategoria == item.id).ToList();
                         var numAnuncios = 0;
 
-                        foreach (var subcategoria in numSubcategorias) {
+                        foreach (var subcategoria in numSubcategorias)
+                        {
                             numAnuncios += subcategoria.Anuncios.Count();
                         }
                         lista.Add(new CategoriaViewModel(item.id, item.nombre, item.activo, numSubcategorias.Count(), numAnuncios));
                     }
 
+                    _dbContext.Database.Connection.Close();
                     return lista;
                 }
             });
@@ -306,9 +319,59 @@ namespace VendeAgroWeb.Controllers.Administrador
             return View();
         }
 
-        public ActionResult NuevaCategoria()
+        public async Task<ActionResult> NuevaCategoria()
         {
+            if (await Startup.GetAplicacionUsuariosManager().VerificarAdminSesionAsync() == LoginStatus.Incorrecto)
+            {
+                return RedirectToAction("Login", "Administrador");
+            }
             return View();
+        }
+
+        [HttpPost]
+        [AllowAnonymous]
+        public async Task<ActionResult> NuevaCategoria(NuevaCategoriaViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+
+            bool estado = true;
+
+
+            await Task.Run(() =>
+            {
+                using (var _dbContext = new VendeAgroEntities())
+                {
+                    _dbContext.Database.Connection.Open();
+                    if (_dbContext.Database.Connection.State != ConnectionState.Open)
+                    {
+                        ModelState.AddModelError("", "Hubo un error en la conexión vuelva a intentarlo.");
+                        estado = false;
+                    }
+                    else if (_dbContext.Categorias.Where(c => c.nombre.ToLower() == model.Nombre.ToLower()).FirstOrDefault() != null)
+                    {
+                        ModelState.AddModelError("", "Error ya existe una categoría con ese nombre.");
+                        estado = false;
+                    }
+                    else
+                    {
+                        _dbContext.Categorias.Add(new Categoria
+                        {
+                            nombre = model.Nombre,
+                            activo = true
+                        });
+                        _dbContext.SaveChanges();
+                    }
+                    _dbContext.Database.Connection.Close();
+                }
+            });
+            if (estado)
+            {
+                return RedirectToAction("Categorias", "Administrador");
+            }
+            return View(model);
         }
 
         public async Task<ActionResult> Subcategorias()
@@ -337,21 +400,101 @@ namespace VendeAgroWeb.Controllers.Administrador
 
                     List<SubcategoriaViewModel> lista = new List<SubcategoriaViewModel>();
                     var subcategorias = _dbContext.Subcategorias;
-                    
+
                     foreach (var item in subcategorias)
                     {
                         var nombreCategoria = _dbContext.Categorias.Where(c => c.id == item.idCategoria).FirstOrDefault()?.nombre;
                         lista.Add(new SubcategoriaViewModel(item.id, item.nombre, item.activo, nombreCategoria, item.Anuncios.Count()));
                     }
 
+                    _dbContext.Database.Connection.Close();
                     return lista;
                 }
             });
         }
 
-        public ActionResult NuevaSubcategoria()
+        public async Task<ActionResult> NuevaSubcategoria()
         {
-            return View();
+
+            var model = new NuevaSubcategoriaViewModel();
+            model.Categorias = await ObtenerCategoriasNuevaSubcategoria();
+            return View(model);
+        }
+
+        public async Task<List<SelectListItem>> ObtenerCategoriasNuevaSubcategoria()
+        {
+            return await Task.Run(() =>
+            {
+                using (var _dbContext = new VendeAgroEntities())
+                {
+                    _dbContext.Database.Connection.Open();
+                    if (_dbContext.Database.Connection.State != ConnectionState.Open)
+                    {
+                        return new List<SelectListItem>();
+                    }
+                    List<SelectListItem> opciones = new List<SelectListItem>();
+
+                    var categorias = _dbContext.Categorias.ToList();
+
+                    foreach (var categoria in categorias)
+                    {
+                        opciones.Add(
+                            new SelectListItem { Value = categoria.id.ToString(), Text = categoria.nombre }
+                            );
+                    }
+
+                    _dbContext.Database.Connection.Close();
+                    return opciones;
+                }
+            });
+        }
+
+        [HttpPost]
+        [AllowAnonymous]
+        public async Task<ActionResult> NuevaSubcategoria(NuevaSubcategoriaViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+
+            bool estado = true;
+
+            await Task.Run(() =>
+            {
+                using (var _dbContext = new VendeAgroEntities())
+                {
+                    _dbContext.Database.Connection.Open();
+                    if (_dbContext.Database.Connection.State != ConnectionState.Open)
+                    {
+                        ModelState.AddModelError("", "Hubo un error en la conexión vuelva a intentarlo.");
+                        estado = false;
+                    }
+                    else if (_dbContext.Subcategorias.Where(s => s.nombre.ToLower() == model.Nombre.ToLower() && s.idCategoria == model.Categoria).FirstOrDefault() != null)
+                    {
+                        ModelState.AddModelError("", "Error ya existe una subcategoría con ese nombre.");
+                        estado = false;
+                    }
+                    else
+                    {
+                        _dbContext.Subcategorias.Add(new Subcategoria
+                        {
+                            nombre = model.Nombre,
+                            activo = true,
+                            idCategoria = model.Categoria
+                        });
+                        _dbContext.SaveChanges();
+                    }
+                    _dbContext.Database.Connection.Close();
+                }
+            });
+            if (estado)
+            {
+                return RedirectToAction("Subcategorias", "Administrador");
+            }
+
+            model.Categorias = await ObtenerCategoriasNuevaSubcategoria();
+            return View(model);
         }
 
         public async Task<ActionResult> Anuncios()
@@ -377,7 +520,9 @@ namespace VendeAgroWeb.Controllers.Administrador
                         return null;
                     }
 
-                     return _dbContext.Categorias.Where(c => c.id == id).FirstOrDefault()?.nombre;
+                    var nombre = _dbContext.Categorias.Where(c => c.id == id).FirstOrDefault()?.nombre;
+                    _dbContext.Database.Connection.Close();
+                    return nombre;
                 }
             });
         }
@@ -396,7 +541,9 @@ namespace VendeAgroWeb.Controllers.Administrador
                         return null;
                     }
 
-                    return _dbContext.Subcategorias.Where(sc => sc.id == id).FirstOrDefault()?.nombre;
+                    var nombre = _dbContext.Subcategorias.Where(sc => sc.id == id).FirstOrDefault()?.nombre;
+                    _dbContext.Database.Connection.Close();
+                    return nombre;
                 }
             });
         }
@@ -415,11 +562,13 @@ namespace VendeAgroWeb.Controllers.Administrador
                         return null;
                     }
 
-                    return _dbContext.Usuarios.Where(u => u.id == id).FirstOrDefault()?.nombre;
+                    var nombre = _dbContext.Usuarios.Where(u => u.id == id).FirstOrDefault()?.nombre;
+                    _dbContext.Database.Connection.Close();
+                    return nombre;
                 }
             });
         }
-       
+
 
         public async Task<ActionResult> AnunciosActivosPartial(int? id, string tipo)
         {
@@ -445,14 +594,16 @@ namespace VendeAgroWeb.Controllers.Administrador
             return PartialView("AnunciosPartial", model);
         }
 
-        private IQueryable<Anuncio> FiltraAnuncios(int? id, string tipo, IQueryable<Anuncio> anuncios, VendeAgroEntities _dbContext) {
-            
+        private IQueryable<Anuncio> FiltraAnuncios(int? id, string tipo, IQueryable<Anuncio> anuncios, VendeAgroEntities _dbContext)
+        {
+
             switch (tipo)
             {
                 case "cat":
                     var subcategorias = _dbContext.Subcategorias.Where(s => s.idCategoria == id).ToList();
                     List<Anuncio> anunciosFiltrados = new List<Anuncio>();
-                    foreach (var subc in subcategorias) {
+                    foreach (var subc in subcategorias)
+                    {
                         var subcId = subc.id;
                         var anunciosTemp = anuncios.Where(a => a.idSubcategoria == subcId).ToList();
                         anunciosFiltrados = anunciosFiltrados.Concat(anunciosTemp).ToList();
@@ -481,12 +632,16 @@ namespace VendeAgroWeb.Controllers.Administrador
 
                     var anuncios = _dbContext.Anuncios.Where(a => a.activo == true && a.estado == (int)EstadoAnuncio.Aprobado);
 
-                    if (id == null && tipo == null) {
-                        return CreaAnuncios(anuncios, _dbContext);
+                    if (id == null && tipo == null)
+                    {
+                        var result2 = CreaAnuncios(anuncios, _dbContext);
+                        _dbContext.Database.Connection.Close();
+                        return result2;
                     }
 
-                    return CreaAnuncios(FiltraAnuncios(id, tipo, anuncios, _dbContext), _dbContext);
-                    
+                    var result = CreaAnuncios(FiltraAnuncios(id, tipo, anuncios, _dbContext), _dbContext);
+                    _dbContext.Database.Connection.Close();
+                    return result;
                 }
             });
         }
@@ -507,10 +662,14 @@ namespace VendeAgroWeb.Controllers.Administrador
 
                     if (id == null && tipo == null)
                     {
-                        return CreaAnuncios(anuncios, _dbContext);
+                        var result2 = CreaAnuncios(anuncios, _dbContext);
+                        _dbContext.Database.Connection.Close();
+                        return result2;
                     }
 
-                    return CreaAnuncios(FiltraAnuncios(id, tipo, anuncios, _dbContext), _dbContext);
+                    var result = CreaAnuncios(FiltraAnuncios(id, tipo, anuncios, _dbContext), _dbContext);
+                    _dbContext.Database.Connection.Close();
+                    return result;
                 }
             });
         }
@@ -531,10 +690,14 @@ namespace VendeAgroWeb.Controllers.Administrador
 
                     if (id == null && tipo == null)
                     {
-                        return CreaAnuncios(anuncios, _dbContext);
+                        var result2 = CreaAnuncios(anuncios, _dbContext);
+                        _dbContext.Database.Connection.Close();
+                        return result2;
                     }
 
-                    return CreaAnuncios(FiltraAnuncios(id, tipo, anuncios, _dbContext), _dbContext);
+                    var result = CreaAnuncios(FiltraAnuncios(id, tipo, anuncios, _dbContext), _dbContext);
+                    _dbContext.Database.Connection.Close();
+                    return result;
                 }
             });
         }
@@ -555,10 +718,14 @@ namespace VendeAgroWeb.Controllers.Administrador
 
                     if (id == null && tipo == null)
                     {
-                        return CreaAnuncios(anuncios, _dbContext);
+                        var result2 = CreaAnuncios(anuncios, _dbContext);
+                        _dbContext.Database.Connection.Close();
+                        return result2;
                     }
 
-                    return CreaAnuncios(FiltraAnuncios(id, tipo, anuncios, _dbContext), _dbContext);
+                    var result = CreaAnuncios(FiltraAnuncios(id, tipo, anuncios, _dbContext), _dbContext);
+                    _dbContext.Database.Connection.Close();
+                    return result;
                 }
             });
         }

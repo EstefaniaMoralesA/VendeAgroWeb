@@ -50,25 +50,28 @@ namespace VendeAgroWeb
         {
             return await Task.Run(() =>
             {
-                using(var _dbContext = new VendeAgroEntities())
+                using (var _dbContext = new VendeAgroEntities())
                 {
                     _dbContext.Database.Connection.Open();
 
-                    if(_dbContext.Database.Connection.State != System.Data.ConnectionState.Open)
+                    if (_dbContext.Database.Connection.State != System.Data.ConnectionState.Open)
                     {
                         return OlvidoContrasenaStatus.Error;
                     }
 
                     var usuario = _dbContext.Usuario_Administrador.Where(u => u.email == email).FirstOrDefault();
-                    if(usuario == null)
+                    if (usuario == null)
                     {
+                        _dbContext.Database.Connection.Close();
                         return OlvidoContrasenaStatus.MailInexistente;
                     }
 
                     string mailMensaje = "<p>Estimado {0},</p>" +
-                    "<p>Para cambiar tu contraseña da click <a href=\'"+Startup.getBaseUrl()+"/Administrador/CambiarContrasena?token=" + "{1}\'>AQUÍ</a></p>";
+                    "<p>Para cambiar tu contraseña da click <a href=\'" + Startup.getBaseUrl() + "/Administrador/CambiarContrasena?token=" + "{1}\'>AQUÍ</a></p>";
 
                     var result = Startup.GetServicioEmail().SendAsync(string.Format(mailMensaje, usuario.nombre, usuario.password), "Recuperar Contraseña VendeAgro", usuario.email);
+
+                    _dbContext.Database.Connection.Close();
                     return OlvidoContrasenaStatus.MailEnviado;
 
                 }
@@ -80,26 +83,28 @@ namespace VendeAgroWeb
         {
             return await Task.Run(() =>
             {
-                if(token == null)
+                if (token == null)
                 {
                     return CambiarContrasenaStatus.TokenInvalido;
                 }
 
-                using(var _dbContext = new VendeAgroEntities())
+                using (var _dbContext = new VendeAgroEntities())
                 {
                     _dbContext.Database.Connection.Open();
-                    if(_dbContext.Database.Connection.State != System.Data.ConnectionState.Open)
+                    if (_dbContext.Database.Connection.State != System.Data.ConnectionState.Open)
                     {
                         return CambiarContrasenaStatus.Error;
                     }
 
                     var usuario = _dbContext.Usuario_Administrador.Where(u => u.password == token).FirstOrDefault();
-                    
-                    if(usuario == null)
+
+                    if (usuario == null)
                     {
+                        _dbContext.Database.Connection.Close();
                         return CambiarContrasenaStatus.TokenInvalido;
                     }
 
+                    _dbContext.Database.Connection.Close();
                     return CambiarContrasenaStatus.UrlValido;
                 }
             });
@@ -126,12 +131,14 @@ namespace VendeAgroWeb
 
                     if (usuario == null)
                     {
+                        _dbContext.Database.Connection.Close();
                         return CambiarContrasenaStatus.TokenInvalido;
                     }
 
                     usuario.password = password;
                     _dbContext.SaveChanges();
 
+                    _dbContext.Database.Connection.Close();
                     return CambiarContrasenaStatus.ContrasenaActualizada;
                 }
             });
@@ -177,7 +184,7 @@ namespace VendeAgroWeb
 
                     var usuarioRegistrado = _dbContext.Usuarios.Where(u => u.email == model.Email).FirstOrDefault();
                     string mailMensaje = "<p>Estimado {0} gracias por registrarte en vendeagro.com</p>" +
-                    "<p>Para completar tu registro y poder hacer login da click <a href=\'"+ Startup.getBaseUrl() +"/Portal/ConfirmarMail?token=" + "{1}\'>AQUÍ</a></p>";
+                    "<p>Para completar tu registro y poder hacer login da click <a href=\'" + Startup.getBaseUrl() + "/Portal/ConfirmarMail?token=" + "{1}\'>AQUÍ</a></p>";
 
                     var result = Startup.GetServicioEmail().SendAsync(string.Format(mailMensaje, model.Nombre + " " + model.Apellidos, tokenEmail), "Registro VendeAgro", model.Email);
                     return RegistroStatus.Exitoso;
@@ -223,11 +230,14 @@ namespace VendeAgroWeb
                         var usuario = _dbContext.Usuario_Administrador.Where(u => u.tokenSesion == token).FirstOrDefault();
                         if (usuario == null)
                         {
+                            _dbContext.Database.Connection.Close();
                             return;
                         }
 
                         usuario.tokenSesion = "";
                         _dbContext.SaveChanges();
+                        _dbContext.Database.Connection.Close();
+
 
                     }
 
@@ -247,19 +257,21 @@ namespace VendeAgroWeb
                     using (var _dbContext = new VendeAgroEntities())
                     {
                         _dbContext.Database.Connection.Open();
-                        if(_dbContext.Database.Connection.State != System.Data.ConnectionState.Open)
+                        if (_dbContext.Database.Connection.State != System.Data.ConnectionState.Open)
                         {
                             return;
                         }
                         var usuario = _dbContext.Usuarios.Where(u => u.tokenSesion == token).FirstOrDefault();
                         if (usuario == null)
                         {
+                            _dbContext.Database.Connection.Close();
                             return;
                         }
 
                         usuario.tokenSesion = "";
                         _dbContext.SaveChanges();
-                        
+                        _dbContext.Database.Connection.Close();
+
                     }
 
                 }
@@ -322,7 +334,7 @@ namespace VendeAgroWeb
                     using (var _dbContext = new VendeAgroEntities())
                     {
                         _dbContext.Database.Connection.Open();
-                        if(_dbContext.Database.Connection.State != System.Data.ConnectionState.Open)
+                        if (_dbContext.Database.Connection.State != System.Data.ConnectionState.Open)
                         {
                             return null;
                         }
@@ -330,15 +342,18 @@ namespace VendeAgroWeb
                         var usuario = _dbContext.Usuario_Administrador.Where(u => u.tokenSesion == token).FirstOrDefault();
                         if (usuario == null)
                         {
+                            _dbContext.Database.Connection.Close();
                             return null;
                         }
 
                         if (!usuario.activo)
                         {
+                            _dbContext.Database.Connection.Close();
                             return null;
                         }
 
                         var resultado = new AdministradorUsuario(usuario.id, usuario.email, usuario.nombre);
+                        _dbContext.Database.Connection.Close();
                         return resultado;
                     }
 
@@ -367,7 +382,7 @@ namespace VendeAgroWeb
                     using (var _dbContext = new VendeAgroEntities())
                     {
                         _dbContext.Database.Connection.Open();
-                        if(_dbContext.Database.Connection.State != System.Data.ConnectionState.Open)
+                        if (_dbContext.Database.Connection.State != System.Data.ConnectionState.Open)
                         {
                             return null;
                         }
@@ -376,10 +391,12 @@ namespace VendeAgroWeb
 
                         if (usuario == null)
                         {
+                            _dbContext.Database.Connection.Close();
                             return null;
                         }
 
                         var resultado = new PortalUsuario(usuario.id, usuario.email, usuario.nombre, usuario.apellidos, usuario.telefono.ToString());
+                        _dbContext.Database.Connection.Close();
                         return resultado;
                     }
 
