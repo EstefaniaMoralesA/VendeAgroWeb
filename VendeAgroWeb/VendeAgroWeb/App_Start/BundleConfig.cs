@@ -18,7 +18,7 @@ namespace VendeAgroWeb
                         "~/Scripts/nouislider.min.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/carousel/js").Include(
-                        "~/Scripts/carousel.js"));
+                        "~/Scripts/owl.carousel.js"));
 
             // Use the development version of Modernizr to develop with and learn from. Then, when you're
             // ready for production, use the build tool at http://modernizr.com to pick only the tests you need.
@@ -34,6 +34,12 @@ namespace VendeAgroWeb
                       "~/Content/site.css",
                       "~/Content/nouislider.min.css"
                       ));
+
+            bundles.Add(new StyleBundle("~/owl/css").Include(
+                     "~/Content/owl.carousel.css",
+                     "~/Content/owl.theme.css",
+                     "~/Content/owl.transition.css"
+                     ));
         }
     }
 }

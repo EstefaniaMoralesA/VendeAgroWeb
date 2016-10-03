@@ -5,40 +5,27 @@
     Layout = "Shared/_AdministradorLayout.cshtml";
 }
 
+@Styles.Render("~/owl/css");
+
+
 <div class="col-sm-offset-1 col-sm-10">
-    @*<div class="cycle-slideshow"
-             data-cycle-fx=carousel
-             data-cycle-timeout=0
-             data-cycle-carousel-visible=3
-             data-cycle-next="#next"
-             data-cycle-prev="#prev"
-             data-cycle-pager="#pager">
-            <img src="http://malsup.github.io/images/beach1.jpg">
-            <img src="http://malsup.github.io/images/beach2.jpg">
-            <img src="http://malsup.github.io/images/beach9.jpg">
-            <img src="http://malsup.github.io/images/beach1.jpg">
-            <img src="http://malsup.github.io/images/beach2.jpg">
-            <img src="http://malsup.github.io/images/beach9.jpg">
-            <img src="http://malsup.github.io/images/beach1.jpg">
-            <img src="http://malsup.github.io/images/beach2.jpg">
-            <img src="http://malsup.github.io/images/beach9.jpg">
+    <div id="owl-demo" class="itemsScaleUp-false owl-carousel owl-theme">
+        <div class="item">
+            <img src="~/img/horses.jpg" />
         </div>
 
-        <div class=center>
-            <a href=# id=prev>&lt;&lt; Prev </a>
-            <a href=# id=next> Next &gt;&gt; </a>
+        <div class="item">
+            <img src="~/img/horses.jpg" />
         </div>
 
-        <div class="cycle-pager" id=pager></div>*@
-
-    <div id="cycle-1" class="cycle-slideshow" data-cycle-slides="> div" data-cycle-timeout="0" data-cycle-prev="#slideshow-1 .cycle-prev" data-cycle-next="#slideshow-1 .cycle-next" data-cycle-caption="#slideshow-1 .custom-caption" data-cycle-caption-template="Slide {{slideNum}} of {{slideCount}}" data-cycle-fx="tileBlind" style="position: relative; overflow: hidden;">
-        <div class="cycle-slide cycle-sentinel">
-            <img src="http://malsup.github.io/images/beach1.jpg" width="500" height="500">
+        <div class="item">
+            <img src="~/img/horses.jpg" />
         </div>
-    </div>
 
-    <div id="cycle-2" class="cycle-slideshow" data-cycle-slides="> div" data-cycle-timeout="0" data-cycle-prev="#slideshow-2 .cycle-prev" data-cycle-next="#slideshow-2 .cycle-next" data-cycle-caption="#slideshow-2 .custom-caption" data-cycle-caption-template="Slide {{slideNum}} of {{slideCount}}" data-cycle-fx="carousel" data-cycle-carousel-visible="5" data-cycle-carousel-fluid="true" data-allow-wrap="false" style="position: relative; overflow: hidden;">
-        <div class="cycle-slide cycle-sentinel" style="position: static; top: 0px; left: 0px; z-index: 100; opacity: 1; display: block; visibility: hidden; width: 120px;"><img src="http://malsup.github.io/images/beach1.jpg" width="100" height="100" style="visibility: hidden;"></div><div class="cycle-carousel-wrap" style="margin: 0px; padding: 0px; top: 0px; left: -480px; position: absolute; white-space: nowrap;"><div class="cycle-slide" style="position: static; top: 0px; left: 0px; z-index: 100; opacity: 1; display: inline-block; visibility: visible; width: 120px;"><img src="http://malsup.github.io/images/beach1.jpg" width="100" height="100"></div><div class="cycle-slide" style="position: static; top: 0px; left: 0px; z-index: 99; display: inline-block; width: 120px;"><img src="http://malsup.github.io/images/beach2.jpg" width="100" height="100"></div><div class="cycle-slide" style="position: static; top: 0px; left: 0px; z-index: 97; display: inline-block; width: 120px;"><img src="http://malsup.github.io/images/beach3.jpg" width="100" height="100"></div><div class="cycle-slide" style="position: static; top: 0px; left: 0px; z-index: 96; display: inline-block; width: 120px;"><img src="http://malsup.github.io/images/beach4.jpg" width="100" height="100"></div><div class="cycle-slide" style="position: static; top: 0px; left: 0px; z-index: 95; display: inline-block; width: 120px;"><img src="http://malsup.github.io/images/beach5.jpg" width="100" height="100"></div><div class="cycle-slide" style="position: static; top: 0px; left: 0px; z-index: 94; display: inline-block; width: 120px;"><img src="http://malsup.github.io/images/beach6.jpg" width="100" height="100"></div><div class="cycle-slide" style="position: static; top: 0px; left: 0px; z-index: 93; display: inline-block; width: 120px;"><img src="http://malsup.github.io/images/beach7.jpg" width="100" height="100"></div><div class="cycle-slide cycle-slide-active" style="position: static; top: 0px; left: 0px; z-index: 92; display: inline-block; width: 120px;"><img src="http://malsup.github.io/images/beach8.jpg" width="100" height="100"></div><div class="cycle-slide" style="position: static; top: 0px; left: 0px; z-index: 91; display: inline-block; width: 120px;"><img src="http://malsup.github.io/images/beach9.jpg" width="100" height="100"></div></div>
+        <div class="item">
+            <img src="~/img/horses.jpg" />
+        </div>
+
     </div>
 </div>
 
@@ -46,6 +33,31 @@
     @Scripts.Render("~/bundles/carousel/js")
 }
 
-<script>
+<script type="text/javascript">
+    $("#owl-demo").owlCarousel({
+        itemsScaleUp: false,
+        items: 8,
+        navigation:true
+    });
 </script>
+
+<style>
+
+    .owl-buttons{
+        display:none;
+    }
+
+    .owl-page span{
+        border-radius: 20px !important;
+    }
+
+    #owl-demo .item{
+  margin: 3px;
+}
+#owl-demo .item img{
+  display: block;
+  width: 100%;
+  height: auto;
+}
+</style>
 
