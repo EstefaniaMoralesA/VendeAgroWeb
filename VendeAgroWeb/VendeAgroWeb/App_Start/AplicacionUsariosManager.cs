@@ -52,7 +52,7 @@ namespace VendeAgroWeb
             {
                 using (var _dbContext = new VendeAgroEntities())
                 {
-                    _dbContext.Database.Connection.Open();
+                    Startup.OpenDatabaseConnection(_dbContext);
 
                     if (_dbContext.Database.Connection.State != System.Data.ConnectionState.Open)
                     {
@@ -90,7 +90,7 @@ namespace VendeAgroWeb
 
                 using (var _dbContext = new VendeAgroEntities())
                 {
-                    _dbContext.Database.Connection.Open();
+                    Startup.OpenDatabaseConnection(_dbContext);
                     if (_dbContext.Database.Connection.State != System.Data.ConnectionState.Open)
                     {
                         return CambiarContrasenaStatus.Error;
@@ -121,7 +121,7 @@ namespace VendeAgroWeb
 
                 using (var _dbContext = new VendeAgroEntities())
                 {
-                    _dbContext.Database.Connection.Open();
+                    Startup.OpenDatabaseConnection(_dbContext);
                     if (_dbContext.Database.Connection.State != System.Data.ConnectionState.Open)
                     {
                         return CambiarContrasenaStatus.Error;
@@ -222,7 +222,7 @@ namespace VendeAgroWeb
                     borrarCookie(HttpContext.Current.Response, "AdminVendeAgro");
                     using (var _dbContext = new VendeAgroEntities())
                     {
-                        _dbContext.Database.Connection.Open();
+                        Startup.OpenDatabaseConnection(_dbContext);
                         if (_dbContext.Database.Connection.State != System.Data.ConnectionState.Open)
                         {
                             return;
@@ -256,7 +256,7 @@ namespace VendeAgroWeb
                     borrarCookie(HttpContext.Current.Response, "VendeAgroUser");
                     using (var _dbContext = new VendeAgroEntities())
                     {
-                        _dbContext.Database.Connection.Open();
+                        Startup.OpenDatabaseConnection(_dbContext);
                         if (_dbContext.Database.Connection.State != System.Data.ConnectionState.Open)
                         {
                             return;
@@ -333,7 +333,7 @@ namespace VendeAgroWeb
                 {
                     using (var _dbContext = new VendeAgroEntities())
                     {
-                        _dbContext.Database.Connection.Open();
+                        Startup.OpenDatabaseConnection(_dbContext);
                         if (_dbContext.Database.Connection.State != System.Data.ConnectionState.Open)
                         {
                             return null;
@@ -381,7 +381,7 @@ namespace VendeAgroWeb
                 {
                     using (var _dbContext = new VendeAgroEntities())
                     {
-                        _dbContext.Database.Connection.Open();
+                        Startup.OpenDatabaseConnection(_dbContext);
                         if (_dbContext.Database.Connection.State != System.Data.ConnectionState.Open)
                         {
                             return null;

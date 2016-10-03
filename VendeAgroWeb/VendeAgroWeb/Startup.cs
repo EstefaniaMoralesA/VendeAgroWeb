@@ -2,6 +2,7 @@
 using Owin;
 using System;
 using System.Web;
+using VendeAgroWeb.Models;
 
 [assembly: OwinStartupAttribute(typeof(VendeAgroWeb.Startup))]
 namespace VendeAgroWeb
@@ -32,6 +33,18 @@ namespace VendeAgroWeb
         public static ServicioEmail GetServicioEmail()
         {
             return _servicioEmail;
+        }
+
+        public static void OpenDatabaseConnection(VendeAgroEntities _dbContext)
+        {
+            try
+            {
+                _dbContext.Database.Connection.Open();
+            }
+            catch(Exception e)
+            {
+                return;
+            }
         }
     }
 }

@@ -43,7 +43,7 @@ namespace VendeAgroWeb.Controllers.Administrador
             {
                 using (var _dbContext = new VendeAgroEntities())
                 {
-                    _dbContext.Database.Connection.Open();
+                    Startup.OpenDatabaseConnection(_dbContext);
                     if (_dbContext.Database.Connection.State != ConnectionState.Open)
                     {
                         return null;
@@ -69,7 +69,7 @@ namespace VendeAgroWeb.Controllers.Administrador
             {
                 using (var _dbContext = new VendeAgroEntities())
                 {
-                    _dbContext.Database.Connection.Open();
+                    Startup.OpenDatabaseConnection(_dbContext);
                     if (_dbContext.Database.Connection.State != ConnectionState.Open)
                     {
                         return null;
@@ -109,7 +109,7 @@ namespace VendeAgroWeb.Controllers.Administrador
             {
                 using (var _dbContext = new VendeAgroEntities())
                 {
-                    _dbContext.Database.Connection.Open();
+                    Startup.OpenDatabaseConnection(_dbContext);
                     if (_dbContext.Database.Connection.State != ConnectionState.Open)
                     {
                         return null;
@@ -143,7 +143,7 @@ namespace VendeAgroWeb.Controllers.Administrador
             {
                 using (var _dbContext = new VendeAgroEntities())
                 {
-                    _dbContext.Database.Connection.Open();
+                    Startup.OpenDatabaseConnection(_dbContext);
                     if (_dbContext.Database.Connection.State != ConnectionState.Open)
                     {
                         return false;
@@ -187,7 +187,7 @@ namespace VendeAgroWeb.Controllers.Administrador
             {
                 using (var _dbContext = new VendeAgroEntities())
                 {
-                    _dbContext.Database.Connection.Open();
+                    Startup.OpenDatabaseConnection(_dbContext);
                     if (_dbContext.Database.Connection.State != ConnectionState.Open)
                     {
                         return false;
@@ -282,7 +282,7 @@ namespace VendeAgroWeb.Controllers.Administrador
             {
                 using (var _dbContext = new VendeAgroEntities())
                 {
-                    _dbContext.Database.Connection.Open();
+                    Startup.OpenDatabaseConnection(_dbContext);
                     if (_dbContext.Database.Connection.State != ConnectionState.Open)
                     {
                         return null;
@@ -344,7 +344,7 @@ namespace VendeAgroWeb.Controllers.Administrador
             {
                 using (var _dbContext = new VendeAgroEntities())
                 {
-                    _dbContext.Database.Connection.Open();
+                    Startup.OpenDatabaseConnection(_dbContext);
                     if (_dbContext.Database.Connection.State != ConnectionState.Open)
                     {
                         ModelState.AddModelError("", "Hubo un error en la conexión vuelva a intentarlo.");
@@ -392,7 +392,7 @@ namespace VendeAgroWeb.Controllers.Administrador
             {
                 using (var _dbContext = new VendeAgroEntities())
                 {
-                    _dbContext.Database.Connection.Open();
+                    Startup.OpenDatabaseConnection(_dbContext);
                     if (_dbContext.Database.Connection.State != ConnectionState.Open)
                     {
                         return null;
@@ -427,7 +427,7 @@ namespace VendeAgroWeb.Controllers.Administrador
             {
                 using (var _dbContext = new VendeAgroEntities())
                 {
-                    _dbContext.Database.Connection.Open();
+                    Startup.OpenDatabaseConnection(_dbContext);
                     if (_dbContext.Database.Connection.State != ConnectionState.Open)
                     {
                         return new List<SelectListItem>();
@@ -464,7 +464,7 @@ namespace VendeAgroWeb.Controllers.Administrador
             {
                 using (var _dbContext = new VendeAgroEntities())
                 {
-                    _dbContext.Database.Connection.Open();
+                    Startup.OpenDatabaseConnection(_dbContext);
                     if (_dbContext.Database.Connection.State != ConnectionState.Open)
                     {
                         ModelState.AddModelError("", "Hubo un error en la conexión vuelva a intentarlo.");
@@ -514,7 +514,7 @@ namespace VendeAgroWeb.Controllers.Administrador
             {
                 using (var _dbContext = new VendeAgroEntities())
                 {
-                    _dbContext.Database.Connection.Open();
+                    Startup.OpenDatabaseConnection(_dbContext);
                     if (_dbContext.Database.Connection.State != ConnectionState.Open)
                     {
                         return null;
@@ -535,7 +535,7 @@ namespace VendeAgroWeb.Controllers.Administrador
             {
                 using (var _dbContext = new VendeAgroEntities())
                 {
-                    _dbContext.Database.Connection.Open();
+                    Startup.OpenDatabaseConnection(_dbContext);
                     if (_dbContext.Database.Connection.State != ConnectionState.Open)
                     {
                         return null;
@@ -556,7 +556,7 @@ namespace VendeAgroWeb.Controllers.Administrador
             {
                 using (var _dbContext = new VendeAgroEntities())
                 {
-                    _dbContext.Database.Connection.Open();
+                    Startup.OpenDatabaseConnection(_dbContext);
                     if (_dbContext.Database.Connection.State != ConnectionState.Open)
                     {
                         return null;
@@ -624,7 +624,7 @@ namespace VendeAgroWeb.Controllers.Administrador
             {
                 using (var _dbContext = new VendeAgroEntities())
                 {
-                    _dbContext.Database.Connection.Open();
+                    Startup.OpenDatabaseConnection(_dbContext);
                     if (_dbContext.Database.Connection.State != ConnectionState.Open)
                     {
                         return null;
@@ -652,7 +652,7 @@ namespace VendeAgroWeb.Controllers.Administrador
             {
                 using (var _dbContext = new VendeAgroEntities())
                 {
-                    _dbContext.Database.Connection.Open();
+                    Startup.OpenDatabaseConnection(_dbContext);
                     if (_dbContext.Database.Connection.State != ConnectionState.Open)
                     {
                         return null;
@@ -680,7 +680,7 @@ namespace VendeAgroWeb.Controllers.Administrador
             {
                 using (var _dbContext = new VendeAgroEntities())
                 {
-                    _dbContext.Database.Connection.Open();
+                    Startup.OpenDatabaseConnection(_dbContext);
                     if (_dbContext.Database.Connection.State != ConnectionState.Open)
                     {
                         return null;
@@ -708,7 +708,7 @@ namespace VendeAgroWeb.Controllers.Administrador
             {
                 using (var _dbContext = new VendeAgroEntities())
                 {
-                    _dbContext.Database.Connection.Open();
+                    Startup.OpenDatabaseConnection(_dbContext);
                     if (_dbContext.Database.Connection.State != ConnectionState.Open)
                     {
                         return null;
