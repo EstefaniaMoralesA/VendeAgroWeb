@@ -7,25 +7,35 @@
 
 @Styles.Render("~/owl/css");
 
-
-<div class="col-sm-offset-1 col-sm-10">
-    <div id="owl-demo" class="itemsScaleUp-false owl-carousel owl-theme">
-        <div class="item">
-            <img src="~/img/horses.jpg" />
+<div class="row">
+    <div class="col-sm-offset-1 col-sm-10">
+        <div class="img-grande-container">
+            <img src="~/img/horses.jpg" class="imagen-grande" />
         </div>
+    </div>
+</div>
 
-        <div class="item">
-            <img src="~/img/horses.jpg" />
+<div class="row">
+    <div class="col-sm-offset-1 col-sm-10">
+
+        <div id="owl-demo" class="itemsScaleUp-false owl-carousel owl-theme">
+            <div class="item activo">
+                <img src="~/img/horses.jpg" />
+            </div>
+
+            <div class="item">
+                <img src="~/img/yegua.jpg" />
+            </div>
+
+            <div class="item">
+                <img src="~/img/horses.jpg" />
+            </div>
+
+            <div class="item">
+                <img src="~/img/horses.jpg" />
+            </div>
+
         </div>
-
-        <div class="item">
-            <img src="~/img/horses.jpg" />
-        </div>
-
-        <div class="item">
-            <img src="~/img/horses.jpg" />
-        </div>
-
     </div>
 </div>
 
@@ -34,30 +44,73 @@
 }
 
 <script type="text/javascript">
-    $("#owl-demo").owlCarousel({
-        itemsScaleUp: false,
-        items: 8,
-        navigation:true
+    $(document).ready(function () {
+        $("#owl-demo").owlCarousel({
+            itemsScaleUp: false,
+            items: 8,
+            navigation: true
+        });
+
+        //var content = $(".owl-wrapper").html();
+        //var d = document.createElement('div');
+        //$(d).addClass("contenedor-carousel").html(content);
+        //$(".owl-wrapper").html('').append(d);
+        //if ($(d).width() > $("#owl-demo").width())
+        //    $(".owl-wrapper").html(content);
+
+        $(".item").click(function () {
+            var src = $(this).children('img').attr('src');
+            $(".activo").removeClass("activo");
+            $(this).addClass("activo");
+            $(".imagen-grande").attr("src", src);
+        });
     });
+
+
 </script>
 
 <style>
-
-    .owl-buttons{
-        display:none;
+    .contenedor-carousel {
+        position: relative;
+        display: inline-block;
+        height: auto;
+        width: auto;
+        left: 50%;
+        transform: translate(-50%, 0);
     }
 
-    .owl-page span{
+    .imagen-grande {
+        width: 50%;
+    }
+
+    .img-grande-container {
+        text-align: center;
+        margin-bottom: 30px;
+    }
+
+    .owl-buttons {
+        display: none;
+    }
+
+    .item {
+        cursor: pointer;
+    }
+
+        .item.activo img {
+            border: solid 2px black;
+        }
+
+    .owl-page span {
         border-radius: 20px !important;
     }
 
-    #owl-demo .item{
-  margin: 3px;
-}
-#owl-demo .item img{
-  display: block;
-  width: 100%;
-  height: auto;
-}
-</style>
+    #owl-demo .item {
+        margin: 3px;
+    }
 
+        #owl-demo .item img {
+            display: block;
+            width: 100%;
+            height: auto;
+        }
+</style>
