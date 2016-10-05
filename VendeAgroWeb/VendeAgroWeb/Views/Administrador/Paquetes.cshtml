@@ -1,0 +1,59 @@
+﻿@model VendeAgroWeb.Models.Administrador.PaquetesViewModel
+
+@{
+    ViewBag.Title = "Administración Paquetes";
+    Layout = "Shared/_AdministradorLayout.cshtml";
+}
+
+<div class="row" style="margin-top:30px">
+    <div class="col-sm-offset-1 col-sm-10">
+        <div class="row">
+            <a class="btn btn-success btn-lg btn-sistema" href="" id="agregar"><span class="glyphicon glyphicon-plus-sign" style="top: 3px;"></span> <span class="texto">nuevo paquete</span></a>
+        </div>
+        <div class="row" style="margin-top:20px">
+            <div class="table-responsive">
+                <table class="table table-striped table-responsive">
+                    <thead>
+                        <tr>
+                            <th>Nombre</th>
+                            <th>Meses</th>
+                            <th># de anuncios</th>
+                            <th>Precio</th>
+                            <th>Descripción</th>
+                            <th>Última modificación</th>
+                            <th></th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @{
+                            foreach (var item in Model.Paquetes)
+                            {
+                                <tr>
+                                    <td>@item.Nombre</td>
+                                    <td style="text-align:center">@item.Meses</td>
+                                    <td style="text-align:center">@item.NumAnuncios</td>
+                                    <td style="text-align:center">@item.Precio</td>
+                                    <td>@item.Descripcion</td>
+                                    <td style="text-align:center">@item.FechaModificacion</td>
+                                    <td><a class="btn btn-default btn-9-caracteres">modificar</a></td>
+                                    @{
+                                        if (item.Activo)
+                                        {
+                                            <td><a data-id="@item.Id" class="btn btn-danger btn-10-caracteres subcategorias-desactivar">desactivar</a></td>
+                                        }
+                                        else
+                                        {
+                                            <td><a data-id="@item.Id" class="btn btn-7-caracteres btn-success subcategorias-activar">activar</a></td>
+                                        }
+                                    }
+                                </tr>
+                            }
+                        }
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

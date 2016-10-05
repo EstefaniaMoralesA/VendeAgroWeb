@@ -203,6 +203,148 @@ namespace VendeAgroWeb.Models.Administrador
         }
     }
 
+    public class NuevoPaqueteViewModel
+    {
+
+        [Required(ErrorMessage = "Campo requerido")]
+        [Display(Name = "NuevoNombre")]
+        public string Nombre { get; set; }
+
+        [Required(ErrorMessage = "Campo requerido")]
+        [Display(Name = "Meses")]
+        [Range(0, int.MaxValue, ErrorMessage = "Introduzca un valor numérico")]
+        public int Meses { get; set; }
+
+        [Required(ErrorMessage = "Campo requerido")]
+        [Display(Name = "Anuncios permitidos")]
+        [Range(0, int.MaxValue, ErrorMessage = "Introduzca un valor numérico")]
+        public int Anuncios { get; set; }
+
+        [Required(ErrorMessage = "Campo requerido")]
+        [Display(Name = "Precio del paquete")]
+        [Range(0, float.MaxValue, ErrorMessage = "Introduzca un valor numérico")]
+        public double Precio { get; set; }
+
+        [Required(ErrorMessage = "Campo requerido")]
+        [Display(Name = "Descripción del paquete")]
+        [StringLength(200, MinimumLength = 3, ErrorMessage = "El número de caracteres no puede ser mayor a 200")]
+        public string Descripción { get; set; }
+
+
+    }
+
+    public class PaqueteViewModel {
+        private int _id;
+        private string _nombre;
+        private int _meses;
+        private int _numAnuncios;
+        private double _precio;
+        private string _descripcion;
+        private bool _paqueteBase;
+        private DateTime _fechaModificacion;
+        private bool _activo;
+
+        public int Id
+        {
+            get
+            {
+                return _id;
+            }
+        }
+
+        public string Nombre
+        {
+            get
+            {
+                return _nombre;
+            }
+        }
+
+        public int Meses
+        {
+            get
+            {
+                return _meses;
+            }
+        }
+
+        public int NumAnuncios
+        {
+            get
+            {
+                return _numAnuncios;
+            }
+        }
+
+        public double Precio
+        {
+            get
+            {
+                return _precio;
+            }
+        }
+
+        public string Descripcion
+        {
+            get
+            {
+                return _descripcion;
+            }
+        }
+
+        public bool PaqueteBase
+        {
+            get
+            {
+                return _paqueteBase;
+            }
+        }
+
+        public DateTime FechaModificacion
+        {
+            get
+            {
+                return _fechaModificacion;
+            }
+        }
+
+        public bool Activo
+        {
+            get
+            {
+                return _activo;
+            }
+        }
+
+        public PaqueteViewModel(int id, string nombre, int meses, int numAnuncios, double precio, string descripcion, bool paqueteBase, DateTime fechaModificacion, bool activo) {
+            _id = id;
+            _nombre = nombre;
+            _meses = meses;
+            _numAnuncios = numAnuncios;
+            _precio = precio;
+            _descripcion = descripcion;
+            _paqueteBase = paqueteBase;
+            _fechaModificacion = fechaModificacion;
+            _activo = activo;
+        }
+    }
+
+    public class PaquetesViewModel {
+        private ICollection<PaqueteViewModel> _paquetes;
+
+        public PaquetesViewModel(ICollection<PaqueteViewModel> paquetes) {
+            _paquetes = paquetes;
+        }
+
+        public ICollection<PaqueteViewModel> Paquetes
+        {
+            get
+            {
+                return _paquetes;
+            }
+        }
+    }
+
     public class AnuncioViewModel {
         private int _id;
         private string _titulo;
@@ -351,7 +493,6 @@ namespace VendeAgroWeb.Models.Administrador
 
     public class SubcategoriasViewModel {
         private ICollection<SubcategoriaViewModel> _subcategorias;
-        private int _id;
 
         public SubcategoriasViewModel(ICollection<SubcategoriaViewModel> subcategorias) {
             _subcategorias = subcategorias;
@@ -366,14 +507,6 @@ namespace VendeAgroWeb.Models.Administrador
             get
             {
                 return _subcategorias;
-            }
-        }
-
-        public int Id
-        {
-            get
-            {
-                return _id;
             }
         }
     }
@@ -444,7 +577,6 @@ namespace VendeAgroWeb.Models.Administrador
     public class CategoriasViewModel
     {
         private ICollection<CategoriaViewModel> _categorias;
-        private int _id;
 
         public CategoriasViewModel(ICollection<CategoriaViewModel> categorias)
         {
@@ -460,14 +592,6 @@ namespace VendeAgroWeb.Models.Administrador
             get
             {
                 return _categorias;
-            }
-        }
-
-        public int Id
-        {
-            get
-            {
-                return _id;
             }
         }
     }

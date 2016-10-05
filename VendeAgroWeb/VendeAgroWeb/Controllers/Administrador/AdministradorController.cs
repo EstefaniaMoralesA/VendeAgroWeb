@@ -319,6 +319,15 @@ namespace VendeAgroWeb.Controllers.Administrador
             return View();
         }
 
+        public async Task<ActionResult> NuevoPaquete()
+        {
+            if (await Startup.GetAplicacionUsuariosManager().VerificarAdminSesionAsync() == LoginStatus.Incorrecto)
+            {
+                return RedirectToAction("Login", "Administrador");
+            }
+            return View();
+        }
+
         public async Task<ActionResult> NuevaCategoria()
         {
             if (await Startup.GetAplicacionUsuariosManager().VerificarAdminSesionAsync() == LoginStatus.Incorrecto)
@@ -470,22 +479,26 @@ namespace VendeAgroWeb.Controllers.Administrador
                         ModelState.AddModelError("", "Hubo un error en la conexión vuelva a intentarlo.");
                         estado = false;
                     }
-                    else if (_dbContext.Subcategorias.Where(s => s.nombre.ToLower() == model.Nombre.ToLower() && s.idCategoria == model.Categoria).FirstOrDefault() != null)
+                    else 
                     {
-                        ModelState.AddModelError("", "Error ya existe una subcategoría con ese nombre.");
-                        estado = false;
-                    }
-                    else
-                    {
-                        _dbContext.Subcategorias.Add(new Subcategoria
+                        if (_dbContext.Subcategorias.Where(s => s.nombre.ToLower() == model.Nombre.ToLower() && s.idCategoria == model.Categoria).FirstOrDefault() != null)
                         {
-                            nombre = model.Nombre,
-                            activo = true,
-                            idCategoria = model.Categoria
-                        });
-                        _dbContext.SaveChanges();
+                            ModelState.AddModelError("", "Error ya existe una subcategoría con ese nombre.");
+                            estado = false;
+                        }
+                        else
+                        {
+                            _dbContext.Subcategorias.Add(new Subcategoria
+                            {
+                                nombre = model.Nombre,
+                                activo = true,
+                                idCategoria = model.Categoria
+                            });
+                            _dbContext.SaveChanges();
+                        }
+                        _dbContext.Database.Connection.Close();
                     }
-                    _dbContext.Database.Connection.Close();
+
                 }
             });
             if (estado)
@@ -760,6 +773,43 @@ namespace VendeAgroWeb.Controllers.Administrador
             return RedirectToAction("Index", "Administrador");
         }
 
+        public async Task<ActionResult> Paquetes()
+        {
+            if (await Startup.GetAplicacionUsuariosManager().VerificarAdminSesionAsync() == LoginStatus.Incorrecto)
+            {
+                return RedirectToAction("Login", "Administrador");
+            }
+
+            PaquetesViewModel model = new PaquetesViewModel(await ObtenerPaquetes());
+
+            return View(model);
+        }
+
+        public async Task<ICollection<PaqueteViewModel>> ObtenerPaquetes()
+        {
+            return await Task.Run(() =>
+            {
+                using (var _dbContext = new VendeAgroEntities())
+                {
+                    Startup.OpenDatabaseConnection(_dbContext);
+                    if (_dbContext.Database.Connection.State != ConnectionState.Open)
+                    {
+                        return null;
+                    }
+
+                    List<PaqueteViewModel> lista = new List<PaqueteViewModel>();
+                    var paquetes = _dbContext.Paquetes;
+
+                    foreach (var item in paquetes)
+                    {
+                        lista.Add(new PaqueteViewModel(item.id, item.nombre, item.meses, item.numeroAnuncios, item.precio, item.descripcion, item.paqueteBase, item.fechaModificacion, item.activo));
+                    }
+
+                    _dbContext.Database.Connection.Close();
+                    return lista;
+                }
+            });
+        }
 
         public ActionResult Beneficios()
         {
