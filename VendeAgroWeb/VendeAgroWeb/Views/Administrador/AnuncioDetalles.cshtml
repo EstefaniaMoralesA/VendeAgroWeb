@@ -7,16 +7,18 @@
 
 @Styles.Render("~/owl/css");
 
+
 <div class="row">
-    <div class="col-sm-offset-1 col-sm-10">
+    <div class="col-sm-6">
+        <div class="estatus-container">
+            <div class="alert alert-success">
+                <strong><span class="glyphicon glyphicon-check"></span></strong> Anuncio aprobado
+            </div>
+        </div>
+
         <div class="img-grande-container">
             <img src="~/img/horses.jpg" class="imagen-grande" />
         </div>
-    </div>
-</div>
-
-<div class="row">
-    <div class="col-sm-offset-1 col-sm-10">
 
         <div id="owl-demo" class="itemsScaleUp-false owl-carousel owl-theme">
             <div class="item activo">
@@ -34,7 +36,54 @@
             <div class="item">
                 <img src="~/img/horses.jpg" />
             </div>
+        </div>
+    </div>
 
+    <div class="col-sm-6">
+        <h2 style="margin-top:7px;">Informaci&oacute;n general</h2>
+        <hr />
+        <h3>T&iacute;tulo</h3>
+        <h4>Precio</h4>
+        <p>Descripci&oacute;n</p>
+        <hr />
+        <h2 style="margin-top:15px;">Detalles de compra</h2>
+        <hr />
+        <table class="table table-bordered">
+            <tbody>
+                <tr>
+                    <td><strong>Paquete</strong></td>
+                    <td>Oro</td>
+                </tr>
+                <tr>
+                    <td><strong>Fecha de inicio</strong></td>
+                    <td>03/03/2016</td>
+                </tr>
+                <tr>
+                    <td><strong>Fecha de fin</strong></td>
+                    <td>03/05/2016</td>
+                </tr>
+                <tr>
+                    <td><strong>Beneficios</strong></td>
+                    <td>
+                        <p><span class="glyphicon glyphicon-check"></span> 10 fotos</p>
+                        <p><span class="glyphicon glyphicon-check"></span> Oferta del d&iacute;a</p>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+
+        <form class="form-horizontal" action="" method="post" id="forma-rechazar">
+            <input name="id" value="" type="hidden" />
+            <div class="form-group">
+                <textarea class="form-control" placeholder="Introduzca comentarios del motivo del rechazo del anuncio." rows="3"></textarea>
+            </div>
+            <div class="form-group" style="text-align:center;">
+                <a href="" type="submit" id="boton-detalles" class="btn btn-danger">Rechazar</a>
+            </div>
+        </form>
+        <div class="text-center">
+            <a id="boton-detalles" class="btn btn-success">Aprobar</a>
         </div>
     </div>
 </div>
@@ -47,7 +96,7 @@
     $(document).ready(function () {
         $("#owl-demo").owlCarousel({
             itemsScaleUp: false,
-            items: 8,
+            items: 5,
             navigation: true
         });
 
@@ -68,49 +117,13 @@
 
 
 </script>
-
 <style>
-    .contenedor-carousel {
-        position: relative;
-        display: inline-block;
-        height: auto;
-        width: auto;
-        left: 50%;
-        transform: translate(-50%, 0);
+    #forma-rechazar .form-group {
+        margin-left: 0px !important;
+        margin-right: 0px !important;
     }
 
-    .imagen-grande {
-        width: 50%;
+    #boton-detalles{
+        width:50%;
     }
-
-    .img-grande-container {
-        text-align: center;
-        margin-bottom: 30px;
-    }
-
-    .owl-buttons {
-        display: none;
-    }
-
-    .item {
-        cursor: pointer;
-    }
-
-        .item.activo img {
-            border: solid 2px black;
-        }
-
-    .owl-page span {
-        border-radius: 20px !important;
-    }
-
-    #owl-demo .item {
-        margin: 3px;
-    }
-
-        #owl-demo .item img {
-            display: block;
-            width: 100%;
-            height: auto;
-        }
 </style>

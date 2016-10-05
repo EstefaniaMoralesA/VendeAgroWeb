@@ -625,6 +625,55 @@ a {
     display: none;
 }
 
+.estatus-container{
+        width: 100%;
+    }
+
+    .imagen-grande {
+        width: 100%;
+    }
+
+    .img-grande-container {
+        text-align: center;
+        margin-bottom: 30px;
+    }
+
+    .owl-buttons {
+        display: none;
+    }
+
+    .item {
+        cursor: pointer;
+    }
+
+        .item.activo img {
+            border: solid 2px black;
+        }
+
+    .owl-page span {
+        border-radius: 20px !important;
+    }
+
+    #owl-demo{
+        width: 100% !important;
+    }
+
+    #owl-demo .item {
+        margin: 3px;
+    }
+
+        #owl-demo .item img {
+            display: block;
+            width: 100%;
+            height: auto;
+        }
+
+    @media (max-width:496px){
+        .img-grande-container{
+            display: none;
+        }
+    }
+
 @media (min-width:768px) and (max-width:868px){
     .table-responsive{
         overflow-x:scroll !important;
