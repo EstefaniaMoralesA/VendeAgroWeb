@@ -42,7 +42,14 @@
                                         }
                                         if (item.Activo)
                                         {
-                                            <td><a data-id="@item.Id" class="btn btn-danger btn-10-caracteres subcategorias-desactivar">desactivar</a></td>
+                                            if (item.NumAnuncios <= 0)
+                                            {
+                                                <td><a data-id="@item.Id" class="btn btn-danger btn-10-caracteres subcategorias-desactivar">desactivar</a></td>
+                                            }
+                                            else
+                                            {
+                                                <td><a class="btn btn-default btn-10-caracteres btn-categorias-anuncios" style="cursor:not-allowed;">desactivar</a></td>
+                                            }
                                         }
                                         else
                                         {
@@ -103,6 +110,48 @@
     $(".cancelar-boton").click(function () {
         $(".hide-modificar").hide();
         $(".hide-modificar-boton").show();
+    });
+
+    $(".subcategorias-desactivar").click(function () {
+        var id = $(this).data('id');
+
+        $.ajax({
+            type: "POST",
+            url: "/Administrador/CambiarEstadoSubcategoria?id=" + id + "&tipo=" + 0,
+            data: {},
+            success: function (result) {
+                if (result) {
+                    location.reload();
+                }
+                else {
+                    $('.error-row').show(' ');
+                }
+            },
+            error: function (msg) {
+                console.log(msg);
+            }
+        });
+    });
+
+    $(".subcategorias-activar").click(function () {
+        var id = $(this).data('id');
+
+        $.ajax({
+            type: "POST",
+            url: "/Administrador/CambiarEstadoSubcategoria?id=" + id + "&tipo=" + 1,
+            data: {},
+            success: function (result) {
+                if (result) {
+                    location.reload();
+                }
+                else {
+                    $('.error-row').show(' ');
+                }
+            },
+            error: function (msg) {
+                console.log(msg);
+            }
+        });
     });
 
 </script>

@@ -183,7 +183,7 @@ namespace VendeAgroWeb.Controllers.Administrador
                 return false;
             }
 
-            await Task.Run(() =>
+            return await Task.Run(() =>
             {
                 using (var _dbContext = new VendeAgroEntities())
                 {
@@ -215,7 +215,50 @@ namespace VendeAgroWeb.Controllers.Administrador
                 }
                 return true;
             });
-            return true;
+        }
+
+        [HttpPost]
+        [AllowAnonymous]
+        public async Task<bool> CambiarEstadoSubcategoria(int? id, int tipo)
+        {
+
+            if (id == null)
+            {
+                return false;
+            }
+
+            return await Task.Run(() =>
+            {
+                using (var _dbContext = new VendeAgroEntities())
+                {
+                    Startup.OpenDatabaseConnection(_dbContext);
+                    if (_dbContext.Database.Connection.State != ConnectionState.Open)
+                    {
+                        return false;
+                    }
+
+                    var subcategoria = _dbContext.Subcategorias.Where(u => u.id == id).FirstOrDefault();
+
+                    if (subcategoria == null)
+                    {
+                        _dbContext.Database.Connection.Close();
+                        return false;
+                    }
+
+                    if (tipo == 0)
+                    {
+                        subcategoria.activo = false;
+                    }
+                    else
+                    {
+                        subcategoria.activo = true;
+                    }
+                    _dbContext.SaveChanges();
+                    _dbContext.Database.Connection.Close();
+
+                }
+                return true;
+            });
         }
 
         public async Task<ActionResult> Login()
