@@ -670,4 +670,11 @@ namespace VendeAgroWeb.Models.Administrador
     public class BeneficiosViewModel
     {
     }
+
+    public enum ModificarNombreCategoriaEstatus
+    {
+        CategoriaExistente,
+        Error,
+        Exitoso
+    }
 }

@@ -5,6 +5,13 @@
     Layout = "Shared/_AdministradorLayout.cshtml";
 }
 
+<div class="row">
+    <div class="col-sm-6 col-sm-offset-3">
+        <div class="alert alert-danger" style="display:none;">
+            <strong><span class="glyphicon glyphicon-remove"></span></strong><span class="alert-content"></span>
+        </div>
+    </div>
+</div>
 <div class="row" style="margin-top:30px">
     <div class="col-sm-offset-1 col-sm-10">
         <div class="row">
@@ -118,11 +125,25 @@
         $.ajax({
             type: 'POST',
             url: url,
-            success: function(response){
-                if (response === "CategoriaExistente") {
-
+            success: function (response) {
+                if (response === "Error") {
+                    $(".alert-content").html("   Error! Se produjo un error, vuelva a intentarlo");
+                    $(".alert").show('');
+                    window.setTimeout(function () {
+                        $(".alert").hide('');
+                    }, 3000);
                     return;
                 }
+                if (response === "CategoriaExistente") {
+                    $(".alert-content").html("   Error! Ya existe una categor&iacute;a con el nombre, \'" + nombre + "\'");
+                    $(".alert").show('');
+                    window.setTimeout(function () {
+                        $(".alert").hide('');
+                    }, 3000);
+                    return;
+                }
+                location.reload();
+
 
             },
             error: function(e){

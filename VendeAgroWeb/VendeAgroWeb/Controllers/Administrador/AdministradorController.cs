@@ -562,6 +562,43 @@ namespace VendeAgroWeb.Controllers.Administrador
             });
         }
 
+        public async Task<ModificarNombreCategoriaEstatus> ModificarCategoria(int? id, string nombre)
+        {
+            if(id == null || nombre == null)
+            {
+                return ModificarNombreCategoriaEstatus.Error;
+            }
+
+            return await Task.Run(() =>
+            {
+                using(var _dbContext = new VendeAgroEntities())
+                {
+                    Startup.OpenDatabaseConnection(_dbContext);
+                    if(_dbContext.Database.Connection.State != ConnectionState.Open)
+                    {
+                        return ModificarNombreCategoriaEstatus.Error;
+                    }
+
+                    if(_dbContext.Categorias.Where(c => c.nombre.ToLower() == nombre.ToLower() && c.id != id).FirstOrDefault() != null)
+                    {
+                        _dbContext.Database.Connection.Close();
+                        return ModificarNombreCategoriaEstatus.CategoriaExistente;
+                    }
+
+                    var categoria = _dbContext.Categorias.Where(c => c.id == id)?.FirstOrDefault();
+                    if(categoria == null)
+                    {
+                        _dbContext.Database.Connection.Close();
+                        return ModificarNombreCategoriaEstatus.Error;
+                    }
+
+                    categoria.nombre = nombre;
+                    _dbContext.SaveChanges();
+                    return ModificarNombreCategoriaEstatus.Exitoso;
+                }
+            });
+        }
+
         private async Task<string> ObtenerUsuarioNombre(int? id, string tipo)
         {
             if (tipo != "usuario") return string.Empty;
