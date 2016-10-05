@@ -8,7 +8,7 @@
 <div class="row" style="margin-top:30px">
     <div class="col-sm-offset-1 col-sm-10">
         <div class="row">
-            <a class="btn btn-success btn-lg btn-sistema" href="" id="agregar"><span class="glyphicon glyphicon-plus-sign" style="top: 3px;"></span> <span class="texto">nuevo paquete</span></a>
+            <a class="btn btn-success btn-lg btn-sistema"  href="/Administrador/NuevoPaquete"><span class="glyphicon glyphicon-plus-sign" style="top: 3px;"></span> <span class="texto">nuevo paquete</span></a>
         </div>
         <div class="row" style="margin-top:20px">
             <div class="table-responsive">
@@ -36,7 +36,7 @@
                                     <td style="text-align:center">@item.Precio</td>
                                     <td>@item.Descripcion</td>
                                     <td style="text-align:center">@item.FechaModificacion</td>
-                                    <td><a class="btn btn-default btn-9-caracteres">modificar</a></td>
+                                    <td><a class="btn btn-default btn-9-caracteres" href="/Administrador/ModificarPaquete?id=@item.Id">modificar</a></td>
                                     @{
                                         if (item.Activo)
                                         {

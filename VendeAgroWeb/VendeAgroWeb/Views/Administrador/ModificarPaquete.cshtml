@@ -2,7 +2,7 @@
 @model VendeAgroWeb.Models.Administrador.NuevoPaqueteViewModel
 
 @{
-    ViewBag.Title = "Nuevo Paquete";
+    ViewBag.Title = "Modificar Paquete";
     Layout = "Shared/_AdministradorLayout.cshtml";
 }
 
@@ -10,44 +10,35 @@
     <h2>Nuevo Paquete</h2>
     <div class="col-lg-6 col-lg-offset-3">
         <div class="login-form">
-            @using (Html.BeginForm())
+            @using (Html.BeginForm("ModificarPaquete", "Administrador", new { id = Model.Id }))
             {
                 @Html.AntiForgeryToken()
 
                 @Html.ValidationSummary(true, "", new { @class = "text-danger" })
                 <div class="form-group">
-                    @Html.EditorFor(model => model.Nombre, new { htmlAttributes = new { @class = "form-control", placeholder = "Nombre del paquete", id = "paquete-nombre" } })
+                    @Html.EditorFor(model => model.Nombre, new { htmlAttributes = new { @class = "form-control", value = Model.Nombre, id = "paquete-nombre" } })
                     @Html.ValidationMessageFor(model => model.Nombre, "", new { @class = "text-danger" })
                     <label class="login-field-icon glyphicon glyphicon-gift" for="paquete-nombre"></label>
                 </div>
 
                 <div class="form-group">
-                    @Html.EditorFor(model => model.Precio, new { htmlAttributes = new { @class = "form-control", placeholder = "Precio del paquete", id = "paquete-precio" } })
+                    @Html.EditorFor(model => model.Precio, new { htmlAttributes = new { @class = "form-control", value = Model.Precio, id = "paquete-precio" } })
                     @Html.ValidationMessageFor(model => model.Precio, "", new { @class = "text-danger" })
                     <label class="login-field-icon glyphicon glyphicon-usd" for="paquete-precio"></label>
                 </div>
 
-                <div class="form-group">
-                    @Html.EditorFor(model => model.Anuncios, new { htmlAttributes = new { @class = "form-control", placeholder = "Número de anuncios dentro del paquete", id = "paquete-anuncios" } })
-                    @Html.ValidationMessageFor(model => model.Anuncios, "", new { @class = "text-danger" })
-                    <label class="login-field-icon glyphicon glyphicon-th-large" for="paquete-anuncios"></label>
-                </div>
+                    @Html.EditorFor(model => model.Anuncios, new { htmlAttributes = new { @class = "form-control", type = "hidden", value = Model.Anuncios } })
+                    @Html.EditorFor(model => model.Meses, new { htmlAttributes = new { @class = "form-control", type = "hidden", value = Model.Meses } })
 
                 <div class="form-group">
-                    @Html.EditorFor(model => model.Meses, new { htmlAttributes = new { @class = "form-control", placeholder = "Duración de los anuncios (meses)", id = "paquete-meses" } })
-                    @Html.ValidationMessageFor(model => model.Meses, "", new { @class = "text-danger" })
-                    <label class="login-field-icon glyphicon glyphicon-time" for="paquete-meses"></label>
-                </div>
-
-                <div class="form-group">
-                    @Html.TextAreaFor(model => model.Descripcion,  new { @class = "form-control", style =  "width:100%; resize:none;", rows = '3', placeholder = "Descripción (máximo 200 caracteres)", id = "paquete-descripcion" })
+                    @Html.TextAreaFor(model => model.Descripcion, new { @class = "form-control", style = "width:100%; resize:none;", rows = '3', value = Model.Descripcion, id = "paquete-descripcion" })
                     @Html.ValidationMessageFor(model => model.Descripcion, "", new { @class = "text-danger" })
                     <label class="login-field-icon glyphicon glyphicon-pencil" for="paquete-descripcion"></label>
                 </div>
 
                 <div class="form-group boton-guardar-container" style="margin-top: 20px">
                     <div class="col-sm-offset-3 col-sm-6" style="text-align: center;">
-                        <input type="submit" value="Guardar" class="btn btn-primary btn-lg btn-login" />
+                        <input type="submit" value="Guardar Cambios" class="btn btn-primary btn-lg btn-login" />
                     </div>
                 </div>
             }

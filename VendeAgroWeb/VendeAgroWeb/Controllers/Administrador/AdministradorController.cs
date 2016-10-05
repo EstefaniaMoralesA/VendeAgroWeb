@@ -430,6 +430,7 @@ namespace VendeAgroWeb.Controllers.Administrador
             return View(model);
         }
 
+
         public async Task<List<SelectListItem>> ObtenerCategoriasNuevaSubcategoria()
         {
             return await Task.Run(() =>
@@ -479,7 +480,7 @@ namespace VendeAgroWeb.Controllers.Administrador
                         ModelState.AddModelError("", "Hubo un error en la conexión vuelva a intentarlo.");
                         estado = false;
                     }
-                    else 
+                    else
                     {
                         if (_dbContext.Subcategorias.Where(s => s.nombre.ToLower() == model.Nombre.ToLower() && s.idCategoria == model.Categoria).FirstOrDefault() != null)
                         {
@@ -810,6 +811,47 @@ namespace VendeAgroWeb.Controllers.Administrador
                 }
             });
         }
+        public async Task<ActionResult> ModificarPaquete(int? id)
+        {
+            var model = new NuevoPaqueteViewModel();
+            if (id == null)
+            {
+                return RedirectToAction("Paquetes", "Administrador");
+            }
+
+            bool estado = true;
+
+            await Task.Run(() =>
+            {
+                using (var _dbContext = new VendeAgroEntities())
+                {
+                    Startup.OpenDatabaseConnection(_dbContext);
+                    if (_dbContext.Database.Connection.State != ConnectionState.Open)
+                    {
+                        estado = false;
+                    }
+                    else
+                    {
+                        var paquete = _dbContext.Paquetes.Where(p => p.id == id).FirstOrDefault();
+                        model.Nombre = paquete.nombre;
+                        model.Meses = paquete.meses;
+                        model.Anuncios = paquete.numeroAnuncios;
+                        model.Descripcion = paquete.descripcion;
+                        model.Precio = paquete.precio;
+                        model.Id = paquete.id;
+
+                        _dbContext.Database.Connection.Close();
+                    }
+                }
+
+            });
+            if (!estado)
+            {
+                return RedirectToAction("Paquetes", "Administrador");
+            }
+            return View(model);
+        }
+
 
         public ActionResult Beneficios()
         {

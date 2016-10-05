@@ -205,6 +205,7 @@ namespace VendeAgroWeb.Models.Administrador
 
     public class NuevoPaqueteViewModel
     {
+        public int Id { get; set; }
 
         [Required(ErrorMessage = "Campo requerido")]
         [Display(Name = "NuevoNombre")]
@@ -228,8 +229,7 @@ namespace VendeAgroWeb.Models.Administrador
         [Required(ErrorMessage = "Campo requerido")]
         [Display(Name = "Descripción del paquete")]
         [StringLength(200, MinimumLength = 3, ErrorMessage = "El número de caracteres no puede ser mayor a 200")]
-        public string Descripción { get; set; }
-
+        public string Descripcion { get; set; }
 
     }
 
