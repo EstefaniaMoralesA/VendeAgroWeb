@@ -71,7 +71,7 @@
                                         <td class="hide-modificar hide-modificar-@item.Id">
                                             <div class="form-group">
                                                 @Html.EditorFor(model => model.Titulo, new { htmlAttributes = new { @class = "form-control", style = "width: 120px;", id="input-categoria"+item.Id } })
-                                                @Html.ValidationMessageFor(model => model.Titulo, "", new { @class = "text-danger" })
+                                                @Html.ValidationMessageFor(model => model.Titulo, "", new { @class = "text-danger validation" +item.Id })
                                             </div>
                                         </td>
                                         <td class="hide-modificar hide-modificar-@item.Id">
@@ -108,7 +108,23 @@
     $(".categorias-guardar").click(function () {
         var id = $(this).data('id');
         var nombre = $("#input-categoria" + id).val();
-        alert("id: " + id + "value: " + nombre);
+        var requerido = $("#input-categoria" + id).data('val-required');
+        if (nombre === "") {
+            $(".validation" + id).html(requerido).show();
+            return;
+        }
+        $(".validation" + id).hide();
+        var url = '/Administrador/ModificarCategoria?id='+id+'&nombre='+nombre;
+        $.ajax({
+            type: 'POST',
+            url: url,
+            success: function(response){
+
+            },
+            error: function(e){
+                alert("Error intentando agregar categoria, vuelva a intentarlo");
+            }
+        });
     });
 
     $(".modificar-boton").click(function () {
