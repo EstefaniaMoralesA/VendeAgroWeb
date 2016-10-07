@@ -154,7 +154,7 @@
 
             },
             error: function (e) {
-                alert("Error intentando agregar categoria, vuelva a intentarlo");
+                alert("Error intentando modificar categoria, vuelva a intentarlo");
             }
         });
     });
@@ -174,7 +174,8 @@
         $(".modificar-header").hide();
         $(".modificar-boton-header").show();
         $(".hide-modificar-boton-" + id).show();
-    });
+        $(".validation" + id).hide();
+    }); 
 
     $(".btn-categorias-desactivar").click(function () {
         var id = $(this).data('id');

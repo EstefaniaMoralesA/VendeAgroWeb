@@ -35,17 +35,25 @@
                                     <td style="text-align:center">@item.NumAnuncios</td>
                                     <td style="text-align:center">@item.Precio</td>
                                     <td>@item.Descripcion</td>
-                                    <td style="text-align:center">@item.FechaModificacion</td>
+                                    <td style="text-align:center">@item.FechaModificacion.ToString("dd-MM-yyyy")</td>
                                     <td><a class="btn btn-default btn-9-caracteres" href="/Administrador/ModificarPaquete?id=@item.Id">modificar</a></td>
                                     @{
-                                        if (item.Activo)
+                                        if (item.PaqueteBase)
                                         {
-                                            <td><a data-id="@item.Id" class="btn btn-danger btn-10-caracteres subcategorias-desactivar">desactivar</a></td>
+                                            <td style="padding-top:14px;text-align:center;">Paquete Base</td>
                                         }
                                         else
                                         {
-                                            <td><a data-id="@item.Id" class="btn btn-7-caracteres btn-success subcategorias-activar">activar</a></td>
+                                            if (item.Activo)
+                                            {
+                                                <td><a data-id="@item.Id" class="btn btn-danger btn-10-caracteres paquete-desactivar">desactivar</a></td>
+                                            }
+                                            else
+                                            {
+                                                <td><a data-id="@item.Id" class="btn btn-7-caracteres btn-success paquete-activar">activar</a></td>
+                                            }
                                         }
+
                                     }
                                 </tr>
                             }
@@ -57,3 +65,47 @@
         </div>
     </div>
 </div>
+
+<script>
+    $(".paquete-desactivar").click(function () {
+        var id = $(this).data('id');
+
+        $.ajax({
+            type: "POST",
+            url: "/Administrador/CambiarEstadoPaquete?id=" + id + "&tipo=" + 0,
+            data: {},
+            success: function (result) {
+                if (result) {
+                    location.reload();
+                }
+                else {
+                    $('.error-row').show(' ');
+                }
+            },
+            error: function (msg) {
+                console.log(msg);
+            }
+        });
+    });
+
+    $(".paquete-activar").click(function () {
+        var id = $(this).data('id');
+
+        $.ajax({
+            type: "POST",
+            url: "/Administrador/CambiarEstadoPaquete?id=" + id + "&tipo=" + 1,
+            data: {},
+            success: function (result) {
+                if (result) {
+                    location.reload();
+                }
+                else {
+                    $('.error-row').show(' ');
+                }
+            },
+            error: function (msg) {
+                console.log(msg);
+            }
+        });
+    });
+</script>

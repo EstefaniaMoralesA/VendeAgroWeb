@@ -10,7 +10,7 @@
     <h2>Nuevo Paquete</h2>
     <div class="col-lg-6 col-lg-offset-3">
         <div class="login-form">
-            @using (Html.BeginForm("ModificarPaquete", "Administrador", new { id = Model.Id }))
+            @using (Html.BeginForm("ModificarPaquete", "Administrador"))
             {
                 @Html.AntiForgeryToken()
 
@@ -27,6 +27,7 @@
                     <label class="login-field-icon glyphicon glyphicon-usd" for="paquete-precio"></label>
                 </div>
 
+                    @Html.EditorFor(model => model.Id, new { htmlAttributes = new { @class = "form-control", type = "hidden", value = Model.Id } })
                     @Html.EditorFor(model => model.Anuncios, new { htmlAttributes = new { @class = "form-control", type = "hidden", value = Model.Anuncios } })
                     @Html.EditorFor(model => model.Meses, new { htmlAttributes = new { @class = "form-control", type = "hidden", value = Model.Meses } })
 

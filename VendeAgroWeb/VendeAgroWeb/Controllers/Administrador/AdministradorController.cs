@@ -219,6 +219,50 @@ namespace VendeAgroWeb.Controllers.Administrador
 
         [HttpPost]
         [AllowAnonymous]
+        public async Task<bool> CambiarEstadoPaquete(int? id, int tipo)
+        {
+
+            if (id == null)
+            {
+                return false;
+            }
+
+            return await Task.Run(() =>
+            {
+                using (var _dbContext = new VendeAgroEntities())
+                {
+                    Startup.OpenDatabaseConnection(_dbContext);
+                    if (_dbContext.Database.Connection.State != ConnectionState.Open)
+                    {
+                        return false;
+                    }
+
+                    var paquete = _dbContext.Paquetes.Where(p => p.id == id).FirstOrDefault();
+
+                    if (paquete == null)
+                    {
+                        _dbContext.Database.Connection.Close();
+                        return false;
+                    }
+
+                    if (tipo == 0)
+                    {
+                        paquete.activo = false;
+                    }
+                    else
+                    {
+                        paquete.activo = true;
+                    }
+                    _dbContext.SaveChanges();
+                    _dbContext.Database.Connection.Close();
+
+                }
+                return true;
+            });
+        }
+
+        [HttpPost]
+        [AllowAnonymous]
         public async Task<bool> CambiarEstadoSubcategoria(int? id, int tipo)
         {
 
@@ -605,6 +649,8 @@ namespace VendeAgroWeb.Controllers.Administrador
             });
         }
 
+        [HttpPost]
+        [AllowAnonymous]
         public async Task<ModificarNombreCategoriaEstatus> ModificarCategoria(int? id, string nombre)
         {
             if(id == null || nombre == null)
@@ -636,6 +682,45 @@ namespace VendeAgroWeb.Controllers.Administrador
                     }
 
                     categoria.nombre = nombre;
+                    _dbContext.SaveChanges();
+                    return ModificarNombreCategoriaEstatus.Exitoso;
+                }
+            });
+        }
+
+        [HttpPost]
+        [AllowAnonymous]
+        public async Task<ModificarNombreCategoriaEstatus> ModificarSubcategoria(int? id, string nombre)
+        {
+            if (id == null || nombre == null)
+            {
+                return ModificarNombreCategoriaEstatus.Error;
+            }
+
+            return await Task.Run(() =>
+            {
+                using (var _dbContext = new VendeAgroEntities())
+                {
+                    Startup.OpenDatabaseConnection(_dbContext);
+                    if (_dbContext.Database.Connection.State != ConnectionState.Open)
+                    {
+                        return ModificarNombreCategoriaEstatus.Error;
+                    }
+
+                    var subcategoria = _dbContext.Subcategorias.Where(c => c.id == id)?.FirstOrDefault();
+                    if (subcategoria == null)
+                    {
+                        _dbContext.Database.Connection.Close();
+                        return ModificarNombreCategoriaEstatus.Error;
+                    }
+
+                    if (_dbContext.Subcategorias.Where(c => c.nombre.ToLower() == nombre.ToLower() && c.idCategoria == subcategoria.idCategoria).FirstOrDefault() != null)
+                    {
+                        _dbContext.Database.Connection.Close();
+                        return ModificarNombreCategoriaEstatus.CategoriaExistente;
+                    }
+
+                    subcategoria.nombre = nombre;
                     _dbContext.SaveChanges();
                     return ModificarNombreCategoriaEstatus.Exitoso;
                 }
@@ -926,6 +1011,116 @@ namespace VendeAgroWeb.Controllers.Administrador
 
             });
             if (!estado)
+            {
+                return RedirectToAction("Paquetes", "Administrador");
+            }
+            return View(model);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [AllowAnonymous]
+        public async Task<ActionResult> ModificarPaquete(NuevoPaqueteViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+
+            bool estado = true;
+
+            await Task.Run(() =>
+            {
+                using (var _dbContext = new VendeAgroEntities())
+                {
+                    Startup.OpenDatabaseConnection(_dbContext);
+                    if (_dbContext.Database.Connection.State != ConnectionState.Open)
+                    {
+                        ModelState.AddModelError("", "Error en la base de datos, vuelva a intentarlo");
+                        estado = false;
+                    }
+                    else
+                    {
+                        var paquete = _dbContext.Paquetes.Where(p => p.id == model.Id).FirstOrDefault();
+                        
+                        if(paquete == null)
+                        {
+                            ModelState.AddModelError("", "Error paquete no encontrado, vuelva a intentarlo");
+                            estado = false;
+                        }
+                        else
+                        {
+                            paquete.descripcion = model.Descripcion;
+                            paquete.nombre = model.Nombre;
+                            paquete.precio = model.Precio;
+                            paquete.fechaModificacion = DateTime.Now;
+                            _dbContext.SaveChanges();
+                        }
+
+                        _dbContext.Database.Connection.Close();
+                    }
+                }
+
+            });
+            if (estado)
+            {
+                return RedirectToAction("Paquetes", "Administrador");
+            }
+            return View(model);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [AllowAnonymous]
+        public async Task<ActionResult> NuevoPaquete(NuevoPaqueteViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+
+            bool estado = true;
+
+            await Task.Run(() =>
+            {
+                using (var _dbContext = new VendeAgroEntities())
+                {
+                    Startup.OpenDatabaseConnection(_dbContext);
+                    if (_dbContext.Database.Connection.State != ConnectionState.Open)
+                    {
+                        ModelState.AddModelError("", "Error en la base de datos, vuelva a intentarlo");
+                        estado = false;
+                    }
+                    else
+                    {
+                        var paquete = _dbContext.Paquetes.Where(p => p.nombre.ToLower() == model.Nombre.ToLower()).FirstOrDefault();
+
+                        if (paquete != null)
+                        {
+                            ModelState.AddModelError("", "Error ya existe un paquete con ese nombre.");
+                            estado = false;
+                        }
+                        else
+                        {
+                            _dbContext.Paquetes.Add(new Paquete {
+                                nombre = model.Nombre,
+                                descripcion = model.Descripcion,
+                                numeroAnuncios = model.Anuncios,
+                                precio = model.Precio,
+                                activo = true,
+                                meses = model.Meses,
+                                fechaModificacion = DateTime.Now,
+                                paqueteBase = true
+                            });
+                            _dbContext.SaveChanges();
+                        }
+
+                        _dbContext.Database.Connection.Close();
+                    }
+                }
+
+            });
+            if (estado)
             {
                 return RedirectToAction("Paquetes", "Administrador");
             }
