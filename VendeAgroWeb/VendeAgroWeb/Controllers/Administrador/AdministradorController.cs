@@ -961,8 +961,13 @@ namespace VendeAgroWeb.Controllers.Administrador
                                 anuncio.Ciudad.nombre, anuncio.clicks);
                             List<FotoViewModel> fotos = new List<FotoViewModel>();
                             var paquete = anuncio.Anuncio_Paquete.FirstOrDefault();
-                            var paqueteViewModel = new AnuncioPaqueteViewModel(paquete.Paquete.nombre, paquete.fechaInicio, 
-                                paquete.fechaFin, paquete.activo, paquete.folio);
+                            AnuncioPaqueteViewModel paqueteViewModel = null;
+                            if(paquete != null)
+                            {
+                                paqueteViewModel = new AnuncioPaqueteViewModel(paquete.Paquete.nombre, paquete.fechaInicio,
+                                    paquete.fechaFin, paquete.activo, paquete.folio);
+                            }
+
                             foreach (var foto in anuncio.Fotos_Anuncio)
                             {
                                 fotos.Add(new FotoViewModel(foto.principal, foto.ruta));

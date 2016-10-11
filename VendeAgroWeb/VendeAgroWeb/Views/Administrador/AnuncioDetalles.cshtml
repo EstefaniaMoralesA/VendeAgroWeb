@@ -86,18 +86,24 @@
         <hr />
         <table class="table table-bordered">
             <tbody>
-                <tr>
-                    <td><strong>Paquete</strong></td>
-                    <td>@Model.Paquete.Nombre</td>
-                </tr>
-                <tr>
-                    <td><strong>Fecha de inicio</strong></td>
-                    <td>@Model.Paquete.FechaInicio.ToString("dd-MM-yyyy")</td>
-                </tr>
-                <tr>
-                    <td><strong>Fecha de fin</strong></td>
-                    <td>@Model.Paquete.FechaFin.ToString("dd-MM-yyyy")</td>
-                </tr>
+                @{
+                    if (Model.Paquete != null)
+                    {
+                        <tr>
+                            <td><strong>Paquete</strong></td>
+                            <td>@Model.Paquete.Nombre</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Fecha de inicio</strong></td>
+                            <td>@Model.Paquete.FechaInicio.ToString("dd-MM-yyyy")</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Fecha de fin</strong></td>
+                            <td>@Model.Paquete.FechaFin.ToString("dd-MM-yyyy")</td>
+                        </tr>
+                    }
+                }
+                
                 <tr>
                     <td><strong>Beneficios</strong></td>
                     <td>
