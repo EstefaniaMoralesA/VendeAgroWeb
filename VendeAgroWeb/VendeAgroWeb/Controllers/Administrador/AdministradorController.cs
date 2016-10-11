@@ -924,13 +924,61 @@ namespace VendeAgroWeb.Controllers.Administrador
             return lista;
         }
 
-        public async Task<ActionResult> AnuncioDetalles()
+        public async Task<ActionResult> AnuncioDetalles(int? id)
         {
             if (await Startup.GetAplicacionUsuariosManager().VerificarAdminSesionAsync() == LoginStatus.Incorrecto)
             {
                 return RedirectToAction("Login", "Administrador");
             }
-            return View();
+
+            if(id == null)
+            {
+                return HttpNotFound("Parámetro inválido se espera un id de un anuncio");
+            }
+
+            HttpNotFoundResult result = null;
+            AnuncioDetallesViewModel model = null;
+            await Task.Run(() =>
+            {
+                using (var _dbContext = new VendeAgroEntities())
+                {
+                    Startup.OpenDatabaseConnection(_dbContext);
+                    if(_dbContext.Database.Connection.State != ConnectionState.Open)
+                    {
+                        result = HttpNotFound("Error en la base de datos");
+                    }
+                    else
+                    {
+                        var anuncio = _dbContext.Anuncios.Where(a => a.id == id).FirstOrDefault();
+                        if (anuncio == null)
+                        {
+                            result = HttpNotFound("No se encontro el anuncio con el id solicitado");
+                        }
+                        else
+                        {
+                            var anuncioViewModel = new AnuncioViewModel(anuncio.id, anuncio.titulo, anuncio.Usuario.nombre, anuncio.precio, 
+                                anuncio.Subcategoria.Categoria.nombre, anuncio.Subcategoria.nombre, anuncio.Ciudad.Estado.nombre, 
+                                anuncio.Ciudad.nombre, anuncio.clicks);
+                            List<FotoViewModel> fotos = new List<FotoViewModel>();
+                            var paquete = anuncio.Anuncio_Paquete.FirstOrDefault();
+                            var paqueteViewModel = new AnuncioPaqueteViewModel(paquete.Paquete.nombre, paquete.fechaInicio, 
+                                paquete.fechaFin, paquete.activo, paquete.folio);
+                            foreach (var foto in anuncio.Fotos_Anuncio)
+                            {
+                                fotos.Add(new FotoViewModel(foto.principal, foto.ruta));
+                            }
+                            model = new AnuncioDetallesViewModel(anuncioViewModel, anuncio.estado, anuncio.activo, anuncio.descripcion, fotos, paqueteViewModel);
+                        }
+                    }
+                }
+            });
+
+            if(result != null)
+            {
+                return result;
+            }
+
+            return View(model);
         }
 
         public ActionResult Logout()

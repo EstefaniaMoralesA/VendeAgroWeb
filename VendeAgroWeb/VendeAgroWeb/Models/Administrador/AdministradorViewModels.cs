@@ -444,6 +444,168 @@ namespace VendeAgroWeb.Models.Administrador
     public class AnunciosPendientesViewModel {
     }
 
+    public class AnuncioPaqueteViewModel
+    {
+        private string _nombre;
+        private DateTime _fechaInicio;
+        private DateTime _fechaFin;
+        private bool _activo;
+        private string _folio;
+
+        public AnuncioPaqueteViewModel(string nombre, DateTime fechaInicio, DateTime fechaFin, bool activo, string folio)
+        {
+            _nombre = nombre;
+            _fechaInicio = fechaInicio;
+            _fechaFin = fechaFin;
+            _activo = activo;
+            _folio = folio;
+        }
+
+        public string Nombre
+        {
+            get
+            {
+                return _nombre;
+            }
+
+        }
+
+        public DateTime FechaInicio
+        {
+            get
+            {
+                return _fechaInicio;
+            }
+
+        }
+
+        public DateTime FechaFin
+        {
+            get
+            {
+                return _fechaFin;
+            }
+
+        }
+
+        public bool Activo
+        {
+            get
+            {
+                return _activo;
+            }
+
+        }
+
+        public string Folio
+        {
+            get
+            {
+                return _folio;
+            }
+
+        }
+        
+    }
+
+    public class FotoViewModel
+    {
+        private bool _principal;
+        private string _ruta;
+
+        public FotoViewModel(bool principal, string ruta)
+        {
+            _principal = principal;
+            _ruta = ruta;
+        }
+
+        public bool Principal
+        {
+            get
+            {
+                return _principal;
+            }
+        }
+
+        public string Ruta
+        {
+            get
+            {
+                return _ruta;
+            }
+        }
+    }
+
+    public class AnuncioDetallesViewModel
+    {
+        private AnuncioViewModel _anuncio;
+        private EstadoAnuncio _status;
+        private bool _activo;
+        private string _descripcion;
+        private ICollection<FotoViewModel> _fotos;
+        private AnuncioPaqueteViewModel _paquete;
+
+        public AnuncioDetallesViewModel(AnuncioViewModel anuncio, int status, bool activo, 
+            string descripcion, List<FotoViewModel> fotos, AnuncioPaqueteViewModel paquete)
+        {
+            _anuncio = anuncio;
+            _status = (EstadoAnuncio)status;
+            _activo = activo;
+            _descripcion = descripcion;
+            _fotos = fotos;
+            _paquete = paquete;
+        }
+    
+
+        public AnuncioPaqueteViewModel Paquete
+        {
+            get
+            {
+                return _paquete;
+            }
+        }
+
+        public AnuncioViewModel Anuncio
+        {
+            get
+            {
+                return _anuncio;
+            }
+        }
+
+        public ICollection<FotoViewModel> Fotos
+        {
+            get
+            {
+                return _fotos;
+            }
+        }
+
+        public EstadoAnuncio Status
+        {
+            get
+            {
+                return _status;
+            }
+        }
+
+        public bool Activo
+        {
+            get
+            {
+                return _activo;
+            }
+        }
+
+        public string Descripcion
+        {
+            get
+            {
+                return _descripcion;
+            }
+        }
+    }
+
     public class AnunciosViewModel {
         private ICollection<AnuncioViewModel> _anuncios;
         private string _nombreCategoria;

@@ -1,50 +1,86 @@
-﻿@model VendeAgroWeb.Models.Administrador.AnuncioViewModel
+﻿@model VendeAgroWeb.Models.Administrador.AnuncioDetallesViewModel
 
 @{
     ViewBag.Title = "Administración Anuncio Detalles";
     Layout = "Shared/_AdministradorLayout.cshtml";
 }
 
-@Styles.Render("~/owl/css");
+@Styles.Render("~/owl/css")
 
 
 <div class="row">
     <div class="col-sm-6">
         <div class="estatus-container">
-            <div class="alert alert-success">
-                <strong><span class="glyphicon glyphicon-check"></span></strong> Anuncio aprobado
-            </div>
+            @{
+                if (Model.Status == EstadoAnuncio.Aprobado)
+                {
+                    if (!Model.Activo)
+                    {
+                        <div class="alert alert-info">
+                            <strong><span class="glyphicon glyphicon-info-sign"></span></strong> Anuncio finalizado
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="alert alert-success">
+                            <strong><span class="glyphicon glyphicon-check"></span></strong> Anuncio aprobado
+                        </div>
+                    }
+
+                }
+                else if (Model.Status == EstadoAnuncio.NoAprobado)
+                {
+                    <div class="alert alert-danger">
+                        <strong><span class="glyphicon glyphicon-remove-sign"></span></strong> Anuncio no aprobado
+                    </div>
+                }
+                else if(Model.Status == EstadoAnuncio.PendientePorAprobar)
+                {
+                    <div class="alert alert-warning">
+                        <strong><span class="glyphicon glyphicon-question-sign"></span></strong> Anuncio pendiente por aprobar
+                    </div>
+                }
+                else
+                {
+                    
+                }
+            }
+            
         </div>
 
         <div class="img-grande-container">
-            <img src="~/img/horses.jpg" class="imagen-grande" />
+            @{
+                var fotoPrincipal = Model.Fotos.Where(f => f.Principal == true)?.FirstOrDefault();
+                if (fotoPrincipal != null)
+                {
+                    <img src="@fotoPrincipal.Ruta" class="imagen-grande" />
+                }
+            }
         </div>
 
         <div id="owl-demo" class="itemsScaleUp-false owl-carousel owl-theme">
-            <div class="item activo">
-                <img src="~/img/horses.jpg" />
-            </div>
-
-            <div class="item">
-                <img src="~/img/yegua.jpg" />
-            </div>
-
-            <div class="item">
-                <img src="~/img/horses.jpg" />
-            </div>
-
-            <div class="item">
-                <img src="~/img/horses.jpg" />
-            </div>
+            @{
+                foreach (var foto in Model.Fotos)
+                {
+                    var clase = "";
+                    if (foto.Principal)
+                    {
+                        clase = "activo";
+                    }
+                    <div class="item @clase">
+                        <img src="@foto.Ruta" />
+                    </div>
+                }
+            }
         </div>
     </div>
 
     <div class="col-sm-6">
         <h2 style="margin-top:7px;">Informaci&oacute;n general</h2>
         <hr />
-        <h3>T&iacute;tulo</h3>
-        <h4>Precio</h4>
-        <p>Descripci&oacute;n</p>
+        <h3><span>T&iacute;tulo: </span>@Model.Anuncio.Titulo</h3>
+        <h4><span>Precio: </span>$@Model.Anuncio.Precio</h4>
+        <p><span>Descripci&oacute;n: </span>@Model.Descripcion</p>
         <hr />
         <h2 style="margin-top:15px;">Detalles de compra</h2>
         <hr />
@@ -52,15 +88,15 @@
             <tbody>
                 <tr>
                     <td><strong>Paquete</strong></td>
-                    <td>Oro</td>
+                    <td>@Model.Paquete.Nombre</td>
                 </tr>
                 <tr>
                     <td><strong>Fecha de inicio</strong></td>
-                    <td>03/03/2016</td>
+                    <td>@Model.Paquete.FechaInicio.ToString("dd-MM-yyyy")</td>
                 </tr>
                 <tr>
                     <td><strong>Fecha de fin</strong></td>
-                    <td>03/05/2016</td>
+                    <td>@Model.Paquete.FechaFin.ToString("dd-MM-yyyy")</td>
                 </tr>
                 <tr>
                     <td><strong>Beneficios</strong></td>
@@ -71,20 +107,32 @@
                 </tr>
             </tbody>
         </table>
+        @{
+            if (Model.Status == EstadoAnuncio.PendientePorAprobar)
+            {
+                <div class="contenedor-forma-rechazar">
+                    <form class="form-horizontal" action="" method="post" id="forma-rechazar">
+                        <input name="id" value="" type="hidden" />
+                        <div class="form-group">
+                            <textarea class="form-control" placeholder="Introduzca comentarios del motivo del rechazo del anuncio." rows="3"></textarea>
+                        </div>
+                        <div class="form-group" style="text-align:center;">
+                            <a href="" type="submit" id="boton-detalles" class="btn btn-danger">Rechazar</a>
+                        </div>
+                    </form>
+                    <div class="text-center">
+                        <a id="boton-detalles" class="btn btn-success">Aprobar</a>
+                    </div>
+                </div>
+            }
 
-
-        <form class="form-horizontal" action="" method="post" id="forma-rechazar">
-            <input name="id" value="" type="hidden" />
-            <div class="form-group">
-                <textarea class="form-control" placeholder="Introduzca comentarios del motivo del rechazo del anuncio." rows="3"></textarea>
-            </div>
-            <div class="form-group" style="text-align:center;">
-                <a href="" type="submit" id="boton-detalles" class="btn btn-danger">Rechazar</a>
-            </div>
-        </form>
-        <div class="text-center">
-            <a id="boton-detalles" class="btn btn-success">Aprobar</a>
-        </div>
+            if (Model.Status == EstadoAnuncio.NoAprobado)
+            {
+                <hr />
+                <h4 style="margin-top:-10px;margin-bottom:-10px;">Razones no aprobado</h4>
+                <hr />
+            }
+        }
     </div>
 </div>
 
