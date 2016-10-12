@@ -5,90 +5,111 @@
 }
 
 <div class="col-sm-12 home-body-container">
+    @Html.Partial("_BannerCentral")
     <div class="row">
-        <div class="col-sm-3 busqueda-titulo-container titulos">
-            <h3>Búsqueda</h3>
+        <div class="col-sm-3 expander-3">
+            <div class="col-sm-12 busqueda-titulo-container titulos">
+                <h3>Búsqueda</h3>
+            </div>
         </div>
-        <div class="col-sm-6 destacados-titulo-container titulos">
+        <div class="col-sm-6 expander-6 destacados-titulo-container titulos">
             <h3>Destacados</h3>
         </div>
     </div>
     <div class="row">
-        <div class="col-sm-3 busqueda-avanzada-container">
-            <div class="row">
-                <div class="dropdown">
-                    <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown">
-                        Categoría
-                        <span class="caret"></span>
-                    </button>
-                    <ul class="dropdown-menu">
-                        <li><a href="#">HTML</a></li>
-                        <li><a href="#">CSS</a></li>
-                        <li><a href="#">JavaScript</a></li>
-                    </ul>
-                </div>
-            </div>
-            <div class="row">
-                <div class="dropdown busqueda-dropdown">
-                    <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown">
-                        Subcategoría
-                        <span class="caret"></span>
-                    </button>
-                    <ul class="dropdown-menu">
-                        <li><a href="#">HTML</a></li>
-                        <li><a href="#">CSS</a></li>
-                        <li><a href="#">JavaScript</a></li>
-                    </ul>
-                </div>
-            </div>
-            <div class="row">
-                <div class="dropdown busqueda-dropdown">
-                    <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown">
-                        Estado
-                        <span class="caret"></span>
-                    </button>
-                    <ul class="dropdown-menu">
-                        <li><a href="#">HTML</a></li>
-                        <li><a href="#">CSS</a></li>
-                        <li><a href="#">JavaScript</a></li>
-                    </ul>
-                </div>
-            </div>
-            <div class="row">
-                <div class="dropdown busqueda-dropdown">
-                    <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown">
-                        Ciudad
-                        <span class="caret"></span>
-                    </button>
-                    <ul class="dropdown-menu">
-                        <li><a href="#">HTML</a></li>
-                        <li><a href="#">CSS</a></li>
-                        <li><a href="#">JavaScript</a></li>
-                    </ul>
-                </div>
-            </div>
-            <div class="row">
-                <div class="slider-container">
-                    <div class="price-container row">
-                        <p class="precio-izq">$<span id="value-izq">100</span></p>
-                        <p class="precio-der">$<span id="value-der">5000</span></p>
+        <div class="col-sm-3 expander-3">
+            <div class="col-sm-12 busqueda-avanzada-container">
+                <div class="row">
+                    <div class="dropdown">
+                        <button class="btn btn-default dropdown-toggle botones-grad busqueda-dropdown" type="button" data-toggle="dropdown">
+                            Categoría
+                            <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu">
+                            <li><a href="#">HTML</a></li>
+                            <li><a href="#">CSS</a></li>
+                            <li><a href="#">JavaScript</a></li>
+                        </ul>
                     </div>
-                    <div class="slider" id="slider">
-
+                </div>
+                <div class="row">
+                    <div class="dropdown">
+                        <button class="btn btn-default dropdown-toggle botones-grad busqueda-dropdown" type="button" data-toggle="dropdown">
+                            Subcategoría
+                            <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu">
+                            <li><a href="#">HTML</a></li>
+                            <li><a href="#">CSS</a></li>
+                            <li><a href="#">JavaScript</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="dropdown">
+                        <button class="btn btn-default dropdown-toggle botones-grad busqueda-dropdown" type="button" data-toggle="dropdown">
+                            País
+                            <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu">
+                            <li><a href="#">HTML</a></li>
+                            <li><a href="#">CSS</a></li>
+                            <li><a href="#">JavaScript</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="dropdown">
+                        <button class="btn btn-default dropdown-toggle botones-grad busqueda-dropdown" type="button" data-toggle="dropdown">
+                            Estado
+                            <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu">
+                            <li><a href="#">HTML</a></li>
+                            <li><a href="#">CSS</a></li>
+                            <li><a href="#">JavaScript</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="dropdown">
+                        <button class="btn btn-default dropdown-toggle botones-grad busqueda-dropdown" type="button" data-toggle="dropdown">
+                            Ciudad
+                            <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu">
+                            <li><a href="#">HTML</a></li>
+                            <li><a href="#">CSS</a></li>
+                            <li><a href="#">JavaScript</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="slider-container">
+                        <div class="price-container row">
+                            <p class="precio-izq">$<span id="value-izq">100</span></p>
+                            <p class="precio-der">$<span id="value-der">5000</span></p>
+                        </div>
+                        <div class="slider" id="slider">
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="col-sm-6 anuncios-container">
+        <div class="col-sm-6 expander-6 anuncios-container">
             @Html.Partial("_Anuncios")
         </div>
-        <div class="col-sm-3">
+        <div class="col-xs-12 anuncios-movil-container">
+            @Html.Partial("_AnunciosMovil")
+        </div>
+        <div class="col-sm-3 esconder-banners">
             @Html.Partial("_BannerLateral")
         </div>
     </div>
 </div>
 
 
+@Scripts.Render("~/bundles/jquery")
 @Scripts.Render("~/bundles/nouislider")
 
 <script>
@@ -115,4 +136,25 @@
             valueDer.innerHTML = parseFloat(values[handle]).toFixed(0);
         }
     });
+
+    $(document).ready(function () {
+        recalcularTamanos();
+    });
+
+    $(window).resize(function () {
+        recalcularTamanos();
+    });
+
+    function recalcularTamanos() {
+        var width = $(window).innerWidth();
+        if (width <= 1000) {
+            $('.expander-3').removeClass('col-sm-3').addClass('col-sm-4');
+            $('.expander-6').removeClass('col-sm-6').addClass('col-sm-8');
+            $('.esconder-banners').hide();
+            return;
+        }
+        $('.expander-3').removeClass('col-sm-4').addClass('col-sm-3');
+        $('.expander-6').removeClass('col-sm-8').addClass('col-sm-6');
+        $('.esconder-banners').show();
+    }
 </script>
