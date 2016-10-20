@@ -35,8 +35,8 @@ namespace VendeAgroWeb.Models.Portal
 
         [Required]
         [Display(Name = "Celular")]
-        
-        public int Celular { get; set; }
+        [StringLength(14, ErrorMessage = "El celular no es válido.", MinimumLength = 10)]
+        public string Celular { get; set; }
     }
 
     //[AttributeUsage(AttributeTargets.Field | AttributeTargets.Property, AllowMultiple = false, Inherited = true)]

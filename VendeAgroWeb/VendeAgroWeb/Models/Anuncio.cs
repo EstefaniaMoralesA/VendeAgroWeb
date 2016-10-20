@@ -34,6 +34,7 @@ namespace VendeAgroWeb.Models
         public Nullable<int> clicks { get; set; }
         public Nullable<int> vistas { get; set; }
         public int estado { get; set; }
+        public string razonRechazo { get; set; }
     
         public virtual Ciudad Ciudad { get; set; }
         public virtual Subcategoria Subcategoria { get; set; }

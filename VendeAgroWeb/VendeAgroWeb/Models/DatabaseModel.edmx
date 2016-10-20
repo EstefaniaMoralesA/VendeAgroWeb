@@ -20,6 +20,7 @@
           <Property Name="clicks" Type="int" />
           <Property Name="vistas" Type="int" />
           <Property Name="estado" Type="int" Nullable="false" />
+          <Property Name="razonRechazo" Type="varchar" MaxLength="200" />
         </EntityType>
         <EntityType Name="Anuncio_Beneficio">
           <Key>
@@ -173,7 +174,7 @@
           <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="nombre" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="apellidos" Type="varchar" MaxLength="80" Nullable="false" />
-          <Property Name="telefono" Type="int" Nullable="false" />
+          <Property Name="telefono" Type="varchar" MaxLength="15" Nullable="false" />
           <Property Name="email" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="password" Type="varchar" MaxLength="40" Nullable="false" />
           <Property Name="confirmaEmail" Type="bit" Nullable="false" />
@@ -581,6 +582,7 @@
           <Property Name="clicks" Type="Int32" />
           <Property Name="vistas" Type="Int32" />
           <Property Name="estado" Type="Int32" Nullable="false" />
+          <Property Name="razonRechazo" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="Ciudad" Relationship="Self.FK__Anuncio__idCiuda__5AEE82B9" FromRole="Anuncio" ToRole="Ciudad" />
           <NavigationProperty Name="Subcategoria" Relationship="Self.FK__Anuncio__idSubca__59FA5E80" FromRole="Anuncio" ToRole="Subcategoria" />
           <NavigationProperty Name="Usuario" Relationship="Self.FK__Anuncio__idUsuar__59063A47" FromRole="Anuncio" ToRole="Usuario" />
@@ -766,7 +768,7 @@
           <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="nombre" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="apellidos" Type="String" MaxLength="80" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="telefono" Type="Int32" Nullable="false" />
+          <Property Name="telefono" Type="String" MaxLength="15" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="email" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="password" Type="String" MaxLength="40" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="confirmaEmail" Type="Boolean" Nullable="false" />
@@ -1180,6 +1182,7 @@
                 <ScalarProperty Name="clicks" ColumnName="clicks" />
                 <ScalarProperty Name="vistas" ColumnName="vistas" />
                 <ScalarProperty Name="estado" ColumnName="estado" />
+                <ScalarProperty Name="razonRechazo" ColumnName="razonRechazo" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

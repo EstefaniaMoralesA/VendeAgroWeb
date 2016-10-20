@@ -5,6 +5,13 @@
     Layout = "Shared/_AdministradorLayout.cshtml";
 }
 
+<div class="row">
+    <div class="col-sm-6 col-sm-offset-3">
+        <div class="alert alert-danger" style="display:none;">
+            <strong><span class="glyphicon glyphicon-remove"></span></strong><span class="alert-content"></span>
+        </div>
+    </div>
+</div>
 <div class="row" style="margin-top:30px">
     <div class="col-sm-offset-1 col-sm-10">
         <div class="row">
@@ -54,7 +61,14 @@
 
                                         if (item.Activo)
                                         {
-                                            <td><a data-id="@item.Id" class="btn btn-danger btn-10-caracteres btn-categorias-desactivar">desactivar</a></td>
+                                            if (item.NumAnuncios <= 0)
+                                            {
+                                                <td><a data-id="@item.Id" class="btn btn-danger btn-10-caracteres btn-categorias-desactivar">desactivar</a></td>
+                                            }
+                                            else
+                                            {
+                                                <td><a class="btn btn-default btn-10-caracteres btn-categorias-anuncios" style="cursor:not-allowed;">desactivar</a></td>
+                                            }
                                         }
                                         else
                                         {
@@ -70,20 +84,20 @@
 
                                         <td class="hide-modificar hide-modificar-@item.Id">
                                             <div class="form-group">
-                                                @Html.EditorFor(model => model.Titulo, new { htmlAttributes = new { @class = "form-control", style = "width: 120px;", id="input-categoria"+item.Id } })
-                                                @Html.ValidationMessageFor(model => model.Titulo, "", new { @class = "text-danger validation" +item.Id })
+                                                @Html.EditorFor(model => model.Titulo, new { htmlAttributes = new { @class = "form-control", style = "width: 120px;", id = "input-categoria" + item.Id } })
+                                                @Html.ValidationMessageFor(model => model.Titulo, "", new { @class = "text-danger validation" + item.Id })
                                             </div>
                                         </td>
                                         <td class="hide-modificar hide-modificar-@item.Id">
                                             <div class="form-group">
                                                 <a data-id="@item.Id" class="btn btn-success btn-7-caracteres categorias-guardar">guardar</a>
-                                                <input type="hidden" id="idCategoria-@item.Id" value="@item.Id" name="Id"/>
+                                                <input type="hidden" id="idCategoria-@item.Id" value="@item.Id" name="Id" />
                                             </div>
                                         </td>
                                     }
                                     <td class="hide-modificar hide-modificar-@item.Id"><a class="btn btn-default btn-8-caracteres categorias-cancelar" data-id="@item.Id">cancelar</a></td>
                                 </tr>
-                            }
+                                        }
                         }
                     </tbody>
                 </table>
@@ -114,29 +128,43 @@
             return;
         }
         $(".validation" + id).hide();
-        var url = '/Administrador/ModificarCategoria?id='+id+'&nombre='+nombre;
+        var url = '/Administrador/ModificarCategoria?id=' + id + '&nombre=' + nombre;
         $.ajax({
             type: 'POST',
             url: url,
-            success: function(response){
-                if (response === "CategoriaExistente") {
-
+            success: function (response) {
+                if (response === "Error") {
+                    $(".alert-content").html("   Error! Se produjo un error, vuelva a intentarlo");
+                    $(".alert").show('');
+                    window.setTimeout(function () {
+                        $(".alert").hide('');
+                    }, 3000);
                     return;
                 }
+                if (response === "CategoriaExistente") {
+                    $(".alert-content").html("   Error! Ya existe una categor&iacute;a con el nombre, \'" + nombre + "\'");
+                    $(".alert").show('');
+                    window.setTimeout(function () {
+                        $(".alert").hide('');
+                    }, 3000);
+                    return;
+                }
+                location.reload();
+
 
             },
-            error: function(e){
-                alert("Error intentando agregar categoria, vuelva a intentarlo");
+            error: function (e) {
+                alert("Error intentando modificar categoria, vuelva a intentarlo");
             }
         });
     });
 
     $(".modificar-boton").click(function () {
         var id = $(this).data('id');
-        $(".hide-cancelar-"+id).show();
+        $(".hide-cancelar-" + id).show();
         $(".modificar-header").show();
         $(".modificar-boton-header").hide();
-        $(".hide-modificar-"+id).show();
+        $(".hide-modificar-" + id).show();
         $(this).parent().hide();
     });
 
@@ -145,8 +173,9 @@
         $(".hide-modificar-" + id).hide();
         $(".modificar-header").hide();
         $(".modificar-boton-header").show();
-        $(".hide-modificar-boton-"+id).show();
-    });
+        $(".hide-modificar-boton-" + id).show();
+        $(".validation" + id).hide();
+    }); 
 
     $(".btn-categorias-desactivar").click(function () {
         var id = $(this).data('id');
@@ -156,7 +185,7 @@
             url: "/Administrador/CambiarEstadoCategoria?id=" + id + "&tipo=" + 0,
             data: {},
             success: function (result) {
-                if(result){
+                if (result) {
                     location.reload();
                 }
                 else {
