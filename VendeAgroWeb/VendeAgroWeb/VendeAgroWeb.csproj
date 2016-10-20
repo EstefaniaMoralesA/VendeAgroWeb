@@ -321,10 +321,15 @@
     <Content Include="img\bannerLat.jpg" />
     <Content Include="img\caballo.jpg" />
     <Content Include="img\caballoespanol.jpg" />
+    <Content Include="img\fondoVACielo.jpg" />
+    <Content Include="img\fondoVA.jpg" />
     <Content Include="img\horses.jpg" />
     <Content Include="img\logo.png" />
+    <Content Include="img\logoHorizontalAnunciate.png" />
+    <Content Include="img\logoHorizontalMovil.png" />
     <Content Include="img\logoHorizontal.png" />
     <Content Include="img\icon.png" />
+    <Content Include="img\logoResplandor.png" />
     <Content Include="img\yegua.jpg" />
     <Content Include="Models\DatabaseModel.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
@@ -351,6 +356,9 @@
     <Content Include="Models\DatabaseModel.edmx.diagram">
       <DependentUpon>DatabaseModel.edmx</DependentUpon>
     </Content>
+    <Content Include="fonts\glyphicons-halflings-regular.woff2" />
+    <Content Include="fonts\Nexa Bold.otf" />
+    <Content Include="fonts\Nexa Light.otf" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
@@ -365,7 +373,6 @@
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
     <Content Include="Scripts\_references.js" />
-    <Content Include="Views\Shared\VendeAgro.png" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
@@ -430,6 +437,7 @@
     <Content Include="Views\Administrador\NuevoPaquete.cshtml" />
     <Content Include="Views\Administrador\ModificarPaquete.cshtml" />
     <Content Include="videos\video1.mp4" />
+    <Content Include="Views\Shared\_AnunciosMovil.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

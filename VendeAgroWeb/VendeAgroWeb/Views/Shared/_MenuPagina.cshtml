@@ -1,35 +1,45 @@
-﻿
-<div class="logo-container">
-    <a href="/Home"><img src="~/img/VendeAgroHoriz.png"/></a>
-</div>
-<div class="menu-top menu-row row">
-    <div class="col-sm-12">
-        <div class="row">
-            <div class="col-sm-6 col-sm-offset-3">
-                <form role="search" class="form-horizontal forma-busqueda">
-                    <div class="input-group">
-                        <input type="text" class="form-control" id="buscar" placeholder="Buscar">
-                        <div class="input-group-btn">
-                            <a class="btn btn-default busqueda">
-                                <span class="glyphicon glyphicon-search"></span>
-                            </a>
+﻿<div class="menu-container menu-grad">
+    <div class="menu-contenedor-content">
+        <div class="logo-container">
+            <a href="/Home"><img src="~/img/logoResplandor.png" /></a>
+        </div>
+        <div class="menu-top menu-row row">
+            <div class="col-sm-12">
+                <div class="row">
+                    <div class="col-sm-6 col-sm-offset-3">
+                        <form role="search" class="form-horizontal forma-busqueda">
+                            <div class="input-group">
+                                <input type="text" class="form-control menu-buscar-texto" id="buscar" placeholder="Buscar" aria-describedby="sizing-addon2">
+                                <span class="input-group-btn" id="sizing-addon2">
+                                    <a class="btn btn-default busqueda botones-grad botones-shadow">
+                                        <span class="glyphicon glyphicon-search"></span>
+                                    </a>
+                                </span>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="col-sm-3">
+                        <div class="login-menu-container">
+                            @Html.Partial("_LoginPartial")
                         </div>
                     </div>
-                </form>
-            </div>
-            <div class="col-sm-3">
-                <div class="login-menu-container">
-                    @Html.Partial("_LoginPartial")
                 </div>
             </div>
         </div>
-    </div>
-</div>
-<div class="menu-bottom menu-row row">
-    <div class="col-sm-12">
-        <div class="row">
-            <div class="col-sm-9 col-sm-offset-3">
-               @Html.Partial("_MenuPaginaTabs")
+        <div class="menu-bottom menu-row row">
+            <div class="col-sm-12">
+                <div class="row">
+                    <div class="col-sm-6 col-sm-offset-3">
+                        @Html.Partial("_MenuPaginaTabs")
+                    </div>
+                    <div class="col-sm-3">
+                        <span style="position: absolute; right: 40px;">
+                            <a class="btn btn-default carrito botones-grad botones-shadow">
+                                <span class="glyphicon glyphicon-shopping-cart"></span>
+                            </a>
+                        </span>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
