@@ -429,6 +429,7 @@
     <Content Include="Views\Administrador\Paquetes.cshtml" />
     <Content Include="Views\Administrador\NuevoPaquete.cshtml" />
     <Content Include="Views\Administrador\ModificarPaquete.cshtml" />
+    <Content Include="videos\video1.mp4" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

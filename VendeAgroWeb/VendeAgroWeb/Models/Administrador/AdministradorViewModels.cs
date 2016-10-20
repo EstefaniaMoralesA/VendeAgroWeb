@@ -544,9 +544,10 @@ namespace VendeAgroWeb.Models.Administrador
         private string _descripcion;
         private ICollection<FotoViewModel> _fotos;
         private AnuncioPaqueteViewModel _paquete;
+        private string _video;
 
         public AnuncioDetallesViewModel(AnuncioViewModel anuncio, int status, bool activo, 
-            string descripcion, List<FotoViewModel> fotos, AnuncioPaqueteViewModel paquete)
+            string descripcion, List<FotoViewModel> fotos, AnuncioPaqueteViewModel paquete, string video)
         {
             _anuncio = anuncio;
             _status = (EstadoAnuncio)status;
@@ -554,8 +555,24 @@ namespace VendeAgroWeb.Models.Administrador
             _descripcion = descripcion;
             _fotos = fotos;
             _paquete = paquete;
+            _video = video;
+        }
+
+        public bool TieneVideo
+        {
+            get
+            {
+                return _video != null;
+            }
         }
     
+        public string Video
+        {
+            get
+            {
+                return _video;
+            }
+        }
 
         public AnuncioPaqueteViewModel Paquete
         {

@@ -924,6 +924,39 @@ namespace VendeAgroWeb.Controllers.Administrador
             return lista;
         }
 
+        [HttpPost]
+        [AllowAnonymous]
+        public async Task<bool> AprobarAnuncio(int? id)
+        {
+            if(id == null)
+            {
+                return false;
+            }
+            return await Task.Run(() =>
+            {
+                using(var _dbContext = new VendeAgroEntities())
+                {
+                    Startup.OpenDatabaseConnection(_dbContext);
+                    if(_dbContext.Database.Connection.State != ConnectionState.Open)
+                    {
+                        return false;
+                    }
+
+                    var anuncio = _dbContext.Anuncios.Where(a => a.id == id).FirstOrDefault();
+
+                    if(anuncio == null){
+                        return false;
+                    }
+
+                    anuncio.activo = true;
+                    anuncio.estado = (int)EstadoAnuncio.Aprobado;
+                    _dbContext.SaveChanges();
+                    return true;
+                }
+            });
+
+        }
+
         public async Task<ActionResult> AnuncioDetalles(int? id)
         {
             if (await Startup.GetAplicacionUsuariosManager().VerificarAdminSesionAsync() == LoginStatus.Incorrecto)
@@ -968,11 +1001,13 @@ namespace VendeAgroWeb.Controllers.Administrador
                                     paquete.fechaFin, paquete.activo, paquete.folio);
                             }
 
+                            var rutaVideo = _dbContext.Videos_Anuncio.Where(v => v.idAnuncio == id).FirstOrDefault()?.ruta;
+
                             foreach (var foto in anuncio.Fotos_Anuncio)
                             {
                                 fotos.Add(new FotoViewModel(foto.principal, foto.ruta));
                             }
-                            model = new AnuncioDetallesViewModel(anuncioViewModel, anuncio.estado, anuncio.activo, anuncio.descripcion, fotos, paqueteViewModel);
+                            model = new AnuncioDetallesViewModel(anuncioViewModel, anuncio.estado, anuncio.activo, anuncio.descripcion, fotos, paqueteViewModel, rutaVideo);
                         }
                     }
                 }
