@@ -4,6 +4,81 @@
     ViewBag.Title = "Anúnciate";
 }
 
-<div>
-    <h2>Anúnciate</h2>
+<div class="anunciate-container">
+    <section class="anunciate-mision-container">>
+    <div class="col-sm-offset-2 col-sm-8 anunciate-texto-container">
+        <p>Sobre<span><img src="~/img/logoHorizontalAnunciate.png" class="anunciate-img"/><br></span>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum</p>
+    </div>
+    <div class="col-sm-offset-2 col-sm-8 planes-texto-container">
+        <div class="row">
+            <a href="#paquetes">Planes</a>
+        </div>
+        <div class="row">
+            <a href="#paquetes"><span class="glyphicon glyphicon-chevron-down"></span></a>
+        </div>
+    </div>
+    <div class="footer-dummy menu-grad">
+    </div>
+    </section>
+    <section class="anunciate-paquetes-container" id="paquetes">
+        <div class="anunciate-wrapper">
+            <div class="anunciate-recados-container" style="min-height: 330px">
+                <div class="col-sm-offset-3 col-sm-2">
+                    <div class="base base1">
+                        <div class="degradado-verde"></div>
+                        <div class="anunciate-recados-texto" style="color:#04612d">
+                            <h2>3 meses</h2>
+                            <ul>
+                                <li>titulo</li>
+                                <li>descripcion</li>
+                                <li>fotos</li>
+                            </ul>
+                            <h3>$00.00</h3>
+                            <button class="btn btn-default contratar-boton menu-grad" style="margin-top:55px;" type="button">Contratar</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-2">
+                    <div class="base base2">
+                        <div class="degradado-rojo"></div>
+                        <div class="anunciate-recados-texto" style="color:#E42B22">
+                            <h2>6 meses</h2>
+                            <ul>
+                                <li>titulo</li>
+                                <li>descripcion</li>
+                                <li>fotos</li>
+                            </ul>
+                            <h3>Ahorra 0%</h3>
+                            <h3>$00.00</h3>
+                            <button class="btn btn-default contratar-boton menu-grad" type="button">Contratar</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-2">
+                    <div class="base base3">
+                        <div class="degradado-naranja"></div>
+                        <div class="anunciate-recados-texto" style="color:#F6AB21">
+                            <h2>12 meses</h2>
+                            <ul>
+                                <li>titulo</li>
+                                <li>descripcion</li>
+                                <li>fotos</li>
+                            </ul>
+                            <h3>Ahorra 0%</h3>
+                            <h3>$00.00</h3>
+                            <button class="btn btn-default contratar-boton menu-grad" type="button">Contratar</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 </div>
+
+@Scripts.Render("~/bundles/jquery")
+
+<script>
+    $('.body-content').attr(
+        'style', 'padding-left:0px !important; padding-right: 0px !important; padding-bottom: 80px !important; padding-top: 0px !important; margin-left: 0px !important; margin-right: 0px !important; width: 100% !important;'
+    );
+</script>

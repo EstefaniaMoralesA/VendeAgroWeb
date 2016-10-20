@@ -321,11 +321,15 @@
     <Content Include="img\bannerLat.jpg" />
     <Content Include="img\caballo.jpg" />
     <Content Include="img\caballoespanol.jpg" />
+    <Content Include="img\fondoVACielo.jpg" />
+    <Content Include="img\fondoVA.jpg" />
     <Content Include="img\horses.jpg" />
     <Content Include="img\logo.png" />
+    <Content Include="img\logoHorizontalAnunciate.png" />
     <Content Include="img\logoHorizontalMovil.png" />
     <Content Include="img\logoHorizontal.png" />
     <Content Include="img\icon.png" />
+    <Content Include="img\logoResplandor.png" />
     <Content Include="img\yegua.jpg" />
     <Content Include="Models\DatabaseModel.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
