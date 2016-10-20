@@ -210,10 +210,10 @@
             $(this).addClass("activo");
             if ($(this).hasClass("video")) {
                 $(".img-grande-container").hide()
-                $(".video-container").show('');
+                $(".video-container").show();
                 return;
             }
-            $(".img-grande-container").show('')
+            $(".img-grande-container").show();
             $(".video-container").hide();
             $(".imagen-grande").attr("src", src);
         });
@@ -224,21 +224,36 @@
         $.ajax({
             type: 'POST',
             url: '/Administrador/AprobarAnuncio?id=' + id,
+            success: function (response) {
+                if (response == "True") {
+                    location.reload();
+                    return;
+                }
+                alert("Error en la base de datos, vuelva a intentarlo.");
+                
+            },
+            error: function (e) {
+                alert("Se presento un error, volver a intentarlo");
+            }
             
         })
     });
 
+    $(window).ready(function () {
+        recalcularTamanos();
+    });
+
     $(window).resize(function () {
-        //recalcularTamanos();
+        recalcularTamanos();
     });
 
     function recalcularTamanos() {
-        var height = $(".owl-item").first().height();
+        var height = $(".item").height();
         $(".owl-item").each(function () {
             $(this).css("height", height + "px");
         });
 
-        $(".video-container").css("height", $(".img-grande-container").first().height() + "px");
+        $(".video-container").css("height", $(".img-grande-container").first().innerHeight() + "px");
     }
 
 

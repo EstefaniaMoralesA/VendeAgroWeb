@@ -948,6 +948,21 @@ namespace VendeAgroWeb.Controllers.Administrador
                         return false;
                     }
 
+                    var anuncio_paquete = anuncio.Anuncio_Paquete.FirstOrDefault();
+
+                    if(anuncio == null)
+                    {
+                        return false;
+                    }
+
+                    var duracion = anuncio_paquete?.Paquete?.meses;
+                    if(duracion == null)
+                    {
+                        return false;
+                    }
+
+                    anuncio_paquete.fechaInicio = DateTime.Now;
+                    anuncio_paquete.fechaFin = DateTime.Now.AddMonths(duracion.Value);
                     anuncio.activo = true;
                     anuncio.estado = (int)EstadoAnuncio.Aprobado;
                     _dbContext.SaveChanges();
