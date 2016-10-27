@@ -27,5 +27,10 @@ namespace VendeAgroWeb.Controllers.Home
         {
             return View();
         }
+
+        public ActionResult CarritoDeCompra()
+        {
+            return View();
+        }
     }
 }

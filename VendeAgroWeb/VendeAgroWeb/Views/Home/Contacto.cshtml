@@ -4,6 +4,43 @@
     ViewBag.Title = "Contacto";
 }
 
-<div> 
-    <h2>Contacto</h2>
+<div class="contacto-container">
+    <div class="forma-contacto-container">
+        <div class="contacto-form" style="margin-top: 40px">
+            @using (Html.BeginForm())
+            {
+                @Html.AntiForgeryToken()
+
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                <div class="form-group">
+                    @Html.EditorFor(model => model.Nombre, new { htmlAttributes = new { @class = "form-control", placeholder = "Introduce tu nombre", id = "contacto-nombre", style = "width: 60%; height: 40px; font-size: 16px; margin-bottom: 25px !important;"} })
+                    @Html.ValidationMessageFor(model => model.Nombre, "", new { @class = "text-danger" })
+                    <label class="contacto-nombre-field-icon glyphicon glyphicon-user" for="contacto-nombre"></label>
+                </div>
+
+                <div class="form-group">
+                    @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control", placeholder = "Introduce tu email", id = "contacto-email", style = "width: 60%; height: 40px; font-size: 16px; margin-bottom: 25px !important;" } })
+                    @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
+                    <label class="contacto-email-field-icon glyphicon glyphicon-envelope" for="contacto-email"></label>
+                </div>
+
+                <div class="form-group">
+                    @Html.TextAreaFor(model => model.Mensaje, new { htmlAttributes = new { @class = "form-control", placeholder = "Introduce el mensaje" }, id = "contacto-mensaje", style = "margin-bottom: 17px !important;" })
+                    @Html.ValidationMessageFor(model => model.Mensaje, "", new { @class = "text-danger" })
+                </div>
+
+                <div class="form-group" style="display: table; width: 100%;">
+                    <input type="submit" value="Enviar" class="btn btn-default menu-grad btn-contacto" />
+                </div>
+            }
+        </div>
+    </div>
 </div>
+@Scripts.Render("~/bundles/jquery")
+
+
+<script>
+    $('.wrapper').attr(
+        'style', 'background-image: url(/img/vacaContacto.jpg); background-size: cover'
+    );
+</script>

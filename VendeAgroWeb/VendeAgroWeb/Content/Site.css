@@ -40,6 +40,7 @@ body {
     position: absolute;
     width: 100%;
     bottom: 0;
+    z-index: 1041;
 }
 
 footer {
@@ -95,7 +96,7 @@ a {
 .menu-redondeado-container{
     width:100%;
     position: fixed;
-    z-index: 100;
+    z-index: 1041;
     top: 0;
 }
 
@@ -282,6 +283,94 @@ a {
             font-size: 12px;
             color:white;
         }
+
+.modal-registro-container {
+    overflow-x: hidden; 
+    height: 100%; 
+    width: 750px !important;
+}
+
+.modal-registro {
+    position: relative !important;
+    border-radius: 134% !important;
+    border-top-right-radius: 0 !important;
+    border-top-left-radius: 0 !important;
+    width: 143% !important;
+    min-height: 94%;
+    left: 50% !important;
+    transform: translate(-50%, 0) !important;
+    -webkit-transform: translate(-50%, 0) !important;
+    -moz-transform: translate(-50%, 0) !important;
+    -ms-transform: translate(-50%, 0) !important;
+    -o-transform: translate(-50%, 0) !important;
+    filter: drop-shadow(0px -1px 6px #585858) !important;
+}
+
+.campos-registro {
+    height: 44px;
+    border-radius: 10px; 
+    background-color: rgba(255,255,255,0.6); 
+    color: #04612d;
+    font-size: 16px;    
+}
+
+    .campos-registro::-webkit-input-placeholder {
+       color: #04612d; 
+       font-size: 16px;    
+    }
+
+.registrar-boton {
+    padding-left: 42px;
+    padding-right: 30px;
+    color: white !important;
+    font-size: 16px;
+    border: none;
+    height: 38px;
+    box-shadow: 0px 0px 10px 2px #6E6E6E;
+    border-radius: 10px;
+}
+
+.registrate-texto {
+    font-size: 16px;
+    color: white;
+}
+
+#facebook {
+    border-color: #2d5073;
+    background-color: #3b5998;
+    background-image: url(http://icons.iconarchive.com/icons/danleech/simple/512/facebook-icon.png);
+    position: absolute;
+    left: 50%;
+    transform: translate(-50%, 0);
+    -ms-transform: translate(-50%, 0);
+    -webkit-transform: translate(-50%, 0);
+    -o-transform: translate(-50%, 0);
+    -moz-transform: translate(-50%, 0);
+    
+}
+
+@import url(http://fonts.googleapis.com/css?family=Merriweather+Sans);
+ div.social-wrap button {
+    padding-right: 45px;
+    height: 35px;
+    background: none;
+    border: none;
+    display: block;
+    background-size: 35px 35px;
+    background-position: right center;
+    background-repeat: no-repeat;
+    border-radius: 4px;
+    color: white;
+    font-family:"Merriweather Sans", sans-serif;
+    font-size: 16px;
+    margin-bottom: 15px;
+    width: 160px;
+    border-bottom: 2px solid transparent;
+    border-left: 1px solid transparent;
+    border-right: 1px solid transparent;
+    box-shadow: 0 4px 2px -2px gray;
+    text-shadow: rgba(0, 0, 0, .5) -1px -1px 0;
+}
 
 .expander-3 {
     padding-left: 0px !important;
@@ -1148,6 +1237,78 @@ a {
 
 }
 
+.contacto-form form-group {
+    position: relative; 
+    margin-bottom:22px !important;
+}
+
+.forma-contacto-container {
+    position: absolute !important;
+    right: 0;
+    top: 50% !important;
+    background-color: rgba(255,255,255,0.7); 
+    min-height: 415px; 
+    box-shadow: 0px 0px 10px 1px #6E6E6E;
+    width: 545px;
+    padding-left: 15px;
+    padding-right: 15px;
+    transform: translate(0%, -45%);
+    -webkit-transform: translate(0%, -45%);
+    -moz-transform: translate(0%, -45%);
+    -o-transform: translate(0%, -45%);
+    -ms-transform: translate(0%, -45%);
+}
+
+#contacto-mensaje {
+    width: 99%;
+    resize: none;
+    border-radius: 5px;
+    height: 139px;
+}
+
+    #contacto-email::-webkit-input-placeholder {
+        color: #04612d;
+    }
+
+    #contacto-mensaje::-webkit-input-placeholder {
+        color: #04612d;
+    }
+
+    #contacto-nombre::-webkit-input-placeholder {
+        color: #04612d;
+    }
+
+.btn-contacto {
+    color: white;
+    border: none;
+    padding-left: 22px;
+    padding-right: 22px;
+    font-size: 15px;
+    position: absolute;
+    right: 4%;
+}
+
+.contacto-nombre-field-icon {
+    position: absolute !important;
+    top: 13%;
+    right: 43%;
+    color: #04612d;
+}
+
+.contacto-email-field-icon {
+    position: absolute;
+    top: 28%;
+    right: 43%;
+    color: #04612d;
+}
+
+.tabla-carrito-titulo {
+    text-align: center;
+    color: white;
+    font-family: BoldFont;
+    font-size: 16px;
+} 
+
 @media (max-width: 321px) {
     .menu-administrador-container .menu-opciones {
         font-size: 12px;
@@ -1181,6 +1342,10 @@ a {
 
     .logo-container a img {
         width: 80%;
+    }
+
+    .campos-registro {
+        height: 35px;
     }
 }
 

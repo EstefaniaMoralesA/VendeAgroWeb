@@ -330,6 +330,7 @@
     <Content Include="img\logoHorizontal.png" />
     <Content Include="img\icon.png" />
     <Content Include="img\logoResplandor.png" />
+    <Content Include="img\vacaContacto.jpg" />
     <Content Include="img\yegua.jpg" />
     <Content Include="Models\DatabaseModel.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
@@ -418,7 +419,7 @@
     <Content Include="Views\Shared\_BannerCentral.cshtml" />
     <Content Include="Views\Shared\_Anuncios.cshtml" />
     <Content Include="Views\Shared\_BannerLateral.cshtml" />
-    <Content Include="Views\Portal\Registro.cshtml" />
+    <Content Include="Views\Shared\_Registro.cshtml" />
     <Content Include="Views\Administrador\OlvidoContrasena.cshtml" />
     <Content Include="Views\Administrador\Shared\_LoginLayout.cshtml" />
     <Content Include="Views\Administrador\CambiarContrasena.cshtml" />
@@ -438,9 +439,11 @@
     <Content Include="Views\Administrador\ModificarPaquete.cshtml" />
     <Content Include="videos\video1.mp4" />
     <Content Include="Views\Shared\_AnunciosMovil.cshtml" />
+    <Content Include="Views\Home\CarritoDeCompra.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Views\Portal\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
