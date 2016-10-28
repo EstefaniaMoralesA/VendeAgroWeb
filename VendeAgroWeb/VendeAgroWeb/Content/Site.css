@@ -1307,7 +1307,67 @@ a {
     color: white;
     font-family: BoldFont;
     font-size: 16px;
-} 
+}
+
+.paquete-carrito {
+    text-align:center; 
+    color:#E42B22;
+}
+
+    .paquete-carrito h2 {
+        font-size: 36px;
+        font-family: generalFont;
+        font-weight: bold;
+        text-transform: uppercase;
+    }
+
+    .paquete-carrito ul {
+        padding-left: 0px;
+    }
+
+    .paquete-carrito ul li {
+        text-transform: capitalize;
+        list-style-type: none;
+    }
+
+.precio-carrito {
+    font-size: 20px;
+    font-family: generalFont;
+    font-weight: bold;
+    color:#04612d;
+    position:relative;
+}
+
+    .precio-carrito p {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+        -o-transform: translate(-50%, -50%);
+        -moz-transform: translate(-50%, -50%);
+        -ms-transform: translate(-50%, -50%);
+        -webkit-transform: translate(-50%, -50%);
+    }
+
+.logo-login img {
+    width: 40%;
+    margin-bottom: 25px;
+}
+
+.borrar-carrito {
+    position: relative;
+}
+
+    .borrar-carrito a {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+        -o-transform: translate(-50%, -50%);
+        -moz-transform: translate(-50%, -50%);
+        -ms-transform: translate(-50%, -50%);
+        -webkit-transform: translate(-50%, -50%);
+    }
 
 @media (max-width: 321px) {
     .menu-administrador-container .menu-opciones {

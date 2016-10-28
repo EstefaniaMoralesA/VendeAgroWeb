@@ -39,6 +39,21 @@ namespace VendeAgroWeb.Models.Portal
         public string Celular { get; set; }
     }
 
+    public class LoginViewModel {
+
+        [Required]
+        [EmailAddress]
+        [Display(Name = "Email")]
+        public string Email { get; set; }
+
+        [Required]
+        [StringLength(100, ErrorMessage = "La contraseña debe de ser mínimo de 6 caracteres.", MinimumLength = 6)]
+        [DataType(DataType.Password)]
+        [Display(Name = "Contraseña")]
+        public string Password { get; set; }
+
+    }
+
     //[AttributeUsage(AttributeTargets.Field | AttributeTargets.Property, AllowMultiple = false, Inherited = true)]
     //public class CustomPhoneNumberAttribute : ValidationAttribute
     //{
