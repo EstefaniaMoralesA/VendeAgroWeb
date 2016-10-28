@@ -1610,11 +1610,11 @@ a {
     }
 
     .anunciate-recados-texto h2 {
-        font-size: 36px;
+        font-size: 30px;
     }
 
     .anunciate-recados-texto h3 {
-        font-size: 33px;
+        font-size: 25px;
     }
 
     .base {
@@ -1625,6 +1625,23 @@ a {
         .base:before {
             top: 261px !important;
         }
+
+    #paquetes{
+        height: auto !important;
+        min-height: 100vh;
+    }
+    
+    .anunciate-recados-container:last-child{
+        padding-bottom: 80px;
+    }
+
+    .anunciate-recados-container .col-sm-2{
+        padding-top:30px;
+    }
+
+    .anunciate-recados-container:first-child{
+        padding-top:0px;
+    }
 }
 
 @media (max-width: 770px){
@@ -1649,6 +1666,10 @@ a {
     .carrito {
         padding: 3px;
     }
+
+    .ofertas-anuncio-titulo .anuncio-titulo p {
+        font-size: 12px !important;
+    }
 }
 
 @media (max-width: 1200px){
@@ -1661,6 +1682,14 @@ a {
         border-left: 105px solid transparent !important;
         border-right: 105px solid transparent !important;
         top: 270px !important;
+    }
+
+    .anunciate-recados-texto h2{
+        font-size: 30px;
+    }
+
+    .anunciate-recados-texto h3{
+        font-size:22px;
     }
 }
 
@@ -1693,13 +1722,5 @@ a {
 @media (min-width:995px ) and (max-width: 767px){
     .menu-administrador-container .logo-container{
         left:60px;
-    }
-
-    
-}
-
-@media screen and (max-width: 995px){
-    .ofertas-anuncio-titulo .anuncio-titulo p {
-        font-size: 12px !important;
     }
 }
