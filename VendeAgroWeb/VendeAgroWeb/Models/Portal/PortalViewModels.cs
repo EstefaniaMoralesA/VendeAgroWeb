@@ -54,13 +54,17 @@ namespace VendeAgroWeb.Models.Portal
 
     }
 
+    public class OlvidasteContrasenaViewModel
+    {
+    }
+
     //[AttributeUsage(AttributeTargets.Field | AttributeTargets.Property, AllowMultiple = false, Inherited = true)]
     //public class CustomPhoneNumberAttribute : ValidationAttribute
     //{
 
     //    public CustomPhoneNumberAttribute()
     //    {
-          
+
     //    }
 
     //    public override bool IsValid(object value)

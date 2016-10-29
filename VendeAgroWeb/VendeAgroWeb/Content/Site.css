@@ -8,6 +8,10 @@
     src: url('../fonts/Nexa Bold.otf');
 }
 
+.hideMe {
+    display: none;
+}
+
 .menu-grad {
   background: #F6AB21 !important;
   background: -webkit-radial-gradient(circle rgb(252, 194, 60), rgb(246, 169, 61), rgb(244, 157, 61)) !important; 
@@ -202,7 +206,7 @@ a {
     display: none;
     position: fixed;
     top:0;
-    z-index: 100;
+    z-index: 1041;
 }
 
 .menu-buscar-texto {
@@ -286,8 +290,12 @@ a {
 
 .modal-registro-container {
     overflow-x: hidden; 
-    height: 100%; 
+    height: 96%; 
     width: 750px !important;
+}
+
+.registro-container {
+    margin-top: 140px;
 }
 
 .modal-registro {
@@ -304,6 +312,32 @@ a {
     -ms-transform: translate(-50%, 0) !important;
     -o-transform: translate(-50%, 0) !important;
     filter: drop-shadow(0px -1px 6px #585858) !important;
+}
+
+.registro-boton-container {
+    margin-left:13%; 
+    text-align: center; 
+    margin-bottom:25px;
+}
+
+.registro-campos {
+    left: 13%;
+    text-align: center;
+}
+
+.registro-campo {
+    margin-bottom: 25px;
+}
+
+.login-campo {
+    margin-bottom: 5px;
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+.registrate-facebook {
+    margin-left:13%; 
+    text-align: center;
 }
 
 .campos-registro {
@@ -330,9 +364,17 @@ a {
     border-radius: 10px;
 }
 
+.login-cliente-container {
+    margin-top: 170px;
+}
+
 .registrate-texto {
     font-size: 16px;
     color: white;
+}
+
+.olvidaste-contrasena-cliente {
+    text-align: center;
 }
 
 #facebook {
@@ -1369,6 +1411,60 @@ a {
         -webkit-transform: translate(-50%, -50%);
     }
 
+
+.boton-bienvenido {
+    top: 27px !important;
+}
+
+.nombre-bienvenido-boton {
+    padding-left: 30px;
+    padding-right: 48px;
+    color: white !important;
+    font-size: 16px;
+    border: none;
+    height: 38px;
+    box-shadow: 0px 0px 10px 2px #6E6E6E;
+    border-radius: 10px;
+}
+
+.botones-portal-container {
+    border-radius: 5%;
+    box-shadow: 0px 0px 10px 2px #6E6E6E;
+    width: 300px;
+    left: 50%;
+    position: absolute;
+    transform: translate(-50%, 0);
+    -webkit-transform: translate(-50%, 0);
+    -ms-transform: translate(-50%, 0);
+    -moz-transform: translate(-50%, 0);
+    -o-transform: translate(-50%, 0);
+    min-height: 210px;
+}
+
+.botones-portal-contenido {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    -webkit-transform: translate(-50%, -50%);
+    -ms-transform: translate(-50%, -50%);
+    -moz-transform: translate(-50%, -50%);
+    -o-transform: translate(-50%, -50%);
+    color: white;
+}
+
+.botones-inicio-portal {
+    text-align: center !important;
+}
+
+    .botones-inicio-portal span {
+        font-size: 40px;
+    }
+
+    .botones-inicio-portal p {
+        font-size: 20px;
+    }
+
 @media (max-width: 1200px){
     .base {
         height: 270px !important;
@@ -1413,6 +1509,34 @@ a {
 
     .ofertas-anuncio-titulo .anuncio-titulo p {
         font-size: 13px !important;
+    }
+
+    .anunciate-recados-container {
+        top: 63%;    
+    }
+
+    .campos-registro {
+        height: 40px;
+    }
+
+    .registro-container {
+        margin-top: 120px;
+    }
+
+    .registro-campo {
+        margin-bottom: 20px;
+    }
+
+    .registro-boton-container {
+        margin-bottom: 10px;
+    }
+
+    .modal-registro-container {
+        height: 96%;
+    }
+
+    .login-cliente-container {
+        margin-top: 140px;
     }
 }
 
@@ -1472,6 +1596,53 @@ a {
     .menu-tabs li {
         padding: 15px 15px 5px 0px;
         font-size: 13px;
+    }
+
+    .base1 {
+        left: 85%;
+    }
+
+    .base3 {
+        position: absolute;
+        right: 78%;
+        transform: translate(-100%, 0);
+        -webkit-transform: translate(100%, 0);
+        -moz-transform: translate(-100%, 0);
+        -o-transform: translate(-100%, 0);
+        -ms-transform: translate(-100%, 0);
+    }
+
+    .anunciate-wrapper {
+        border-radius: 0;
+        height: 100vh;
+     }
+
+    .anunciate-recados-container {
+        top: 60%;
+    }
+
+    .modal-registro-container {
+         width: 655px !important;
+    }
+
+    .registro-campo {
+        margin-bottom: 25px;
+    }
+
+    .campos-registro {
+        height: 44px;
+    }
+
+    .registro-container {
+        margin-top: 160px;
+    }
+
+    .modal-registro {
+        min-height: 88%;
+    }
+
+    .login-cliente-container {
+        margin-top: 170px;
     }
 }
 
@@ -1702,6 +1873,88 @@ a {
 
     .anunciate-recados-container:first-child{
         padding-top:0px;
+    }
+
+    .modal-registro {
+        border-radius: 0 !important;
+        width: 100% !important;
+        min-height: 0;
+    }
+
+    .modal-registro-container {
+        padding-left: 0px;
+        padding-right: 0px;
+        width: 100% !important;
+    }
+
+    .registro-container {
+        margin-top: 140px;
+    }
+
+   .campos-registro {
+        height: 33px;
+    }
+
+    .campos-registro::-webkit-input-placeholder {
+        font-size: 12px !important;   
+    }
+
+   .registro-campo {
+        margin-bottom: 15px;
+        padding-left: 15px;
+        padding-right: 15px;
+    }
+
+    .registrar-boton {
+        font-size: 12px;
+    }
+
+    .registrate-texto {
+        font-size: 12px;
+    }
+
+    .registro-campos {
+        left: 0;
+    }
+
+    .registrate-facebook {
+        margin-left: 0;
+    }
+
+    .social-wrap {
+        min-height: 55px;
+    }
+
+    .footer-container {
+        z-index: 1000;
+    }
+
+    .olvidaste-contrasena-cliente {
+        min-height: 80px;
+    }
+
+    .forma-contacto-container {
+        width: 100%;
+    }
+
+    #contacto-nombre {
+        width: 100% !important;
+    }
+
+    #contacto-email {
+        width: 100% !important;
+    }
+
+    #contacto-mensaje {
+        width: 100% !important;
+    }
+
+    .contacto-nombre-field-icon {
+        right: 7%;
+    }
+
+    .contacto-email-field-icon {
+        right: 7%;
     }
 }
 

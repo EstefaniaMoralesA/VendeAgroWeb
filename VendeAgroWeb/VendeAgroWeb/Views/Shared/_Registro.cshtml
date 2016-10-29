@@ -4,7 +4,7 @@
     ViewBag.Title = "Registro";
 }
 
-<div class="row" style="margin-top:140px;">
+<div class="row registro-container">
     <div class="col-sm-12">
         <div class="col-sm-6 col-sm-offset-3">
 
@@ -14,50 +14,38 @@
 
                 <div class="form-horizontal">
                     @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-                    <div class="form-group" style="margin-bottom:25px;">
-                        <div class="col-sm-9" style="margin-left:13%;">
+                    <div class="col-sm-9 registro-campos">
+                        <div class="form-group registro-campo">
                             @Html.EditorFor(model => model.Nombre, new { htmlAttributes = new { @class = "form-control campos-registro", placeholder = "Nombre" } })
                             @Html.ValidationMessageFor(model => model.Nombre, "", new { @class = "text-danger" })
                         </div>
-                    </div>
 
-                    <div class="form-group"  style="margin-bottom:25px;">
-                        <div class="col-sm-9" style="margin-left:13%;">
+                        <div class="form-group registro-campo">
                             @Html.EditorFor(model => model.Apellidos, new { htmlAttributes = new { @class = "form-control campos-registro", placeholder = "Apellidos" } })
                             @Html.ValidationMessageFor(model => model.Apellidos, "", new { @class = "text-danger" })
                         </div>
-                    </div>
 
-                    <div class="form-group"  style="margin-bottom:25px;">
-                        <div class="col-sm-9" style="margin-left:13%;">
+                        <div class="form-group registro-campo">
                             @Html.EditorFor(model => model.Celular, new { htmlAttributes = new { @class = "form-control campos-registro", placeholder = "Teléfono" } })
                             @Html.ValidationMessageFor(model => model.Celular, "", new { @class = "text-danger" })
                         </div>
-                    </div>
 
-                    <div class="form-group"  style="margin-bottom:25px;">
-                        <div class="col-sm-9" style="margin-left:13%;">
+                        <div class="form-group registro-campo">
                             @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control campos-registro", placeholder = "Email" } })
                             @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
                         </div>
-                    </div>
 
-                    <div class="form-group"  style="margin-bottom:25px;">
-                        <div class="col-sm-9" style="margin-left:13%;">
+                        <div class="form-group registro-campo">
                             @Html.EditorFor(model => model.Password, new { htmlAttributes = new { @class = "form-control campos-registro", placeholder = "Contraseña" } })
                             @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })
                         </div>
-                    </div>
 
-                    <div class="form-group" style="margin-bottom:25px;">
-                        <div class="col-sm-9" style="margin-left:13%;">
+                        <div class="form-group registro-campo">
                             @Html.EditorFor(model => model.ConfirmPassword, new { htmlAttributes = new { @class = "form-control campos-registro", placeholder = "Confirmar contraseña" } })
                             @Html.ValidationMessageFor(model => model.ConfirmPassword, "", new { @class = "text-danger" })
                         </div>
-                    </div>
 
-                    <div class="form-group">
-                        <div class="col-sm-9" style="margin-left:13%; text-align: center; margin-bottom:25px;">
+                        <div class="form-group">
                             <div class="text-container" style="position: relative; display: inline-block;">
                                 <input type="submit" value="Regístrate" class="btn btn-default registrar-boton menu-grad" />
                                 <span class="glyphicon glyphicon-user" style="position: absolute; left: 22px; top: 12px; color:white;"></span>
@@ -66,10 +54,10 @@
                     </div>
                 </div>
             }
-            <div class="col-sm-9" style="margin-left:13%; text-align: center;">
+            <div class="col-sm-9 registrate-facebook">
                 <p class="registrate-texto">O regístrate con</p>
             </div>
-            <div class="col-sm-9" style="margin-left:13%; text-align: center;">
+            <div class="col-sm-9 registrate-facebook">
                 <div class="social-wrap a">
                     <button id="facebook">Facebook</button>
                 </div>

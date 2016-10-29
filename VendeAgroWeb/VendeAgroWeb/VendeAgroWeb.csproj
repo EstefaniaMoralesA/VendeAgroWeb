@@ -442,10 +442,14 @@
     <Content Include="Views\Shared\_AnunciosMovil.cshtml" />
     <Content Include="Views\Home\CarritoDeCompra.cshtml" />
     <Content Include="Views\Shared\_Login.cshtml" />
+    <Content Include="Views\Portal\Perfil.cshtml" />
+    <Content Include="Views\Portal\MisAnuncios.cshtml" />
+    <Content Include="Views\Shared\_OlvidasteContrasena.cshtml" />
+    <Content Include="Views\Portal\Index.cshtml" />
+    <Content Include="Views\Portal\Shared\_PortalLayout.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Views\Portal\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />

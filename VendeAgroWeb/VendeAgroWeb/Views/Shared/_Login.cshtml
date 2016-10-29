@@ -4,7 +4,7 @@
     ViewBag.Title = "Login";
 }
 
-<div class="row" style="margin-top:170px;">
+<div class="row login-cliente-container" id="login-cliente">
     <div class="col-sm-12">
         <div class="col-sm-6 col-sm-offset-3">
             <div class="logo-login" style="text-align: center;">
@@ -16,34 +16,33 @@
 
                 <div class="form-horizontal">
                     @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-
-                    <div class="form-group" style="margin-bottom:25px;">
-                        <div class="col-sm-9" style="margin-left:13%;">
-                            @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control campos-registro", placeholder = "Email" } })
-                            @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
-                        </div>
-                    </div>
-
-                    <div class="form-group" style="margin-bottom:25px;">
-                        <div class="col-sm-9" style="margin-left:13%;">
-                            @Html.EditorFor(model => model.Password, new { htmlAttributes = new { @class = "form-control campos-registro", placeholder = "Contraseña" } })
-                            @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <div class="col-sm-9" style="margin-left:13%; text-align: center; margin-bottom:0px;">
-                            <div class="text-container" style="position: relative; display: inline-block;">
-                                <input type="submit" value="Iniciar Sesión" class="btn btn-default registrar-boton menu-grad" />
-                                <span class="glyphicon glyphicon-user" style="position: absolute; left: 22px; top: 12px; color:white;"></span>
+                    <div class="col-sm-9 registro-campos">
+                        <div class="form-group">
+                            <div class="login-campo">
+                                @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control campos-registro", placeholder = "Email" } })
+                                @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
                             </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="login-campo">
+                                @Html.EditorFor(model => model.Password, new { htmlAttributes = new { @class = "form-control campos-registro", placeholder = "Contraseña" } })
+                                @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                                <div class="text-container" style="position: relative; display: inline-block;">
+                                    <input type="submit" value="Iniciar Sesión" class="btn btn-default registrar-boton menu-grad" />
+                                    <span class="glyphicon glyphicon-user" style="position: absolute; left: 22px; top: 12px; color:white;"></span>
+                                </div>
+                        </div>
+                        <div class="olvidaste-contrasena-cliente">
+                            <p id="olvidaste-contrasena-cliente"><a class="registrate-texto btn">¿Olvidaste tu contraseña?</a></p>
                         </div>
                     </div>
                 </div>
             }
-            <div class="col-sm-9" style="margin-left:13%; text-align: center;">
-                <a class="registrate-texto">¿Olvidaste tu contraseña?</a>
-            </div>
         </div>
     </div>
 </div>
@@ -51,5 +50,4 @@
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
 }
-
 
