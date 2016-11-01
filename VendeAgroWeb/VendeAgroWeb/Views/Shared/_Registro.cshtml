@@ -16,38 +16,38 @@
                     @Html.ValidationSummary(true, "", new { @class = "text-danger" })
                     <div class="col-sm-9 registro-campos">
                         <div class="form-group registro-campo">
-                            @Html.EditorFor(model => model.Nombre, new { htmlAttributes = new { @class = "form-control campos-registro", placeholder = "Nombre" } })
+                            <input id="NombreRegistro" class="form-control campos-registro text-box single-line" data-val="true" data-val-required="The Nombre field is required." id="Nombre" name="Nombre" placeholder="Nombre" type="text">
                             @Html.ValidationMessageFor(model => model.Nombre, "", new { @class = "text-danger" })
                         </div>
 
                         <div class="form-group registro-campo">
-                            @Html.EditorFor(model => model.Apellidos, new { htmlAttributes = new { @class = "form-control campos-registro", placeholder = "Apellidos" } })
+                            <input id="ApellidosRegistro" class="form-control campos-registro text-box single-line" data-val="true" data-val-required="The Apellidos field is required." id="Apellidos" name="Apellidos" placeholder="Apellidos" type="text">
                             @Html.ValidationMessageFor(model => model.Apellidos, "", new { @class = "text-danger" })
                         </div>
 
                         <div class="form-group registro-campo">
-                            @Html.EditorFor(model => model.Celular, new { htmlAttributes = new { @class = "form-control campos-registro", placeholder = "Teléfono" } })
+                            <input id="CelularRegistro" class="form-control campos-registro text-box single-line" data-val="true" data-val-length="El celular no es válido." data-val-length-max="14" data-val-length-min="10" data-val-required="The Celular field is required." id="Celular" name="Celular" placeholder="Teléfono" type="text">
                             @Html.ValidationMessageFor(model => model.Celular, "", new { @class = "text-danger" })
                         </div>
 
                         <div class="form-group registro-campo">
-                            @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control campos-registro", placeholder = "Email" } })
+                            <input id="EmailRegistro" class="form-control campos-registro text-box single-line" data-val="true" data-val-email="The Email field is not a valid e-mail address." data-val-required="The Email field is required." id="Email" name="Email" placeholder="Email" type="email">
                             @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
                         </div>
 
                         <div class="form-group registro-campo">
-                            @Html.EditorFor(model => model.Password, new { htmlAttributes = new { @class = "form-control campos-registro", placeholder = "Contraseña" } })
+                            <input id="PasswordRegistro" class="form-control campos-registro text-box single-line password" data-val="true" data-val-length="La contraseña debe de ser mínimo de 6 caracteres." data-val-length-max="100" data-val-length-min="6" data-val-required="The Contraseña field is required." id="Password" name="Password" placeholder="Contraseña" type="password">
                             @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })
                         </div>
 
                         <div class="form-group registro-campo">
-                            @Html.EditorFor(model => model.ConfirmPassword, new { htmlAttributes = new { @class = "form-control campos-registro", placeholder = "Confirmar contraseña" } })
+                            <input id="ConfirmarPassRegistro" class="form-control campos-registro text-box single-line password" data-val="true" data-val-equalto="La contraseña y su confirmacion no son iguales." data-val-equalto-other="*.Password" id="ConfirmPassword" name="ConfirmPassword" placeholder="Confirmar contraseña" type="password">
                             @Html.ValidationMessageFor(model => model.ConfirmPassword, "", new { @class = "text-danger" })
                         </div>
 
                         <div class="form-group">
                             <div class="text-container" style="position: relative; display: inline-block;">
-                                <input type="submit" value="Regístrate" class="btn btn-default registrar-boton menu-grad" />
+                                <input id="boton-Registro" value="Regístrate" class="btn btn-default registrar-boton menu-grad"/>
                                 <span class="glyphicon glyphicon-user" style="position: absolute; left: 22px; top: 12px; color:white;"></span>
                             </div>
                         </div>
@@ -66,6 +66,108 @@
     </div>
 </div>
 
-@section Scripts {
-    @Scripts.Render("~/bundles/jqueryval")
-}
+@Scripts.Render("~/bundles/jquery")
+
+<script>
+    $("#boton-Registro").click(function () {
+        var nombre = $("input#NombreRegistro").val();
+        var apellidos = $("input#ApellidosRegistro").val();
+        var email = $("input#EmailRegistro").val();
+        var password = $("#PasswordRegistro").val();
+        var passwordConfirm = $("#ConfirmarPassRegistro").val();
+        var celular = $("#CelularRegistro").val();
+        var valido = true;
+        if (password.length < 6) {
+            $(".field-validation-valid[data-valmsg-for='Password']").html($("#PasswordRegistro").data("val-length")).show();
+            valido = false;
+        }
+        else {
+            $(".field-validation-valid[data-valmsg-for='Password']").html('').hide();
+
+        }
+        if (password !== passwordConfirm) {
+            $(".field-validation-valid[data-valmsg-for='ConfirmPassword']").html($("#ConfirmarPassRegistro").data("val-equalto")).show();
+            valido = false;
+        }
+        else {
+            $(".field-validation-valid[data-valmsg-for='ConfirmPassword']").html('').hide();
+
+        }
+
+        if (celular == "") {
+            $(".field-validation-valid[data-valmsg-for='Celular']").html($("#CelularRegistro").data("val-required")).show();
+            valido = false;
+        }
+        else {
+            if(celular.length < 10 || celular.length > 14){
+                $(".field-validation-valid[data-valmsg-for='Celular']").html($("#CelularRegistro").data("val-length")).show();
+                return;
+            }
+            if(!$.isNumeric(celular) && celular.charAt(0) != '+'){
+                $(".field-validation-valid[data-valmsg-for='Celular']").html($("#CelularRegistro").data("val-length")).show();
+                return;
+            }
+            $(".field-validation-valid[data-valmsg-for='Celular']").html('').hide();
+
+        }
+
+        if (nombre == "") {
+            $(".field-validation-valid[data-valmsg-for='Nombre']").html($("#NombreRegistro").data("val-required")).show();
+            valido = false;
+        }
+        else {
+            $(".field-validation-valid[data-valmsg-for='Nombre']").html('').hide();
+
+        }
+
+        if (apellidos == "") {
+            $(".field-validation-valid[data-valmsg-for='Apellidos']").html($("#ApellidosRegistro").data("val-required")).show();
+            valido = false;
+        }
+        else {
+            $(".field-validation-valid[data-valmsg-for='Apellidos']").html('').hide();
+
+        }
+        if (email.length <= 0) {
+            $(".field-validation-valid[data-valmsg-for='Email']").html($("#EmailRegistro").data("val-required")).show();
+            valido = false;
+        }
+        else if (!validateEmail(email)) {
+            $(".field-validation-valid[data-valmsg-for='Email']").html($("#EmailRegistro").data("val-email")).show();
+            valido = false;
+        }
+        else {
+            $(".field-validation-valid[data-valmsg-for='Email']").hide();
+        }
+
+        if (!valido) {
+            return;
+        }
+
+        $.ajax({
+            type: 'POST',
+            data: { email: email, password: password, nombre: nombre, apellidos: apellidos, telefono: celular },
+            url: '/Portal/Registro',
+            success: function (response) {
+                if (response == "MailOcupado") {
+                    $("#alerta").html("El email ya esta registrado.").show();
+                    return;
+                }
+                else if (response == "TelefonoOcupado") {
+                    $("#alerta").html("El celular ya esta ocupado.").show();
+                    return;
+                }
+                location.reload();
+            },
+            error: function (err) {
+
+            }
+        });
+
+    });
+
+    function validateEmail(email) {
+        var re = /^(([^<>()[\]\\.,;:\s@('@')\"]+(\.[^<>()[\]\\.,;:\s@('@')\"]+)*)|(\".+\"))@('@')((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;;
+        return re.test(email);
+    }
+</script>

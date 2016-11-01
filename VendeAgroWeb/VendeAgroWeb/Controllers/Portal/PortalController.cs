@@ -21,68 +21,31 @@ namespace VendeAgroWeb.Controllers.Administrador
             return View();
         }
 
-        public ActionResult Registro()
+        [HttpPost]
+        public async Task<RegistroStatus> Registro(string email, string password, string telefono, string nombre, string apellidos)
         {
+            var model = new Models.Portal.RegistroViewModel
+            {
+                Email = email,
+                Password = password,
+                Celular = telefono,
+                Nombre = nombre,
+                Apellidos = apellidos
+            };
+
+            return await Startup.GetAplicacionUsuariosManager().RegistroUsuarioAsync(model);
+        }
+
+        public async Task<ActionResult> ConfrimarMail(string token)
+        {
+            var result = await Startup.GetAplicacionUsuariosManager().ConfirmarMailPortalAsync(token);
             return View();
         }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Registro(Models.Portal.RegistroViewModel model, string redirectUrl)
+        public async Task<LoginStatus> Login(string email, string password)
         {
-            if (!ModelState.IsValid)
-            {
-                return View(model);
-            }
-
-            var resultado = await Startup.GetAplicacionUsuariosManager().RegistroUsuarioAsync(model);
-            switch (resultado)
-            {
-                case RegistroStatus.Exitoso:
-                    return RedirectToAction("Index", "Home");
-                case RegistroStatus.MailOcupado:
-                    ModelState.AddModelError("", "El email ya esta registrado.");
-                    return View(model);
-                case RegistroStatus.TelefonoOcupado:
-                default:
-                    ModelState.AddModelError("", "El celular ya esta ocupado.");
-                    return View(model);
-            }
-
-        }
-
-        public async Task<ActionResult> Login()
-        {
-            if (await Startup.GetAplicacionUsuariosManager().VerificarAdminSesionAsync() == LoginStatus.Exitoso)
-            {
-                return RedirectToAction("Index", "Administrador");
-            }
-            return View();
-        }
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Login(Models.Administrador.LoginViewModel model, string redirectUrl)
-        {
-            if (!ModelState.IsValid)
-            {
-                return View(model);
-            }
-
-            var resultado = await Startup.GetAplicacionUsuariosManager().LoginAdministradorAsync(model.Email, AplicacionUsuariosManager.Hash(model.Password));
-            switch (resultado)
-            {
-                case LoginStatus.Exitoso:
-                    return RedirectToAction("Index", "Administrador");
-                case LoginStatus.ConfirmacionMail:
-                    ModelState.AddModelError("", "Confirmacion de email pendiente.");
-                    return View(model);
-                case LoginStatus.Incorrecto:
-                default:
-                    ModelState.AddModelError("", "Usuario o contraseña incorrecto.");
-                    return View(model);
-            }
-
+            return await Startup.GetAplicacionUsuariosManager().LoginPortalAsync(email, AplicacionUsuariosManager.Hash(password));
         }
 
         [HttpPost]

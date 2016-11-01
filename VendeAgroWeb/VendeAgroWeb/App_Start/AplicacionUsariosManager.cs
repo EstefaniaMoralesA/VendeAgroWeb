@@ -5,6 +5,7 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web;
+using System.Web.Mvc;
 using VendeAgroWeb.Models;
 
 namespace VendeAgroWeb
@@ -44,6 +45,14 @@ namespace VendeAgroWeb
 
             });
 
+        }
+
+        internal async Task<ConfirmacionMailStatus> ConfirmarMailPortalAsync(string token)
+        {
+            return await Task.Run(() =>
+            {
+                return ConfirmacionMailStatus.MailConfirmado;
+            });
         }
 
         public async Task<OlvidoContrasenaStatus> OlvidoContrasenaAdminAsync(string email)
@@ -245,6 +254,40 @@ namespace VendeAgroWeb
             }
         }
 
+        public async Task<LoginStatus> LoginPortalAsync(string email, string password)
+        {
+            HttpResponse response = HttpContext.Current.Response;
+            return await Task.Run(() =>
+            {
+                using (var _dbContext = new VendeAgroEntities())
+                {
+                    var usuario = _dbContext.Usuarios.Where(u => u.email == email).FirstOrDefault();
+                    if (usuario == null)
+                    {
+                        return LoginStatus.Incorrecto;
+                    }
+
+                    if (!usuario.confirmaEmail)
+                    {
+                        //TO DO: Reenviar token
+                        return LoginStatus.ConfirmacionMail;
+                    }
+
+                    if (usuario.password.CompareTo(password) != 0)
+                    {
+                        return LoginStatus.Incorrecto;
+                    }
+
+                    usuario.tokenSesion = getToken();
+                    setCookie("VendeAgroUser", usuario.tokenSesion, response);
+                    _dbContext.SaveChanges();
+                    return LoginStatus.Exitoso;
+                }
+
+            });
+
+        }
+
         public void LogoutPortal()
         {
             HttpRequest request = HttpContext.Current.Request;
@@ -441,5 +484,12 @@ namespace VendeAgroWeb
         UrlValido,
         Error,
         ContrasenaActualizada
+    }
+
+    public enum ConfirmacionMailStatus
+    {
+        TokenInvalido,
+        Error,
+        MailConfirmado
     }
 }
