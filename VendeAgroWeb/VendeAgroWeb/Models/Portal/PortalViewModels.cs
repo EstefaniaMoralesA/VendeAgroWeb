@@ -111,7 +111,11 @@ namespace VendeAgroWeb.Models.Portal
         [Compare("PasswordNueva", ErrorMessage = "La contraseña y su confirmacion no son iguales.")]
         public string ConfirmPassword { get; set; }
 
+        public PerfilViewModel() {
+        }
+
     }
+
 
     //[AttributeUsage(AttributeTargets.Field | AttributeTargets.Property, AllowMultiple = false, Inherited = true)]
     //public class CustomPhoneNumberAttribute : ValidationAttribute

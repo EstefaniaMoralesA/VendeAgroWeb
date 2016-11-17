@@ -8,6 +8,7 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using VendeAgroWeb.Models;
+using VendeAgroWeb.Models.Portal;
 
 namespace VendeAgroWeb.Controllers.Administrador
 {
@@ -66,7 +67,7 @@ namespace VendeAgroWeb.Controllers.Administrador
             return View();
         }
 
-        public ActionResult Perfil()
+        public async Task<ActionResult> Perfil(int? id)
         {
             return View();
         }
