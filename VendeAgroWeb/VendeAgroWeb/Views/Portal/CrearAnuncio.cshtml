@@ -1,0 +1,57 @@
+﻿
+@model VendeAgroWeb.Models.Portal.CrearAnuncioViewModel
+
+@{
+    ViewBag.Title = "Crear Anuncio";
+    Layout = "Shared/_PortalLayout.cshtml";
+}
+
+<div class="row mis-anuncios-global">
+    <div class="col-sm-12 boton-atras-container">
+        <div class="col-sm-3" style="display: inline-block">
+            <a class="btn btn-default menu-grad mis-anuncios-atras" href="/Portal/Index">
+                <p>atrás</p>
+                <span class="glyphicon glyphicon-chevron-left" />
+            </a>
+        </div>
+
+        <div class="col-sm-6 mis-anuncios-titulo-container" style="display: inline-block">
+            <h2 class="mis-anuncios-titulo">Nuevo Anuncio</h2>
+        </div>
+    </div>
+
+    <div class="col-sm-12">
+        <div class="col-lg-6 col-lg-offset-3">
+            <div class="login-form">
+                @using (Html.BeginForm())
+                {
+                    @Html.AntiForgeryToken()
+
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                    <div class="form-group">
+                        @Html.EditorFor(model => model.Titulo, new { htmlAttributes = new { @class = "form-control", placeholder = "Título del anuncio", id = "anuncio-titulo" } })
+                        @Html.ValidationMessageFor(model => model.Titulo, "", new { @class = "text-danger" })
+                        <label class="login-field-icon glyphicon glyphicon-pencil" for="anuncio-titulo"></label>
+                    </div>
+                    <div class="form-group">
+                        @Html.EditorFor(model => model.Precio, new { htmlAttributes = new { @class = "form-control", placeholder = "Precio del producto", id = "anuncio-precio" } })
+                        @Html.ValidationMessageFor(model => model.Precio, "", new { @class = "text-danger" })
+                        <label class="login-field-icon glyphicon glyphicon-usd" for="anuncio-precio"></label>
+                    </div>
+
+                    <div class="form-group">
+                        @Html.TextAreaFor(model => model.Descripcion, new { htmlAttributes = new { @class = "form-control", placeholder = "Descripción del producto", id = "categoria-nombre" } })
+                        @Html.ValidationMessageFor(model => model.Descripcion, "", new { @class = "text-danger" })
+                        <label class="login-field-icon glyphicon glyphicon-tag" for="categoria-nombre"></label>
+                    </div>
+
+                    <div class="form-group boton-guardar-container">
+                        <div class="col-sm-offset-3 col-sm-6" style="text-align: center;">
+                            <input type="submit" value="Guardar" class="btn btn-primary btn-lg btn-login" />
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>

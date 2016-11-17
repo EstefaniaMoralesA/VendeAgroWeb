@@ -321,6 +321,7 @@
     <Content Include="img\bannerLat.jpg" />
     <Content Include="img\caballo.jpg" />
     <Content Include="img\caballoespanol.jpg" />
+    <Content Include="img\camera-icon.gif" />
     <Content Include="img\delete.png" />
     <Content Include="img\fondoVACielo.jpg" />
     <Content Include="img\fondoVA.jpg" />
@@ -447,6 +448,8 @@
     <Content Include="Views\Shared\_OlvidasteContrasena.cshtml" />
     <Content Include="Views\Portal\Index.cshtml" />
     <Content Include="Views\Portal\Shared\_PortalLayout.cshtml" />
+    <Content Include="Views\Portal\MisPagos.cshtml" />
+    <Content Include="Views\Portal\CrearAnuncio.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -810,17 +810,9 @@ a {
     left: 0;
 }
 
-    .menu-administrador-container logo-container {
-        position: fixed;
-        z-index: 1500;
-        width: auto;
-        top: 15px;
-        left: 5%;
-    }
-
     .menu-administrador-container .logo-home {
         display: inline-block;
-        width: 60%;
+        width: 56%;
         min-width: 222px;
         position: relative;
         left: 50%;
@@ -998,6 +990,11 @@ a {
     position: relative;
     margin-top: 20px;
     box-shadow: 0px 0px 10px 0px gray;
+}
+
+.movil-anuncio-imagen-container {
+    height: 215px;
+    overflow: hidden;
 }
 
 .movil-anuncio-titulo {
@@ -1431,6 +1428,21 @@ a {
     border-radius: 5%;
     box-shadow: 0px 0px 10px 2px #6E6E6E;
     width: 300px;
+    min-height: 210px;
+    position: relative;
+}
+
+.botones-portal-container1 {
+    left: 100%;
+    position: absolute;
+    transform: translate(-100%, 0);
+    -webkit-transform: translate(-100%, 0);
+    -ms-transform: translate(-100%, 0);
+    -moz-transform: translate(-100%, 0);
+    -o-transform: translate(-100%, 0);
+}
+
+.botones-portal-container2 {
     left: 50%;
     position: absolute;
     transform: translate(-50%, 0);
@@ -1438,7 +1450,10 @@ a {
     -ms-transform: translate(-50%, 0);
     -moz-transform: translate(-50%, 0);
     -o-transform: translate(-50%, 0);
-    min-height: 210px;
+}
+
+.portal-container {
+    margin-top: 165px;
 }
 
 .botones-portal-contenido {
@@ -1453,6 +1468,11 @@ a {
     color: white;
 }
 
+.link-boton-portal {
+    display: block;
+    min-height: 210px;
+}
+
 .botones-inicio-portal {
     text-align: center !important;
 }
@@ -1464,6 +1484,260 @@ a {
     .botones-inicio-portal p {
         font-size: 20px;
     }
+
+.boton-atras-container {
+    margin-top: 30px;
+}
+
+.mis-anuncios-atras {
+    padding-right: 23px;
+    color: white !important;
+    font-size: 18px;
+    border: none;
+    padding-left: 35px;
+    padding-bottom: 0px;
+    box-shadow: -2px 2px 10px #585858;
+    height: 38px;
+    position: relative;
+}
+
+    .mis-anuncios-atras p {
+        font-family: generalFont;
+    }
+
+    .mis-anuncios-atras span {
+        position: absolute;
+        top: 10px;
+        left: 16px;
+    }
+
+.mis-anuncios-container {
+    margin-top: 20px;
+}
+
+.mis-anuncios-titulo {
+    margin-top: 0px;
+    font-family: generalFont;
+    font-weight: bold;
+    font-size: 35px;
+    color: #E42B22;
+}
+
+.mis-anuncios-paquete-container {
+    box-shadow:rgb(88, 88, 88) 0px 0px 10px 0px;
+    padding-top: 1px;
+}
+
+    .mis-anuncios-paquete-titulo {
+        display: inline-block !important;
+        margin-left: 14px;
+        font-family: generalFont;
+        text-transform: uppercase;
+        font-size: 32px;
+        font-weight: bolder;
+        color: #04612d;
+    }
+
+.mis-anuncios-anuncio {
+    position: relative;
+    margin-top: 20px;
+    box-shadow: 0px 0px 10px 0px gray;
+    margin-bottom: 20px;
+}
+
+.mis-anuncios-wrapper {
+    background-color: black;
+}
+
+    .wrapper-texto {
+        position: absolute;
+        top: 42%;
+        left: 50%;
+        color: white;
+        transform: translate(-50%, -50%);
+        font-size: 27px;
+        font-weight: bold;
+        text-align: center;
+        opacity: 0;
+        text-transform: capitalize;
+    }
+
+    .texto-nuevo-anuncio {
+        top: 50%;
+    }
+
+.mis-anuncios-imagen-container {
+    height: 215px;
+    overflow: hidden;
+}
+
+    .mis-anuncios-imagen-container:hover {
+        opacity: 0.2;
+    }
+
+    .mis-anuncios-imagen-container img {
+        height: 100%;
+    }
+
+.mis-anuncios-anuncio-titulo {
+    padding-top: 4px;
+    padding-bottom: 4px;
+    background-color: rgba(255, 255, 255, 0.8);
+    position: relative;
+    min-height: 25px;
+    margin: 0 !important;
+}
+
+    .mis-anuncios-anuncio-titulo p {       
+        margin-bottom: 0;
+        font-size: 14px;
+        font-family: BoldFont;
+        margin-left: 5px;
+    }
+
+    .mis-anuncios-anuncio-titulo .titulo {
+        text-transform: capitalize;
+    }
+    
+    .mis-anuncios-anuncio-titulo .estado {
+        text-transform: uppercase;
+    }
+
+    .anuncio-aprobado p {
+        color: #04612d;
+    }
+
+    .anuncio-pendiente p {
+        color: #F6AB21;
+    }
+
+    .anuncio-no-aprobado p {
+        color: #E42B22; 
+    }
+
+.mis-anuncios-anuncio-detalles {
+    padding-right: 30px;
+    color: white !important;
+    font-size: 18px;
+    border: none;
+    padding-left: 30px;
+    padding-bottom: 0px;
+    box-shadow: -2px 2px 10px #585858;
+    height: 38px;
+    position: absolute;
+    right: 15px;
+    top: 52px;
+}
+
+.anuncio-vacio-texto {
+    text-align: center;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: white;
+}
+
+    .anuncio-vacio-texto p {
+        text-transform: uppercase;
+        font-size: 33px;
+    }
+
+.mis-anuncios-global {
+    text-align: center;
+}
+
+.row-mis-anuncios {
+    margin-left: 0px; 
+    margin-right: 0px;
+}
+
+.mi-cuenta-titulo {
+    margin-top: 0px;
+    font-family: generalFont;
+    font-weight: bold;
+    font-size: 35px;
+    color: #04612d;
+}
+
+.lista-perfil {
+    font-size: 16px;
+}
+
+    .lista-perfil tbody {
+        border-bottom: solid;
+        border-top: solid;
+        border-color: #04612d;
+        border-width: 1.5px;
+    }
+
+    .lista-perfil tr {
+        padding-left: 8px;
+        padding-right: 8px;
+        cursor: pointer;
+    }
+
+        .lista-perfil tr:hover {
+            background-color: rgba(246,171,33, 0.3);
+        }
+
+        .lista-perfil tr td {
+            height: 45px;
+            vertical-align: middle !important;
+        }
+
+.titulo-datos-perfil {
+    text-align: left;
+    font-weight: bolder;
+}
+
+.dato-datos-perfil {
+    text-align: left;
+}
+
+.editar-datos-perfil {
+    text-align: right;
+}
+
+.llenar-campos-perfil {
+    background-color: rgba(246,171,33, 0.3) !important;
+    cursor: default !important;
+    font-size: 14px;
+}
+
+    .llenar-campos-perfil p {
+        display: inline-block !important;
+        min-width: 65px;
+        font-weight: bold;
+    }
+
+    .llenar-campos-perfil .forma {
+        display: inline-block !important;
+    }
+
+.row-no-margen {
+    margin-left: 0px;
+    margin-right: 0px;
+}
+
+.perfil-guardar {
+    padding-left: 30px !important;
+    padding-right: 30px !important;
+}
+
+.perfil-cancelar {
+    padding-left: 27px !important;
+    padding-right: 27px !important;
+}
+
+#cambiar-password-panel p{
+    font-size: 12px;
+    width: 150px !important;
+}
+
+#cambiar-password-panel .forma {
+    padding-left: 35px;
+}
 
 @media (max-width: 1200px){
     .base {
@@ -1483,17 +1757,6 @@ a {
 
     .anunciate-recados-texto h3{
         font-size:22px;
-    }
-}
-
-@media (max-width: 1060px){
-
-    .menu-tabs a{
-        font-size: 18px;
-    }
-
-    .menu-tabs li {
-        padding: 9px;
     }
 }
 
@@ -1538,13 +1801,28 @@ a {
     .login-cliente-container {
         margin-top: 140px;
     }
-}
 
-@media (max-width: 833px){
-    .login-menu-container ul li a{
+    .botones-portal-container {
+        width: 250px;
+    }
+
+    .mis-anuncios-anuncio-titulo .estado {
         font-size: 13px;
     }
 }
+
+
+@media (max-width: 1060px){
+
+    .menu-tabs a{
+        font-size: 18px;
+    }
+
+    .menu-tabs li {
+        padding: 9px;
+    }
+}
+
 
 @media (max-width: 960px){
 
@@ -1558,6 +1836,16 @@ a {
 
     .ofertas-anuncio-titulo .anuncio-titulo p {
         font-size: 12px !important;
+    }
+
+    .botones-portal-container {
+        width: 220px;
+    }
+}
+
+@media (max-width: 833px){
+    .login-menu-container ul li a{
+        font-size: 13px;
     }
 }
 
@@ -1643,6 +1931,22 @@ a {
 
     .login-cliente-container {
         margin-top: 170px;
+    }
+
+    .menu-administrador-container .logo-home {
+        left: 63%;
+    }
+
+    .portal-container {
+        margin-top: 265px;
+     }
+
+    .botones-portal-container {
+        width: 200px;
+    }
+
+    .botones-inicio-portal p {
+        font-size: 16px;
     }
 }
 
@@ -1956,10 +2260,145 @@ a {
     .contacto-email-field-icon {
         right: 7%;
     }
+
+    .portal-container {
+        margin-top: 0px;
+     }
+
+    .botones-portal-container1 {
+        left: 50%;
+        position: absolute;
+        transform: translate(-50%, 0);
+        -webkit-transform: translate(-50%, 0);
+        -ms-transform: translate(-50%, 0);
+        -moz-transform: translate(-50%, 0);
+        -o-transform: translate(-50%, 0);
+    }
+
+    .botones-portal-container3 {
+        left: 50%;
+        position: absolute;
+        transform: translate(-50%, 0);
+        -webkit-transform: translate(-50%, 0);
+        -ms-transform: translate(-50%, 0);
+        -moz-transform: translate(-50%, 0);
+        -o-transform: translate(-50%, 0);
+    }
+
+    .botones-portal-container {
+        min-height: 120px;
+    }
+
+    .link-boton-portal {
+        min-height: 120px;
+    }
+
+    .botones-inicio-portal {
+        min-height: 140px !important;
+    }
+
+    .botones-inicio-portal span {
+        font-size: 30px;
+    }
+
+    .portal-container {
+        margin-top: 40px;
+    }
+
+    .nombre-bienvenido-boton {
+        padding-left: 20px;
+        padding-right: 35px;
+    }
+
+    .dropdown button .caret {
+        right: 12px !important;
+    }
+
+    .dropdown button p {
+        margin-bottom: 0;
+    }
+
+    .menu-administrador-container .logo-home {
+        width: 60%;
+        top: 47%;
+    }
+
+    .mis-anuncios-atras {
+        margin-left: 13%;
+    }
 }
 
 @media (max-width:496px){
     .img-grande-container{
         display: none;
+    }
+
+    .boton-atras-container {
+        margin-top: 0px;
+    }
+
+    .mis-anuncios-global {
+        text-align: left;
+    }
+
+    .mis-anuncios-atras {
+        margin-bottom: 9px;
+        font-size: 14px;
+        padding-top: 7px;
+        margin-left: 15%;
+    }
+
+    .mis-anuncios-titulo-container {
+        padding-left: 0px;
+        padding-right: 0px;
+    }
+
+    .mis-anuncios-titulo {
+        font-size: 26px;
+    }
+
+    .mis-anuncios-container {
+        margin-top: 0px;
+        margin-left: 30px;
+        margin-right: 30px;
+    }
+
+    .mis-anuncios-anuncio-detalles {
+        top: 80px;
+    }
+
+    .row-mis-anuncios {
+        margin-left: 0px; 
+        margin-right: 0px;
+        margin-top: 31px;
+    }
+
+    .mis-anuncios-paquete-titulo {
+        font-size: 20px;
+        margin-top: 10px;
+    }
+
+    .mis-anuncios-anuncio-detalles {
+        height: 34px;
+        font-size: 14px;
+    }
+}
+
+@media (max-width:321px){
+    .portal-container {
+        margin-top: 0px !important;
+    }
+
+    .botones-portal-container {
+        width: 175px;
+        min-height: 100px;
+    }
+
+    .link-boton-portal {
+        min-height: 100px;
+    }
+
+    .botones-inicio-portal {
+        min-height: 118px !important;
     }
 }

@@ -1,1 +1,123 @@
-﻿
+﻿@{
+    ViewBag.Title = "Mis Anuncios";
+    Layout = "Shared/_PortalLayout.cshtml";
+}
+
+
+<div class="row mis-anuncios-global">
+    <div class="col-sm-12 boton-atras-container">
+       <div class="col-sm-3" style="display: inline-block">
+           <a class="btn btn-default menu-grad mis-anuncios-atras" href="/Portal/Index">
+               <p>atrás</p>
+               <span class="glyphicon glyphicon-chevron-left" />
+           </a>
+       </div>
+
+        <div class="col-sm-6 mis-anuncios-titulo-container" style="display: inline-block">
+            <h2 class="mis-anuncios-titulo">Mis Anuncios</h2>
+        </div>
+    </div>
+</div>
+
+<div class="row" style="margin-top: 30px;">
+    <div class="col-sm-12 mis-anuncios-container">
+        <div class="row">
+            <div class="col-sm-10 col-sm-offset-1">
+                <div class="mis-anuncios-paquete-container">
+                    <div class="row" style="margin-left: 0px; margin-right: 0px; position: relative;">
+                        <div class="degradado-verde"></div>
+                        <h2 class="mis-anuncios-paquete-titulo">Paquete: 3 meses</h2>
+                        <a class="btn btn-default botones-grad mis-anuncios-anuncio-detalles">
+                            <p>detalles</p>
+                        </a>
+                    </div>
+                    <div class="row row-mis-anuncios">
+                        <div class="col-sm-4 col-md-3">
+                            <div class="mis-anuncios-anuncio col-xs-12">
+                                <div class="row">
+                                    <div class="mis-anuncios-wrapper">
+                                        <p class="wrapper-texto">Ver detalles</p>
+                                        <div class="mis-anuncios-imagen-container">
+                                            <img class="foto-anuncio" src="~/img/yegua.jpg" />
+                                        </div>
+                                        <div class="movil-anuncio-titulo ofertas-anuncio-titulo">
+                                            <div class="row mis-anuncios-anuncio-titulo anuncio-aprobado">
+                                                <p class="titulo">Yegua española</p>
+                                                <p class="estado"><strong><span class="glyphicon glyphicon-check"></span></strong> Aprobado</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-4 col-md-3">
+                            <div class="mis-anuncios-anuncio col-xs-12">
+                                <div class="row">
+                                    <div class="mis-anuncios-wrapper">
+                                        <p class="wrapper-texto">Ver detalles</p>
+                                        <div class="mis-anuncios-imagen-container">
+                                            <a><img class="foto-anuncio" src="~/img/yegua.jpg" /></a>
+                                        </div>
+                                        <div class="movil-anuncio-titulo ofertas-anuncio-titulo">
+                                            <div class="row mis-anuncios-anuncio-titulo anuncio-pendiente">
+                                                <p class="titulo">Yegua 2</p>
+                                                <p class="estado"><strong><span class="glyphicon glyphicon-question-sign"></span></strong> Pendiente de aprobar</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-4 col-md-3">
+                            <div class="mis-anuncios-anuncio col-xs-12">
+                                <div class="row">
+                                    <div class="mis-anuncios-wrapper">
+                                        <p class="wrapper-texto">Ver detalles</p>
+                                        <div class="mis-anuncios-imagen-container">
+                                            <a><img class="foto-anuncio" src="~/img/caballo.jpg" /></a>
+                                        </div>
+                                        <div class="movil-anuncio-titulo ofertas-anuncio-titulo">
+                                            <div class="row mis-anuncios-anuncio-titulo anuncio-no-aprobado">
+                                                <p class="titulo">Caballo</p>
+                                                <p class="estado"><strong><span class="glyphicon glyphicon-remove-sign"></span></strong> No aprobado</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-4 col-md-3">
+                            <div class="mis-anuncios-anuncio col-xs-12">
+                                <div class="row">
+                                    <div class="mis-anuncios-wrapper">
+                                        <p class="wrapper-texto texto-nuevo-anuncio">Crear Nuevo</p>
+                                        <div class="mis-anuncios-imagen-container" style="background-color: #04612d;">
+                                            <a>
+                                                <div class="anuncio-vacio-texto">
+                                                    <p>Anuncio vacío</p>
+                                                </div>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>            
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@Scripts.Render("~/bundles/jquery")
+
+<script>
+    $(".mis-anuncios-imagen-container").hover(function () {
+        $(".wrapper-texto").css("opacity", "1");
+    }, function () {
+        $(".wrapper-texto").css("opacity", "0");
+    });
+</script>

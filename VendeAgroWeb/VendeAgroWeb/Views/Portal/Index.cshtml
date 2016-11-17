@@ -3,32 +3,38 @@
     Layout = "Shared/_PortalLayout.cshtml";
 }
 
-<div class="row">
-    <div class="col-sm-12">
-        <div class="col-sm-4 botones-inicio-portal">
-            <div class="botones-portal-container" style="background-color: #E42B22;">
-                <div class="botones-portal-contenido">
-                    <span class="glyphicon glyphicon-th-large"></span>
-                    <p>Mis anuncios</p>
-                </div>
+<div class="row portal-container">
+    <div class="col-sm-12" style="padding-right: 0px; padding-left: 0px;">
+        <div class="col-sm-4 botones-inicio-portal" style="min-height: 210px;">
+            <div class="botones-portal-container1 botones-portal-container" style="background-color: #E42B22;">
+                <a class="btn link-boton-portal" href="/Portal/MisAnuncios">
+                    <div class="botones-portal-contenido">
+                        <span class="glyphicon glyphicon-th-large"></span>
+                        <p>Mis anuncios</p>
+                    </div>
+                </a>
             </div>
         </div>
 
-        <div class="col-sm-4 botones-inicio-portal">
-            <div class="botones-portal-container" style="background-color: #F6AB21;">
-                <div class="botones-portal-contenido">
-                    <span class="glyphicon glyphicon-shopping-cart"></span>
-                    <p>Mis pagos</p>
-                </div>
+        <div class="col-sm-4 botones-inicio-portal" style="min-height: 210px;">
+            <div class="botones-portal-container2  botones-portal-container" style="background-color: #F6AB21;">
+                <a class="btn link-boton-portal" href="/Portal/MisPagos">
+                    <div class="botones-portal-contenido">
+                        <span class="glyphicon glyphicon-shopping-cart"></span>
+                        <p>Mis pagos</p>
+                    </div>
+                </a>
             </div>
         </div>
 
-        <div class="col-sm-4 botones-inicio-portal">
-            <div class="botones-portal-container" style="background-color: #04612d;">
-                <div class="botones-portal-contenido">
-                    <span class="glyphicon glyphicon-user"></span>
-                    <p>Perfil</p>
-                </div>
+        <div class="col-sm-4 botones-inicio-portal" style="padding-left: 0px !important; min-height: 210px;">
+            <div class="botones-portal-container3  botones-portal-container" style="background-color: #04612d;">
+                <a class="btn link-boton-portal" href="/Portal/Perfil">
+                    <div class="botones-portal-contenido">
+                        <span class="glyphicon glyphicon-user"></span>
+                        <p>Perfil</p>
+                    </div>
+                </a>
             </div>
         </div>
     </div>

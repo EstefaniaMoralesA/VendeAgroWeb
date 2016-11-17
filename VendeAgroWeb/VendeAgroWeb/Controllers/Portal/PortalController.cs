@@ -92,7 +92,26 @@ namespace VendeAgroWeb.Controllers.Administrador
             Startup.GetAplicacionUsuariosManager().LogoutPortal();
             return RedirectToAction("Index", "Home");
         }
-        
+
+        public ActionResult MisAnuncios()
+        {
+            return View();
+        }
+
+        public ActionResult MisPagos()
+        {
+            return View();
+        }
+
+        public ActionResult Perfil()
+        {
+            return View();
+        }
+
+        public ActionResult CrearAnuncio()
+        {
+            return View();
+        }
 
         // GET: Usuario_Administrador/Details/5
         public async Task<ActionResult> Details(int? id)

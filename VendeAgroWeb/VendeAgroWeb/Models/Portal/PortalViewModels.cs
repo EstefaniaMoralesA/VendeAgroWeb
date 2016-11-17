@@ -58,6 +58,61 @@ namespace VendeAgroWeb.Models.Portal
     {
     }
 
+    public class CrearAnuncioViewModel
+    {
+        [Required(ErrorMessage = "Campo requerido")]
+        [Display(Name = "Titulo")]
+        public string Titulo { get; set; }
+
+        [Required(ErrorMessage = "Campo requerido")]
+        [StringLength(250, MinimumLength = 3, ErrorMessage = "La descripción no puede ser mayor de 250 caracteres.")]
+        [Display(Name = "Descripcion")]
+        public string Descripcion { get; set; }
+
+        [Required(ErrorMessage = "Campo requerido")]
+        [Display(Name = "Precio")]
+        public double Precio { get; set; }
+    }
+
+    public class PerfilViewModel
+    {
+        private int _id;
+        private string _nombre;
+        private string _apellidos;
+        private string _telefono;
+        private string _email;
+
+        [Required(ErrorMessage = "Campo requerido")]
+        [Display(Name = "Nombre")]
+        public string Nombre { get; set; }
+
+        [Required(ErrorMessage = "Campo requerido")]
+        [Display(Name = "Apellidos")]
+        public string Apellidos { get; set; }
+
+        [Required]
+        [Display(Name = "Celular")]
+        [StringLength(14, ErrorMessage = "El teléfono celular no es válido.", MinimumLength = 10)]
+        public string Celular { get; set; }
+
+        [Required(ErrorMessage = "Campo requerido")]
+        [Display(Name = "Email")]
+        public string Email { get; set; }
+
+        [Required]
+        [StringLength(100, ErrorMessage = "La contraseña debe de ser mínimo de 6 caracteres.", MinimumLength = 6)]
+        [DataType(DataType.Password)]
+        [Display(Name = "Contraseña")]
+        public string PasswordNueva { get; set; }
+
+        [Required]
+        [DataType(DataType.Password)]
+        [Display(Name = "Confirmar Contraseña")]
+        [Compare("PasswordNueva", ErrorMessage = "La contraseña y su confirmacion no son iguales.")]
+        public string ConfirmPassword { get; set; }
+
+    }
+
     //[AttributeUsage(AttributeTargets.Field | AttributeTargets.Property, AllowMultiple = false, Inherited = true)]
     //public class CustomPhoneNumberAttribute : ValidationAttribute
     //{

@@ -1,1 +1,243 @@
-﻿
+﻿@model VendeAgroWeb.Models.Portal.PerfilViewModel
+
+@{
+    ViewBag.Title = "Mi Perfil";
+    Layout = "Shared/_PortalLayout.cshtml";
+}
+
+<div class="row" style="text-align: center;">
+    <div class="col-sm-12 boton-atras-container">
+        <div class="col-sm-3">
+            <a class="btn btn-default menu-grad mis-anuncios-atras" href="/Portal/Index">
+                <p>atrás</p>
+                <span class="glyphicon glyphicon-chevron-left" />
+            </a>
+        </div>
+        <div class="col-sm-6 mis-anuncios-titulo-container" style="display: inline-block">
+            <h2 class="mi-cuenta-titulo">Mi Cuenta</h2>
+        </div>
+    </div>
+</div>
+
+<div class="row" style="margin-top: 30px">
+    <div class="col-sm-12">
+        <div class="col-sm-8 col-sm-offset-2">
+            <table class="lista-perfil table table-responsive">
+                <tbody>
+                @{
+                    <tr id="cambiar-nombre">
+                        <td class="titulo-datos-perfil">Nombre</td>
+                        <td class="dato-datos-perfil">
+                            Estefania
+                        </td>
+                        <td class="editar-datos-perfil"><a>Editar</a></td>
+                    </tr>
+                    <tr class="llenar-campos-perfil" id="cambiar-nombre-panel" style="display:none;">
+                        <td class="titulo-datos-perfil">Nombre Completo</td>
+                        <td>
+                        @using (Html.BeginForm())
+                        {
+                            @Html.AntiForgeryToken()
+                            <div class="row row-no-margen">
+                                    <p>Nombre</p>
+                                    <div class="form-group forma">
+                                        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                                        @Html.EditorFor(model => model.Nombre, new { htmlAttributes = new { @class = "form-control", style = "width: 100%;" } })
+                                        @Html.ValidationMessageFor(model => model.Nombre, "", new { @class = "text-danger validation" })
+                                    </div>
+                            </div>
+                            <div class="row row-no-margen">
+                                <p>Apellidos</p>
+                                <div class="form-group forma">
+                                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                                    @Html.EditorFor(model => model.Apellidos, new { htmlAttributes = new { @class = "form-control", style = "width: 100%;" } })
+                                    @Html.ValidationMessageFor(model => model.Apellidos, "", new { @class = "text-danger validation" })
+                                </div>
+                            </div>
+                            <div class="row row-no-margen">
+                                <div class="form-group forma" style="padding-right: 15px;">
+                                    <a class="btn btn-success perfil-guardar">guardar</a>
+                                </div>
+                                <a class="btn btn-default perfil-cancelar" id="cancelar-cambiar-nombre">cancelar</a>
+                            </div>
+                        }
+                        </td>
+                        <td></td>
+                    </tr>
+                    <tr id="cambiar-celular">
+                        <td class="titulo-datos-perfil">Teléfono Móvil</td>
+                        <td class="dato-datos-perfil">
+                            2221143403
+                        </td>
+                        <td class="editar-datos-perfil"><a>Editar</a></td>
+                    </tr>
+                    <tr class="llenar-campos-perfil" id="cambiar-celular-panel" style="display:none;">
+                        <td class="titulo-datos-perfil">Teléfono Móvil</td>
+                        <td>
+                            @using (Html.BeginForm())
+                            {
+                                @Html.AntiForgeryToken()
+                                <div class="row row-no-margen">
+                                    <p>Número</p>
+                                    <div class="form-group forma">
+                                        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                                        @Html.EditorFor(model => model.Celular, new { htmlAttributes = new { @class = "form-control", style = "width: 100%;" } })
+                                        @Html.ValidationMessageFor(model => model.Celular, "", new { @class = "text-danger validation" })
+                                    </div>
+                                </div>
+                                <div class="row row-no-margen">
+                                    <div class="form-group forma" style="padding-right: 15px;">
+                                        <a class="btn btn-success perfil-guardar">guardar</a>
+                                    </div>
+                                    <a class="btn btn-default perfil-cancelar" id="cancelar-cambiar-celular">cancelar</a>
+                                </div>
+                            }
+                        </td>
+                        <td></td>
+                    </tr>
+                    <tr id="cambiar-email">
+                        <td class="titulo-datos-perfil">Correo electrónico</td>
+                        <td class="dato-datos-perfil">
+                            estefi_ma94@hotmail.com
+                        </td>
+                        <td class="editar-datos-perfil"><a>Editar</a></td>
+                    </tr>
+                    <tr class="llenar-campos-perfil" id="cambiar-email-panel" style="display:none;">
+                        <td class="titulo-datos-perfil">Correo electrónico</td>
+                        <td>
+                            @using (Html.BeginForm())
+                            {
+                                @Html.AntiForgeryToken()
+                                <div class="row row-no-margen">
+                                    <p>Email</p>
+                                    <div class="form-group forma">
+                                        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                                        @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control", style = "width: 100%;" } })
+                                        @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger validation" })
+                                    </div>
+                                </div>
+                                <div class="row row-no-margen">
+                                    <div class="form-group forma" style="padding-right: 15px;">
+                                        <a class="btn btn-success perfil-guardar">guardar</a>
+                                    </div>
+                                    <a class="btn btn-default perfil-cancelar" id="cancelar-cambiar-email">cancelar</a>
+                                </div>
+                            }
+                        </td>
+                        <td></td>
+                    </tr>
+                    <tr id="cambiar-password">
+                        <td class="titulo-datos-perfil">Contraseña</td>
+                        <td class="dato-datos-perfil">
+                            ****************
+                        </td>
+                        <td class="editar-datos-perfil"><a>Editar</a></td>
+                    </tr>
+                    <tr class="llenar-campos-perfil" id="cambiar-password-panel" style="display:none;">
+                        <td class="titulo-datos-perfil">Contraseña</td>
+                        <td>
+                            @using (Html.BeginForm())
+                            {
+                                @Html.AntiForgeryToken()
+                                <div class="row row-no-margen">
+                                    <p>Nueva Contraseña</p>
+                                    <div class="form-group forma">
+                                        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                                        @Html.EditorFor(model => model.PasswordNueva, new { htmlAttributes = new { @class = "form-control", style = "width: 100%;" } })
+                                        @Html.ValidationMessageFor(model => model.PasswordNueva, "", new { @class = "text-danger validation" })
+                                    </div>
+                                </div>
+                                <div class="row row-no-margen">
+                                    <p>Repite Nueva Contraseña</p>
+                                    <div class="form-group forma">
+                                        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                                        @Html.EditorFor(model => model.ConfirmPassword, new { htmlAttributes = new { @class = "form-control", style = "width: 100%;" } })
+                                        @Html.ValidationMessageFor(model => model.ConfirmPassword, "", new { @class = "text-danger validation" })
+                                    </div>
+                                </div>
+                                <div class="row row-no-margen">
+                                    <div class="form-group forma" style="padding-right: 15px;">
+                                        <a class="btn btn-success perfil-guardar">guardar</a>
+                                    </div>
+                                    <a class="btn btn-default perfil-cancelar" id="cancelar-cambiar-password">cancelar</a>
+                                </div>
+                            }
+                        </td>
+                        <td></td>
+                    </tr>
+                }
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+@Scripts.Render("~/bundles/jquery")
+
+<script>
+    $("#cambiar-nombre").click(function () {
+        $("#cambiar-nombre-panel").show();
+        $("#cambiar-nombre").hide();
+        $("#cambiar-celular").show();
+        $("#cambiar-email").show();
+        $("#cambiar-password").show();
+        $("#cambiar-celular-panel").hide();
+        $("#cambiar-email-panel").hide();
+        $("#cambiar-password-panel").hide();
+
+    });
+
+    $("#cancelar-cambiar-nombre").click(function () {
+        $("#cambiar-nombre-panel").hide();
+        $("#cambiar-nombre").show();
+    });
+
+    $("#cambiar-celular").click(function () {
+        $("#cambiar-celular-panel").show();
+        $("#cambiar-celular").hide();
+        $("#cambiar-nombre").show();
+        $("#cambiar-email").show();
+        $("#cambiar-password").show();
+        $("#cambiar-nombre-panel").hide();
+        $("#cambiar-email-panel").hide();
+        $("#cambiar-password-panel").hide();
+    });
+
+    $("#cancelar-cambiar-celular").click(function () {
+        $("#cambiar-celular-panel").hide();
+        $("#cambiar-celular").show();
+    });
+
+    $("#cambiar-email").click(function () {
+        $("#cambiar-email-panel").show();
+        $("#cambiar-email").hide();
+        $("#cambiar-nombre").show();
+        $("#cambiar-celular").show();
+        $("#cambiar-password").show();
+        $("#cambiar-nombre-panel").hide();
+        $("#cambiar-celular-panel").hide();
+        $("#cambiar-password-panel").hide();
+    });
+
+    $("#cancelar-cambiar-email").click(function () {
+        $("#cambiar-email-panel").hide();
+        $("#cambiar-email").show();
+    });
+
+    $("#cambiar-password").click(function () {
+        $("#cambiar-password-panel").show();
+        $("#cambiar-password").hide();
+        $("#cambiar-nombre").show();
+        $("#cambiar-email").show();
+        $("#cambiar-celular").show();
+        $("#cambiar-nombre-panel").hide();
+        $("#cambiar-email-panel").hide();
+        $("#cambiar-celular-panel").hide();
+    });
+
+    $("#cancelar-cambiar-password").click(function () {
+        $("#cambiar-password-panel").hide();
+        $("#cambiar-password").show();
+    });
+</script>
