@@ -1,5 +1,4 @@
-﻿@using Microsoft.AspNet.Identity
-@if (Startup.GetAplicacionUsuariosManager().VerificarPortalSesion() == LoginStatus.Exitoso)
+﻿@if (Startup.GetAplicacionUsuariosManager().VerificarPortalSesion() == LoginStatus.Exitoso)
 {
     using (Html.BeginForm("LogOut", "Portal", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
     {
@@ -16,7 +15,7 @@
 else
 {
     <ul class="nav navbar-nav navbar-right login-container">
-        <li>@Html.ActionLink("Regístrate", "Registro", "Portal", routeValues: null, htmlAttributes: new { id = "registerLink", data_toggle = "modal", data_target = "#registro" })</li>
-        <li>@Html.ActionLink("Log in", "Login", "Portal", routeValues: null, htmlAttributes: new { id = "loginLink", data_toggle = "modal", data_target = "#login" })</li>
+        <li><a data-target="#registro" data-toggle="modal" id="registerLink">Reg&iacute;strate</a></li>
+        <li><a data-target="#login" data-toggle="modal" id="loginLink">Log in</a></li>
     </ul>
 }

@@ -19,21 +19,21 @@
                     <div class="col-sm-9 registro-campos">
                         <div class="form-group">
                             <div class="login-campo">
-                                @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control campos-registro", placeholder = "Email" } })
+                                <input class="form-control campos-registro text-box single-line" data-val="true" data-val-email="The Email field is not a valid e-mail address." data-val-required="The Email field is required." id="EmailLogin" name="Email" placeholder="Email" type="email" value="">
                                 @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
                             </div>
                         </div>
 
                         <div class="form-group">
                             <div class="login-campo">
-                                @Html.EditorFor(model => model.Password, new { htmlAttributes = new { @class = "form-control campos-registro", placeholder = "Contraseña" } })
+                                <input class="form-control campos-registro text-box single-line password" data-val="true" data-val-length="La contraseña debe de ser mínimo de 6 caracteres." data-val-length-max="100" data-val-length-min="6" data-val-required="The Contraseña field is required." id="PasswordLogin" name="Password" placeholder="Contraseña" type="password">
                                 @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })
                             </div>
                         </div>
 
                         <div class="form-group">
                                 <div class="text-container" style="position: relative; display: inline-block;">
-                                    <input type="submit" value="Iniciar Sesión" class="btn btn-default registrar-boton menu-grad" />
+                                    <a id="boton-iniciarSesion" class="btn btn-default registrar-boton menu-grad">Iniciar Sesi&oacute;n</a>
                                     <span class="glyphicon glyphicon-user" style="position: absolute; left: 22px; top: 12px; color:white;"></span>
                                 </div>
                         </div>
@@ -47,7 +47,66 @@
     </div>
 </div>
 
-@section Scripts {
-    @Scripts.Render("~/bundles/jqueryval")
-}
+
+@Scripts.Render("~/bundles/jquery")
+
+
+<script>
+    $("#boton-iniciarSesion").click(function () {
+        var email = $("input#EmailLogin").val();
+        var password = $("#PasswordLogin").val();
+        var valido = true;
+        if (password.length < 6) {
+            $(".field-validation-valid[data-valmsg-for='Password']").html($("#PasswordLogin").data("val-length")).show();
+            valido = false;
+        }
+        else {
+            $(".field-validation-valid[data-valmsg-for='Password']").html('').hide();
+
+        }
+
+        if (email.length <= 0) {
+            $(".field-validation-valid[data-valmsg-for='Email']").html($("#EmailLogin").data("val-required")).show();
+            valido = false;
+        }
+        else if (!validateEmail(email)){
+            $(".field-validation-valid[data-valmsg-for='Email']").html($("#Email").data("val-email")).show();
+            valido = false;
+        }
+        else{
+            $(".field-validation-valid[data-valmsg-for='Email']").hide();
+            $(".field-validation-valid[data-valmsg-for='Email']").hide();
+        }
+
+        if(!valido){
+            return;
+        }
+
+        $.ajax({
+            type: 'POST',
+            data:{ email: email, password: password},
+            url: '/Portal/Login',
+            success: function(response){
+                if(response == "Incorrecto"){
+                    $("#alerta").html("Contraseña o email incorrecto.").show();
+                    return;
+                }
+                else if(response == "ConfirmacionMail"){
+                    $("#alerta").html("Confirmacion de email pendiente.").show();
+                    return;
+                }
+                location.reload();
+            },
+            error: function(err){
+
+            }
+        });
+
+    });
+
+    function validateEmail(email) {
+        var re = /^(([^<>()[\]\\.,;:\s@('@')\"]+(\.[^<>()[\]\\.,;:\s@('@')\"]+)*)|(\".+\"))@('@')((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;;
+        return re.test(email);
+    }
+</script>
 
