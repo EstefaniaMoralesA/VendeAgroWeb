@@ -1743,6 +1743,17 @@ a {
     padding-left: 35px;
 }
 
+.loader-anuncios{
+    padding-top: 40px;
+    position: relative;
+    left: 50%;
+    transform: translate(-50%,0%);
+    -webkit-transform: translate(-50%,0%);
+    -moz-transform: translate(-50%,0%);
+    -ms-transform: translate(-50%,0%);
+    -o-transform: translate(-50%,0%);
+}
+
 @media (max-width: 1200px){
     .base {
         height: 270px !important;

@@ -317,6 +317,7 @@
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
+    <Content Include="img\loader.gif" />
     <Content Include="img\banner.png" />
     <Content Include="img\bannerLat.jpg" />
     <Content Include="img\caballo.jpg" />
@@ -419,7 +420,7 @@
     <Content Include="Views\Shared\_MenuMovilPagina.cshtml" />
     <Content Include="Views\Shared\_MenuPaginaTabs.cshtml" />
     <Content Include="Views\Shared\_BannerCentral.cshtml" />
-    <Content Include="Views\Shared\_Anuncios.cshtml" />
+    <Content Include="Views\Shared\_AnunciosPartial.cshtml" />
     <Content Include="Views\Shared\_BannerLateral.cshtml" />
     <Content Include="Views\Shared\_Registro.cshtml" />
     <Content Include="Views\Administrador\OlvidoContrasena.cshtml" />

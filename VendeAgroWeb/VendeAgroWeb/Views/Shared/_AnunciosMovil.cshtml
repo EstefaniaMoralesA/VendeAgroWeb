@@ -1,11 +1,19 @@
-﻿<div class="anuncio-movil">
-    <div class="movil-anuncio-imagen-container">
-        <a><img class="foto-anuncio" src="~/img/yegua.jpg" /></a>
-    </div>
-    <div class="movil-anuncio-titulo">
-        <div class="row anuncio-titulo">
-            <p class="titulo">Yegua española</p>
-            <p class="precio">$150,000</p>
+﻿@model VendeAgroWeb.Models.Pagina.PortalAnunciosViewModel
+
+@{
+    foreach (var anuncio in Model.Anuncios)
+    {
+        <div class="anuncio-movil">
+            <div class="movil-anuncio-imagen-container">
+                <a><img class="foto-anuncio" src="@anuncio.FotoPrincipal" /></a>
+            </div>
+            <div class="movil-anuncio-titulo">
+                <div class="row anuncio-titulo">
+                    <p class="titulo">@anuncio.Titulo</p>
+                    <p class="precio">$@anuncio.Precio</p>
+                </div>
+            </div>
         </div>
-    </div>
-</div>
+    }
+}
+
