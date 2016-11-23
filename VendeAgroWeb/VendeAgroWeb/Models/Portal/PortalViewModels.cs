@@ -74,6 +74,180 @@ namespace VendeAgroWeb.Models.Portal
         public double Precio { get; set; }
     }
 
+    public class MisAnunciosViewModel
+    {
+        private ICollection<AnuncioViewModel> _anuncios;
+        private ICollection<PaqueteViewModel> _paquetes;
+
+
+        public ICollection<AnuncioViewModel> Anuncios
+        {
+            get
+            {
+                return _anuncios;
+            }
+        }
+
+        public ICollection<PaqueteViewModel> Paquetes
+        {
+            get
+            {
+                return _paquetes;
+            }
+        }
+
+        public MisAnunciosViewModel(ICollection<AnuncioViewModel> anuncios, ICollection<PaqueteViewModel> paquete) {
+            _anuncios = anuncios;
+            _paquetes = paquete;
+        }
+    }
+
+    public class AnuncioViewModel
+    {
+        private int _id;
+        private string _titulo;
+        private string _usuario;
+        private double _precio;
+        private string _categoria;
+        private string _subcategoria;
+        private string _estado;
+        private string _ciudad;
+        private int? _clicks;
+        private int _idPaquete;
+
+        public string Titulo
+        {
+            get
+            {
+                return _titulo;
+            }
+        }
+
+        public double Precio
+        {
+            get
+            {
+                return _precio;
+            }
+        }
+
+        public string Categoria
+        {
+            get
+            {
+                return _categoria;
+            }
+        }
+
+        public string Subcategoria
+        {
+            get
+            {
+                return _subcategoria;
+            }
+        }
+
+        public string Estado
+        {
+            get
+            {
+                return _estado;
+            }
+        }
+
+        public string Ciudad
+        {
+            get
+            {
+                return _ciudad;
+            }
+        }
+
+        public int? Clicks
+        {
+            get
+            {
+                return _clicks;
+            }
+        }
+
+        public string Usuario
+        {
+            get
+            {
+                return _usuario;
+            }
+        }
+
+        public int Id
+        {
+            get
+            {
+                return _id;
+            }
+        }
+
+        public int IdPaquete
+        {
+            get
+            {
+                return _idPaquete;
+            }
+        }
+
+        public AnuncioViewModel(int id, string titulo, string usuario, double precio, string categoria, string subcategoria, string estado, string ciudad, int? clicks, int idPaquete)
+        {
+            _id = id;
+            _titulo = titulo;
+            _usuario = usuario;
+            _precio = precio;
+            _categoria = categoria;
+            _subcategoria = subcategoria;
+            _estado = estado;
+            _ciudad = ciudad;
+            _clicks = clicks;
+            _idPaquete = idPaquete;
+        }
+    }
+
+    public class PaqueteViewModel
+    {
+        private int _id;
+        private string _nombre;
+        private int _meses;
+
+        public int Id
+        {
+            get
+            {
+                return _id;
+            }
+        }
+
+        public string Nombre
+        {
+            get
+            {
+                return _nombre;
+            }
+        }
+
+        public int Meses
+        {
+            get
+            {
+                return _meses;
+            }
+        }
+
+        public PaqueteViewModel(int id, string nombre, int meses)
+        {
+            _id = id;
+            _nombre = nombre;
+            _meses = meses;
+        }
+    }
+
     public class PerfilViewModel
     {
         private int _id;

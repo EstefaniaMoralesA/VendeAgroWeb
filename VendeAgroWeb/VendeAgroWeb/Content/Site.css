@@ -1571,8 +1571,12 @@ a {
     overflow: hidden;
 }
 
-    .mis-anuncios-imagen-container:hover {
-        opacity: 0.2;
+.mi-anuncio-link {
+    display: block !important;
+}
+
+    .mis-anuncios-imagen-container {
+        opacity: 1;
     }
 
     .mis-anuncios-imagen-container img {
