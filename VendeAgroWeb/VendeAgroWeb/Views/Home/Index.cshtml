@@ -99,10 +99,10 @@
                     </div>
                 </div>
                 <div class="col-sm-6 expander-6 anuncios-container">
-                    @Html.Partial("_Anuncios")
+                    <img class="loader-anuncios" src="~/img/loader.gif" />
                 </div>
                 <div class="col-xs-12 anuncios-movil-container">
-                    @Html.Partial("_AnunciosMovil")
+                    <img class="loader-anuncios" src="~/img/loader.gif" />
                 </div>
                 <div class="col-sm-3 esconder-banners">
                     @Html.Partial("_BannerLateral")
@@ -116,6 +116,35 @@
 @Scripts.Render("~/bundles/nouislider")
 
 <script>
+
+    $(document).ready(function () {
+        $.ajax({
+            type: "POST",
+            data: {},
+            url: '/Home/AnunciosDestacadosPartial',
+            success: function (result) {
+                $(".anuncios-container").html(result);
+            },
+            error: function (msg) {
+                console.log(msg);
+                alert("Error en anuncios desktop: " + msg);
+            }
+        });
+
+        $.ajax({
+            type: "POST",
+            data: {},
+            url: '/Home/AnunciosDestacadosMovilPartial',
+            success: function (result) {
+                $(".anuncios-movil-container").html(result);
+            },
+            error: function (msg) {
+                console.log(msg);
+                alert("Error en anuncios movil: " + msg);
+            }
+        });
+    });
+
     var slider = document.getElementById('slider');
 
     noUiSlider.create(slider, {

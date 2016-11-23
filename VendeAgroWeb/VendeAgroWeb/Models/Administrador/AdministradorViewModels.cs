@@ -437,7 +437,7 @@ namespace VendeAgroWeb.Models.Administrador
             _subcategoria = subcategoria;
             _estado = estado;
             _ciudad = ciudad;
-            _clicks = clicks;
+            _clicks = clicks ?? 0;
         }
     }
 
