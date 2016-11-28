@@ -442,7 +442,6 @@
     <Content Include="Views\Administrador\ModificarPaquete.cshtml" />
     <Content Include="videos\video1.mp4" />
     <Content Include="Views\Shared\_AnunciosMovil.cshtml" />
-    <Content Include="Views\Home\CarritoDeCompra.cshtml" />
     <Content Include="Views\Shared\_Login.cshtml" />
     <Content Include="Views\Portal\Perfil.cshtml" />
     <Content Include="Views\Portal\MisAnuncios.cshtml" />
@@ -451,9 +450,11 @@
     <Content Include="Views\Portal\Shared\_PortalLayout.cshtml" />
     <Content Include="Views\Portal\MisPagos.cshtml" />
     <Content Include="Views\Portal\CrearAnuncio.cshtml" />
+    <Content Include="Views\Home\CarritoDeCompra.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Views\Home\Shared\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />

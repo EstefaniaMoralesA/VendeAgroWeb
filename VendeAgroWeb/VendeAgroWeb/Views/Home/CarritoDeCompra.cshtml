@@ -4,37 +4,203 @@
     ViewBag.Title = "Carrito de Compra";
 }
 
-<div class="row" style="margin-top: 50px;">
-    <div class="col-sm-offset-1 col-sm-10">
-        <div class="table-responsive" style="border-bottom-style:dashed; border-width: 2px; border-color: #04612d;">
-            <table class="table table-borderless table-responsive" style="margin-bottom:0px !important;">
-                <thead class="botones-grad">
-                    <tr>
-                        <th class="tabla-carrito-titulo">Nombre</th>
-                        <th class="tabla-carrito-titulo">Precio</th>
-                        <th class="tabla-carrito-titulo"></th>
-                        <th class="tabla-carrito-titulo">Total</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td class="paquete-carrito">
-                            <h2>6 meses</h2>
-                            <ul>
-                                <li>titulo</li>
-                                <li>descripcion</li>
-                                <li>fotos</li>
-                            </ul>
-                        </td>
-                        <td class="precio-carrito">
-                            <p>$6000</p>
-                        </td>
-                        <td class="borrar-carrito">
-                            <a><img style="width:100%;" src="~/img/delete.png" /></a>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
+<div class="row" style="margin-top: 40px;">
+    <div class="col-sm-offset-2 col-sm-8">
+        <div class="pasos-pago">
+            <div class="col-sm-4 primer-paso-pago">
+                <div class="primer-paso-contenedor">
+                    <div class="pasos-texto">
+                        <span class="numero-pasos-pago">1</span>
+                        <p>Agrega beneficios</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-4 segundo-paso-pago">
+                <div class="segundo-paso-contenedor">
+                    <div class="pasos-texto">
+                        <span class="numero-pasos-pago">2</span>
+                        <p>Resumen del pedido</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-4 tercer-paso-pago">
+                <div class="tercer-paso-contenedor">
+                    <div class="pasos-texto">
+                        <span class="numero-pasos-pago">3</span>
+                        <p>Detalles de pago</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="paso1" style="display:none;">
+            <div class="row carrito-de-compra-titulo1">
+                <h2>1. Agrega beneficios a tu paquete</h2>
+            </div>
+            <div class="row beneficios-container">
+                <h2>Mejora tu anuncio</h2>
+                <hr />
+                <div class="row">
+                    <div class="col-sm-9 check-container">
+                        <div class="checkbox check-beneficio">
+                            <label>
+                                <input type="checkbox">Agrega 5 fotos más a cada anuncio dentro de tu paquete
+                            </label>
+                        </div>
+                    </div>
+                    <div class="col-sm-3 check-container">
+                        <p class="texto-beneficio">MXN31.99</p>
+                    </div>
+                </div>
+                <hr />
+                <div class="row">
+                    <div class="col-sm-9 check-container">
+                        <div class="checkbox check-beneficio">
+                            <label>
+                                <input type="checkbox">Agrega 10 fotos más a cada anuncio dentro de tu paquete
+                            </label>
+                        </div>
+                    </div>
+                    <div class="col-sm-3 check-container">
+                        <p class="texto-beneficio">MXN56.99</p>
+                    </div>
+                </div>
+                <hr />
+                <div class="row">
+                    <div class="col-sm-9 check-container">
+                        <div class="checkbox check-beneficio">
+                            <label>
+                                <input type="checkbox">Agrega un video a cada anuncio dentro de tu paquete
+                            </label>
+                        </div>
+                    </div>
+                    <div class="col-sm-3 check-container">
+                        <p class="texto-beneficio">MXN56.99</p>
+                    </div>
+                </div>
+                <hr />
+                <h2 style="margin-top: 40px;">Aumenta tus clientes</h2>
+                <hr />
+                <div class="row">
+                    <div class="col-sm-9 check-container">
+                        <div class="checkbox check-beneficio" style="margin-top: 0px;">
+                            <label>
+                                <input type="checkbox">Haz que tus anuncios aparezcan en la sección</br> "Ofertas del Día"
+                            </label>
+                        </div>
+                    </div>
+                    <div class="col-sm-3 check-container">
+                        <p class="texto-beneficio">MXN120.99</p>
+                    </div>
+                </div>
+                <hr />
+            </div>
+            <div style="margin-top: 30px;">
+                <a class="btn btn-default btn-atras pagar-boton atras-pago-boton" id="paso1-atras">Cancelar</a>
+                <a class="btn btn-default botones-grad pagar-boton continuar-pago-boton" id="paso1-continuar">Continuar</a>
+
+            </div>
+        </div>
+        <div id="paso2" style="display:none;">
+            <div class="row carrito-de-compra-titulo">
+                <h2>2. Resumen del Pedido</h2>
+            </div>
+            <div class="table-responsive tabla-carrito">
+                <table class="table table-borderless table-responsive">
+                    <thead class="botones-grad">
+                        <tr>
+                            <th class="tabla-carrito-titulo">Nombre</th>
+                            <th class="tabla-carrito-titulo"></th>
+                            <th class="tabla-carrito-titulo">Precio</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="tabla-carrito-container">
+                            <td class="paquete-carrito">
+                                <h2>6 meses</h2>
+                                <ul>
+                                    <li>titulo</li>
+                                    <li>descripcion</li>
+                                    <li>fotos</li>
+                                </ul>
+                            </td>
+                            <td class="borrar-carrito">
+                                <a><img style="width:100%;" src="~/img/delete.png" /></a>
+                            </td>
+                            <td class="precio-carrito td-precio-carrito">
+                                <p>$6000</p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td class="carrito-de-compra-titulo-total td-precio-carrito">
+                                <h2>$6000</h2>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div style="margin-top: 30px;">
+                <a class="btn btn-default btn-atras pagar-boton atras-pago-boton" id="paso2-atras">Paso Anterior</a>
+                <a class="btn btn-default botones-grad pagar-boton continuar-pago-boton" id="paso2-continuar">Continuar</a>
+            </div>
+        </div>
+        <div id="paso3" style="display:none;">
+            <div class="row carrito-de-compra-titulo">
+                <h2>3. Detalles de Pago</h2>
+            </div>
+            <div style="margin-top: 30px;">
+                <a class="btn btn-default btn-atras pagar-boton atras-pago-boton" id="paso3-atras">Paso Anterior</a>
+                <a class="btn btn-default botones-grad pagar-boton continuar-pago-boton" id="paso3-continuar">Finalizar Pago</a>
+            </div>
         </div>
     </div>
 </div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
+
+<script>
+    $(window).ready(function () {
+        $("#paso1").show();
+        $('.primer-paso-contenedor').css("background-color", "#0275d8");
+        $('.primer-paso-contenedor .pasos-texto').css("color", "white");
+    });
+
+    $("#paso1-continuar").click(function () {
+        $('.primer-paso-contenedor .pasos-texto').css("color", "#b5b5b5");
+        $('.primer-paso-contenedor').css("background-color", "#efefef");
+        $('.segundo-paso-contenedor').css("background-color", "#0275d8");
+        $('.segundo-paso-contenedor .pasos-texto').css("color", "white");
+        $("#paso1").hide();
+        $("#paso2").show();
+    });
+
+    $("#paso2-atras").click(function () {
+        $('.segundo-paso-contenedor .pasos-texto').css("color", "#b5b5b5");
+        $('.segundo-paso-contenedor').css("background-color", "#efefef");
+        $('.primer-paso-contenedor').css("background-color", "#0275d8");
+        $('.primer-paso-contenedor .pasos-texto').css("color", "white");
+        $("#paso2").hide();
+        $("#paso1").show();
+    });
+
+    $("#paso2-continuar").click(function () {
+        $('.segundo-paso-contenedor .pasos-texto').css("color", "#b5b5b5");
+        $('.segundo-paso-contenedor').css("background-color", "#efefef");
+        $('.tercer-paso-contenedor').css("background-color", "#0275d8");
+        $('.tercer-paso-contenedor .pasos-texto').css("color", "white");
+        $("#paso2").hide();
+        $("#paso3").show();
+    });
+
+    $("#paso3-atras").click(function () {
+        $('.tercer-paso-contenedor .pasos-texto').css("color", "#b5b5b5");
+        $('.tercer-paso-contenedor').css("background-color", "#efefef");
+        $('.segundo-paso-contenedor').css("background-color", "#0275d8");
+        $('.segundo-paso-contenedor .pasos-texto').css("color", "white");
+        $("#paso3").hide();
+        $("#paso2").show();
+    });
+</script>
