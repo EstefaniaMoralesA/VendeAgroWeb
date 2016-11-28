@@ -50,6 +50,18 @@ namespace VendeAgroWeb.Controllers.Home
             return PartialView("_AnunciosMovil", model);
         }
 
+        public async Task<string> GenerarCargo(string token)
+        {
+            if(token == null)
+            {
+                return "token invalido";
+            }
+
+            return await Task.Run(() => {
+                    return "exitoso";
+            });
+        }
+
         public async Task<ICollection<PortalAnuncioViewModel>> ObtenerAnunciosDestacados()
         {
             return await Task.Run(() =>

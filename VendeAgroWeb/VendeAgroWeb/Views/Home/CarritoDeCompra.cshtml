@@ -4,6 +4,12 @@
     ViewBag.Title = "Carrito de Compra";
 }
 
+<div class="procesando-pago col-sm-11">
+    <div class="proceso-pago-contenido">
+        <h3>Estamos procesando tu pago, favor de no recargar la p&aacute;gina.</h3>
+        <img class="loader-anuncios" src="~/img/loader.gif" />
+    </div>
+</div>
 <div class="row" style="margin-top: 40px;">
     <div class="col-sm-offset-2 col-sm-8">
         <div class="pasos-pago">
@@ -149,6 +155,37 @@
             <div class="row carrito-de-compra-titulo">
                 <h2>3. Detalles de Pago</h2>
             </div>
+            <div class="row tarjeta">
+                <div class="alert alert-danger error-tarjeta">
+
+                </div>
+                <form class="form-horizontal">
+                    <div class="form-group">
+                        <div class="col-sm-12">
+                            <input class="form-control" id="nombre-tarjeta" placeholder="Nombre en la tarjeta" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-sm-6">
+                            <input class="form-control" id="numero" placeholder="N&uacute;mero de la tarjeta" />
+                        </div>
+                        <div class="col-sm-6">
+                            <input class="form-control" id="codigo" placeholder="C&oacute;digo de seguridad" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-sm-6">
+                            <h4>Fecha de vencimiento</h4>
+                        </div>
+                        <div class="col-sm-2">
+                            <input class="form-control" id="mes" placeholder="Mes" />
+                        </div>
+                        <div class="col-sm-2">
+                            <input class="form-control" id="anio" placeholder="A&ntilde;o" />
+                        </div>
+                    </div>
+                </form>
+            </div>
             <div style="margin-top: 30px;">
                 <a class="btn btn-default btn-atras pagar-boton atras-pago-boton" id="paso3-atras">Paso Anterior</a>
                 <a class="btn btn-default botones-grad pagar-boton continuar-pago-boton" id="paso3-continuar">Finalizar Pago</a>
@@ -156,11 +193,54 @@
         </div>
     </div>
 </div>
+<style>
+    .tarjeta h4 {
+        font-family: generalFont;
+        font-weight: bolder;
+        color: #abc114;
+    }
+
+    .tarjeta .form-control {
+        font-family: generalFont;
+        font-weight: bolder;
+        font-size: 20px;
+        color: #abc114;
+    }
+
+    .error-tarjeta {
+        display: none;
+    }
+
+    .has-error {
+        border-color: #b94a48 !important;
+        color: #b94a48 !important;
+    }
+
+    .procesando-pago {
+        height: 100vh;
+        position: absolute;
+        background-color: rgba(255,255,255,0.9);
+        z-index: 1000;
+        display: none;
+    }
+
+    .procesando-pago h3 {
+        width: 100%;
+        text-align: center;
+        font-family: generalFont;
+        font-weight: bolder;
+        color: #abc114;
+    }
+
+    .procesando-pago .proceso-pago-contenido{
+        padding-top: 20px;
+    }
+</style>
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
 }
-
+<script type="text/javascript" src="https://conektaapi.s3.amazonaws.com/v0.3.2/js/conekta.js"></script>
 <script>
     $(window).ready(function () {
         $("#paso1").show();
@@ -202,5 +282,87 @@
         $('.segundo-paso-contenedor .pasos-texto').css("color", "white");
         $("#paso3").hide();
         $("#paso2").show();
+    });
+
+    $("#paso3-continuar").click(function () {
+        var nombre = $("#nombre-tarjeta").val();
+        var numero = $("#numero").val();
+        var codigo = $("#codigo").val();
+        var mes = $("#mes").val();
+        var anio = $("#anio").val();
+        var valido = true;
+        var cadenaError = "<strong>Error:</strong> </br>";
+        if (nombre.length < 5) {
+            valido = false;
+            cadenaError += "    - Introduzca un nombre v&aacute;lido. </br>";
+            $("#nombre-tarjeta").addClass("has-error");
+        }
+        else {
+            $("#nombre-tarjeta").removeClass("has-error");
+        }
+
+        if (!(Conekta.card.validateNumber(numero))) {
+            valido = false;
+            cadenaError += "    - Introduce un n&uacute;mero de tarjeta v&aacute;lido. </br>";
+            $("#numero").addClass("has-error");
+        }
+        else {
+            $("#numero").removeClass("has-error");
+        }
+
+        if (!(Conekta.card.validateCVC(codigo))) {
+            valido = false;
+            cadenaError += "    - Introduce un c&oacute;digo de seguridad v&aacute;lido. </br>";
+            $("#codigo").addClass("has-error");
+        }
+        else {
+            $("#codigo").removeClass("has-error");
+        }
+
+        if (!(Conekta.card.validateExpirationDate(mes, anio))) {
+            valido = false;
+            cadenaError += "    - Introduce una fecha de vencimiento v&aacute;lida. </br>";
+            $("#mes").addClass("has-error");
+            $("#anio").addClass("has-error");
+        }
+        else {
+            $("#mes").removeClass("has-error");
+            $("#anio").removeClass("has-error");
+        }
+
+        if (!valido) {
+            $(".error-tarjeta").html(cadenaError).show('');
+            return;
+        }
+
+        $(".error-tarjeta").hide('');
+        $(".procesando-pago").show('');
+
+        Conekta.setPublishableKey('key_G4trRCLgCH4zYs5bEDDyWAQ');
+
+        var errorResponseHandler, successResponseHandler, tokenParams;
+        tokenParams = {
+            "card": {
+                "number": numero,
+                "name": nombre,
+                "exp_year": anio,
+                "exp_month": mes,
+                "cvc": codigo
+            }
+        };
+
+        successResponseHandler = function (token) {
+            $(".procesando-pago").hide('');
+            return alert("Exitoso");
+        };
+
+        errorResponseHandler = function (error) {
+            $(".procesando-pago").hide('');
+            return alert(error.message);
+        };
+
+        window.setTimeout(function () {
+            Conekta.token.create(tokenParams, successResponseHandler, errorResponseHandler);
+        }, 1500);
     });
 </script>
