@@ -18,7 +18,7 @@ namespace VendeAgroWeb
             HttpResponse response = HttpContext.Current.Response;
             return await Task.Run(() =>
             {
-                using (var _dbContext = new VendeAgroEntities())
+                using (var _dbContext = new MercampoEntities())
                 {
                     var usuario = _dbContext.Usuario_Administrador.Where(u => u.email == email).FirstOrDefault();
                     if (usuario == null)
@@ -59,7 +59,7 @@ namespace VendeAgroWeb
         {
             return await Task.Run(() =>
             {
-                using (var _dbContext = new VendeAgroEntities())
+                using (var _dbContext = new MercampoEntities())
                 {
                     Startup.OpenDatabaseConnection(_dbContext);
 
@@ -97,7 +97,7 @@ namespace VendeAgroWeb
                     return CambiarContrasenaStatus.TokenInvalido;
                 }
 
-                using (var _dbContext = new VendeAgroEntities())
+                using (var _dbContext = new MercampoEntities())
                 {
                     Startup.OpenDatabaseConnection(_dbContext);
                     if (_dbContext.Database.Connection.State != System.Data.ConnectionState.Open)
@@ -128,7 +128,7 @@ namespace VendeAgroWeb
                     return CambiarContrasenaStatus.TokenInvalido;
                 }
 
-                using (var _dbContext = new VendeAgroEntities())
+                using (var _dbContext = new MercampoEntities())
                 {
                     Startup.OpenDatabaseConnection(_dbContext);
                     if (_dbContext.Database.Connection.State != System.Data.ConnectionState.Open)
@@ -158,7 +158,7 @@ namespace VendeAgroWeb
             HttpResponse response = HttpContext.Current.Response;
             return await Task.Run(() =>
             {
-                using (var _dbContext = new VendeAgroEntities())
+                using (var _dbContext = new MercampoEntities())
                 {
                     var usuario = _dbContext.Usuarios.Where(u => u.email == model.Email).FirstOrDefault();
                     if (usuario != null)
@@ -229,7 +229,7 @@ namespace VendeAgroWeb
                 if (token != null)
                 {
                     borrarCookie(HttpContext.Current.Response, "AdminVendeAgro");
-                    using (var _dbContext = new VendeAgroEntities())
+                    using (var _dbContext = new MercampoEntities())
                     {
                         Startup.OpenDatabaseConnection(_dbContext);
                         if (_dbContext.Database.Connection.State != System.Data.ConnectionState.Open)
@@ -259,7 +259,7 @@ namespace VendeAgroWeb
             HttpResponse response = HttpContext.Current.Response;
             return await Task.Run(() =>
             {
-                using (var _dbContext = new VendeAgroEntities())
+                using (var _dbContext = new MercampoEntities())
                 {
                     var usuario = _dbContext.Usuarios.Where(u => u.email == email).FirstOrDefault();
                     if (usuario == null)
@@ -297,7 +297,7 @@ namespace VendeAgroWeb
                 if (token != null)
                 {
                     borrarCookie(HttpContext.Current.Response, "VendeAgroUser");
-                    using (var _dbContext = new VendeAgroEntities())
+                    using (var _dbContext = new MercampoEntities())
                     {
                         Startup.OpenDatabaseConnection(_dbContext);
                         if (_dbContext.Database.Connection.State != System.Data.ConnectionState.Open)
@@ -374,7 +374,7 @@ namespace VendeAgroWeb
                 var token = Cookies["AdminVendeAgro"]["token"];
                 if (token != null)
                 {
-                    using (var _dbContext = new VendeAgroEntities())
+                    using (var _dbContext = new MercampoEntities())
                     {
                         Startup.OpenDatabaseConnection(_dbContext);
                         if (_dbContext.Database.Connection.State != System.Data.ConnectionState.Open)
@@ -422,7 +422,7 @@ namespace VendeAgroWeb
                 var token = Cookies["VendeAgroUser"]["token"];
                 if (token != null)
                 {
-                    using (var _dbContext = new VendeAgroEntities())
+                    using (var _dbContext = new MercampoEntities())
                     {
                         Startup.OpenDatabaseConnection(_dbContext);
                         if (_dbContext.Database.Connection.State != System.Data.ConnectionState.Open)

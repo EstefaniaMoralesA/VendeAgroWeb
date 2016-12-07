@@ -11,8 +11,9 @@ using VendeAgroWeb.Models.Pagina;
 
 namespace VendeAgroWeb.Controllers.Home
 {
+
     public class HomeController : Controller
-    {
+    {           
         public ActionResult Index()
         {
             return View();
@@ -23,8 +24,9 @@ namespace VendeAgroWeb.Controllers.Home
             return View();
         }
 
-        public ActionResult Anunciate()
+        public async Task<ActionResult> Anunciate()
         {
+            AnunciateViewModel model = new AnunciateViewModel(await ObtenerPaquetes());
             return View();
         }
 
@@ -66,7 +68,7 @@ namespace VendeAgroWeb.Controllers.Home
         {
             return await Task.Run(() =>
             {
-                using (var _dbContext = new VendeAgroEntities())
+                using (var _dbContext = new MercampoEntities())
                 {
                     Startup.OpenDatabaseConnection(_dbContext);
                     if (_dbContext.Database.Connection.State != ConnectionState.Open)
@@ -83,7 +85,60 @@ namespace VendeAgroWeb.Controllers.Home
             });
         }
 
-        private List<PortalAnuncioViewModel> CreaAnuncios(IQueryable<Anuncio> anuncios, VendeAgroEntities _dbContext)
+        public async Task<ICollection<PaginaCategoriaViewModel>> ObtenerCategorias()
+        {
+            return await Task.Run(() =>
+            {
+                using (var _dbContext = new MercampoEntities())
+                {
+                    Startup.OpenDatabaseConnection(_dbContext);
+                    if (_dbContext.Database.Connection.State != ConnectionState.Open)
+                    {
+                        return null;
+                    }
+
+                    var categorias = _dbContext.Categorias.Where(c => c.activo == true);
+                    List<PaginaCategoriaViewModel> listaCategorias = new List<PaginaCategoriaViewModel>();
+
+                    foreach (var categoria in categorias) {
+                        listaCategorias.Add(new PaginaCategoriaViewModel(categoria.id, categoria.nombre));
+                    }
+
+                    _dbContext.Database.Connection.Close();
+                    return listaCategorias;
+                }
+            });
+        }
+
+        public Dictionary<Paquete, int> calculaAhorro(IQueryable<Paquete> paquetes) {
+            var PaqueteBase = paquetes.Where(p => p.paqueteBase == true).FirstOrDefault();
+            var precioBase = PaqueteBase.precio;
+            return null;
+        }
+
+        public async Task<ICollection<PaginaPaqueteViewModel>> ObtenerPaquetes()
+        {
+            return await Task.Run(() =>
+            {
+                using (var _dbContext = new MercampoEntities())
+                {
+                    Startup.OpenDatabaseConnection(_dbContext);
+                    if (_dbContext.Database.Connection.State != ConnectionState.Open)
+                    {
+                        return null;
+                    }
+
+                    List<PaginaPaqueteViewModel> lista = new List<PaginaPaqueteViewModel>();
+                    var paquetes = _dbContext.Paquetes.Where(p => p.activo == true);
+
+                    Dictionary<Paquete, int> paquetesConAhorro = calculaAhorro(paquetes);
+                    _dbContext.Database.Connection.Close();
+                    return lista;
+                }
+            });
+        }
+
+        private List<PortalAnuncioViewModel> CreaAnuncios(IQueryable<Anuncio> anuncios, MercampoEntities _dbContext)
         {
             List<PortalAnuncioViewModel> lista = new List<PortalAnuncioViewModel>();
             foreach (var item in anuncios)

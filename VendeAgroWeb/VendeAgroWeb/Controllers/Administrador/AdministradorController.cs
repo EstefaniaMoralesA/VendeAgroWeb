@@ -14,7 +14,7 @@ namespace VendeAgroWeb.Controllers.Administrador
 {
     public class AdministradorController : Controller
     {
-        private VendeAgroEntities db = new VendeAgroEntities();
+        private MercampoEntities db = new MercampoEntities();
 
         public async Task<ActionResult> Index()
         {
@@ -41,7 +41,7 @@ namespace VendeAgroWeb.Controllers.Administrador
         {
             return await Task.Run(() =>
             {
-                using (var _dbContext = new VendeAgroEntities())
+                using (var _dbContext = new MercampoEntities())
                 {
                     Startup.OpenDatabaseConnection(_dbContext);
                     if (_dbContext.Database.Connection.State != ConnectionState.Open)
@@ -67,7 +67,7 @@ namespace VendeAgroWeb.Controllers.Administrador
         {
             return await Task.Run(() =>
             {
-                using (var _dbContext = new VendeAgroEntities())
+                using (var _dbContext = new MercampoEntities())
                 {
                     Startup.OpenDatabaseConnection(_dbContext);
                     if (_dbContext.Database.Connection.State != ConnectionState.Open)
@@ -107,7 +107,7 @@ namespace VendeAgroWeb.Controllers.Administrador
         {
             return await Task.Run(() =>
             {
-                using (var _dbContext = new VendeAgroEntities())
+                using (var _dbContext = new MercampoEntities())
                 {
                     Startup.OpenDatabaseConnection(_dbContext);
                     if (_dbContext.Database.Connection.State != ConnectionState.Open)
@@ -141,7 +141,7 @@ namespace VendeAgroWeb.Controllers.Administrador
 
             await Task.Run(() =>
             {
-                using (var _dbContext = new VendeAgroEntities())
+                using (var _dbContext = new MercampoEntities())
                 {
                     Startup.OpenDatabaseConnection(_dbContext);
                     if (_dbContext.Database.Connection.State != ConnectionState.Open)
@@ -185,7 +185,7 @@ namespace VendeAgroWeb.Controllers.Administrador
 
             return await Task.Run(() =>
             {
-                using (var _dbContext = new VendeAgroEntities())
+                using (var _dbContext = new MercampoEntities())
                 {
                     Startup.OpenDatabaseConnection(_dbContext);
                     if (_dbContext.Database.Connection.State != ConnectionState.Open)
@@ -229,7 +229,7 @@ namespace VendeAgroWeb.Controllers.Administrador
 
             return await Task.Run(() =>
             {
-                using (var _dbContext = new VendeAgroEntities())
+                using (var _dbContext = new MercampoEntities())
                 {
                     Startup.OpenDatabaseConnection(_dbContext);
                     if (_dbContext.Database.Connection.State != ConnectionState.Open)
@@ -273,7 +273,7 @@ namespace VendeAgroWeb.Controllers.Administrador
 
             return await Task.Run(() =>
             {
-                using (var _dbContext = new VendeAgroEntities())
+                using (var _dbContext = new MercampoEntities())
                 {
                     Startup.OpenDatabaseConnection(_dbContext);
                     if (_dbContext.Database.Connection.State != ConnectionState.Open)
@@ -367,7 +367,7 @@ namespace VendeAgroWeb.Controllers.Administrador
         {
             return await Task.Run(() =>
             {
-                using (var _dbContext = new VendeAgroEntities())
+                using (var _dbContext = new MercampoEntities())
                 {
                     Startup.OpenDatabaseConnection(_dbContext);
                     if (_dbContext.Database.Connection.State != ConnectionState.Open)
@@ -438,7 +438,7 @@ namespace VendeAgroWeb.Controllers.Administrador
 
             await Task.Run(() =>
             {
-                using (var _dbContext = new VendeAgroEntities())
+                using (var _dbContext = new MercampoEntities())
                 {
                     Startup.OpenDatabaseConnection(_dbContext);
                     if (_dbContext.Database.Connection.State != ConnectionState.Open)
@@ -486,7 +486,7 @@ namespace VendeAgroWeb.Controllers.Administrador
         {
             return await Task.Run(() =>
             {
-                using (var _dbContext = new VendeAgroEntities())
+                using (var _dbContext = new MercampoEntities())
                 {
                     Startup.OpenDatabaseConnection(_dbContext);
                     if (_dbContext.Database.Connection.State != ConnectionState.Open)
@@ -522,7 +522,7 @@ namespace VendeAgroWeb.Controllers.Administrador
         {
             return await Task.Run(() =>
             {
-                using (var _dbContext = new VendeAgroEntities())
+                using (var _dbContext = new MercampoEntities())
                 {
                     Startup.OpenDatabaseConnection(_dbContext);
                     if (_dbContext.Database.Connection.State != ConnectionState.Open)
@@ -559,7 +559,7 @@ namespace VendeAgroWeb.Controllers.Administrador
 
             await Task.Run(() =>
             {
-                using (var _dbContext = new VendeAgroEntities())
+                using (var _dbContext = new MercampoEntities())
                 {
                     Startup.OpenDatabaseConnection(_dbContext);
                     if (_dbContext.Database.Connection.State != ConnectionState.Open)
@@ -613,7 +613,7 @@ namespace VendeAgroWeb.Controllers.Administrador
 
             return await Task.Run(() =>
             {
-                using (var _dbContext = new VendeAgroEntities())
+                using (var _dbContext = new MercampoEntities())
                 {
                     Startup.OpenDatabaseConnection(_dbContext);
                     if (_dbContext.Database.Connection.State != ConnectionState.Open)
@@ -634,7 +634,7 @@ namespace VendeAgroWeb.Controllers.Administrador
 
             return await Task.Run(() =>
             {
-                using (var _dbContext = new VendeAgroEntities())
+                using (var _dbContext = new MercampoEntities())
                 {
                     Startup.OpenDatabaseConnection(_dbContext);
                     if (_dbContext.Database.Connection.State != ConnectionState.Open)
@@ -660,7 +660,7 @@ namespace VendeAgroWeb.Controllers.Administrador
 
             return await Task.Run(() =>
             {
-                using(var _dbContext = new VendeAgroEntities())
+                using(var _dbContext = new MercampoEntities())
                 {
                     Startup.OpenDatabaseConnection(_dbContext);
                     if(_dbContext.Database.Connection.State != ConnectionState.Open)
@@ -699,7 +699,7 @@ namespace VendeAgroWeb.Controllers.Administrador
 
             return await Task.Run(() =>
             {
-                using (var _dbContext = new VendeAgroEntities())
+                using (var _dbContext = new MercampoEntities())
                 {
                     Startup.OpenDatabaseConnection(_dbContext);
                     if (_dbContext.Database.Connection.State != ConnectionState.Open)
@@ -733,7 +733,7 @@ namespace VendeAgroWeb.Controllers.Administrador
 
             return await Task.Run(() =>
             {
-                using (var _dbContext = new VendeAgroEntities())
+                using (var _dbContext = new MercampoEntities())
                 {
                     Startup.OpenDatabaseConnection(_dbContext);
                     if (_dbContext.Database.Connection.State != ConnectionState.Open)
@@ -773,7 +773,7 @@ namespace VendeAgroWeb.Controllers.Administrador
             return PartialView("AnunciosPartial", model);
         }
 
-        private IQueryable<Anuncio> FiltraAnuncios(int? id, string tipo, IQueryable<Anuncio> anuncios, VendeAgroEntities _dbContext)
+        private IQueryable<Anuncio> FiltraAnuncios(int? id, string tipo, IQueryable<Anuncio> anuncios, MercampoEntities _dbContext)
         {
 
             switch (tipo)
@@ -801,7 +801,7 @@ namespace VendeAgroWeb.Controllers.Administrador
         {
             return await Task.Run(() =>
             {
-                using (var _dbContext = new VendeAgroEntities())
+                using (var _dbContext = new MercampoEntities())
                 {
                     Startup.OpenDatabaseConnection(_dbContext);
                     if (_dbContext.Database.Connection.State != ConnectionState.Open)
@@ -829,7 +829,7 @@ namespace VendeAgroWeb.Controllers.Administrador
         {
             return await Task.Run(() =>
             {
-                using (var _dbContext = new VendeAgroEntities())
+                using (var _dbContext = new MercampoEntities())
                 {
                     Startup.OpenDatabaseConnection(_dbContext);
                     if (_dbContext.Database.Connection.State != ConnectionState.Open)
@@ -857,7 +857,7 @@ namespace VendeAgroWeb.Controllers.Administrador
         {
             return await Task.Run(() =>
             {
-                using (var _dbContext = new VendeAgroEntities())
+                using (var _dbContext = new MercampoEntities())
                 {
                     Startup.OpenDatabaseConnection(_dbContext);
                     if (_dbContext.Database.Connection.State != ConnectionState.Open)
@@ -885,7 +885,7 @@ namespace VendeAgroWeb.Controllers.Administrador
         {
             return await Task.Run(() =>
             {
-                using (var _dbContext = new VendeAgroEntities())
+                using (var _dbContext = new MercampoEntities())
                 {
                     Startup.OpenDatabaseConnection(_dbContext);
                     if (_dbContext.Database.Connection.State != ConnectionState.Open)
@@ -909,7 +909,7 @@ namespace VendeAgroWeb.Controllers.Administrador
             });
         }
 
-        private List<AnuncioViewModel> CreaAnuncios(IQueryable<Anuncio> anuncios, VendeAgroEntities _dbContext)
+        private List<AnuncioViewModel> CreaAnuncios(IQueryable<Anuncio> anuncios, MercampoEntities _dbContext)
         {
             List<AnuncioViewModel> lista = new List<AnuncioViewModel>();
             foreach (var item in anuncios)
@@ -934,7 +934,7 @@ namespace VendeAgroWeb.Controllers.Administrador
             }
             return await Task.Run(() =>
             {
-                using(var _dbContext = new VendeAgroEntities())
+                using(var _dbContext = new MercampoEntities())
                 {
                     Startup.OpenDatabaseConnection(_dbContext);
                     if(_dbContext.Database.Connection.State != ConnectionState.Open)
@@ -988,7 +988,7 @@ namespace VendeAgroWeb.Controllers.Administrador
             AnuncioDetallesViewModel model = null;
             await Task.Run(() =>
             {
-                using (var _dbContext = new VendeAgroEntities())
+                using (var _dbContext = new MercampoEntities())
                 {
                     Startup.OpenDatabaseConnection(_dbContext);
                     if(_dbContext.Database.Connection.State != ConnectionState.Open)
@@ -1058,7 +1058,7 @@ namespace VendeAgroWeb.Controllers.Administrador
         {
             return await Task.Run(() =>
             {
-                using (var _dbContext = new VendeAgroEntities())
+                using (var _dbContext = new MercampoEntities())
                 {
                     Startup.OpenDatabaseConnection(_dbContext);
                     if (_dbContext.Database.Connection.State != ConnectionState.Open)
@@ -1071,7 +1071,7 @@ namespace VendeAgroWeb.Controllers.Administrador
 
                     foreach (var item in paquetes)
                     {
-                        lista.Add(new PaqueteViewModel(item.id, item.nombre, item.meses, item.numeroAnuncios, item.precio, item.descripcion, item.paqueteBase, item.fechaModificacion, item.activo));
+                        lista.Add(new PaqueteViewModel(item.id, item.nombre, item.meses, item.precio, item.descripcion, item.paqueteBase, item.fechaModificacion, item.activo));
                     }
 
                     _dbContext.Database.Connection.Close();
@@ -1091,7 +1091,7 @@ namespace VendeAgroWeb.Controllers.Administrador
 
             await Task.Run(() =>
             {
-                using (var _dbContext = new VendeAgroEntities())
+                using (var _dbContext = new MercampoEntities())
                 {
                     Startup.OpenDatabaseConnection(_dbContext);
                     if (_dbContext.Database.Connection.State != ConnectionState.Open)
@@ -1103,7 +1103,6 @@ namespace VendeAgroWeb.Controllers.Administrador
                         var paquete = _dbContext.Paquetes.Where(p => p.id == id).FirstOrDefault();
                         model.Nombre = paquete.nombre;
                         model.Meses = paquete.meses;
-                        model.Anuncios = paquete.numeroAnuncios;
                         model.Descripcion = paquete.descripcion;
                         model.Precio = paquete.precio;
                         model.Id = paquete.id;
@@ -1134,7 +1133,7 @@ namespace VendeAgroWeb.Controllers.Administrador
 
             await Task.Run(() =>
             {
-                using (var _dbContext = new VendeAgroEntities())
+                using (var _dbContext = new MercampoEntities())
                 {
                     Startup.OpenDatabaseConnection(_dbContext);
                     if (_dbContext.Database.Connection.State != ConnectionState.Open)
@@ -1186,7 +1185,7 @@ namespace VendeAgroWeb.Controllers.Administrador
 
             await Task.Run(() =>
             {
-                using (var _dbContext = new VendeAgroEntities())
+                using (var _dbContext = new MercampoEntities())
                 {
                     Startup.OpenDatabaseConnection(_dbContext);
                     if (_dbContext.Database.Connection.State != ConnectionState.Open)
@@ -1205,17 +1204,31 @@ namespace VendeAgroWeb.Controllers.Administrador
                         }
                         else
                         {
-                            _dbContext.Paquetes.Add(new Paquete {
-                                nombre = model.Nombre,
-                                descripcion = model.Descripcion,
-                                numeroAnuncios = model.Anuncios,
-                                precio = model.Precio,
-                                activo = true,
-                                meses = model.Meses,
-                                fechaModificacion = DateTime.Now,
-                                paqueteBase = true
-                            });
-                            _dbContext.SaveChanges();
+                            var paqueteBaseFlag = false;
+                            var paqueteBase = (Paquete)null;
+                            if (model.Meses == 1) {
+                                paqueteBase = _dbContext.Paquetes.Where(p => p.paqueteBase == true).FirstOrDefault();
+                                paqueteBaseFlag = true;
+                            }
+                            if (paqueteBase != null)
+                            {
+                                ModelState.AddModelError("", "Error ya existe un paquete base (con duración de 1 mes).");
+                                estado = false;
+                            }
+                            else
+                            {
+                                _dbContext.Paquetes.Add(new Paquete
+                                {
+                                    nombre = model.Nombre,
+                                    descripcion = model.Descripcion,
+                                    precio = model.Precio,
+                                    activo = true,
+                                    meses = model.Meses,
+                                    fechaModificacion = DateTime.Now,
+                                    paqueteBase = paqueteBaseFlag
+                                });
+                                _dbContext.SaveChanges();
+                            }
                         }
 
                         _dbContext.Database.Connection.Close();

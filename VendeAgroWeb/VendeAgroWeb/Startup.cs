@@ -35,7 +35,7 @@ namespace VendeAgroWeb
             return _servicioEmail;
         }
 
-        public static void OpenDatabaseConnection(VendeAgroEntities _dbContext)
+        public static void OpenDatabaseConnection(MercampoEntities _dbContext)
         {
             try
             {

@@ -13,32 +13,24 @@
 <div class="row" style="margin-top: 40px;">
     <div class="col-sm-offset-2 col-sm-8">
         <div class="pasos-pago">
-            <div class="col-sm-4 primer-paso-pago">
+            <div class="col-sm-6 primer-paso-pago">
                 <div class="primer-paso-contenedor">
                     <div class="pasos-texto">
                         <span class="numero-pasos-pago">1</span>
-                        <p>Agrega beneficios</p>
-                    </div>
-                </div>
-            </div>
-            <div class="col-sm-4 segundo-paso-pago">
-                <div class="segundo-paso-contenedor">
-                    <div class="pasos-texto">
-                        <span class="numero-pasos-pago">2</span>
                         <p>Resumen del pedido</p>
                     </div>
                 </div>
             </div>
-            <div class="col-sm-4 tercer-paso-pago">
-                <div class="tercer-paso-contenedor">
+            <div class="col-sm-6 segundo-paso-pago">
+                <div class="segundo-paso-contenedor">
                     <div class="pasos-texto">
-                        <span class="numero-pasos-pago">3</span>
+                        <span class="numero-pasos-pago">2</span>
                         <p>Detalles de pago</p>
                     </div>
                 </div>
             </div>
         </div>
-        <div id="paso1" style="display:none;">
+        <div style="display:none;">
             <div class="row carrito-de-compra-titulo1">
                 <h2>1. Agrega beneficios a tu paquete</h2>
             </div>
@@ -101,14 +93,14 @@
                 <hr />
             </div>
             <div style="margin-top: 30px;">
-                <a class="btn btn-default btn-atras pagar-boton atras-pago-boton" id="paso1-atras">Cancelar</a>
-                <a class="btn btn-default botones-grad pagar-boton continuar-pago-boton" id="paso1-continuar">Continuar</a>
+                <a class="btn btn-default btn-atras pagar-boton atras-pago-boton">Cancelar</a>
+                <a class="btn btn-default botones-grad pagar-boton continuar-pago-boton">Continuar</a>
 
             </div>
         </div>
-        <div id="paso2" style="display:none;">
-            <div class="row carrito-de-compra-titulo">
-                <h2>2. Resumen del Pedido</h2>
+        <div id="paso1" style="display:none;">
+            <div class="row carrito-de-compra-titulo1">
+                <h2>1. Resumen del Pedido</h2>
             </div>
             <div class="table-responsive tabla-carrito">
                 <table class="table table-borderless table-responsive">
@@ -147,15 +139,15 @@
                 </table>
             </div>
             <div style="margin-top: 30px;">
-                <a class="btn btn-default btn-atras pagar-boton atras-pago-boton" id="paso2-atras">Paso Anterior</a>
-                <a class="btn btn-default botones-grad pagar-boton continuar-pago-boton" id="paso2-continuar">Continuar</a>
+                <a class="btn btn-default btn-atras pagar-boton atras-pago-boton" href="/Home/Index" id="paso1-atras">Atrás</a>
+                <a class="btn btn-default botones-grad pagar-boton continuar-pago-boton" id="paso1-continuar">Continuar</a>
             </div>
         </div>
-        <div id="paso3" style="display:none;">
+        <div id="paso2" style="display:none;">
             <div class="row carrito-de-compra-titulo">
-                <h2>3. Detalles de Pago</h2>
+                <h2>2. Detalles de Pago</h2>
             </div>
-            <div class="row tarjeta">
+            <div class="row tarjeta" style="margin-left: 0px; margin-right: 0px;">
                 <div class="alert alert-danger error-tarjeta">
 
                 </div>
@@ -187,8 +179,8 @@
                 </form>
             </div>
             <div style="margin-top: 30px;">
-                <a class="btn btn-default btn-atras pagar-boton atras-pago-boton" id="paso3-atras">Paso Anterior</a>
-                <a class="btn btn-default botones-grad pagar-boton continuar-pago-boton" id="paso3-continuar">Finalizar Pago</a>
+                <a class="btn btn-default btn-atras pagar-boton atras-pago-boton" id="paso2-atras">Paso Anterior</a>
+                <a class="btn btn-default botones-grad pagar-boton continuar-pago-boton" id="paso2-continuar">Finalizar Pago</a>
             </div>
         </div>
     </div>
@@ -267,24 +259,6 @@
     });
 
     $("#paso2-continuar").click(function () {
-        $('.segundo-paso-contenedor .pasos-texto').css("color", "#b5b5b5");
-        $('.segundo-paso-contenedor').css("background-color", "#efefef");
-        $('.tercer-paso-contenedor').css("background-color", "#0275d8");
-        $('.tercer-paso-contenedor .pasos-texto').css("color", "white");
-        $("#paso2").hide();
-        $("#paso3").show();
-    });
-
-    $("#paso3-atras").click(function () {
-        $('.tercer-paso-contenedor .pasos-texto').css("color", "#b5b5b5");
-        $('.tercer-paso-contenedor').css("background-color", "#efefef");
-        $('.segundo-paso-contenedor').css("background-color", "#0275d8");
-        $('.segundo-paso-contenedor .pasos-texto').css("color", "white");
-        $("#paso3").hide();
-        $("#paso2").show();
-    });
-
-    $("#paso3-continuar").click(function () {
         var nombre = $("#nombre-tarjeta").val();
         var numero = $("#numero").val();
         var codigo = $("#codigo").val();

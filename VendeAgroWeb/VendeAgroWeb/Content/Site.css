@@ -66,11 +66,8 @@ h3 {
 }
 
 .body-content {
-    padding-left: 15px;
-    padding-right: 15px;
-    padding-bottom: 110px;
+    padding: 130px 15px 110px 15px;
     width: 95%;
-    padding-top: 130px;
 }
 
 .administrador.body-content {
@@ -193,11 +190,8 @@ a {
 }
 
     .login-menu-container ul li a {
-        padding-top: 2px;
-        padding-bottom: 2px;
-        padding-right: 10px;
+        padding: 2px 10px 2px 10px;
         line-height: 20px;
-        padding-left: 10px;
         font-size: 16px;
         color: white;
     }
@@ -279,11 +273,8 @@ a {
     }
 
         .login-menu-movil-container ul li a {
-            padding-top: 2px;
-            padding-bottom: 2px;
-            padding-right: 10px;
+            padding: 2px 10px 2px 10px;
             line-height: 20px;
-            padding-left: 10px;
             font-size: 12px;
             color:white;
         }
@@ -1430,16 +1421,19 @@ a {
 }
 
 .pagar-boton {
-    padding-left: 25px;
-    padding-right: 25px;
-    padding-top: 8px;
-    padding-bottom: 8px;
+    padding: 8px 25px 8px 25px;
     font-weight: bolder;
     font-size: 20px;
 }
 
 .continuar-pago-boton {
     float: right;
+}
+
+.atras-pago-boton {
+    padding-left: 45px;
+    padding-right: 45px;
+    background-color: #efefef;
 }
 
 .pasos-pago {
@@ -1451,29 +1445,16 @@ a {
 
 .primer-paso-contenedor{
     background-color: #efefef;
-    width: 90%;
+    width: 95%;
     position: absolute;
     left: 0%;
     height: 100px;
 }
 
-.segundo-paso-contenedor{
+.segundo-paso-contenedor {
     background-color: #efefef;
     height: 100px;
-    width: 90%;
-    position: absolute;
-    left: 50%;
-    transform: translate(-50%, 0%);
-    -o-transform: translate(-50%, 0%);
-    -moz-transform: translate(-50%, 0%);
-    -ms-transform: translate(-50%, 0%);
-    -webkit-transform: translate(-50%, 0%);
-}
-
-.tercer-paso-contenedor{
-    background-color: #efefef;
-    height: 100px;
-    width: 90%;
+    width: 95%;
     position: absolute;
     left: 100%;
     transform: translate(-100%, 0%);
@@ -1490,12 +1471,6 @@ a {
 }
 
 .segundo-paso-pago {
-    padding-left: 0px;
-    padding-right: 0px;
-    position: relative;
-}
-
-.tercer-paso-pago {
     padding-left: 0px;
     padding-right: 0px;
     position: relative;
@@ -1883,17 +1858,9 @@ a {
     -o-transform: translate(-50%,0%);
 }
 
-.btn-atras {
-    background-color: #efefef;
-    color: #b5b5b5;
-}
-
 .carrito-de-compra-titulo {
-    margin-top: 0px;
+    margin: 0px 0px 30px 0px;
     text-align: center;
-    margin-left: 0px; 
-    margin-right: 0px;
-    margin-bottom: 30px;
 }
 
     .carrito-de-compra-titulo h2 {

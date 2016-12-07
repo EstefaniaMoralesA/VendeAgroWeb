@@ -217,11 +217,6 @@ namespace VendeAgroWeb.Models.Administrador
         public int Meses { get; set; }
 
         [Required(ErrorMessage = "Campo requerido")]
-        [Display(Name = "Anuncios permitidos")]
-        [Range(0, int.MaxValue, ErrorMessage = "Introduzca un valor numérico")]
-        public int Anuncios { get; set; }
-
-        [Required(ErrorMessage = "Campo requerido")]
         [Display(Name = "Precio del paquete")]
         [Range(0, float.MaxValue, ErrorMessage = "Introduzca un valor numérico")]
         public double Precio { get; set; }
@@ -237,7 +232,6 @@ namespace VendeAgroWeb.Models.Administrador
         private int _id;
         private string _nombre;
         private int _meses;
-        private int _numAnuncios;
         private double _precio;
         private string _descripcion;
         private bool _paqueteBase;
@@ -265,14 +259,6 @@ namespace VendeAgroWeb.Models.Administrador
             get
             {
                 return _meses;
-            }
-        }
-
-        public int NumAnuncios
-        {
-            get
-            {
-                return _numAnuncios;
             }
         }
 
@@ -316,11 +302,10 @@ namespace VendeAgroWeb.Models.Administrador
             }
         }
 
-        public PaqueteViewModel(int id, string nombre, int meses, int numAnuncios, double precio, string descripcion, bool paqueteBase, DateTime fechaModificacion, bool activo) {
+        public PaqueteViewModel(int id, string nombre, int meses, double precio, string descripcion, bool paqueteBase, DateTime fechaModificacion, bool activo) {
             _id = id;
             _nombre = nombre;
             _meses = meses;
-            _numAnuncios = numAnuncios;
             _precio = precio;
             _descripcion = descripcion;
             _paqueteBase = paqueteBase;

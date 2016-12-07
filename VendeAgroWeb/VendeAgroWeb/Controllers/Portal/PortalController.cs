@@ -14,7 +14,7 @@ namespace VendeAgroWeb.Controllers.Administrador
 {
     public class PortalController : Controller
     {
-        private VendeAgroEntities db = new VendeAgroEntities();
+        private MercampoEntities db = new MercampoEntities();
 
         // GET: Usuario_Administrador
         public async Task<ActionResult> Index()
@@ -25,7 +25,7 @@ namespace VendeAgroWeb.Controllers.Administrador
         [HttpPost]
         public async Task<RegistroStatus> Registro(string email, string password, string telefono, string nombre, string apellidos)
         {
-            var model = new Models.Portal.RegistroViewModel
+            var model = new RegistroViewModel
             {
                 Email = email,
                 Password = password,

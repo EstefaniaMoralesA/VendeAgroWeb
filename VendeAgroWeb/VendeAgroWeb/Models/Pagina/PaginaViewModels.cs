@@ -9,9 +9,22 @@ namespace VendeAgroWeb.Models.Pagina
 {
     public class HomeViewModel
     {
-        public IList<Categoria> Categorias { get; set; }
+        private ICollection<PaginaCategoriaViewModel> _categorias;
         public IList<Subcategoria> Subcategorias { get; set; }
         public IList<Anuncio> AnunciosDestacados { get; set; }
+
+        public ICollection<PaginaCategoriaViewModel> Categorias
+        {
+            get
+            {
+                return _categorias;
+            }
+        }
+
+        public HomeViewModel(ICollection<PaginaCategoriaViewModel> categorias)
+        {
+            _categorias = categorias;
+        }
     }
 
     public class BusquedaViewModel
@@ -25,6 +38,34 @@ namespace VendeAgroWeb.Models.Pagina
 
     public class AnunciateViewModel
     {
+        private ICollection<PaginaPaqueteViewModel> _paquetes;
+        private List<int> _paquetesSeleccionados;
+
+
+        public ICollection<PaginaPaqueteViewModel> Paquetes
+        {
+            get
+            {
+                return _paquetes;
+            }
+        }
+
+        public List<int> PaquetesSeleccionados
+        {
+            get
+            {
+                return _paquetesSeleccionados;
+            }
+
+            set
+            {
+                _paquetesSeleccionados = value;
+            }
+        }
+
+        public AnunciateViewModel(ICollection<PaginaPaqueteViewModel> paquetes) {
+            _paquetes = paquetes;
+        }
     }
 
     public class ContactoViewModel
@@ -151,6 +192,102 @@ namespace VendeAgroWeb.Models.Pagina
             _ciudad = ciudad;
             _clicks = clicks ?? 0;
             _fotoPrincipal = fotoPrincipal;
+        }
+    }
+
+    public class PaginaPaqueteViewModel
+    {
+        private int _id;
+        private string _nombre;
+        private int _meses;
+        private double _precio;
+        private string _descripcion;
+        private double _ahorro;
+
+        public int Id
+        {
+            get
+            {
+                return _id;
+            }
+        }
+
+        public string Nombre
+        {
+            get
+            {
+                return _nombre;
+            }
+        }
+
+        public int Meses
+        {
+            get
+            {
+                return _meses;
+            }
+        }
+
+        public double Precio
+        {
+            get
+            {
+                return _precio;
+            }
+        }
+
+        public string Descripcion
+        {
+            get
+            {
+                return _descripcion;
+            }
+        }
+
+        public double Ahorro
+        {
+            get
+            {
+                return _ahorro;
+            }
+        }
+
+        public PaginaPaqueteViewModel(int id, string nombre, int meses, double precio, string descripcion, double ahorro)
+        {
+            _id = id;
+            _nombre = nombre;
+            _meses = meses;
+            _precio = precio;
+            _descripcion = descripcion;
+            _ahorro = ahorro;
+        }
+    }
+
+    public class PaginaCategoriaViewModel
+    {
+        private int _id;
+        private string _nombre;
+
+        public int Id
+        {
+            get
+            {
+                return _id;
+            }
+        }
+
+        public string Nombre
+        {
+            get
+            {
+                return _nombre;
+            }
+        }
+
+        public PaginaCategoriaViewModel(int id, string nombre)
+        {
+            _id = id;
+            _nombre = nombre;
         }
     }
 
