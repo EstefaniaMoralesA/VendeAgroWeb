@@ -55,7 +55,7 @@ namespace VendeAgroWeb.Controllers.Home
         public async Task<ActionResult> OfertasDelDiaPartial()
         {
             //TODO: Ofertas del dia
-            PortalAnunciosViewModel model = new PortalAnunciosViewModel(await ObtenerAnunciosDestacados(), "", "", "");
+            PortalAnunciosViewModel model = new PortalAnunciosViewModel(await ObtenerOfertasDelDia(), "", "", "");
             return PartialView("_OfertasPartial", model);
         }
 
@@ -85,9 +85,30 @@ namespace VendeAgroWeb.Controllers.Home
 
                     var anuncios = _dbContext.Anuncios.Where(a => a.activo == true && a.estado == (int)EstadoAnuncio.Aprobado).OrderByDescending(a => a.clicks).Take(20);
 
-                    var result2 = CreaAnuncios(anuncios, _dbContext);
+                    var result = CreaAnuncios(anuncios, _dbContext);
                     _dbContext.Database.Connection.Close();
-                    return result2;
+                    return result;
+                }
+            });
+        }
+
+        public async Task<ICollection<PortalAnuncioViewModel>> ObtenerOfertasDelDia()
+        {
+            return await Task.Run(() =>
+            {
+                using (var _dbContext = new MercampoEntities())
+                {
+                    Startup.OpenDatabaseConnection(_dbContext);
+                    if (_dbContext.Database.Connection.State != ConnectionState.Open)
+                    {
+                        return null;
+                    }
+
+                    var anuncios = _dbContext.Anuncios.Where(a => a.activo == true && a.estado == (int)EstadoAnuncio.Aprobado).OrderByDescending(a => a.clicks).Take(20);
+
+                    var result = CreaAnuncios(anuncios, _dbContext);
+                    _dbContext.Database.Connection.Close();
+                    return result;
                 }
             });
         }

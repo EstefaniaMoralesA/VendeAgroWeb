@@ -1195,11 +1195,14 @@ namespace VendeAgroWeb.Controllers.Administrador
                     }
                     else
                     {
-                        var paquete = _dbContext.Paquetes.Where(p => p.nombre.ToLower() == model.Nombre.ToLower()).FirstOrDefault();
+                        var paquete = _dbContext.Paquetes.Where(p => p.nombre.ToLower() == model.Nombre.ToLower() || p.meses == model.Meses).FirstOrDefault();
 
                         if (paquete != null)
                         {
-                            ModelState.AddModelError("", "Error ya existe un paquete con ese nombre.");
+                             
+                            ModelState.AddModelError("", paquete.meses == model.Meses ? 
+                                "Error ya existe un paquete con esa duración." : 
+                                "Error ya existe un paquete con ese nombre.");
                             estado = false;
                         }
                         else
