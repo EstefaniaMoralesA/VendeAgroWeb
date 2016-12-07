@@ -448,6 +448,7 @@
     <Content Include="Views\Portal\MisPagos.cshtml" />
     <Content Include="Views\Portal\CrearAnuncio.cshtml" />
     <Content Include="Views\Home\CarritoDeCompra.cshtml" />
+    <Content Include="Views\Shared\_OfertasPartial.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

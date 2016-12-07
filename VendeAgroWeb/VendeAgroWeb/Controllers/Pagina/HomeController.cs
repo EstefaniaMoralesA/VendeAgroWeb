@@ -52,6 +52,13 @@ namespace VendeAgroWeb.Controllers.Home
             return PartialView("_AnunciosMovil", model);
         }
 
+        public async Task<ActionResult> OfertasDelDiaPartial()
+        {
+            //TODO: Ofertas del dia
+            PortalAnunciosViewModel model = new PortalAnunciosViewModel(await ObtenerAnunciosDestacados(), "", "", "");
+            return PartialView("_OfertasPartial", model);
+        }
+
         public async Task<string> GenerarCargo(string token)
         {
             if(token == null)

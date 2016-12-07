@@ -1,0 +1,23 @@
+﻿@model VendeAgroWeb.Models.Pagina.PortalAnunciosViewModel
+
+@{
+    foreach (var anuncio in Model.Anuncios)
+    {
+        <div class="col-sm-4 col-md-3">
+            <div class="anuncio-movil col-xs-12">
+                <div class="row">
+                    <div class="movil-anuncio-imagen-container">
+                        <a><img class="foto-anuncio" src="@anuncio.FotoPrincipal" /></a>
+                    </div>
+                    <div class="movil-anuncio-titulo ofertas-anuncio-titulo">
+                        <div class="row anuncio-titulo">
+                            <p class="titulo">@anuncio.Titulo</p>
+                            <p class="precio">$@anuncio.Precio</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+}
+

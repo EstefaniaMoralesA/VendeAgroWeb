@@ -9,74 +9,25 @@
         <div class="ofertas-del-dia-container">
             <h2>¡Ofertas del día!</h2>
             <div class="ofertas-anuncios-container">
-                <div class="col-sm-4 col-md-3">
-                    <div class="anuncio-movil col-xs-12">
-                        <div class="row">
-                            <div class="movil-anuncio-imagen-container">
-                                <a><img class="foto-anuncio" src="~/img/yegua.jpg" /></a>
-                            </div>
-                            <div class="movil-anuncio-titulo ofertas-anuncio-titulo">
-                                <div class="row anuncio-titulo">
-                                    <p class="titulo">Yegua española</p>
-                                    <p class="precio">$150,000</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-sm-4 col-md-3">
-                    <div class="anuncio-movil col-xs-12">
-                        <div class="row">
-                            <div class="movil-anuncio-imagen-container">
-                                <a><img class="foto-anuncio" src="~/img/yegua.jpg" /></a>
-                            </div>
-                            <div class="movil-anuncio-titulo ofertas-anuncio-titulo">
-                                <div class="row anuncio-titulo">
-                                    <p class="titulo">Yegua española</p>
-                                    <p class="precio">$150,000</p>
-                                </div>
-                            </div>
-                        </div>
-
-                    </div>
-                </div>
-
-                <div class="col-sm-4 col-md-3">
-                    <div class="anuncio-movil col-xs-12">
-                        <div class="row">
-                            <div class="movil-anuncio-imagen-container">
-                                <a><img class="foto-anuncio" src="~/img/yegua.jpg" /></a>
-                            </div>
-                            <div class="movil-anuncio-titulo ofertas-anuncio-titulo">
-                                <div class="row anuncio-titulo">
-                                    <p class="titulo">Yegua española</p>
-                                    <p class="precio">$150,000</p>
-                                </div>
-                            </div>
-                        </div>
-
-                    </div>
-                </div>
-
-                <div class="col-sm-4 col-md-3">
-                    <div class="anuncio-movil col-xs-12">
-                        <div class="row">
-                            <div class="movil-anuncio-imagen-container">
-                                <a><img class="foto-anuncio" src="~/img/yegua.jpg" /></a>
-                            </div>
-                            <div class="movil-anuncio-titulo ofertas-anuncio-titulo">
-                                <div class="row anuncio-titulo">
-                                    <p class="titulo">Yegua española</p>
-                                    <p class="precio">$150,000</p>
-                                </div>
-                            </div>
-                        </div>
-
-                    </div>
-                </div>
-
+                <img src="~/img/loader.gif" class="loader-anuncios" />
             </div>
         </div>
     </div>
 </div>
+
+<script>
+    $(document).ready(function () {
+        $.ajax({
+            type: "POST",
+            data: {},
+            url: '/Home/OfertasDelDiaPartial',
+            success: function (result) {
+                $(".ofertas-anuncios-container").html(result);
+            },
+            error: function (msg) {
+                console.log(msg);
+                alert("Error en anuncios desktop: " + msg);
+            }
+        });
+    });
+</script>
