@@ -156,6 +156,7 @@
           <Property Name="paqueteBase" Type="bit" Nullable="false" />
           <Property Name="fechaModificacion" Type="date" Nullable="false" />
           <Property Name="activo" Type="bit" Nullable="false" />
+          <Property Name="porcentajeAhorro" Type="float" />
         </EntityType>
         <EntityType Name="Subcategoria">
           <Key>
@@ -744,6 +745,7 @@
           <Property Name="paqueteBase" Type="Boolean" Nullable="false" />
           <Property Name="fechaModificacion" Type="DateTime" Nullable="false" Precision="0" />
           <Property Name="activo" Type="Boolean" Nullable="false" />
+          <Property Name="porcentajeAhorro" Type="Double" />
           <NavigationProperty Name="Anuncio_Paquete" Relationship="Self.FK__Anuncio_P__idPaq__5EBF139D" FromRole="Paquete" ToRole="Anuncio_Paquete" />
           <NavigationProperty Name="Conekta_Paquete" Relationship="Self.FK__Conekta_P__idPaq__60A75C0F" FromRole="Paquete" ToRole="Conekta_Paquete" />
           <NavigationProperty Name="Pago_Concepto" Relationship="Self.FK__Pago_Conc__idPaq__656C112C" FromRole="Paquete" ToRole="Pago_Concepto" />
@@ -1330,6 +1332,7 @@
                 <ScalarProperty Name="paqueteBase" ColumnName="paqueteBase" />
                 <ScalarProperty Name="fechaModificacion" ColumnName="fechaModificacion" />
                 <ScalarProperty Name="activo" ColumnName="activo" />
+                <ScalarProperty Name="porcentajeAhorro" ColumnName="porcentajeAhorro" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

@@ -1171,6 +1171,12 @@ namespace VendeAgroWeb.Controllers.Administrador
             return View(model);
         }
 
+        public double calculaAhorro(Paquete paqueteBase, Paquete paqueteNuevo) {
+            var precioBase = paqueteBase.precio;
+            var precioReal = paqueteNuevo.meses * precioBase;
+            return ((paqueteNuevo.precio * precioReal) / precioBase);
+        }
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         [AllowAnonymous]

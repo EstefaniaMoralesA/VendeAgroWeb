@@ -138,12 +138,6 @@ namespace VendeAgroWeb.Controllers.Home
             });
         }
 
-        public Dictionary<Paquete, int> calculaAhorro(IQueryable<Paquete> paquetes) {
-            var PaqueteBase = paquetes.Where(p => p.paqueteBase == true).FirstOrDefault();
-            var precioBase = PaqueteBase.precio;
-            return null;
-        }
-
         public async Task<ICollection<PaginaPaqueteViewModel>> ObtenerPaquetes()
         {
             return await Task.Run(() =>
@@ -159,7 +153,9 @@ namespace VendeAgroWeb.Controllers.Home
                     List<PaginaPaqueteViewModel> lista = new List<PaginaPaqueteViewModel>();
                     var paquetes = _dbContext.Paquetes.Where(p => p.activo == true);
 
-                    Dictionary<Paquete, int> paquetesConAhorro = calculaAhorro(paquetes);
+                    foreach (var paquete in paquetes) {
+                    }
+
                     _dbContext.Database.Connection.Close();
                     return lista;
                 }

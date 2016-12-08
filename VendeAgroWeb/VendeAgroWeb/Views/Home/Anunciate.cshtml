@@ -23,52 +23,34 @@
     <section class="anunciate-paquetes-container" id="paquetes">
         <div class="anunciate-wrapper">
             <div class="anunciate-recados-container" style="min-height: 330px">
-                <div class="col-sm-offset-3 col-sm-2">
-                    <div class="base base1">
-                        <div class="degradado-verde"></div>
-                        <div class="anunciate-recados-texto" style="color:#04612d">
-                            <h2>3 meses</h2>
-                            <ul>
-                                <li>titulo</li>
-                                <li>descripcion</li>
-                                <li>fotos</li>
-                            </ul>
-                            <h3>$00.00</h3>
-                            <button class="btn btn-default contratar-boton menu-grad" style="margin-top:55px;" type="button">Contratar</button>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-sm-2">
-                    <div class="base base2">
-                        <div class="degradado-rojo"></div>
-                        <div class="anunciate-recados-texto" style="color:#E42B22">
-                            <h2>6 meses</h2>
-                            <ul>
-                                <li>titulo</li>
-                                <li>descripcion</li>
-                                <li>fotos</li>
-                            </ul>
-                            <h3>Ahorra 0%</h3>
-                            <h3>$00.00</h3>
-                            <button class="btn btn-default contratar-boton menu-grad" type="button">Contratar</button>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-sm-2">
-                    <div class="base base3">
-                        <div class="degradado-naranja"></div>
-                        <div class="anunciate-recados-texto" style="color:#F6AB21">
-                            <h2>12 meses</h2>
-                            <ul>
-                                <li>titulo</li>
-                                <li>descripcion</li>
-                                <li>fotos</li>
-                            </ul>
-                            <h3>Ahorra 0%</h3>
-                            <h3>$00.00</h3>
-                            <button class="btn btn-default contratar-boton menu-grad" type="button">Contratar</button>
-                        </div>
-                    </div>
+                <div class="col-sm-offset-3 col-sm-6">
+
+                    @{
+                        foreach (var paquete in Model.Paquetes)
+                        {
+                            <div class="col-sm-4 col-md-3">
+                                <div class="base">
+                                    <div class="degradado-verde"></div>
+                                    <div class="anunciate-recados-texto" style="color:#04612d">
+                                        <h2>@paquete.Meses</h2>
+                                        <ul>
+                                            <li>@paquete.Nombre</li>
+                                            <li>@paquete.Descripcion</li>
+                                        </ul>
+                                        @{
+                                            if (@paquete.Ahorro > 0)
+                                            {
+                                                <h3>Ahorra<span>@paquete.Ahorro</span>%</h3>
+
+                                            }
+                                        } 
+                                        <h3>@paquete.Precio</h3>
+                                        <button class="btn btn-default contratar-boton menu-grad" style="margin-top:55px;" type="button">Contratar</button>
+                                    </div>
+                                </div>
+                            </div>
+                          }
+                    }
                 </div>
             </div>
         </div>
@@ -81,4 +63,5 @@
     $('.body-content').attr(
         'style', 'padding-left:0px !important; padding-right: 0px !important; padding-bottom: 80px !important; padding-top: 0px !important; margin-left: 0px !important; margin-right: 0px !important; width: 100% !important;'
     );
+
 </script>

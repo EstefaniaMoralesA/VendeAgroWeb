@@ -30,6 +30,7 @@ namespace VendeAgroWeb.Models
         public bool paqueteBase { get; set; }
         public System.DateTime fechaModificacion { get; set; }
         public bool activo { get; set; }
+        public double porcentajeAhorro { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Anuncio_Paquete> Anuncio_Paquete { get; set; }
