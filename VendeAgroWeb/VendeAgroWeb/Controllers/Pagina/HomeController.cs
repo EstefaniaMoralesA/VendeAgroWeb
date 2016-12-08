@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
@@ -33,6 +34,21 @@ namespace VendeAgroWeb.Controllers.Home
         public ActionResult Contacto()
         {
             return View();
+        }
+
+        [HttpPost]
+        [AllowAnonymous]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> Contacto(ContactoViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+
+            var mensaje = $"<p>Recibio un mensaje a trav&eacute;s de la p&aacute;gina de contacto</p><p>Nombre: {model.Nombre}</p><p>Mail: {model.Email}</p><p>Mensaje: {model.Mensaje}</p>";
+            await Startup.GetServicioEmail().SendAsync(mensaje, "Forma de contacto VendeAgro", Startup.GetServicioEmail().MailContacto);
+            return View(model);
         }
 
         public ActionResult CarritoDeCompra()

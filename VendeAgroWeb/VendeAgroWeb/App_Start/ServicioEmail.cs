@@ -21,6 +21,9 @@ namespace VendeAgroWeb
                 Password = "FDEZm2306$%"
             };
         }
+
+        public string MailContacto => "santiatlas11@hotmail.com";
+
         public async Task<bool> SendAsync(string mensaje, string asunto, string destinatario)
         {
             // Plug in your email service here to send an email.
