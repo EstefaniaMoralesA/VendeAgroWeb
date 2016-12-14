@@ -9,6 +9,11 @@
 <div class="row agregar-categoria-container">
     <h2>Nuevo Paquete</h2>
     <div class="col-lg-6 col-lg-offset-3">
+        <div class="error-row">
+            <div class="alert alert-danger" style="text-align:center;">
+                <p id="error-mensaje"></p>
+            </div>
+        </div>
         <div class="login-form">
             @using (Html.BeginForm())
             {
@@ -38,8 +43,13 @@
                     @Html.ValidationMessageFor(model => model.Descripcion, "", new { @class = "text-danger" })
                     <label class="login-field-icon glyphicon glyphicon-pencil" for="paquete-descripcion"></label>
                 </div>
-
-                <div class="form-group boton-guardar-container" style="margin-top: 20px">
+                <div class="row" style="margin-top: 20px;">
+                    <div class="col-sm-6" style="text-align: center"><a class="btn btn-success"id="checar-ahorro" style="width: 100%;">Checar Ahorro </a></div>
+                    <div class="col-sm-6">
+                        <div class="texto-ahorro-container"><p>Ahorro: <span id="ahorro"></span>%</p></div>
+                    </div>
+                </div>
+                <div class="form-group boton-guardar-container" style="margin-top: 30px">
                     <div class="col-sm-offset-3 col-sm-6" style="text-align: center;">
                         <input type="submit" value="Guardar" class="btn btn-primary btn-lg btn-login" />
                     </div>
@@ -55,3 +65,33 @@
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
 }
+
+<script>
+    $('#checar-ahorro').click(function () {
+        var precio = document.getElementById('paquete-precio').value;
+        var meses = document.getElementById('paquete-meses').value;
+
+        $.ajax({
+            type: "POST",
+            url: "/Administrador/calculaAhorro?meses=" + meses + "&precio=" + precio,
+            data: {},
+            success: function (result) {
+                response = JSON.parse(JSON.stringify(result));
+                console.log(response);
+
+                if (response.success) {
+                    $('#ahorro').text(response.porcentaje);
+                    console.log('entro porcentaje');
+                }
+                else {
+                    $('.error-row').show();
+                    $('#error-mensaje').text(response.error);
+                    console.log(response.error);
+                }
+            },
+            error: function (msg) {
+                console.log(msg);
+            }
+        });
+    });
+</script>

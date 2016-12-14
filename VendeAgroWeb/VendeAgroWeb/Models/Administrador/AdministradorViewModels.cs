@@ -237,6 +237,8 @@ namespace VendeAgroWeb.Models.Administrador
         private bool _paqueteBase;
         private DateTime _fechaModificacion;
         private bool _activo;
+        private double _ahorro;
+
 
         public int Id
         {
@@ -302,7 +304,15 @@ namespace VendeAgroWeb.Models.Administrador
             }
         }
 
-        public PaqueteViewModel(int id, string nombre, int meses, double precio, string descripcion, bool paqueteBase, DateTime fechaModificacion, bool activo) {
+        public double Ahorro
+        {
+            get
+            {
+                return _ahorro;
+            }
+        }
+
+        public PaqueteViewModel(int id, string nombre, int meses, double precio, string descripcion, bool paqueteBase, DateTime fechaModificacion, bool activo, double ahorro) {
             _id = id;
             _nombre = nombre;
             _meses = meses;
@@ -311,6 +321,7 @@ namespace VendeAgroWeb.Models.Administrador
             _paqueteBase = paqueteBase;
             _fechaModificacion = fechaModificacion;
             _activo = activo;
+            _ahorro = ahorro;
         }
     }
 
@@ -432,18 +443,17 @@ namespace VendeAgroWeb.Models.Administrador
     public class AnuncioPaqueteViewModel
     {
         private string _nombre;
-        private DateTime _fechaInicio;
-        private DateTime _fechaFin;
+        private DateTime? _fechaInicio;
+        private DateTime? _fechaFin;
         private bool _activo;
         private string _folio;
 
-        public AnuncioPaqueteViewModel(string nombre, DateTime fechaInicio, DateTime fechaFin, bool activo, string folio)
+        public AnuncioPaqueteViewModel(string nombre, DateTime? fechaInicio, DateTime? fechaFin, bool activo)
         {
             _nombre = nombre;
             _fechaInicio = fechaInicio;
             _fechaFin = fechaFin;
             _activo = activo;
-            _folio = folio;
         }
 
         public string Nombre
@@ -455,7 +465,7 @@ namespace VendeAgroWeb.Models.Administrador
 
         }
 
-        public DateTime FechaInicio
+        public DateTime? FechaInicio
         {
             get
             {
@@ -464,7 +474,7 @@ namespace VendeAgroWeb.Models.Administrador
 
         }
 
-        public DateTime FechaFin
+        public DateTime? FechaFin
         {
             get
             {
@@ -478,15 +488,6 @@ namespace VendeAgroWeb.Models.Administrador
             get
             {
                 return _activo;
-            }
-
-        }
-
-        public string Folio
-        {
-            get
-            {
-                return _folio;
             }
 
         }

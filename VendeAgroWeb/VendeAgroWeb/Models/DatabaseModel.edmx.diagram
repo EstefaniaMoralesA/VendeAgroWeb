@@ -4,36 +4,34 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="59470a4c38ac4350ab0e4c0b946d546e" Name="Diagram1">
-        <EntityTypeShape EntityType="VendeAgroModel.Anuncio" Width="1.5" PointX="3" PointY="10.125" IsExpanded="true" />
-        <EntityTypeShape EntityType="VendeAgroModel.Anuncio_Beneficio" Width="1.5" PointX="5.25" PointY="8.375" IsExpanded="true" />
-        <EntityTypeShape EntityType="VendeAgroModel.Anuncio_Paquete" Width="1.5" PointX="8.25" PointY="11" IsExpanded="true" />
-        <EntityTypeShape EntityType="VendeAgroModel.Banner" Width="1.5" PointX="3.75" PointY="0.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="VendeAgroModel.Beneficio" Width="1.5" PointX="3" PointY="29.25" IsExpanded="true" />
-        <EntityTypeShape EntityType="VendeAgroModel.Categoria" Width="1.5" PointX="1.5" PointY="25.875" IsExpanded="true" />
-        <EntityTypeShape EntityType="VendeAgroModel.Ciudad" Width="1.5" PointX="0.75" PointY="7" IsExpanded="true" />
-        <EntityTypeShape EntityType="VendeAgroModel.Conekta_Paquete" Width="1.5" PointX="6" PointY="11.125" IsExpanded="true" />
-        <EntityTypeShape EntityType="VendeAgroModel.Estado" Width="1.5" PointX="1.5" PointY="4" IsExpanded="true" />
-        <EntityTypeShape EntityType="VendeAgroModel.Fotos_Anuncio" Width="1.5" PointX="5.25" PointY="15.375" IsExpanded="true" />
-        <EntityTypeShape EntityType="VendeAgroModel.Metrica" Width="1.5" PointX="5.75" PointY="0.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="VendeAgroModel.Pago" Width="1.5" PointX="3" PointY="18" IsExpanded="true" />
-        <EntityTypeShape EntityType="VendeAgroModel.Pago_Concepto" Width="1.5" PointX="5.25" PointY="18.25" IsExpanded="true" />
-        <EntityTypeShape EntityType="VendeAgroModel.Pai" Width="1.5" PointX="1.5" PointY="1.125" IsExpanded="true" />
-        <EntityTypeShape EntityType="VendeAgroModel.Paquete" Width="1.5" PointX="6" PointY="3.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="VendeAgroModel.Subcategoria" Width="1.5" PointX="0.75" PointY="15.625" IsExpanded="true" />
-        <EntityTypeShape EntityType="VendeAgroModel.Usuario" Width="1.5" PointX="0.75" PointY="10.625" IsExpanded="true" />
-        <EntityTypeShape EntityType="VendeAgroModel.Usuario_Administrador" Width="1.5" PointX="8.75" PointY="0.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="VendeAgroModel.Usuario_Tarjeta" Width="1.5" PointX="3" PointY="21.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="VendeAgroModel.Videos_Anuncio" Width="1.5" PointX="5.25" PointY="22.125" IsExpanded="true" />
+      <Diagram DiagramId="99281238c4dc40fd93f1d86df5c1e697" Name="Diagram1">
+        <EntityTypeShape EntityType="VendeAgroModel.Anuncio" Width="1.5" PointX="3" PointY="8.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="VendeAgroModel.Anuncio_Beneficio" Width="1.5" PointX="5.25" PointY="7" IsExpanded="true" />
+        <EntityTypeShape EntityType="VendeAgroModel.Banner" Width="1.5" PointX="3.75" PointY="1.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="VendeAgroModel.Beneficio" Width="1.5" PointX="3" PointY="27.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="VendeAgroModel.Categoria" Width="1.5" PointX="1.5" PointY="24.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="VendeAgroModel.Ciudad" Width="1.5" PointX="0.75" PointY="6.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="VendeAgroModel.Conekta_Paquete" Width="1.5" PointX="6" PointY="9.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="VendeAgroModel.Estado" Width="1.5" PointX="1.5" PointY="3.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="VendeAgroModel.Fotos_Anuncio" Width="1.5" PointX="5.25" PointY="13.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="VendeAgroModel.Metrica" Width="1.5" PointX="3.75" PointY="4.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="VendeAgroModel.Pago" Width="1.5" PointX="3" PointY="17.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="VendeAgroModel.Pago_Concepto" Width="1.5" PointX="5.25" PointY="17.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="VendeAgroModel.Pai" Width="1.5" PointX="1.5" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="VendeAgroModel.Paquete" Width="1.5" PointX="0.75" PointY="14.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="VendeAgroModel.Subcategoria" Width="1.5" PointX="0.75" PointY="18.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="VendeAgroModel.Usuario" Width="1.5" PointX="0.75" PointY="9.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="VendeAgroModel.Usuario_Administrador" Width="1.5" PointX="5.75" PointY="1.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="VendeAgroModel.Usuario_Tarjeta" Width="1.5" PointX="3" PointY="20.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="VendeAgroModel.Videos_Anuncio" Width="1.5" PointX="5.25" PointY="21.25" IsExpanded="true" />
         <AssociationConnector Association="VendeAgroModel.FK__Anuncio__idCiuda__5AEE82B9" ManuallyRouted="false" />
+        <AssociationConnector Association="VendeAgroModel.FK__Anuncio__idPaque__01142BA1" ManuallyRouted="false" />
         <AssociationConnector Association="VendeAgroModel.FK__Anuncio__idSubca__59FA5E80" ManuallyRouted="false" />
         <AssociationConnector Association="VendeAgroModel.FK__Anuncio__idUsuar__59063A47" ManuallyRouted="false" />
         <AssociationConnector Association="VendeAgroModel.FK__Anuncio_B__idAnu__5BE2A6F2" ManuallyRouted="false" />
-        <AssociationConnector Association="VendeAgroModel.FK__Anuncio_P__idAnu__5DCAEF64" ManuallyRouted="false" />
         <AssociationConnector Association="VendeAgroModel.FK__Fotos_Anu__idAnu__628FA481" ManuallyRouted="false" />
         <AssociationConnector Association="VendeAgroModel.FK__Videos_An__idAnu__693CA210" ManuallyRouted="false" />
         <AssociationConnector Association="VendeAgroModel.FK__Anuncio_B__idBen__5CD6CB2B" ManuallyRouted="false" />
-        <AssociationConnector Association="VendeAgroModel.FK__Anuncio_P__idPaq__5EBF139D" ManuallyRouted="false" />
         <AssociationConnector Association="VendeAgroModel.FK__Pago_Conc__idBen__66603565" ManuallyRouted="false" />
         <AssociationConnector Association="VendeAgroModel.FK__Subcatego__idCat__6754599E" ManuallyRouted="false" />
         <AssociationConnector Association="VendeAgroModel.FK__Ciudad__idEstado__5FB337D6" ManuallyRouted="false" />

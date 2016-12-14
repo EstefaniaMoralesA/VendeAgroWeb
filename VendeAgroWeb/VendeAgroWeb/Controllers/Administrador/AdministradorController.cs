@@ -653,29 +653,29 @@ namespace VendeAgroWeb.Controllers.Administrador
         [AllowAnonymous]
         public async Task<ModificarNombreCategoriaEstatus> ModificarCategoria(int? id, string nombre)
         {
-            if(id == null || nombre == null)
+            if (id == null || nombre == null)
             {
                 return ModificarNombreCategoriaEstatus.Error;
             }
 
             return await Task.Run(() =>
             {
-                using(var _dbContext = new MercampoEntities())
+                using (var _dbContext = new MercampoEntities())
                 {
                     Startup.OpenDatabaseConnection(_dbContext);
-                    if(_dbContext.Database.Connection.State != ConnectionState.Open)
+                    if (_dbContext.Database.Connection.State != ConnectionState.Open)
                     {
                         return ModificarNombreCategoriaEstatus.Error;
                     }
 
-                    if(_dbContext.Categorias.Where(c => c.nombre.ToLower() == nombre.ToLower() && c.id != id).FirstOrDefault() != null)
+                    if (_dbContext.Categorias.Where(c => c.nombre.ToLower() == nombre.ToLower() && c.id != id).FirstOrDefault() != null)
                     {
                         _dbContext.Database.Connection.Close();
                         return ModificarNombreCategoriaEstatus.CategoriaExistente;
                     }
 
                     var categoria = _dbContext.Categorias.Where(c => c.id == id)?.FirstOrDefault();
-                    if(categoria == null)
+                    if (categoria == null)
                     {
                         _dbContext.Database.Connection.Close();
                         return ModificarNombreCategoriaEstatus.Error;
@@ -928,41 +928,42 @@ namespace VendeAgroWeb.Controllers.Administrador
         [AllowAnonymous]
         public async Task<bool> AprobarAnuncio(int? id)
         {
-            if(id == null)
+            if (id == null)
             {
                 return false;
             }
             return await Task.Run(() =>
             {
-                using(var _dbContext = new MercampoEntities())
+                using (var _dbContext = new MercampoEntities())
                 {
                     Startup.OpenDatabaseConnection(_dbContext);
-                    if(_dbContext.Database.Connection.State != ConnectionState.Open)
+                    if (_dbContext.Database.Connection.State != ConnectionState.Open)
                     {
                         return false;
                     }
 
                     var anuncio = _dbContext.Anuncios.Where(a => a.id == id).FirstOrDefault();
 
-                    if(anuncio == null){
-                        return false;
-                    }
-
-                    var anuncio_paquete = anuncio.Anuncio_Paquete.FirstOrDefault();
-
-                    if(anuncio == null)
+                    if (anuncio == null)
                     {
                         return false;
                     }
 
-                    var duracion = anuncio_paquete?.Paquete?.meses;
-                    if(duracion == null)
+                    var anuncio_paquete = _dbContext.Paquetes.Where(p => p.id == anuncio.idPaquete).FirstOrDefault();
+
+                    if (anuncio == null)
                     {
                         return false;
                     }
 
-                    anuncio_paquete.fechaInicio = DateTime.Now;
-                    anuncio_paquete.fechaFin = DateTime.Now.AddMonths(duracion.Value);
+                    var duracion = anuncio_paquete?.meses;
+                    if (duracion == null)
+                    {
+                        return false;
+                    }
+
+                    anuncio.fecha_inicio = DateTime.Now;
+                    anuncio.fecha_fin = DateTime.Now.AddMonths(duracion.Value);
                     anuncio.activo = true;
                     anuncio.estado = (int)EstadoAnuncio.Aprobado;
                     _dbContext.SaveChanges();
@@ -979,7 +980,7 @@ namespace VendeAgroWeb.Controllers.Administrador
                 return RedirectToAction("Login", "Administrador");
             }
 
-            if(id == null)
+            if (id == null)
             {
                 return HttpNotFound("Parámetro inválido se espera un id de un anuncio");
             }
@@ -991,7 +992,7 @@ namespace VendeAgroWeb.Controllers.Administrador
                 using (var _dbContext = new MercampoEntities())
                 {
                     Startup.OpenDatabaseConnection(_dbContext);
-                    if(_dbContext.Database.Connection.State != ConnectionState.Open)
+                    if (_dbContext.Database.Connection.State != ConnectionState.Open)
                     {
                         result = HttpNotFound("Error en la base de datos");
                     }
@@ -1004,16 +1005,17 @@ namespace VendeAgroWeb.Controllers.Administrador
                         }
                         else
                         {
-                            var anuncioViewModel = new AnuncioViewModel(anuncio.id, anuncio.titulo, anuncio.Usuario.nombre, anuncio.precio, 
-                                anuncio.Subcategoria.Categoria.nombre, anuncio.Subcategoria.nombre, anuncio.Ciudad.Estado.nombre, 
+                            var anuncioViewModel = new AnuncioViewModel(anuncio.id, anuncio.titulo, anuncio.Usuario.nombre, anuncio.precio,
+                                anuncio.Subcategoria.Categoria.nombre, anuncio.Subcategoria.nombre, anuncio.Ciudad.Estado.nombre,
                                 anuncio.Ciudad.nombre, anuncio.clicks);
                             List<FotoViewModel> fotos = new List<FotoViewModel>();
-                            var paquete = anuncio.Anuncio_Paquete.FirstOrDefault();
+                            var paquete = _dbContext.Paquetes.Where(p => p.id == anuncio.idPaquete).FirstOrDefault();
+
                             AnuncioPaqueteViewModel paqueteViewModel = null;
-                            if(paquete != null)
+                            if (paquete != null)
                             {
-                                paqueteViewModel = new AnuncioPaqueteViewModel(paquete.Paquete.nombre, paquete.fechaInicio,
-                                    paquete.fechaFin, paquete.activo, paquete.folio);
+                                paqueteViewModel = new AnuncioPaqueteViewModel(paquete.nombre, anuncio.fecha_inicio,
+                                    anuncio.fecha_fin, paquete.activo);
                             }
 
                             var rutaVideo = _dbContext.Videos_Anuncio.Where(v => v.idAnuncio == id).FirstOrDefault()?.ruta;
@@ -1028,7 +1030,7 @@ namespace VendeAgroWeb.Controllers.Administrador
                 }
             });
 
-            if(result != null)
+            if (result != null)
             {
                 return result;
             }
@@ -1071,7 +1073,7 @@ namespace VendeAgroWeb.Controllers.Administrador
 
                     foreach (var item in paquetes)
                     {
-                        lista.Add(new PaqueteViewModel(item.id, item.nombre, item.meses, item.precio, item.descripcion, item.paqueteBase, item.fechaModificacion, item.activo));
+                        lista.Add(new PaqueteViewModel(item.id, item.nombre, item.meses, item.precio, item.descripcion, item.paqueteBase, item.fechaModificacion, item.activo, item.porcentajeAhorro));
                     }
 
                     _dbContext.Database.Connection.Close();
@@ -1144,17 +1146,35 @@ namespace VendeAgroWeb.Controllers.Administrador
                     else
                     {
                         var paquete = _dbContext.Paquetes.Where(p => p.id == model.Id).FirstOrDefault();
-                        
-                        if(paquete == null)
+
+                        if (paquete == null)
                         {
                             ModelState.AddModelError("", "Error paquete no encontrado, vuelva a intentarlo");
                             estado = false;
                         }
                         else
                         {
+                            var paqueteBase = _dbContext.Paquetes.Where(p => p.paqueteBase == true).FirstOrDefault();
+                            double ahorro = 0.0;
+                            if (model.Meses == 1)
+                            {
+                                var paquetes = _dbContext.Paquetes;
+                                foreach (var item in paquetes)
+                                {
+                                    if (item.paqueteBase == true) {
+                                        continue; 
+}
+                                    item.porcentajeAhorro = calculaAhorro(model.Precio, item.meses, item.precio);
+                                }
+                            }
+                            else {
+                                ahorro = calculaAhorro(paqueteBase, model.Meses, model.Precio);
+                            }
+
                             paquete.descripcion = model.Descripcion;
                             paquete.nombre = model.Nombre;
                             paquete.precio = model.Precio;
+                            paquete.porcentajeAhorro = ahorro;
                             paquete.fechaModificacion = DateTime.Now;
                             _dbContext.SaveChanges();
                         }
@@ -1171,10 +1191,72 @@ namespace VendeAgroWeb.Controllers.Administrador
             return View(model);
         }
 
-        public double calculaAhorro(Paquete paqueteBase, Paquete paqueteNuevo) {
+        [HttpPost]
+        [AllowAnonymous]
+        public async Task<JsonResult> calculaAhorro(int? meses, double? precio)
+        {
+            double ahorro = 0.0;
+
+            if (!meses.HasValue || !precio.HasValue)
+            {
+                return Json(new {success = false, error = "Error se necesitan el precio y meses del paquete para calcular el porcentaje de ahorro", porcentaje = ahorro}, JsonRequestBehavior.AllowGet);
+            }
+            else
+            {
+                await Task.Run(() =>
+                {
+                    using (var _dbContext = new MercampoEntities())
+                    {
+                        Startup.OpenDatabaseConnection(_dbContext);
+                        if (_dbContext.Database.Connection.State != ConnectionState.Open)
+                        {
+                            return Json(new { success = false, error = "Error al conectarse a la base de datos", porcentaje = ahorro}, JsonRequestBehavior.AllowGet);
+                        }
+                        else
+                        {
+                            var paqueteBase = _dbContext.Paquetes.Where(p => p.paqueteBase == true).FirstOrDefault();
+
+                            if (paqueteBase == null && meses > 1)
+                            {
+                                return Json(new { success = false, error = "Error no pueden existir otros paquetes si no existe un paquete base", porcentaje = ahorro}, JsonRequestBehavior.AllowGet);
+                            }
+
+                            if (meses == 1) {
+                                return Json(new { success = true, error = "", porcentaje = ahorro}, JsonRequestBehavior.AllowGet);
+                            }
+
+                            double aPrecio = precio.HasValue ? precio.Value : 0.0;
+                            int aMeses = meses.HasValue ? meses.Value : 0;
+                            ahorro = Math.Round((100 - ((aPrecio * 100) / (aMeses * paqueteBase.precio))), 2);
+                            _dbContext.SaveChanges();
+                            _dbContext.Database.Connection.Close();
+                        }
+                    }
+                    return Json(new { success = true, error = "", porcentaje = ahorro}, JsonRequestBehavior.AllowGet);
+                });
+            }
+            return Json(new { success = true, error = "", porcentaje = ahorro}, JsonRequestBehavior.AllowGet);
+        }
+
+        public double calculaAhorro(double precioPaqueteBase, int meses, double precio)
+        {
+            var precioReal = meses * precioPaqueteBase;
+            return Math.Round((100 - ((precio * 100) / precioReal)), 2);
+        }
+
+        public double calculaAhorro(Paquete paqueteBase, int meses, double precio)
+        {
+            if (paqueteBase == null)
+            {
+                if (meses == 1)
+                {
+                    return 0.0;
+                }
+                return -1;
+            }
             var precioBase = paqueteBase.precio;
-            var precioReal = paqueteNuevo.meses * precioBase;
-            return ((paqueteNuevo.precio * precioReal) / precioBase);
+            var precioReal = meses * precioBase;
+            return Math.Round((100 - ((precio * 100) / precioReal)), 2);
         }
 
         [HttpPost]
@@ -1205,38 +1287,48 @@ namespace VendeAgroWeb.Controllers.Administrador
 
                         if (paquete != null)
                         {
-                             
-                            ModelState.AddModelError("", paquete.meses == model.Meses ? 
-                                "Error ya existe un paquete con esa duración." : 
+
+                            ModelState.AddModelError("", paquete.meses == model.Meses ?
+                                "Error ya existe un paquete con esa duración." :
                                 "Error ya existe un paquete con ese nombre.");
                             estado = false;
                         }
                         else
                         {
                             var paqueteBaseFlag = false;
-                            var paqueteBase = (Paquete)null;
-                            if (model.Meses == 1) {
-                                paqueteBase = _dbContext.Paquetes.Where(p => p.paqueteBase == true).FirstOrDefault();
+                            var paqueteBase = _dbContext.Paquetes.Where(p => p.paqueteBase == true).FirstOrDefault();
+                            if (model.Meses == 1)
+                            {
                                 paqueteBaseFlag = true;
                             }
-                            if (paqueteBase != null)
+                            if (paqueteBase != null && paqueteBaseFlag == true)
                             {
                                 ModelState.AddModelError("", "Error ya existe un paquete base (con duración de 1 mes).");
                                 estado = false;
                             }
                             else
                             {
-                                _dbContext.Paquetes.Add(new Paquete
+                                var ahorro = calculaAhorro(paqueteBase, model.Meses, model.Precio);
+                                if (ahorro == -1)
                                 {
-                                    nombre = model.Nombre,
-                                    descripcion = model.Descripcion,
-                                    precio = model.Precio,
-                                    activo = true,
-                                    meses = model.Meses,
-                                    fechaModificacion = DateTime.Now,
-                                    paqueteBase = paqueteBaseFlag
-                                });
-                                _dbContext.SaveChanges();
+                                    ModelState.AddModelError("", "Error no pueden existir otros paquetes si no existe un paquete base.");
+                                    estado = false;
+                                }
+                                else
+                                {
+                                    _dbContext.Paquetes.Add(new Paquete
+                                    {
+                                        nombre = model.Nombre,
+                                        descripcion = model.Descripcion,
+                                        precio = model.Precio,
+                                        activo = true,
+                                        meses = model.Meses,
+                                        fechaModificacion = DateTime.Now,
+                                        paqueteBase = paqueteBaseFlag,
+                                        porcentajeAhorro = ahorro
+                                    });
+                                    _dbContext.SaveChanges();
+                                }
                             }
                         }
 

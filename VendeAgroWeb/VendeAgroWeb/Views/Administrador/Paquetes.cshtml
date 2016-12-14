@@ -19,6 +19,7 @@
                             <th>Meses</th>
                             <th>Precio</th>
                             <th>Descripción</th>
+                            <th>Ahorro</th>
                             <th>Última modificación</th>
                             <th></th>
                             <th></th>
@@ -31,7 +32,9 @@
                                 <tr>
                                     <td>@item.Nombre</td>
                                     <td style="text-align:center">@item.Meses</td>
+                                    <td>@item.Precio</td>
                                     <td>@item.Descripcion</td>
+                                    <td>@item.Ahorro<span>%</span></td>
                                     <td style="text-align:center">@item.FechaModificacion.ToString("dd-MM-yyyy")</td>
                                     <td><a class="btn btn-default btn-9-caracteres" href="/Administrador/ModificarPaquete?id=@item.Id">modificar</a></td>
                                     @{

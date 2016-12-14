@@ -17,7 +17,7 @@ namespace VendeAgroWeb.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Paquete()
         {
-            this.Anuncio_Paquete = new HashSet<Anuncio_Paquete>();
+            this.Anuncios = new HashSet<Anuncio>();
             this.Conekta_Paquete = new HashSet<Conekta_Paquete>();
             this.Pago_Concepto = new HashSet<Pago_Concepto>();
         }
@@ -33,7 +33,7 @@ namespace VendeAgroWeb.Models
         public double porcentajeAhorro { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Anuncio_Paquete> Anuncio_Paquete { get; set; }
+        public virtual ICollection<Anuncio> Anuncios { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Conekta_Paquete> Conekta_Paquete { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

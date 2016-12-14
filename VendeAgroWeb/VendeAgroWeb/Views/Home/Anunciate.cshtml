@@ -5,51 +5,68 @@
 }
 
 <div class="anunciate-container">
-    <section class="anunciate-mision-container">>
-    <div class="col-sm-offset-2 col-sm-8 anunciate-texto-container">
-        <p>Sobre<span><img src="~/img/logoHorizontalAnunciate.png" class="anunciate-img"/><br></span>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum</p>
-    </div>
-    <div class="col-sm-offset-2 col-sm-8 planes-texto-container">
-        <div class="row">
-            <a href="#paquetes">Planes</a>
+    <section class="anunciate-mision-container">
+        >
+        <div class="col-sm-offset-2 col-sm-8 anunciate-texto-container">
+            <p>Sobre<span><img src="~/img/logoHorizontalAnunciate.png" class="anunciate-img" /><br></span>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum</p>
         </div>
-        <div class="row">
-            <a href="#paquetes"><span class="glyphicon glyphicon-chevron-down"></span></a>
+        <div class="col-sm-offset-2 col-sm-8 planes-texto-container">
+            <div class="row">
+                <a href="#paquetes">Planes</a>
+            </div>
+            <div class="row">
+                <a href="#paquetes"><span class="glyphicon glyphicon-chevron-down"></span></a>
+            </div>
         </div>
-    </div>
-    <div class="footer-dummy menu-grad">
-    </div>
+        <div class="footer-dummy menu-grad">
+        </div>
     </section>
     <section class="anunciate-paquetes-container" id="paquetes">
         <div class="anunciate-wrapper">
-            <div class="anunciate-recados-container" style="min-height: 330px">
-                <div class="col-sm-offset-3 col-sm-6">
-
+            <div class="col-sm-offset-2 col-sm-8 anunciate-cont @(Model.Paquetes.Count() <= 4 ? "anunciate-recados-margen-grande" : "anunciate-recados-margen-chico")">
+                <div class="row bases-container">
                     @{
-                        foreach (var paquete in Model.Paquetes)
-                        {
-                            <div class="col-sm-4 col-md-3">
-                                <div class="base">
-                                    <div class="degradado-verde"></div>
-                                    <div class="anunciate-recados-texto" style="color:#04612d">
-                                        <h2>@paquete.Meses</h2>
-                                        <ul>
-                                            <li>@paquete.Nombre</li>
-                                            <li>@paquete.Descripcion</li>
-                                        </ul>
-                                        @{
-                                            if (@paquete.Ahorro > 0)
-                                            {
-                                                <h3>Ahorra<span>@paquete.Ahorro</span>%</h3>
+                        int cont = 1;
+                    }
 
-                                            }
-                                        } 
-                                        <h3>@paquete.Precio</h3>
-                                        <button class="btn btn-default contratar-boton menu-grad" style="margin-top:55px;" type="button">Contratar</button>
-                                    </div>
+                    @foreach (var item in Model.Paquetes)
+                    {
+                        <div class="col-sm-4 col-md-3 contenedor-base">
+                            <div class="base">
+                                <div class="@(cont==1 ? "degradado-verde": (cont==2 ? "degradado-rojo": "degradado-naranja"))"></div>
+                                <div class="anunciate-recados-texto @(cont==1 ? "anunciate-recados-verde": (cont==2 ? "anunciate-recados-rojo": "anunciate-recados-naranja"))">
+                                    @{
+                                        if (@item.Meses == 1)
+                                        {
+                                            <h2>@item.Meses<span> MES</span></h2>
+
+                                        }
+                                        else
+                                        {
+                                            <h2>@item.Meses<span> MESES</span></h2>
+                                        }
+                                    }
+                                    <ul style="margin-top: 15px; margin-bottom: 15px;">
+                                        <li>@item.Nombre</li>
+                                        <li>@item.Descripcion</li>
+                                    </ul>
+                                    @{
+                                        if (@item.Ahorro > 0)
+                                        {
+                                            <h3>Ahorra <span>@item.Ahorro</span>%</h3>
+
+                                        }
+                                    }
+                                    <h3><span>$</span>@item.Precio</h3>
+                                    <button class="btn btn-default contratar-boton menu-grad" href="/Home/BeneficiosExtra" style="margin-top:55px;" type="button">Contratar</button>
                                 </div>
                             </div>
-                          }
+                        </div>
+                        cont++;
+                        if (cont == 4)
+                        {
+                            cont = 1;
+                        }
                     }
                 </div>
             </div>
@@ -63,5 +80,23 @@
     $('.body-content').attr(
         'style', 'padding-left:0px !important; padding-right: 0px !important; padding-bottom: 80px !important; padding-top: 0px !important; margin-left: 0px !important; margin-right: 0px !important; width: 100% !important;'
     );
+
+    $(document).ready(function () {
+        $(window).resize(resize);
+        resize();
+    });
+
+    function resize() {
+        if ($(window).width() >= 992) {
+            $('.anunciate-cont').removeClass('anunciate-recados-margen-chico');
+            $('.anunciate-cont').addClass('anunciate-recados-margen-grande');
+            $('.contenedor-base').css("min-height", "380px");
+        }
+        else {
+            $('.anunciate-cont').removeClass('anunciate-recados-margen-grande');
+            $('.anunciate-cont').addClass('anunciate-recados-margen-chico');
+            $('.contenedor-base').css("min-height", "320px");
+        }
+    }
 
 </script>

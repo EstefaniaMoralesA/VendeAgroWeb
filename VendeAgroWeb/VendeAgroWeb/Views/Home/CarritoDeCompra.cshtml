@@ -30,74 +30,6 @@
                 </div>
             </div>
         </div>
-        <div style="display:none;">
-            <div class="row carrito-de-compra-titulo1">
-                <h2>1. Agrega beneficios a tu paquete</h2>
-            </div>
-            <div class="row beneficios-container">
-                <h2>Mejora tu anuncio</h2>
-                <hr />
-                <div class="row">
-                    <div class="col-sm-9 check-container">
-                        <div class="checkbox check-beneficio">
-                            <label>
-                                <input type="checkbox">Agrega 5 fotos más a cada anuncio dentro de tu paquete
-                            </label>
-                        </div>
-                    </div>
-                    <div class="col-sm-3 check-container">
-                        <p class="texto-beneficio">MXN31.99</p>
-                    </div>
-                </div>
-                <hr />
-                <div class="row">
-                    <div class="col-sm-9 check-container">
-                        <div class="checkbox check-beneficio">
-                            <label>
-                                <input type="checkbox">Agrega 10 fotos más a cada anuncio dentro de tu paquete
-                            </label>
-                        </div>
-                    </div>
-                    <div class="col-sm-3 check-container">
-                        <p class="texto-beneficio">MXN56.99</p>
-                    </div>
-                </div>
-                <hr />
-                <div class="row">
-                    <div class="col-sm-9 check-container">
-                        <div class="checkbox check-beneficio">
-                            <label>
-                                <input type="checkbox">Agrega un video a cada anuncio dentro de tu paquete
-                            </label>
-                        </div>
-                    </div>
-                    <div class="col-sm-3 check-container">
-                        <p class="texto-beneficio">MXN56.99</p>
-                    </div>
-                </div>
-                <hr />
-                <h2 style="margin-top: 40px;">Aumenta tus clientes</h2>
-                <hr />
-                <div class="row">
-                    <div class="col-sm-9 check-container">
-                        <div class="checkbox check-beneficio" style="margin-top: 0px;">
-                            <label>
-                                <input type="checkbox">Haz que tus anuncios aparezcan en la sección</br> "Ofertas del Día"
-                            </label>
-                        </div>
-                    </div>
-                    <div class="col-sm-3 check-container">
-                        <p class="texto-beneficio">MXN120.99</p>
-                    </div>
-                </div>
-                <hr />
-            </div>
-            <div style="margin-top: 30px;">
-                <a class="btn btn-default btn-atras pagar-boton atras-pago-boton">Cancelar</a>
-                <a class="btn btn-default botones-grad pagar-boton continuar-pago-boton">Continuar</a>
-
-            </div>
-        </div>
         <div id="paso1" style="display:none;">
             <div class="row carrito-de-compra-titulo1">
                 <h2>1. Resumen del Pedido</h2>
@@ -232,6 +164,9 @@
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
 }
+
+@Scripts.Render("~/bundles/jquery")
+
 <script type="text/javascript" src="https://conektaapi.s3.amazonaws.com/v0.3.2/js/conekta.js"></script>
 <script>
     $(window).ready(function () {

@@ -225,9 +225,6 @@
     <Compile Include="Models\Anuncio_Beneficio.cs">
       <DependentUpon>DatabaseModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\Anuncio_Paquete.cs">
-      <DependentUpon>DatabaseModel.tt</DependentUpon>
-    </Compile>
     <Compile Include="Models\Banner.cs">
       <DependentUpon>DatabaseModel.tt</DependentUpon>
     </Compile>
@@ -314,9 +311,10 @@
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
+    <Content Include="img\banner1.jpg" />
+    <Content Include="img\bannerLat2.jpg" />
+    <Content Include="img\banner.jpg" />
     <Content Include="img\loader.gif" />
-    <Content Include="img\banner.png" />
-    <Content Include="img\bannerLat.jpg" />
     <Content Include="img\caballo.jpg" />
     <Content Include="img\caballoespanol.jpg" />
     <Content Include="img\camera-icon.gif" />
@@ -449,6 +447,7 @@
     <Content Include="Views\Portal\CrearAnuncio.cshtml" />
     <Content Include="Views\Home\CarritoDeCompra.cshtml" />
     <Content Include="Views\Shared\_OfertasPartial.cshtml" />
+    <Content Include="Views\Home\BeneficiosExtra.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

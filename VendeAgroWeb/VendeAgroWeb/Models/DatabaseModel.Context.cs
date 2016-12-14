@@ -27,7 +27,6 @@ namespace VendeAgroWeb.Models
     
         public virtual DbSet<Anuncio> Anuncios { get; set; }
         public virtual DbSet<Anuncio_Beneficio> Anuncio_Beneficio { get; set; }
-        public virtual DbSet<Anuncio_Paquete> Anuncio_Paquete { get; set; }
         public virtual DbSet<Banner> Banners { get; set; }
         public virtual DbSet<Beneficio> Beneficios { get; set; }
         public virtual DbSet<Categoria> Categorias { get; set; }

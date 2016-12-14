@@ -28,7 +28,7 @@ namespace VendeAgroWeb.Controllers.Home
         public async Task<ActionResult> Anunciate()
         {
             AnunciateViewModel model = new AnunciateViewModel(await ObtenerPaquetes());
-            return View();
+            return View(model);
         }
 
         public ActionResult Contacto()
@@ -169,7 +169,8 @@ namespace VendeAgroWeb.Controllers.Home
                     List<PaginaPaqueteViewModel> lista = new List<PaginaPaqueteViewModel>();
                     var paquetes = _dbContext.Paquetes.Where(p => p.activo == true);
 
-                    foreach (var paquete in paquetes) {
+                    foreach (var item in paquetes) {
+                        lista.Add(new PaginaPaqueteViewModel(item.id, item.nombre, item.meses, item.precio, item.descripcion, item.porcentajeAhorro));
                     }
 
                     _dbContext.Database.Connection.Close();
