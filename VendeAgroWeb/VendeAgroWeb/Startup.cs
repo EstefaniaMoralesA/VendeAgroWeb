@@ -10,6 +10,7 @@ namespace VendeAgroWeb
     public partial class Startup
     {
         private static AplicacionUsuariosManager _usuariosManager;
+        private static CarritoDeCompra _carrito;
         private static ServicioEmail _servicioEmail;
         private static string _baseUrl;
         public void Configuration(IAppBuilder app)
@@ -28,6 +29,10 @@ namespace VendeAgroWeb
         public static AplicacionUsuariosManager GetAplicacionUsuariosManager()
         {
             return _usuariosManager;
+        }
+
+        public static CarritoDeCompra GetCarritoDeCompra() {
+            return _carrito;
         }
 
         public static ServicioEmail GetServicioEmail()

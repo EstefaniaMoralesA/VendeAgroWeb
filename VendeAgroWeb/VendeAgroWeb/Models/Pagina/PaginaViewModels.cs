@@ -68,6 +68,32 @@ namespace VendeAgroWeb.Models.Pagina
         }
     }
 
+    public class BeneficiosExtraViewModel {
+        private PaginaPaqueteViewModel _paquete;
+        private ICollection<PaginaBeneficioViewModel> _beneficios;
+
+        public ICollection<PaginaBeneficioViewModel> Beneficios
+        {
+            get
+            {
+                return _beneficios;
+            }
+        }
+
+        public PaginaPaqueteViewModel Paquete
+        {
+            get
+            {
+                return _paquete;
+            }
+        }
+
+        public BeneficiosExtraViewModel(PaginaPaqueteViewModel paquete, ICollection<PaginaBeneficioViewModel> beneficios) {
+            _paquete = paquete;
+            _beneficios = beneficios;
+        }
+    }
+
     public class ContactoViewModel
     {
         [Required(ErrorMessage = "Campo requerido")]
@@ -192,6 +218,62 @@ namespace VendeAgroWeb.Models.Pagina
             _ciudad = ciudad;
             _clicks = clicks ?? 0;
             _fotoPrincipal = fotoPrincipal;
+        }
+    }
+
+    public class PaginaBeneficioViewModel {
+        private int _id;
+        private string _descripcion;
+        private double _precio;
+        private int _tipo;
+        private int? _numero;
+
+        public int Id
+        {
+            get
+            {
+                return _id;
+            }
+        }
+
+        public string Descripcion
+        {
+            get
+            {
+                return _descripcion;
+            }
+        }
+
+        public double Precio
+        {
+            get
+            {
+                return _precio;
+            }
+        }
+
+        public int Tipo
+        {
+            get
+            {
+                return _tipo;
+            }
+        }
+
+        public int? Numero
+        {
+            get
+            {
+                return _numero;
+            }
+        }
+
+        public PaginaBeneficioViewModel(int id, string descripcion, double precio, int tipo, int? numero) {
+            _id = id;
+            _descripcion = descripcion;
+            _precio = precio;
+            _tipo = tipo;
+            _numero = numero;
         }
     }
 

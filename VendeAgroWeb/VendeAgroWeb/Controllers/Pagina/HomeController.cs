@@ -36,6 +36,60 @@ namespace VendeAgroWeb.Controllers.Home
             return View();
         }
 
+        public async Task<ActionResult> BeneficiosExtra(int? id)
+        {
+            BeneficiosExtraViewModel model = new BeneficiosExtraViewModel(await ObtenerPaquete(id), await ObtenerBeneficios());
+            return View(model);
+        }
+
+        public async Task<PaginaPaqueteViewModel> ObtenerPaquete(int? id)
+        {
+            return await Task.Run(() =>
+            {
+                if (id == null) {
+                    return null;
+                }
+                using (var _dbContext = new MercampoEntities())
+                {
+                    Startup.OpenDatabaseConnection(_dbContext);
+                    if (_dbContext.Database.Connection.State != ConnectionState.Open)
+                    {
+                        return null;
+                    }
+
+                    var paquete = _dbContext.Paquetes.Where(p => p.id == id).FirstOrDefault();
+                    PaginaPaqueteViewModel paqueteModel = new PaginaPaqueteViewModel(paquete.id, paquete.nombre, paquete.meses, paquete.precio, paquete.descripcion, paquete.porcentajeAhorro);
+
+                    _dbContext.Database.Connection.Close();
+                    return paqueteModel;
+                }
+            });
+        }
+
+        public async Task<ICollection<PaginaBeneficioViewModel>> ObtenerBeneficios(){
+            return await Task.Run(() =>
+            {
+                using (var _dbContext = new MercampoEntities())
+                {
+                    Startup.OpenDatabaseConnection(_dbContext);
+                    if (_dbContext.Database.Connection.State != ConnectionState.Open)
+                    {
+                        return null;
+                    }
+
+                    List<PaginaBeneficioViewModel> lista = new List<PaginaBeneficioViewModel>();
+                    var beneficios = _dbContext.Beneficios;
+
+                    foreach (var item in beneficios) {
+                        lista.Add(new PaginaBeneficioViewModel(item.id, item.descripcion, item.precio, item.tipo, item.numero));
+                    }
+
+                    _dbContext.Database.Connection.Close();
+                    return lista;
+                }
+            });
+        }
+
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
