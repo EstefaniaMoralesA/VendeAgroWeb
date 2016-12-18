@@ -16,28 +16,129 @@
         </div>
     </div>
     <div class="row beneficios-container">
-
         @{
+            var cont = 0;
             foreach (var item in Model.Beneficios)
             {
                 <div class="row">
                     <div class="col-sm-9 check-container">
                         <div class="checkbox check-beneficio">
                             <label>
-                                <input type="checkbox">@item.Descripcion
+                                <input id="beneficio-@cont" data-id="@item.Id" data-precio="@item.Precio" type="checkbox">@item.Descripcion
                             </label>
                         </div>
                     </div>
                     <div class="col-sm-3 check-container">
                         <p class="texto-beneficio"><span>$</span>@item.Precio</p>
                     </div>
+                    <span id="beneficio-tipo" style="display: none;">@item.Tipo</span>
                 </div>
                 <hr />
+                cont++;
             }
         }
     </div>
+    <div class="row total-beneficios-extra">
+        <a class="btn beneficios-boton ir-al-carrito continuar-pedido" data-id="@Model.Paquete.Id">Ir al carrito</a>
+        <h2><span>$</span><span id="total-con-beneficios">@Model.TotalCarrito</span></h2>
+        <h2 class="total-del-pedido">Total del pedido</h2>
+    </div>
     <div style="margin-top: 30px;">
-        <a class="btn botones-grad beneficios-boton" href="/Home/CarritoDeCompra">Terminar Pedido</a>
-        <a class="btn seguir-comprando-boton beneficios-boton" href="/Home/Anunciate">Seguir Comprando</a>
+        <a  data-id="@Model.Paquete.Id" class="btn btn-default botones-grad beneficios-boton continuar-pedido">Terminar Pedido</a>
+        <a id="seguir-comprando"  data-id="@Model.Paquete.Id" class="btn seguir-comprando-boton beneficios-boton">Seguir Comprando</a>
     </div>
 </div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
+
+@Scripts.Render("~/bundles/jquery")
+
+<script>
+
+    var beneficios = [-1,-1,-1];
+
+    $('#beneficio-0').click(function () {
+        if ($(this).is(':checked')) {
+            calculaTotalSuma($(this).data('precio'));
+            beneficios[0] = $(this).data('id');
+        } else {
+            calculaTotalResta($(this).data('precio'));
+            beneficios[0] = -1;
+        }
+    });
+
+    $('#beneficio-1').click(function () {
+        if ($(this).is(':checked')) {
+            calculaTotalSuma($(this).data('precio'));
+            beneficios[1] = $(this).data('id');
+        } else {
+            calculaTotalResta($(this).data('precio'));
+            beneficios[1] = -1;
+        }
+    });
+
+    $('#beneficio-2').click(function () {
+        if ($(this).is(':checked')) {
+            calculaTotalSuma($(this).data('precio'));
+            beneficios[2] = $(this).data('id');
+        } else {
+            calculaTotalResta($(this).data('precio'));
+            beneficios[2] = -1;
+        }
+    });
+
+    function calculaTotalSuma(precio){
+        var total = parseFloat(document.getElementById('total-con-beneficios').innerHTML);
+        total += parseFloat(precio);
+        document.getElementById('total-con-beneficios').innerHTML = total;
+    }
+
+    function calculaTotalResta(precio) {
+        var total = parseFloat(document.getElementById('total-con-beneficios').innerHTML);
+        total -= parseFloat(precio);
+        document.getElementById('total-con-beneficios').innerHTML = total;
+    }
+
+    $('.continuar-pedido').click(function () {
+        var id = $(this).data('id');
+        $.ajax({
+            type: "POST",
+            url: "/Home/InsertaBeneficiosEnCarrito?index=" + id,
+            data: {"json": JSON.stringify(beneficios)},
+            success: function (result) {
+                if (result) {
+                    window.location.href = 'CarritoDeCompra';
+                }
+                else {
+                    $('.error-row').show(' ');
+                }
+            },
+            error: function (msg) {
+                console.log(msg);
+            }
+        });
+    });
+
+    $('#seguir-comprando').click(function () {
+        var id = $(this).data('id');
+        $.ajax({
+            type: "POST",
+            url: "/Home/InsertaBeneficiosEnCarrito?index=" + id,
+            data: { "json": JSON.stringify(beneficios) },
+            success: function (result) {
+                if (result) {
+                    window.location.href = 'Anunciate';
+                }
+                else {
+                    $('.error-row').show(' ');
+                }
+            },
+            error: function (msg) {
+                console.log(msg);
+            }
+        });
+    });
+
+</script>

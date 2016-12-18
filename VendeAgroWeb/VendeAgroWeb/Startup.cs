@@ -17,6 +17,7 @@ namespace VendeAgroWeb
         {
             ConfigureAuth(app);
             _usuariosManager = new AplicacionUsuariosManager();
+            _carrito = new CarritoDeCompra();
             _servicioEmail = new ServicioEmail();
             _baseUrl = "http://localhost:50827";
         }

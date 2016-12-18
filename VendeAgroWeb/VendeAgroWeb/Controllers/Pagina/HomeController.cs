@@ -6,6 +6,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Script.Serialization;
 using VendeAgroWeb.Models;
 using VendeAgroWeb.Models.Administrador;
 using VendeAgroWeb.Models.Pagina;
@@ -38,8 +39,49 @@ namespace VendeAgroWeb.Controllers.Home
 
         public async Task<ActionResult> BeneficiosExtra(int? id)
         {
-            BeneficiosExtraViewModel model = new BeneficiosExtraViewModel(await ObtenerPaquete(id), await ObtenerBeneficios());
+            var paquete = await ObtenerPaquete(id);
+            var carrito = Startup.GetCarritoDeCompra();
+            var paqueteCarrito = carrito.insertarPaqueteEnCarrito(carrito.Paquetes.Count(), paquete.Nombre, paquete.Meses, paquete.Precio);
+            BeneficiosExtraViewModel model = new BeneficiosExtraViewModel(paqueteCarrito, await ObtenerBeneficios(), carrito.TotalCarrito);
             return View(model);
+        }
+
+        [HttpPost]
+        public async Task<bool> InsertaBeneficiosEnCarrito(int index, string json)
+        {
+            var beneficios =  new JavaScriptSerializer().Deserialize<List<int>>(json);
+            var paquete = Startup.GetCarritoDeCompra().Paquetes.ElementAt(index);
+            foreach (var item in beneficios) {
+                if (item == -1) {
+                    continue;
+                }
+                var beneficio = await ObtenerBeneficio(item);
+                if (beneficio == null) {
+                    return false;
+                }
+                paquete.agregaBeneficioAPaquete(beneficio);
+            }
+            return true;
+        }
+    
+        public async Task<BeneficioCarrito> ObtenerBeneficio(int id)
+        {
+            return await Task.Run(() =>
+            {
+                using (var _dbContext = new MercampoEntities())
+                {
+                    Startup.OpenDatabaseConnection(_dbContext);
+                    if (_dbContext.Database.Connection.State != ConnectionState.Open)
+                    {
+                        return null;
+                    }
+
+                    var beneficio = _dbContext.Beneficios.Where(b => b.id == id).FirstOrDefault();
+
+                    _dbContext.Database.Connection.Close();
+                    return new BeneficioCarrito(beneficio.id, beneficio.descripcion, beneficio.precio, beneficio.tipo, beneficio.numero);
+                }
+            });
         }
 
         public async Task<PaginaPaqueteViewModel> ObtenerPaquete(int? id)
@@ -105,9 +147,25 @@ namespace VendeAgroWeb.Controllers.Home
             return View(model);
         }
 
+        public ActionResult EliminaPaqueteDeCarrito(int index) {
+            if (Startup.GetCarritoDeCompra().borraPaqueteDeCarrito(index)) {
+                return RedirectToAction("CarritoDeCompra");
+            }
+            return RedirectToAction("CarritoDeCompra");
+        }
+
+        public ActionResult EliminaBeneficioDePaquete(int index, int id)
+        {
+            if (Startup.GetCarritoDeCompra().Paquetes.ElementAt(index).borraBeneficioDePaquete(id))
+            {
+                return RedirectToAction("CarritoDeCompra");
+            }
+            return RedirectToAction("CarritoDeCompra");
+        }
+
         public ActionResult CarritoDeCompra()
         {
-            return View();
+            return View(Startup.GetCarritoDeCompra());
         }
 
         public async Task<ActionResult> AnunciosDestacadosPartial()

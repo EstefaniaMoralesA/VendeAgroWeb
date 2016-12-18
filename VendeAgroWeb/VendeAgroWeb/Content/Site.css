@@ -1409,7 +1409,7 @@ div.social-wrap button {
     }
 
         .borrar-carrito a img {
-            width: 30px !important;
+            width: 22px !important;
         }
 
 .boton-pagar-container {
@@ -1499,7 +1499,7 @@ div.social-wrap button {
     font-weight: bolder;
     font-size: 24px;
     color: #abc114;
-    margin-bottom: 20px;
+    margin-bottom: 5px;
 }
 
 #paso2 h2 {
@@ -1874,6 +1874,10 @@ div.social-wrap button {
     border-color: #04612d;
 }
 
+.table-carrito-data{
+    border-top: 0px !important;
+}
+
 .carrito-de-compra-titulo-total h2 {
     font-size: 30px;
     font-family: generalFont !important;
@@ -2000,6 +2004,47 @@ hr {
     .paquete-por-comprar-texto h2 {
         margin-top: 10px;
     }
+
+.total-beneficios-extra {
+    margin-left: 0px;
+    margin-right: 0px;
+}
+
+    .total-beneficios-extra h2 {
+        font-family: generalFont;
+        font-weight: bolder;
+        color: #abc114;
+        float: right;
+        font-size: 25px;
+    }
+
+#total-con-beneficios {
+    margin-left: 20px;
+    margin-right: 20px;
+}
+
+.ir-al-carrito {
+    margin-top: 12px;
+    font-size: 16px;
+    padding-left: 20px;
+    padding-right: 20px;
+    background-color: #efefef;
+    color: black; 
+}
+
+    .ir-al-carrito:hover {
+        color: #b5b5b5; 
+    }
+
+.beneficio-carrito-container {
+    border: none;
+}
+
+.beneficio-carrito-texto {
+    font-size: 20px;
+    color: black;
+    margin-bottom: 0px;
+}
 
 @media (max-width: 1200px) {
     .base {

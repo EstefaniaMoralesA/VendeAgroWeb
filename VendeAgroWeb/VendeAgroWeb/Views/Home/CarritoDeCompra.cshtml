@@ -1,4 +1,4 @@
-﻿@model VendeAgroWeb.Models.Pagina.CarritoDeCompraViewModel
+﻿@model CarritoDeCompra
 
 @{
     ViewBag.Title = "Carrito de Compra";
@@ -39,39 +39,61 @@
                     <thead class="botones-grad">
                         <tr>
                             <th class="tabla-carrito-titulo">Nombre</th>
-                            <th class="tabla-carrito-titulo"></th>
+                            <th class="tabla-carrito-titulo" style="min-width: 70px;"></th>
                             <th class="tabla-carrito-titulo">Precio</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr class="tabla-carrito-container">
-                            <td class="paquete-carrito">
-                                <h2>6 meses</h2>
-                                <ul>
-                                    <li>titulo</li>
-                                    <li>descripcion</li>
-                                    <li>fotos</li>
-                                </ul>
-                            </td>
-                            <td class="borrar-carrito">
-                                <a><img style="width:100%;" src="~/img/delete.png" /></a>
-                            </td>
-                            <td class="precio-carrito td-precio-carrito">
-                                <p>$6000</p>
-                            </td>
-                        </tr>
+                        @{
+                            int cont = 0;
+                            foreach (var item in Model.Paquetes)
+                            {
+                                var numBeneficios = item.Beneficios.Count();
+                                <tr class="tabla-carrito-container @(numBeneficios > 0 ? "beneficio-carrito-container" : "")">
+                                    <td style="display: none">cont</td>
+                                    <td class="paquete-carrito table-carrito-data">
+                                        <h2>@item.Meses<span> @(item.Meses == 1 ? "MES" : "MESES")</span></h2>
+                                        <ul>
+                                            <li>@item.Nombre</li>
+                                        </ul>
+                                    </td>
+                                    <td class="borrar-carrito table-carrito-data">
+                                        <a href="EliminaPaqueteDeCarrito?index=@cont"><img style="width:100%;" src="~/img/delete.png" /></a>
+                                    </td>
+                                    <td class="precio-carrito td-precio-carrito table-carrito-data">
+                                        <p><span>$</span>@item.Precio</p>
+                                    </td>
+                                </tr>
+
+                                foreach (BeneficioCarrito i in item.Beneficios)
+                                {
+                                    <tr class="@(numBeneficios <= 1 ? "tabla-carrito-container" : "beneficio-carrito-container")">
+                                        <td class="paquete-carrito table-carrito-data">
+                                            <p class="beneficio-carrito-texto">@i.Descripcion</p>
+                                        </td>
+                                        <td class="borrar-carrito table-carrito-data">
+                                            <a href="EliminaBeneficioDePaquete?index=@cont&id=@i.Id"><img style="width:100%;" src="~/img/delete.png" /></a>
+                                        </td>
+                                        <td class="precio-carrito td-precio-carrito table-carrito-data">
+                                            <p><span>$</span>@i.Precio</p>
+                                        </td>
+                                    </tr>
+                                    numBeneficios--;
+                                }
+                                cont++;
+                            }
+                        }
                         <tr>
                             <td></td>
                             <td></td>
                             <td class="carrito-de-compra-titulo-total td-precio-carrito">
-                                <h2>$6000</h2>
+                                <h2><span>$</span>@Model.TotalCarrito</h2>
                             </td>
                         </tr>
                     </tbody>
                 </table>
             </div>
             <div style="margin-top: 30px;">
-                <a class="btn btn-default btn-atras pagar-boton atras-pago-boton" href="/Home/Index" id="paso1-atras">Atrás</a>
                 <a class="btn btn-default botones-grad pagar-boton continuar-pago-boton" id="paso1-continuar">Continuar</a>
             </div>
         </div>
@@ -148,17 +170,17 @@
         display: none;
     }
 
-    .procesando-pago h3 {
-        width: 100%;
-        text-align: center;
-        font-family: generalFont;
-        font-weight: bolder;
-        color: #abc114;
-    }
+        .procesando-pago h3 {
+            width: 100%;
+            text-align: center;
+            font-family: generalFont;
+            font-weight: bolder;
+            color: #abc114;
+        }
 
-    .procesando-pago .proceso-pago-contenido{
-        padding-top: 20px;
-    }
+        .procesando-pago .proceso-pago-contenido {
+            padding-top: 20px;
+        }
 </style>
 
 @section Scripts {

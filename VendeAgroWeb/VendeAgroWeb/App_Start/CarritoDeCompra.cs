@@ -8,15 +8,51 @@ using System.Web.Http;
 namespace VendeAgroWeb
 {
     public class CarritoDeCompra
-    { 
-        public ICollection<PaqueteCarrito> Paquetes { get; private set; }
+    {
+        private double _totalCarrito;
+        
+        public CarritoDeCompra() {
+            if (Paquetes == null)
+            {
+                Paquetes = new List<PaqueteCarrito>();
+            }
+        }
 
-        public double TotalCarrito{ get; set; }
+        public List<PaqueteCarrito> Paquetes { get; private set; }
 
+        public double TotalCarrito
+        {
+            get
+            {
+                return getTotalCarrito();
+            }
+        }
 
-        public void insertarPaqueteEnCarrito(int id, string nombre, int meses, double precio) {
-            Paquetes.Add(new PaqueteCarrito(id, nombre, meses, precio));
-            TotalCarrito += precio;
+        public double getTotalCarrito() {
+            double total = 0.0;
+            foreach (var item in Paquetes) {
+                total += item.Precio;
+                total += item.TotalBeneficios;
+            }
+            return total;
+        }
+
+        public PaqueteCarrito insertarPaqueteEnCarrito(int id, string nombre, int meses, double precio) {
+            var paquete = new PaqueteCarrito(id, nombre, meses, precio);
+            Paquetes.Add(paquete);
+            return paquete;
+        }
+
+        public bool borraPaqueteDeCarrito(int index) {
+            var paquete = Paquetes.ElementAt(index);
+            if (paquete == null)
+            {
+                return false;
+            }
+            else {
+                Paquetes.Remove(paquete);
+            }
+            return true;
         }
 
     }
@@ -27,8 +63,6 @@ namespace VendeAgroWeb
         private string _nombre;
         private int _meses;
         private double _precio;
-        private int _totalBeneficios;
-        private ICollection<BeneficioCarrito> _beneficios;
 
         public int Id
         {
@@ -62,20 +96,28 @@ namespace VendeAgroWeb
             }
         }
 
-        public ICollection<BeneficioCarrito> Beneficios
-        {
-            get
-            {
-                return _beneficios;
-            }
+        public List<BeneficioCarrito> Beneficios { get; private set; }
+
+        public double TotalBeneficios { get;  private set;}
+
+        public void agregaBeneficioAPaquete(BeneficioCarrito beneficio) {
+            Beneficios.Add(beneficio);
+            TotalBeneficios += beneficio.Precio;
         }
 
-        public int TotalBeneficios
+        public bool borraBeneficioDePaquete(int id)
         {
-            get
+            var beneficio = Beneficios.Where(b=> b.Id == id).FirstOrDefault();
+            if (beneficio == null)
             {
-                return _totalBeneficios;
+                return false;
             }
+            else
+            {
+                Beneficios.Remove(beneficio);
+                TotalBeneficios -= beneficio.Precio;
+            }
+            return true;
         }
 
         public PaqueteCarrito(int id, string nombre, int meses, double precio) {
@@ -83,15 +125,8 @@ namespace VendeAgroWeb
             _nombre = nombre;
             _meses = meses;
             _precio = precio;
-        }
+            Beneficios = new List<BeneficioCarrito>();
 
-        public PaqueteCarrito(int id, string nombre, int meses, double precio, ICollection<BeneficioCarrito> beneficios)
-        {
-            _id = id;
-            _nombre = nombre;
-            _meses = meses;
-            _precio = precio;
-            _beneficios = beneficios;
         }
     }
 

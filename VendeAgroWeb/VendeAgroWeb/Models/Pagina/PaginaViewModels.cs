@@ -69,7 +69,8 @@ namespace VendeAgroWeb.Models.Pagina
     }
 
     public class BeneficiosExtraViewModel {
-        private PaginaPaqueteViewModel _paquete;
+        private double _totalCarrito;
+        private PaqueteCarrito _paquete;
         private ICollection<PaginaBeneficioViewModel> _beneficios;
 
         public ICollection<PaginaBeneficioViewModel> Beneficios
@@ -80,7 +81,7 @@ namespace VendeAgroWeb.Models.Pagina
             }
         }
 
-        public PaginaPaqueteViewModel Paquete
+        public PaqueteCarrito Paquete
         {
             get
             {
@@ -88,9 +89,18 @@ namespace VendeAgroWeb.Models.Pagina
             }
         }
 
-        public BeneficiosExtraViewModel(PaginaPaqueteViewModel paquete, ICollection<PaginaBeneficioViewModel> beneficios) {
+        public double TotalCarrito
+        {
+            get
+            {
+                return _totalCarrito;
+            }
+        }
+
+        public BeneficiosExtraViewModel(PaqueteCarrito paquete, ICollection<PaginaBeneficioViewModel> beneficios, double totalCarrito) {
             _paquete = paquete;
             _beneficios = beneficios;
+            _totalCarrito = totalCarrito;
         }
     }
 
