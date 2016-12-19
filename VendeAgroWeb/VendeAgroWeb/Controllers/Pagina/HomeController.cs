@@ -15,7 +15,7 @@ namespace VendeAgroWeb.Controllers.Home
 {
 
     public class HomeController : Controller
-    {           
+    {
         public ActionResult Index()
         {
             return View();
@@ -88,7 +88,8 @@ namespace VendeAgroWeb.Controllers.Home
         {
             return await Task.Run(() =>
             {
-                if (id == null) {
+                if (id == null)
+                {
                     return null;
                 }
                 using (var _dbContext = new MercampoEntities())
@@ -108,7 +109,8 @@ namespace VendeAgroWeb.Controllers.Home
             });
         }
 
-        public async Task<ICollection<PaginaBeneficioViewModel>> ObtenerBeneficios(){
+        public async Task<ICollection<PaginaBeneficioViewModel>> ObtenerBeneficios()
+        {
             return await Task.Run(() =>
             {
                 using (var _dbContext = new MercampoEntities())
@@ -122,7 +124,8 @@ namespace VendeAgroWeb.Controllers.Home
                     List<PaginaBeneficioViewModel> lista = new List<PaginaBeneficioViewModel>();
                     var beneficios = _dbContext.Beneficios;
 
-                    foreach (var item in beneficios) {
+                    foreach (var item in beneficios)
+                    {
                         lista.Add(new PaginaBeneficioViewModel(item.id, item.descripcion, item.precio, item.tipo, item.numero));
                     }
 
@@ -189,13 +192,14 @@ namespace VendeAgroWeb.Controllers.Home
 
         public async Task<string> GenerarCargo(string token)
         {
-            if(token == null)
+            if (token == null)
             {
                 return "token invalido";
             }
 
-            return await Task.Run(() => {
-                    return "exitoso";
+            return await Task.Run(() =>
+            {
+                return "exitoso";
             });
         }
 
@@ -211,7 +215,9 @@ namespace VendeAgroWeb.Controllers.Home
                         return null;
                     }
 
-                    var anuncios = _dbContext.Anuncios.Where(a => a.activo == true && a.estado == (int)EstadoAnuncio.Aprobado).OrderByDescending(a => a.clicks).Take(20);
+                    var anuncios = _dbContext.Anuncios.Where(a => a.activo == true &&
+                    a.estado == (int)EstadoAnuncio.Aprobado && a.Anuncio_Beneficio.Where(ab => ab.idAnuncio == a.id &&
+                    ab.Beneficio.tipo == (int)BeneficiosExtraTipo.OfertaDelDia).FirstOrDefault() != null);
 
                     var result = CreaAnuncios(anuncios, _dbContext);
                     _dbContext.Database.Connection.Close();
@@ -256,7 +262,8 @@ namespace VendeAgroWeb.Controllers.Home
                     var categorias = _dbContext.Categorias.Where(c => c.activo == true);
                     List<PaginaCategoriaViewModel> listaCategorias = new List<PaginaCategoriaViewModel>();
 
-                    foreach (var categoria in categorias) {
+                    foreach (var categoria in categorias)
+                    {
                         listaCategorias.Add(new PaginaCategoriaViewModel(categoria.id, categoria.nombre));
                     }
 
@@ -281,7 +288,8 @@ namespace VendeAgroWeb.Controllers.Home
                     List<PaginaPaqueteViewModel> lista = new List<PaginaPaqueteViewModel>();
                     var paquetes = _dbContext.Paquetes.Where(p => p.activo == true);
 
-                    foreach (var item in paquetes) {
+                    foreach (var item in paquetes)
+                    {
                         lista.Add(new PaginaPaqueteViewModel(item.id, item.nombre, item.meses, item.precio, item.descripcion, item.porcentajeAhorro));
                     }
 

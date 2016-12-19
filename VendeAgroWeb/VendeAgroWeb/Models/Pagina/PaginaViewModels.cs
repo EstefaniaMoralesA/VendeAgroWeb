@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Web;
-using VendeAgroWeb.Models.Administrador;
 
 namespace VendeAgroWeb.Models.Pagina
 {
@@ -429,5 +425,12 @@ namespace VendeAgroWeb.Models.Pagina
                 return _nombreUsuario;
             }
         }
+    }
+
+    public enum BeneficiosExtraTipo
+    {
+        Fotos = 1,
+        Video = 2,
+        OfertaDelDia = 3
     }
 }
