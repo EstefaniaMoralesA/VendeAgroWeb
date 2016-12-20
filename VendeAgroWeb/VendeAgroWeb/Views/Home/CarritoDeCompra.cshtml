@@ -195,6 +195,9 @@
         $("#paso1").show();
         $('.primer-paso-contenedor').css("background-color", "#0275d8");
         $('.primer-paso-contenedor .pasos-texto').css("color", "white");
+
+        $("#codigo").focus(function () { $(this).attr('type', 'text'); });
+        $("#codigo").blur(function () { $(this).attr('type', 'password'); });
     });
 
     $("#paso1-continuar").click(function () {
@@ -284,6 +287,7 @@
 
         successResponseHandler = function (token) {
             $(".procesando-pago").hide('');
+            console.log(token);
             return alert("Exitoso");
         };
 

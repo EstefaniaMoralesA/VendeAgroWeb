@@ -57,7 +57,7 @@ namespace VendeAgroWeb.Controllers.Home
                 }
                 var beneficio = await ObtenerBeneficio(item);
                 if (beneficio == null) {
-                    return false;
+                    continue;
                 }
                 paquete.agregaBeneficioAPaquete(beneficio);
             }
@@ -215,11 +215,9 @@ namespace VendeAgroWeb.Controllers.Home
                         return null;
                     }
 
-                    var anuncios = _dbContext.Anuncios.Where(a => a.activo == true &&
-                    a.estado == (int)EstadoAnuncio.Aprobado && a.Anuncio_Beneficio.Where(ab => ab.idAnuncio == a.id &&
-                    ab.Beneficio.tipo == (int)BeneficiosExtraTipo.OfertaDelDia).FirstOrDefault() != null);
+                    var anuncios = _dbContext.Anuncios.Where(a => a.activo == true && a.estado == (int)EstadoAnuncio.Aprobado).OrderByDescending(a => a.clicks).Take(20);
 
-                    var result = CreaAnuncios(anuncios, _dbContext);
+                    var result = CreaAnuncios(anuncios.ToList(), _dbContext);
                     _dbContext.Database.Connection.Close();
                     return result;
                 }
@@ -238,9 +236,11 @@ namespace VendeAgroWeb.Controllers.Home
                         return null;
                     }
 
-                    var anuncios = _dbContext.Anuncios.Where(a => a.activo == true && a.estado == (int)EstadoAnuncio.Aprobado).OrderByDescending(a => a.clicks).Take(20);
+                    var anuncios = _dbContext.Anuncios.Where(a => a.activo == true &&
+                    a.estado == (int)EstadoAnuncio.Aprobado && a.Anuncio_Beneficio.Where(ab => ab.idAnuncio == a.id &&
+                    ab.Beneficio.tipo == (int)BeneficiosExtraTipo.OfertaDelDia).FirstOrDefault() != null);
 
-                    var result = CreaAnuncios(anuncios, _dbContext);
+                    var result = CreaAnuncios(Shuffle(anuncios.ToList()), _dbContext);
                     _dbContext.Database.Connection.Close();
                     return result;
                 }
@@ -299,7 +299,34 @@ namespace VendeAgroWeb.Controllers.Home
             });
         }
 
-        private List<PortalAnuncioViewModel> CreaAnuncios(IQueryable<Anuncio> anuncios, MercampoEntities _dbContext)
+        private List<Anuncio> Shuffle(List<Anuncio> anuncios)
+        {
+            if (anuncios.Count <= 1) return anuncios;
+
+            Random r = new Random((int)DateTime.Now.Ticks & (0x0000FFFF + new Random().Next(0,anuncios.Count)));
+            if (anuncios.Count == 2)
+            {
+                var random = r.Next(1, 10);
+
+                if (random <= 5) return anuncios;
+
+                var temp = anuncios[1];
+                anuncios[1] = anuncios[0];
+                anuncios[0] = temp;
+                return anuncios;
+            }
+
+            for (int i = 0; i < anuncios.Count - 1; i++)
+            {
+                var random = r.Next(i, anuncios.Count - 1);
+                var temp = anuncios[i];
+                anuncios[i] = anuncios[random];
+                anuncios[random] = temp;
+            }
+            return anuncios;
+        }
+
+        private List<PortalAnuncioViewModel> CreaAnuncios(ICollection<Anuncio> anuncios, MercampoEntities _dbContext)
         {
             List<PortalAnuncioViewModel> lista = new List<PortalAnuncioViewModel>();
             foreach (var item in anuncios)
