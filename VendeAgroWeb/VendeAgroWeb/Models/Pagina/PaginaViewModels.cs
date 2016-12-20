@@ -427,10 +427,33 @@ namespace VendeAgroWeb.Models.Pagina
         }
     }
 
+    public class TarjetaViewModel
+    {
+        public TarjetaViewModel(int id, TarjetaTipo tipo, int digitos, string idConekta)
+        {
+            Id = id;
+            Tipo = tipo;
+            Digitos = digitos;
+            IdConekta = idConekta;
+        }
+
+        public int Id { get; private set; }
+        public TarjetaTipo Tipo { get; private set; }
+        public int Digitos { get; private set; }
+        public string IdConekta { get; private set; }
+    }
+
     public enum BeneficiosExtraTipo
     {
         Fotos = 1,
         Video = 2,
         OfertaDelDia = 3
+    }
+
+    public enum TarjetaTipo
+    {
+        MasterCard = 1,
+        Visa = 2,
+        Amex = 3
     }
 }

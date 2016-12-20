@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 using VendeAgroWeb.Models;
+using VendeAgroWeb.Models.Pagina;
 
 namespace VendeAgroWeb
 {
@@ -405,6 +406,59 @@ namespace VendeAgroWeb
             return null;
         }
 
+        public async Task<bool> AgregarTarjetaAsync(string clienteIdConekta, string tokenTarjeta)
+        {
+            var tarjeta = await Startup.GetConektaLib().AddCardAsync(clienteIdConekta, tokenTarjeta);
+            if (tarjeta == null) return false;
+
+            return await Task.Run(() =>
+            {
+                using (var _dbContext = new MercampoEntities())
+                {
+                    Startup.OpenDatabaseConnection(_dbContext);
+                    if (_dbContext.Database.Connection.State != System.Data.ConnectionState.Open)
+                    {
+                        return false;
+                    }
+
+                    var usuarioId = _dbContext.Usuarios.Where(u => u.idConekta == clienteIdConekta).FirstOrDefault()?.id;
+
+                    if(usuarioId == null)
+                    {
+                        _dbContext.Database.Connection.Close();
+                        return false;
+                    }
+
+                    _dbContext.Usuario_Tarjeta.Add(new Usuario_Tarjeta
+                    {
+                        tipoTarjeta = GetTipoTarjeta(tarjeta.Brand),
+                        digitosTarjeta = int.Parse(tarjeta.Last4),
+                        tokenTarjeta = tarjeta.Id,
+                        idUsuario = usuarioId.Value,
+                        activo = true
+                    });
+                    _dbContext.SaveChanges();
+                    return true;
+                }
+            });
+        }
+
+        private int GetTipoTarjeta(string tipo)
+        {
+            switch (tipo.ToLower())
+            {
+                case "amex":
+                    return (int)TarjetaTipo.Amex;
+                case "mastercard":
+                    return (int)TarjetaTipo.MasterCard;
+                case "visa":
+                    return (int)TarjetaTipo.Visa;
+                default:
+                    return 0;
+
+            }
+        }
+
         public PortalUsuario getUsuarioPortalActual(HttpRequestBase request)
         {
             return getUsuarioPortalActual(request.Cookies);
@@ -438,7 +492,7 @@ namespace VendeAgroWeb
                             return null;
                         }
 
-                        var resultado = new PortalUsuario(usuario.id, usuario.email, usuario.nombre, usuario.apellidos, usuario.telefono.ToString());
+                        var resultado = new PortalUsuario(usuario.id, usuario.email, usuario.nombre, usuario.apellidos, usuario.telefono, usuario.idConekta);
                         _dbContext.Database.Connection.Close();
                         return resultado;
                     }

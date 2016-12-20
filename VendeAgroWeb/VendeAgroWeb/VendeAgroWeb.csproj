@@ -461,6 +461,12 @@
     <Content Include="Views\Home\CarritoDeCompra.cshtml" />
     <Content Include="Views\Shared\_OfertasPartial.cshtml" />
     <Content Include="Views\Home\BeneficiosExtra.cshtml" />
+    <Content Include="Views\Administrador\Beneficios.cshtml" />
+    <Content Include="Views\Portal\AnunciosActivosPartial.cshtml" />
+    <Content Include="Views\Portal\AnunciosVencidosPartial.cshtml" />
+    <Content Include="Views\Administrador\NuevoAnuncio.cshtml" />
+    <Content Include="Views\Administrador\CategoriasAnuncioPartial.cshtml" />
+    <Content Include="Views\Administrador\SubcategoriasAnuncioPartial.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
