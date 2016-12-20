@@ -77,7 +77,6 @@ namespace VendeAgroWeb.Models.Portal
     public class MisAnunciosViewModel
     {
         private ICollection<AnuncioViewModel> _anuncios;
-        private ICollection<PaqueteViewModel> _paquetes;
 
 
         public ICollection<AnuncioViewModel> Anuncios
@@ -88,17 +87,8 @@ namespace VendeAgroWeb.Models.Portal
             }
         }
 
-        public ICollection<PaqueteViewModel> Paquetes
-        {
-            get
-            {
-                return _paquetes;
-            }
-        }
-
-        public MisAnunciosViewModel(ICollection<AnuncioViewModel> anuncios, ICollection<PaqueteViewModel> paquete) {
+        public MisAnunciosViewModel(ICollection<AnuncioViewModel> anuncios) {
             _anuncios = anuncios;
-            _paquetes = paquete;
         }
     }
 
@@ -106,76 +96,13 @@ namespace VendeAgroWeb.Models.Portal
     {
         private int _id;
         private string _titulo;
-        private string _usuario;
-        private double _precio;
-        private string _categoria;
-        private string _subcategoria;
-        private string _estado;
-        private string _ciudad;
-        private int? _clicks;
-        private int _idPaquete;
+        private EstadoAnuncio _estado;
 
         public string Titulo
         {
             get
             {
                 return _titulo;
-            }
-        }
-
-        public double Precio
-        {
-            get
-            {
-                return _precio;
-            }
-        }
-
-        public string Categoria
-        {
-            get
-            {
-                return _categoria;
-            }
-        }
-
-        public string Subcategoria
-        {
-            get
-            {
-                return _subcategoria;
-            }
-        }
-
-        public string Estado
-        {
-            get
-            {
-                return _estado;
-            }
-        }
-
-        public string Ciudad
-        {
-            get
-            {
-                return _ciudad;
-            }
-        }
-
-        public int? Clicks
-        {
-            get
-            {
-                return _clicks;
-            }
-        }
-
-        public string Usuario
-        {
-            get
-            {
-                return _usuario;
             }
         }
 
@@ -187,26 +114,19 @@ namespace VendeAgroWeb.Models.Portal
             }
         }
 
-        public int IdPaquete
+        public EstadoAnuncio Estado
         {
             get
             {
-                return _idPaquete;
+                return _estado;
             }
         }
 
-        public AnuncioViewModel(int id, string titulo, string usuario, double precio, string categoria, string subcategoria, string estado, string ciudad, int? clicks, int idPaquete)
+        public AnuncioViewModel(int id, string titulo, int estado)
         {
             _id = id;
             _titulo = titulo;
-            _usuario = usuario;
-            _precio = precio;
-            _categoria = categoria;
-            _subcategoria = subcategoria;
-            _estado = estado;
-            _ciudad = ciudad;
-            _clicks = clicks;
-            _idPaquete = idPaquete;
+            _estado = (EstadoAnuncio)estado;
         }
     }
 

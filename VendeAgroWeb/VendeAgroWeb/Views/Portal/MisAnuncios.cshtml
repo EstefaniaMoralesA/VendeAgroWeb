@@ -21,108 +21,42 @@
     </div>
 </div>
 
-<div class="row" style="margin-top: 30px;">
-    <div class="col-sm-12 mis-anuncios-container">
-        <div class="row">
-            <div class="col-sm-10 col-sm-offset-1">
-                <div class="mis-anuncios-paquete-container">
-                    <div class="row" style="margin-left: 0px; margin-right: 0px; position: relative;">
-                        <div class="degradado-verde"></div>
-                        <h2 class="mis-anuncios-paquete-titulo">Paquete: 3 meses</h2>
-                        <a class="btn btn-default botones-grad mis-anuncios-anuncio-detalles">
-                            <p>detalles</p>
-                        </a>
-                    </div>
-                    <div class="row row-mis-anuncios">
-                        <div class="col-sm-4 col-md-3">
-                            <div class="mis-anuncios-anuncio col-xs-12">
-                                <div class="row">
-                                    <a class="mi-anuncio-link">
-                                        <div class="mis-anuncios-wrapper">
-                                            <p class="wrapper-texto">Ver detalles</p>
-                                            <div class="mis-anuncios-imagen-container">
-                                                <img class="foto-anuncio" src="~/img/yegua.jpg" />
-                                            </div>
-                                            <div class="movil-anuncio-titulo ofertas-anuncio-titulo">
-                                                <div class="row mis-anuncios-anuncio-titulo anuncio-aprobado">
-                                                    <p class="titulo">Yegua española</p>
-                                                    <p class="estado"><strong><span class="glyphicon glyphicon-check"></span></strong> Aprobado</p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
+<div class="col-sm-10 col-sm-offset-1">
+    <div class="row" style="margin-top: 30px;">
+        <ul class="nav nav-pills nav-justified">
+            <li><a id="activos-pill" href="#activos" data-toggle="pill">Activos</a></li>
+            <li><a id="vencidos-pill" href="#vencidos" data-toggle="pill">Vencidos</a></li>
+        </ul>
+    </div>
+</div>
 
-                        <div class="col-sm-4 col-md-3">
-                            <div class="mis-anuncios-anuncio col-xs-12">
-                                <div class="row">
-                                    <a class="mi-anuncio-link">
-                                        <div class="mis-anuncios-wrapper">
-                                            <p class="wrapper-texto">Ver detalles</p>
-                                            <div class="mis-anuncios-imagen-container">
-                                                <img class="foto-anuncio" src="~/img/yegua.jpg" />
-                                            </div>
-                                            <div class="movil-anuncio-titulo ofertas-anuncio-titulo">
-                                                <div class="row mis-anuncios-anuncio-titulo anuncio-pendiente">
-                                                    <p class="titulo">Yegua 2</p>
-                                                    <p class="estado"><strong><span class="glyphicon glyphicon-question-sign"></span></strong> Pendiente de aprobar</p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="col-sm-4 col-md-3">
-                            <div class="mis-anuncios-anuncio col-xs-12">
-                                <div class="row">
-                                    <a class="mi-anuncio-link">
-                                        <div class="mis-anuncios-wrapper">
-                                            <p class="wrapper-texto">Ver detalles</p>
-                                            <div class="mis-anuncios-imagen-container">
-                                                <img class="foto-anuncio" src="~/img/caballo.jpg" />
-                                            </div>
-                                            <div class="movil-anuncio-titulo ofertas-anuncio-titulo">
-                                                <div class="row mis-anuncios-anuncio-titulo anuncio-no-aprobado">
-                                                    <p class="titulo">Caballo</p>
-                                                    <p class="estado"><strong><span class="glyphicon glyphicon-remove-sign"></span></strong> No aprobado</p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="col-sm-4 col-md-3">
-                            <div class="mis-anuncios-anuncio col-xs-12">
-                                <div class="row">
-                                    <a class="mi-anuncio-link">
-                                        <div class="mis-anuncios-wrapper">
-                                            <p class="wrapper-texto texto-nuevo-anuncio">Crear Nuevo</p>
-                                            <div class="mis-anuncios-imagen-container" style="background-color: #04612d;">
-                                                <div class="anuncio-vacio-texto">
-                                                    <p>Anuncio vacío</p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+<div class="col-sm-offset-1 col-sm-10">
+    <div class="row" style="margin-top:30px">
+        <div class="tab-content" id="tabs">
+            <div class="tab-pane" id="activos">
+                <p>Activos</p>
+            </div>
+            <div class="tab-pane" id="vencidos">
+                <p>Vencidos</p>
             </div>
         </div>
     </div>
 </div>
 
-@Scripts.Render("~/bundles/jquery")
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
 
 <script>
+
+    $(document).ready(function () {
+        activaPill('activos');
+    });
+
+    $(window).load(function () {
+        getActivos();
+    });
+
     $(".mi-anuncio-link").hover(function () {
         $(".wrapper-texto").css("opacity", "1");
         $(".mis-anuncios-imagen-container").css("opacity", "0.2");
@@ -133,5 +67,34 @@
 
     $(".movil-anuncio-titulo").hover(function () {
     });
+
+    $("#activos-pill").click(function () {
+        activaPill('activos');
+        getActivos();
+    });
+
+    function getActivos() {
+        $.ajax({
+            type: "POST",
+            data: {},
+            url: '/Portal/AnunciosActivosPartial',
+            success: function (result) {
+                $("#activos").html(result);
+            },
+            error: function (msg) {
+                console.log(msg);
+                alert("Error en anuncios activos: " + msg);
+            }
+        });
+    }
+
+
+    $("#vencidos-pill").click(function () {
+        activaPill('vencidos');
+    });
+
+    function activaPill(pill) {
+        $('.nav-pills a[href="#' + pill + '"]').tab('show');
+    };
 
 </script>

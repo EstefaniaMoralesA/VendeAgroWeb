@@ -424,7 +424,7 @@ namespace VendeAgroWeb.Models.Administrador
             }
         }
 
-        public AnuncioViewModel(int id, string titulo, string usuario,  double precio, string categoria, string subcategoria, string estado, string ciudad, int? clicks) {
+        public AnuncioViewModel(int id, string titulo, string usuario, double precio, string categoria, string subcategoria, string estado, string ciudad, int? clicks) {
             _id = id;
             _titulo = titulo;
             _usuario = usuario;
@@ -491,7 +491,7 @@ namespace VendeAgroWeb.Models.Administrador
             }
 
         }
-        
+
     }
 
     public class FotoViewModel
@@ -522,6 +522,22 @@ namespace VendeAgroWeb.Models.Administrador
         }
     }
 
+    public class NuevoAnuncioViewModel
+    {
+
+        [Required(ErrorMessage = "Campo requerido")]
+        [Display(Name = "NuevoTitulo")]
+        public string Titulo { get; set; }
+
+        [Required(ErrorMessage = "Campo requerido")]
+        [Display(Name = "NuevoPrecio")]
+        public int Precio { get; set; }
+
+        [Required(ErrorMessage = "Campo requerido")]
+        [Display(Name = "NuevaDescripcion")]
+        public string Descripcion { get; set; }
+    }
+
     public class AnuncioDetallesViewModel
     {
         private AnuncioViewModel _anuncio;
@@ -532,7 +548,7 @@ namespace VendeAgroWeb.Models.Administrador
         private AnuncioPaqueteViewModel _paquete;
         private string _video;
 
-        public AnuncioDetallesViewModel(AnuncioViewModel anuncio, int status, bool activo, 
+        public AnuncioDetallesViewModel(AnuncioViewModel anuncio, int status, bool activo,
             string descripcion, List<FotoViewModel> fotos, AnuncioPaqueteViewModel paquete, string video)
         {
             _anuncio = anuncio;
@@ -551,7 +567,7 @@ namespace VendeAgroWeb.Models.Administrador
                 return _video != null;
             }
         }
-    
+
         public string Video
         {
             get
@@ -661,7 +677,7 @@ namespace VendeAgroWeb.Models.Administrador
 
         public SubcategoriasViewModel(ICollection<SubcategoriaViewModel> subcategorias) {
             _subcategorias = subcategorias;
-        }  
+        }
 
         [Required(ErrorMessage = "Campo requerido")]
         [Display(Name = "ModificarNombre")]
@@ -721,6 +737,12 @@ namespace VendeAgroWeb.Models.Administrador
             {
                 return _numAnuncios;
             }
+        }
+
+        public SubcategoriaViewModel(int id, string nombre)
+        {
+            _id = id;
+            _nombre = nombre;
         }
 
         public SubcategoriaViewModel(int id, string nombre, bool activo, string nombreCategoria, int numAnuncios) {
@@ -809,6 +831,12 @@ namespace VendeAgroWeb.Models.Administrador
             }
         }
 
+        public CategoriaViewModel(int id, string nombre)
+        {
+            _id = id;
+            _nombre = nombre;
+        }
+
         public CategoriaViewModel(int id, string nombre, bool activo, int numSubcategorias, int numAnuncios)
         {
             _id = id;
@@ -821,7 +849,7 @@ namespace VendeAgroWeb.Models.Administrador
 
     public class NuevaSubcategoriaViewModel
     {
-        public List<SelectListItem> Categorias{ get; set; }
+        public List<SelectListItem> Categorias { get; set; }
 
         [Required(ErrorMessage = "Campo requerido")]
         [Display(Name = "Categoria")]
@@ -834,8 +862,64 @@ namespace VendeAgroWeb.Models.Administrador
 
     public class BeneficiosViewModel
     {
+        private ICollection<BeneficioViewModel> _beneficios;
+
+        [Required(ErrorMessage = "Campo requerido")]
+        [Display(Name = "ModificarPrecio")]
+        public double Precio { get; set; }
+
+
+        public BeneficiosViewModel(ICollection<BeneficioViewModel> beneficios)
+        {
+            _beneficios = beneficios;
+        }
+
+        public ICollection<BeneficioViewModel> Beneficios
+        {
+            get
+            {
+                return _beneficios;
+            }
+        }
     }
 
+    public class BeneficioViewModel
+    {
+        private int _id;
+        private string _descripcion;
+        private double _precio;
+
+        public int Id
+        {
+            get
+            {
+                return _id;
+            }
+        }
+
+        public string Descripcion
+        {
+            get
+            {
+                return _descripcion;
+            }
+        }
+
+        public double Precio
+        {
+            get
+            {
+                return _precio;
+            }
+        }
+
+        public BeneficioViewModel(int id, string descripcion, double precio)
+        {
+            _id = id;
+            _descripcion = descripcion;
+            _precio = precio;
+        }
+    }
     public enum ModificarNombreCategoriaEstatus
     {
         CategoriaExistente,

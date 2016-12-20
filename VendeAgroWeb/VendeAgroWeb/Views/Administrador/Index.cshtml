@@ -4,6 +4,12 @@
 }
 
 <div class="row">
+    <div class="col-sm-12" style="text-align: center;">
+        <h2 class="mis-anuncios-titulo">Usuarios</h2>
+    </div>
+</div>
+
+<div class="row">
     <div class="col-sm-offset-1 col-sm-10">
         <ul class="nav nav-tabs">
             <li><a id="administrador-tab" href="#administrador" data-toggle="tab">Administrador</a></li>
@@ -31,11 +37,11 @@
 
 <script>
     $(document).ready(function () {
-        activaTab('administrador');
+        activaTab('clientes');
     });
 
     $(window).load(function () {
-        getAdministradores();
+        getClientes();
     });
 
     $("#administrador-tab").click(function () {

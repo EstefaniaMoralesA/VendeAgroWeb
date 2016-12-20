@@ -62,6 +62,16 @@ namespace VendeAgroWeb.Controllers.Administrador
             return View();
         }
 
+        public ActionResult AnunciosActivosPartial()
+        {
+            return PartialView("AnunciosActivosPartial");
+        }
+
+        public ActionResult AnunciosVencidosPartial()
+        {
+            return PartialView("AnunciosVencidosPartial");
+        }
+
         public ActionResult MisPagos()
         {
             return View();

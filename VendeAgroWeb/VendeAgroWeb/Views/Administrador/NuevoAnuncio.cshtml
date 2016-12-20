@@ -1,0 +1,152 @@
+﻿
+@model VendeAgroWeb.Models.Administrador.NuevoAnuncioViewModel
+
+@{
+    ViewBag.Title = "Crear Anuncio";
+    Layout = "Shared/_AdministradorLayout.cshtml";
+}
+
+<div class="row">
+    <div class="col-sm-6 col-sm-offset-3">
+        <div class="alert alert-danger" style="display:none;">
+            <strong><span class="glyphicon glyphicon-remove"></span></strong><span class="alert-content"></span>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-sm-12" style="text-align: center;">
+        <h2 class="mis-anuncios-titulo">Nuevo Anuncio</h2>
+    </div>
+</div>
+
+<div class="row" style="margin-top:30px">
+    <div class="col-sm-offset-3 col-sm-6">
+        <div class="row">
+            @using (Html.BeginForm())
+            {
+                @Html.AntiForgeryToken()
+
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                <div class="form-group">
+                    @Html.EditorFor(model => model.Titulo, new { htmlAttributes = new { @class = "form-control", placeholder = "Título del anuncio", id = "anuncio-titulo" } })
+                    @Html.ValidationMessageFor(model => model.Titulo, "", new { @class = "text-danger" })
+                </div>
+                <div class="form-group">
+                    @Html.EditorFor(model => model.Precio, new { htmlAttributes = new { @class = "form-control", placeholder = "Precio del producto", id = "anuncio-precio" } })
+                    @Html.ValidationMessageFor(model => model.Precio, "", new { @class = "text-danger" })
+                </div>
+
+                <div class="form-group">
+                    @Html.TextAreaFor(model => model.Descripcion, new { htmlAttributes = new { @class = "form-control", placeholder = "Descripción del producto", id = "anuncio-descripcion" } })
+                    @Html.ValidationMessageFor(model => model.Descripcion, "", new { @class = "text-danger" })
+                </div>
+                <div class="col-sm-12">
+                    <div class="col-sm-6">
+                        <div id="categoria-dropdown" class="dropdown">
+                            <button id="btn-categoria" class="btn btn-default dropdown-anuncio dropdown-toggle" style="font-size:14px;" type="button" data-toggle="dropdown">
+                                Categoría
+                                <span class="caret"></span>
+                            </button>
+                            <ul id="categorias" class="dropdown-menu">
+                                
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div id="subcategoria-dropdown" class="dropdown">
+                            <button id="btn-subcategoria" class="btn btn-default dropdown-anuncio dropdown-toggle" style="font-size:14px;" type="button" data-toggle="dropdown">
+                                Subcategoría
+                                <span class="caret"></span>
+                            </button>
+                            <ul id="subcategorias" class="dropdown-menu">
+                                
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-sm-12">
+                    <div class="col-sm-6">
+                        <div class="dropdown">
+                            <button class="btn btn-default dropdown-anuncio dropdown-toggle" style="font-size:14px;" type="button" data-toggle="dropdown">
+                                Estado
+                                <span class="caret"></span>
+                            </button>
+                            <ul class="dropdown-menu">
+                                <li><a href="#">HTML</a></li>
+                                <li><a href="#">CSS</a></li>
+                                <li><a href="#">JavaScript</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="dropdown">
+                            <button class="btn btn-default dropdown-anuncio dropdown-toggle" style="font-size:14px;" type="button" data-toggle="dropdown">
+                                Ciudad
+                                <span class="caret"></span>
+                            </button>
+                            <ul class="dropdown-menu">
+                                <li><a href="#">HTML</a></li>
+                                <li><a href="#">CSS</a></li>
+                                <li><a href="#">JavaScript</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group boton-guardar-container">
+                    <div class="col-sm-offset-3 col-sm-6" style="text-align: center;">
+                        <input type="submit" value="Guardar" class="btn btn-primary btn-lg btn-login" />
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
+
+<script>
+    $("#btn-categoria").click(function () {
+        var id = $(this).data('id');
+        getCategorias(id);
+    });
+
+    function getCategorias() {
+        $.ajax({
+            type: "POST",
+            data: {},
+            url: '/Administrador/CategoriasAnuncioPartial',
+            success: function (result) {
+                $("#categorias").html(result);
+            },
+            error: function (msg) {
+                console.log(msg);
+                alert("Error en categorias: " + msg);
+            }
+        });
+    }
+
+    function categoriasClick(elemento) {
+        $("#btn-categoria:first-child").html(elemento.text() + '<span class="caret"></span>');
+        getSubcategorias(elemento.data('id'));
+    }
+
+    function getSubcategorias(id) {
+        $.ajax({
+            type: "POST",
+            data: {},
+            url: '/Administrador/SubcategoriasAnuncioPartial?idCategoria=' + id,
+            success: function (result) {
+                $("#subcategorias").html(result);
+            },
+            error: function (msg) {
+                console.log(msg);
+                alert("Error en subcategorias: " + msg);
+            }
+        });
+    }
+
+</script>

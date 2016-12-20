@@ -21,6 +21,7 @@
                 <th>Email</th>
                 <th></th>
                 <th></th>
+                <th></th>
             </tr>
         </thead>
         <tbody>
@@ -43,6 +44,7 @@
                                 <td><a class="btn btn-default btn-8-caracteres btn-categorias-anuncios" style="cursor:not-allowed;"><span>@item.NumAnuncios </span>anuncios</a></td>
                             }
                             <td><a data-id="@item.Id" class="btn btn-success btn-5-caracteres btn-usuario-pagos">pagos</a></td>
+                            <td><a href="/Administrador/NuevoAnuncio?idUsuario=@item.Id" class="btn btn-primary btn-5-caracteres btn-usuario-pagos">nuevo anuncio</a></td>
                         </tr>
                     }
                 }
