@@ -1,0 +1,14 @@
+﻿@model VendeAgroWeb.Models.Administrador.PaisesViewModel
+
+@{
+    foreach (var item in Model.Paises)
+    {
+        <li><a data-id="@item.Id">@item.Nombre</a></li>
+    }
+}
+
+<script>
+    $("#paises-dropdown li a").click(function () {
+        $("#btn-pais:first-child").html($(this).text() + '<span class="caret"></span>');
+    });
+</script>

@@ -1,5 +1,4 @@
-﻿
-@model VendeAgroWeb.Models.Administrador.NuevoAnuncioViewModel
+﻿@model VendeAgroWeb.Models.Administrador.NuevoAnuncioViewModel
 
 @{
     ViewBag.Title = "Crear Anuncio";
@@ -24,62 +23,65 @@
         <div class="row">
             @using (Html.BeginForm())
             {
-                @Html.AntiForgeryToken()
+            @Html.AntiForgeryToken()
 
-                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-                <div class="form-group">
-                    @Html.EditorFor(model => model.Titulo, new { htmlAttributes = new { @class = "form-control", placeholder = "Título del anuncio", id = "anuncio-titulo" } })
-                    @Html.ValidationMessageFor(model => model.Titulo, "", new { @class = "text-danger" })
-                </div>
-                <div class="form-group">
-                    @Html.EditorFor(model => model.Precio, new { htmlAttributes = new { @class = "form-control", placeholder = "Precio del producto", id = "anuncio-precio" } })
-                    @Html.ValidationMessageFor(model => model.Precio, "", new { @class = "text-danger" })
-                </div>
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            <div class="form-group form-nuevo-anuncio">
+                @Html.EditorFor(model => model.Titulo, new { htmlAttributes = new { @class = "form-control", placeholder = "Título del anuncio", id = "anuncio-titulo" } })
+                @Html.ValidationMessageFor(model => model.Titulo, "", new { @class = "text-danger" })
+            </div>
+            <div class="form-group form-nuevo-anuncio">
+                @Html.EditorFor(model => model.Precio, new { htmlAttributes = new { @class = "form-control", placeholder = "Precio del producto", id = "anuncio-precio" } })
+                @Html.ValidationMessageFor(model => model.Precio, "", new { @class = "text-danger" })
+            </div>
 
-                <div class="form-group">
-                    @Html.TextAreaFor(model => model.Descripcion, new { htmlAttributes = new { @class = "form-control", placeholder = "Descripción del producto", id = "anuncio-descripcion" } })
-                    @Html.ValidationMessageFor(model => model.Descripcion, "", new { @class = "text-danger" })
-                </div>
-                <div class="col-sm-12">
-                    <div class="col-sm-6">
+            <div class="form-group form-nuevo-anuncio">
+                @Html.TextAreaFor(model => model.Descripcion, new { htmlAttributes = new { @class = "form-control", placeholder = "Descripción del producto", id = "anuncio-descripcion" } })
+                @Html.ValidationMessageFor(model => model.Descripcion, "", new { @class = "text-danger" })
+            </div>
+            <div class="col-sm-12">
+                <div class="row">
+                    <div class="col-sm-6" style="padding-left: 0px;">
                         <div id="categoria-dropdown" class="dropdown">
                             <button id="btn-categoria" class="btn btn-default dropdown-anuncio dropdown-toggle" style="font-size:14px;" type="button" data-toggle="dropdown">
                                 Categoría
                                 <span class="caret"></span>
                             </button>
-                            <ul id="categorias" class="dropdown-menu">
-                                
-                            </ul>
+                            <ul id="categorias" class="dropdown-menu"></ul>
                         </div>
                     </div>
-                    <div class="col-sm-6">
+                    <div class="col-sm-6" style="padding-right: 0px;">
                         <div id="subcategoria-dropdown" class="dropdown">
                             <button id="btn-subcategoria" class="btn btn-default dropdown-anuncio dropdown-toggle" style="font-size:14px;" type="button" data-toggle="dropdown">
                                 Subcategoría
                                 <span class="caret"></span>
                             </button>
-                            <ul id="subcategorias" class="dropdown-menu">
-                                
-                            </ul>
+                            <ul id="subcategorias" class="dropdown-menu"></ul>
                         </div>
                     </div>
                 </div>
-
-                <div class="col-sm-12">
-                    <div class="col-sm-6">
-                        <div class="dropdown">
-                            <button class="btn btn-default dropdown-anuncio dropdown-toggle" style="font-size:14px;" type="button" data-toggle="dropdown">
+            </div>
+            <div class="col-sm-12">
+                <div class="row">
+                    <div class="col-sm-4" style="padding-left: 0px;">
+                        <div id="paises-dropdown" class="dropdown">
+                            <button id="btn-pais" class="btn btn-default dropdown-anuncio dropdown-toggle" style="font-size:14px;" type="button" data-toggle="dropdown">
+                                Pais
+                                <span class="caret"></span>
+                            </button>
+                            <ul id="paises" class="dropdown-menu"></ul>
+                        </div>
+                    </div>
+                    <div class="col-sm-4" style="padding-left: 0px; padding-right: 0px;">
+                        <div id="estados-dropdown" class="dropdown">
+                            <button id="btn-estados" class="btn btn-default dropdown-anuncio dropdown-toggle" style="font-size:14px;" type="button" data-toggle="dropdown">
                                 Estado
                                 <span class="caret"></span>
                             </button>
-                            <ul class="dropdown-menu">
-                                <li><a href="#">HTML</a></li>
-                                <li><a href="#">CSS</a></li>
-                                <li><a href="#">JavaScript</a></li>
-                            </ul>
+                            <ul id="estados" class="dropdown-menu"></ul>
                         </div>
                     </div>
-                    <div class="col-sm-6">
+                    <div class="col-sm-4" style="padding-right: 0px;">
                         <div class="dropdown">
                             <button class="btn btn-default dropdown-anuncio dropdown-toggle" style="font-size:14px;" type="button" data-toggle="dropdown">
                                 Ciudad
@@ -93,11 +95,13 @@
                         </div>
                     </div>
                 </div>
+
                 <div class="form-group boton-guardar-container">
                     <div class="col-sm-offset-3 col-sm-6" style="text-align: center;">
                         <input type="submit" value="Guardar" class="btn btn-primary btn-lg btn-login" />
                     </div>
                 </div>
+            </div>
             }
         </div>
     </div>
@@ -110,8 +114,11 @@
 
 <script>
     $("#btn-categoria").click(function () {
-        var id = $(this).data('id');
-        getCategorias(id);
+        getCategorias();
+    });
+
+    $("#btn-pais").click(function () {
+        getPaises();
     });
 
     function getCategorias() {
@@ -145,6 +152,36 @@
             error: function (msg) {
                 console.log(msg);
                 alert("Error en subcategorias: " + msg);
+            }
+        });
+    }
+
+    function getPaises() {
+        $.ajax({
+            type: "POST",
+            data: {},
+            url: '/Administrador/PaisesAnuncioPartial',
+            success: function (result) {
+                $("#paises").html(result);
+            },
+            error: function (msg) {
+                console.log(msg);
+                alert("Error en paises: " + msg);
+            }
+        });
+    }
+
+    function getEstados(id) {
+        $.ajax({
+            type: "POST",
+            data: {},
+            url: '/Administrador/EstadosAnuncioPartial?idPais=' + id,
+            success: function (result) {
+                $("#estados").html(result);
+            },
+            error: function (msg) {
+                console.log(msg);
+                alert("Error en estados: " + msg);
             }
         });
     }

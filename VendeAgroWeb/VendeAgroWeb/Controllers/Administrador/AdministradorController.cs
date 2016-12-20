@@ -1454,11 +1454,49 @@ namespace VendeAgroWeb.Controllers.Administrador
             return PartialView("CategoriasAnuncioPartial", model);
         }
 
+        public async Task<ActionResult> PaisesAnuncioPartial()
+        {
+            PaisesViewModel model = new PaisesViewModel(await ObtenerPaisesAnuncio());
+            return PartialView("PaisesAnuncioPartial", model);
+        }
+
+        public async Task<ICollection<PaisViewModel>> ObtenerPaisesAnuncio()
+        {
+            return await Task.Run(() =>
+            {
+                using (var _dbContext = new MercampoEntities())
+                {
+                    Startup.OpenDatabaseConnection(_dbContext);
+                    if (_dbContext.Database.Connection.State != ConnectionState.Open)
+                    {
+                        return null;
+                    }
+                    List<PaisViewModel> lista = new List<PaisViewModel>();
+                    var paises = _dbContext.Pais;
+                    foreach (var item in paises)
+                    {
+                        lista.Add(new PaisViewModel(item.id, item.nombre));
+                    }
+
+                    _dbContext.Database.Connection.Close();
+                    return lista;
+                }
+
+            });
+        }
+
         [HttpPost]
         public async Task<ActionResult> SubcategoriasAnuncioPartial(int? idCategoria)
         {
             SubcategoriasViewModel model = new SubcategoriasViewModel(await ObtenerSubcategoriasAnuncio(idCategoria));
             return PartialView("SubcategoriasAnuncioPartial", model);
+        }
+
+        [HttpPost]
+        public async Task<ActionResult> EstadosAnuncioPartial(int? idPais)
+        {
+            EstadosViewModel model = new EstadosViewModel(await ObtenerEstadosAnuncio(idPais));
+            return PartialView("EstadosAnuncioPartial");
         }
 
         public async Task<ICollection<CategoriaViewModel>> ObtenerCategoriasAnuncio()
@@ -1502,6 +1540,31 @@ namespace VendeAgroWeb.Controllers.Administrador
                     foreach (var item in subcategorias)
                     {
                         lista.Add(new SubcategoriaViewModel(item.id, item.nombre));
+                    }
+
+                    _dbContext.Database.Connection.Close();
+                    return lista;
+                }
+
+            });
+        }
+
+        public async Task<ICollection<EstadoViewModel>> ObtenerEstadosAnuncio(int? idPais)
+        {
+            return await Task.Run(() =>
+            {
+                using (var _dbContext = new MercampoEntities())
+                {
+                    Startup.OpenDatabaseConnection(_dbContext);
+                    if (_dbContext.Database.Connection.State != ConnectionState.Open)
+                    {
+                        return null;
+                    }
+                    List<EstadoViewModel> lista = new List<EstadoViewModel>();
+                    var estados = _dbContext.Estadoes.Where(e => e.idPais == idPais);
+                    foreach (var item in estados)
+                    {
+                        lista.Add(new EstadoViewModel(item.id, item.nombre));
                     }
 
                     _dbContext.Database.Connection.Close();

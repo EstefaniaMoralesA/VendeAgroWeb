@@ -461,6 +461,9 @@
     <Content Include="Views\Home\CarritoDeCompra.cshtml" />
     <Content Include="Views\Shared\_OfertasPartial.cshtml" />
     <Content Include="Views\Home\BeneficiosExtra.cshtml" />
+    <Content Include="Views\Administrador\PaisesAnuncioPartial.cshtml" />
+    <Content Include="Views\Administrador\EstadosAnuncioPartial.cshtml" />
+    <Content Include="Views\Administrador\CiudadesAnuncioPartial.cshtml" />
     <Content Include="Views\Administrador\Beneficios.cshtml" />
     <Content Include="Views\Portal\AnunciosActivosPartial.cshtml" />
     <Content Include="Views\Portal\AnunciosVencidosPartial.cshtml" />

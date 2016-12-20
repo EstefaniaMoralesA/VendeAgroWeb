@@ -2074,6 +2074,9 @@ hr {
         border-top: 10px solid black !important;
     }
 
+.form-nuevo-anuncio {
+    margin-bottom: 25px !important;
+}
 
 @media (max-width: 1200px) {
     .base {

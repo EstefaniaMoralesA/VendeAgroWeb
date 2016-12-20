@@ -754,6 +754,99 @@ namespace VendeAgroWeb.Models.Administrador
         }
     }
 
+    public class PaisesViewModel {
+        private ICollection<PaisViewModel> _paises;
+
+        public ICollection<PaisViewModel> Paises
+        {
+            get
+            {
+                return _paises;
+            }
+        }
+
+        public PaisesViewModel(ICollection<PaisViewModel> paises)
+        {
+            _paises = paises;
+        }
+
+    }
+
+    public class EstadosViewModel
+    {
+        private ICollection<EstadoViewModel> _estados;
+
+        public ICollection<EstadoViewModel> Estados
+        {
+            get
+            {
+                return _estados;
+            }
+        }
+
+        public EstadosViewModel(ICollection<EstadoViewModel> estados)
+        {
+            _estados = estados;
+        }
+
+    }
+
+    public class EstadoViewModel
+    {
+        private int _id;
+        private string _nombre;
+
+        public int Id
+        {
+            get
+            {
+                return _id;
+            }
+        }
+
+        public string Nombre
+        {
+            get
+            {
+                return _nombre;
+            }
+        }
+
+        public EstadoViewModel(int id, string nombre)
+        {
+            _id = id;
+            _nombre = nombre;
+        }
+    }
+
+    public class PaisViewModel
+    {
+        private int _id;
+        private string _nombre;
+
+        public int Id
+        {
+            get
+            {
+                return _id;
+            }
+        }
+
+        public string Nombre
+        {
+            get
+            {
+                return _nombre;
+            }
+        }
+
+        public PaisViewModel(int id, string nombre)
+        {
+            _id = id;
+            _nombre = nombre;
+        }
+    }
+
     public class NuevaCategoriaViewModel {
 
         [Required(ErrorMessage = "Campo requerido")]
