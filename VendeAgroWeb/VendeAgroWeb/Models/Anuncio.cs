@@ -25,7 +25,7 @@ namespace VendeAgroWeb.Models
         public int id { get; set; }
         public string titulo { get; set; }
         public string descripcion { get; set; }
-        public double precio { get; set; }
+        public Nullable<double> precio { get; set; }
         public bool activo { get; set; }
         public Nullable<int> idUsuario { get; set; }
         public Nullable<int> idSubcategoria { get; set; }
@@ -36,7 +36,7 @@ namespace VendeAgroWeb.Models
         public string razonRechazo { get; set; }
         public Nullable<System.DateTime> fecha_inicio { get; set; }
         public Nullable<System.DateTime> fecha_fin { get; set; }
-        public int idPaquete { get; set; }
+        public Nullable<int> idPaquete { get; set; }
     
         public virtual Ciudad Ciudad { get; set; }
         public virtual Paquete Paquete { get; set; }

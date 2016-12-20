@@ -124,7 +124,7 @@ namespace VendeAgroWeb.Models.Pagina
         private int _id;
         private string _titulo;
         private string _usuario;
-        private double _precio;
+        private double? _precio;
         private string _categoria;
         private string _subcategoria;
         private string _estado;
@@ -148,7 +148,7 @@ namespace VendeAgroWeb.Models.Pagina
             }
         }
 
-        public double Precio
+        public double? Precio
         {
             get
             {
@@ -212,7 +212,7 @@ namespace VendeAgroWeb.Models.Pagina
             }
         }
 
-        public PortalAnuncioViewModel(int id, string titulo, string usuario, double precio, string categoria, string subcategoria, string estado, string ciudad, int? clicks, string fotoPrincipal)
+        public PortalAnuncioViewModel(int id, string titulo, string usuario, double? precio, string categoria, string subcategoria, string estado, string ciudad, int? clicks, string fotoPrincipal)
         {
             _id = id;
             _titulo = titulo;

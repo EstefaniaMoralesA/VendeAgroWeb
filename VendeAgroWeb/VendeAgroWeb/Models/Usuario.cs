@@ -32,6 +32,7 @@ namespace VendeAgroWeb.Models
         public bool confirmaEmail { get; set; }
         public string tokenEmail { get; set; }
         public string tokenSesion { get; set; }
+        public string idConekta { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Anuncio> Anuncios { get; set; }

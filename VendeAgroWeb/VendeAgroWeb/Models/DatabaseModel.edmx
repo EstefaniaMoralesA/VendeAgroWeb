@@ -10,9 +10,9 @@
             <PropertyRef Name="id" />
           </Key>
           <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="titulo" Type="varchar" MaxLength="30" Nullable="false" />
-          <Property Name="descripcion" Type="varchar" MaxLength="250" Nullable="false" />
-          <Property Name="precio" Type="float" Nullable="false" />
+          <Property Name="titulo" Type="varchar" MaxLength="30" />
+          <Property Name="descripcion" Type="varchar" MaxLength="500" />
+          <Property Name="precio" Type="float" />
           <Property Name="activo" Type="bit" Nullable="false" />
           <Property Name="idUsuario" Type="int" />
           <Property Name="idSubcategoria" Type="int" />
@@ -23,7 +23,7 @@
           <Property Name="razonRechazo" Type="varchar" MaxLength="200" />
           <Property Name="fecha_inicio" Type="date" />
           <Property Name="fecha_fin" Type="date" />
-          <Property Name="idPaquete" Type="int" Nullable="false" />
+          <Property Name="idPaquete" Type="int" />
         </EntityType>
         <EntityType Name="Anuncio_Beneficio">
           <Key>
@@ -93,7 +93,7 @@
             <PropertyRef Name="id" />
           </Key>
           <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="ruta" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="ruta" Type="varchar" MaxLength="300" Nullable="false" />
           <Property Name="idAnuncio" Type="int" Nullable="false" />
           <Property Name="principal" Type="bit" Nullable="false" />
         </EntityType>
@@ -171,6 +171,7 @@
           <Property Name="confirmaEmail" Type="bit" Nullable="false" />
           <Property Name="tokenEmail" Type="varchar" MaxLength="40" Nullable="false" />
           <Property Name="tokenSesion" Type="varchar" MaxLength="40" Nullable="false" />
+          <Property Name="idConekta" Type="varchar" MaxLength="100" />
         </EntityType>
         <EntityType Name="Usuario_Administrador">
           <Key>
@@ -192,7 +193,6 @@
           <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="tipoTarjeta" Type="int" Nullable="false" />
           <Property Name="digitosTarjeta" Type="int" Nullable="false" />
-          <Property Name="fechaVencimiento" Type="date" Nullable="false" />
           <Property Name="tokenTarjeta" Type="varchar" MaxLength="40" Nullable="false" />
           <Property Name="idUsuario" Type="int" Nullable="false" />
           <Property Name="activo" Type="bit" Nullable="false" />
@@ -217,8 +217,8 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Anuncio__idPaque__01142BA1">
-          <End Role="Paquete" Type="Self.Paquete" Multiplicity="1" />
+        <Association Name="FK__Anuncio__idPaque__14270015">
+          <End Role="Paquete" Type="Self.Paquete" Multiplicity="0..1" />
           <End Role="Anuncio" Type="Self.Anuncio" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Paquete">
@@ -465,7 +465,7 @@
             <End Role="Ciudad" EntitySet="Ciudad" />
             <End Role="Anuncio" EntitySet="Anuncio" />
           </AssociationSet>
-          <AssociationSet Name="FK__Anuncio__idPaque__01142BA1" Association="Self.FK__Anuncio__idPaque__01142BA1">
+          <AssociationSet Name="FK__Anuncio__idPaque__14270015" Association="Self.FK__Anuncio__idPaque__14270015">
             <End Role="Paquete" EntitySet="Paquete" />
             <End Role="Anuncio" EntitySet="Anuncio" />
           </AssociationSet>
@@ -544,9 +544,9 @@
             <PropertyRef Name="id" />
           </Key>
           <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="titulo" Type="String" MaxLength="30" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="descripcion" Type="String" MaxLength="250" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="precio" Type="Double" Nullable="false" />
+          <Property Name="titulo" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="descripcion" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="precio" Type="Double" />
           <Property Name="activo" Type="Boolean" Nullable="false" />
           <Property Name="idUsuario" Type="Int32" />
           <Property Name="idSubcategoria" Type="Int32" />
@@ -557,9 +557,9 @@
           <Property Name="razonRechazo" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
           <Property Name="fecha_inicio" Type="DateTime" Precision="0" />
           <Property Name="fecha_fin" Type="DateTime" Precision="0" />
-          <Property Name="idPaquete" Type="Int32" Nullable="false" />
+          <Property Name="idPaquete" Type="Int32" />
           <NavigationProperty Name="Ciudad" Relationship="Self.FK__Anuncio__idCiuda__5AEE82B9" FromRole="Anuncio" ToRole="Ciudad" />
-          <NavigationProperty Name="Paquete" Relationship="Self.FK__Anuncio__idPaque__01142BA1" FromRole="Anuncio" ToRole="Paquete" />
+          <NavigationProperty Name="Paquete" Relationship="Self.FK__Anuncio__idPaque__14270015" FromRole="Anuncio" ToRole="Paquete" />
           <NavigationProperty Name="Subcategoria" Relationship="Self.FK__Anuncio__idSubca__59FA5E80" FromRole="Anuncio" ToRole="Subcategoria" />
           <NavigationProperty Name="Usuario" Relationship="Self.FK__Anuncio__idUsuar__59063A47" FromRole="Anuncio" ToRole="Usuario" />
           <NavigationProperty Name="Anuncio_Beneficio" Relationship="Self.FK__Anuncio_B__idAnu__5BE2A6F2" FromRole="Anuncio" ToRole="Anuncio_Beneficio" />
@@ -645,7 +645,7 @@
             <PropertyRef Name="id" />
           </Key>
           <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="ruta" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="ruta" Type="String" MaxLength="300" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="idAnuncio" Type="Int32" Nullable="false" />
           <Property Name="principal" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="Anuncio" Relationship="Self.FK__Fotos_Anu__idAnu__628FA481" FromRole="Fotos_Anuncio" ToRole="Anuncio" />
@@ -707,7 +707,7 @@
           <Property Name="fechaModificacion" Type="DateTime" Nullable="false" Precision="0" />
           <Property Name="activo" Type="Boolean" Nullable="false" />
           <Property Name="porcentajeAhorro" Type="Double" Nullable="false" />
-          <NavigationProperty Name="Anuncios" Relationship="Self.FK__Anuncio__idPaque__01142BA1" FromRole="Paquete" ToRole="Anuncio" />
+          <NavigationProperty Name="Anuncios" Relationship="Self.FK__Anuncio__idPaque__14270015" FromRole="Paquete" ToRole="Anuncio" />
           <NavigationProperty Name="Conekta_Paquete" Relationship="Self.FK__Conekta_P__idPaq__60A75C0F" FromRole="Paquete" ToRole="Conekta_Paquete" />
           <NavigationProperty Name="Pago_Concepto" Relationship="Self.FK__Pago_Conc__idPaq__656C112C" FromRole="Paquete" ToRole="Pago_Concepto" />
         </EntityType>
@@ -735,6 +735,7 @@
           <Property Name="confirmaEmail" Type="Boolean" Nullable="false" />
           <Property Name="tokenEmail" Type="String" MaxLength="40" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="tokenSesion" Type="String" MaxLength="40" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="idConekta" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="Anuncios" Relationship="Self.FK__Anuncio__idUsuar__59063A47" FromRole="Usuario" ToRole="Anuncio" />
           <NavigationProperty Name="Conekta_Paquete" Relationship="Self.FK__Conekta_P__idUsu__619B8048" FromRole="Usuario" ToRole="Conekta_Paquete" />
           <NavigationProperty Name="Pagoes" Relationship="Self.FK__Pago__idUsuario__6383C8BA" FromRole="Usuario" ToRole="Pago" />
@@ -760,7 +761,6 @@
           <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="tipoTarjeta" Type="Int32" Nullable="false" />
           <Property Name="digitosTarjeta" Type="Int32" Nullable="false" />
-          <Property Name="fechaVencimiento" Type="DateTime" Nullable="false" Precision="0" />
           <Property Name="tokenTarjeta" Type="String" MaxLength="40" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="idUsuario" Type="Int32" Nullable="false" />
           <Property Name="activo" Type="Boolean" Nullable="false" />
@@ -787,8 +787,8 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Anuncio__idPaque__01142BA1">
-          <End Role="Paquete" Type="Self.Paquete" Multiplicity="1" />
+        <Association Name="FK__Anuncio__idPaque__14270015">
+          <End Role="Paquete" Type="Self.Paquete" Multiplicity="0..1" />
           <End Role="Anuncio" Type="Self.Anuncio" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Paquete">
@@ -1035,7 +1035,7 @@
             <End Role="Ciudad" EntitySet="Ciudads" />
             <End Role="Anuncio" EntitySet="Anuncios" />
           </AssociationSet>
-          <AssociationSet Name="FK__Anuncio__idPaque__01142BA1" Association="Self.FK__Anuncio__idPaque__01142BA1">
+          <AssociationSet Name="FK__Anuncio__idPaque__14270015" Association="Self.FK__Anuncio__idPaque__14270015">
             <End Role="Paquete" EntitySet="Paquetes" />
             <End Role="Anuncio" EntitySet="Anuncios" />
           </AssociationSet>
@@ -1290,6 +1290,7 @@
                 <ScalarProperty Name="confirmaEmail" ColumnName="confirmaEmail" />
                 <ScalarProperty Name="tokenEmail" ColumnName="tokenEmail" />
                 <ScalarProperty Name="tokenSesion" ColumnName="tokenSesion" />
+                <ScalarProperty Name="idConekta" ColumnName="idConekta" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -1313,7 +1314,6 @@
                 <ScalarProperty Name="id" ColumnName="id" />
                 <ScalarProperty Name="tipoTarjeta" ColumnName="tipoTarjeta" />
                 <ScalarProperty Name="digitosTarjeta" ColumnName="digitosTarjeta" />
-                <ScalarProperty Name="fechaVencimiento" ColumnName="fechaVencimiento" />
                 <ScalarProperty Name="tokenTarjeta" ColumnName="tokenTarjeta" />
                 <ScalarProperty Name="idUsuario" ColumnName="idUsuario" />
                 <ScalarProperty Name="activo" ColumnName="activo" />
