@@ -5,21 +5,10 @@ namespace VendeAgroWeb.Models.Pagina
 {
     public class HomeViewModel
     {
-        private ICollection<PaginaCategoriaViewModel> _categorias;
-        public IList<Subcategoria> Subcategorias { get; set; }
         public IList<Anuncio> AnunciosDestacados { get; set; }
 
-        public ICollection<PaginaCategoriaViewModel> Categorias
+        public HomeViewModel()
         {
-            get
-            {
-                return _categorias;
-            }
-        }
-
-        public HomeViewModel(ICollection<PaginaCategoriaViewModel> categorias)
-        {
-            _categorias = categorias;
         }
     }
 
@@ -351,6 +340,22 @@ namespace VendeAgroWeb.Models.Pagina
         }
     }
 
+    public class PaginaCategoriasViewModel {
+        private ICollection<PaginaCategoriaViewModel> _categorias;
+
+        public ICollection<PaginaCategoriaViewModel> Categorias
+        {
+            get
+            {
+                return _categorias;
+            }
+        }
+
+        public PaginaCategoriasViewModel(ICollection<PaginaCategoriaViewModel> categorias) {
+            _categorias = categorias;
+        }
+    }
+
     public class PaginaCategoriaViewModel
     {
         private int _id;
@@ -373,6 +378,34 @@ namespace VendeAgroWeb.Models.Pagina
         }
 
         public PaginaCategoriaViewModel(int id, string nombre)
+        {
+            _id = id;
+            _nombre = nombre;
+        }
+    }
+
+    public class PaginaSubcategoriaViewModel
+    {
+        private int _id;
+        private string _nombre;
+
+        public int Id
+        {
+            get
+            {
+                return _id;
+            }
+        }
+
+        public string Nombre
+        {
+            get
+            {
+                return _nombre;
+            }
+        }
+
+        public PaginaSubcategoriaViewModel(int id, string nombre)
         {
             _id = id;
             _nombre = nombre;

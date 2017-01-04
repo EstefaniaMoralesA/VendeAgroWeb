@@ -1,1 +1,19 @@
-﻿
+﻿@model VendeAgroWeb.Models.Administrador.EstadosViewModel
+
+@{
+    foreach (var item in Model.Estados)
+    {
+        <li><a data-id="@item.Id">@item.Nombre</a></li>
+    }
+}
+
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
+
+<script>
+    $("#estados-dropdown li a").click(function () {
+        estadosClick($(this));
+    });
+</script>

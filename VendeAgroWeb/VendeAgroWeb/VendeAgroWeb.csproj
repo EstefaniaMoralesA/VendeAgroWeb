@@ -327,6 +327,7 @@
     <Content Include="img\banner1.jpg" />
     <Content Include="img\bannerLat2.jpg" />
     <Content Include="img\banner.jpg" />
+    <Content Include="img\foto-vacia.png" />
     <Content Include="img\loader.gif" />
     <Content Include="img\caballo.jpg" />
     <Content Include="img\caballoespanol.jpg" />
@@ -470,6 +471,9 @@
     <Content Include="Views\Administrador\NuevoAnuncio.cshtml" />
     <Content Include="Views\Administrador\CategoriasAnuncioPartial.cshtml" />
     <Content Include="Views\Administrador\SubcategoriasAnuncioPartial.cshtml" />
+    <Content Include="Views\Home\CategoriasPartial.cshtml" />
+    <Content Include="Views\Home\SubcategoriasPartial.cshtml" />
+    <Content Include="Views\Home\PaisPartial.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

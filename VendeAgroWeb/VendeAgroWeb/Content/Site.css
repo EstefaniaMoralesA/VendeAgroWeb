@@ -1872,7 +1872,7 @@ div.social-wrap button {
     border-color: #04612d;
 }
 
-.table-carrito-data{
+.table-carrito-data {
     border-top: 0px !important;
 }
 
@@ -2027,11 +2027,11 @@ hr {
     padding-left: 20px;
     padding-right: 20px;
     background-color: #efefef;
-    color: black; 
+    color: black;
 }
 
     .ir-al-carrito:hover {
-        color: #b5b5b5; 
+        color: #b5b5b5;
     }
 
 .beneficio-carrito-container {
@@ -2044,7 +2044,7 @@ hr {
     margin-bottom: 0px;
 }
 
-.nav-pills a{
+.nav-pills a {
     background-color: #efefef;
 }
 
@@ -2070,12 +2070,134 @@ hr {
     background-color: #cccccc !important;
 }
 
-    .dropdown-anuncio .caret {
-        border-top: 10px solid black !important;
-    }
+.nuevo-anuncio-caret {
+    border-top: 10px solid black !important;
+}
 
 .form-nuevo-anuncio {
     margin-bottom: 25px !important;
+}
+
+.btn-cancelar-nuevo-anuncio {
+    background-color: #ebebeb;
+    padding: 7px 0px !important;
+    width: 100%;
+    text-align: center;
+}
+
+.nuevo-anuncio-cliente {
+    text-align: center;
+    font-size: 16px;
+}
+
+.row-tabla-foto {
+    text-align: center;
+}
+
+    .row-tabla-foto > td {
+        display: table-cell;
+        vertical-align: middle !important;
+    }
+
+.foto-tabla-titulo {
+    max-width: 120px !important;
+}
+
+.foto-vacia {
+    width: 100px;
+}
+
+.panel-body h4 {
+    font-family: generalFont !important;
+}
+
+.image-preview-input {
+    overflow: hidden;
+    position: relative;
+}
+
+.input-absoluto {
+    position: absolute;
+    top: 0;
+    right: 0;
+    margin: 0;
+    padding: 0;
+    font-size: 20px;
+    cursor: pointer;
+    opacity: 0;
+}
+
+.upload-drop-zone {
+    height: 200px;
+    border-width: 2px;
+    margin-bottom: 20px;
+}
+
+.upload-drop-zone {
+    color: #ccc;
+    border-style: dashed;
+    border-color: #ccc;
+    line-height: 200px;
+    text-align: center;
+}
+
+    .upload-drop-zone.drop {
+        color: #222;
+        border-color: #222;
+    }
+
+.tarjeta h4 {
+    font-family: generalFont;
+    font-weight: bolder;
+    color: #abc114;
+}
+
+.tarjeta .form-control {
+    font-family: generalFont;
+    font-weight: bolder;
+    font-size: 20px;
+    color: #abc114;
+}
+
+.error-tarjeta {
+    display: none;
+}
+
+.has-error {
+    border-color: #b94a48 !important;
+    color: #b94a48 !important;
+}
+
+.procesando-pago {
+    height: 100vh;
+    position: absolute;
+    background-color: rgba(255,255,255,0.9);
+    z-index: 1000;
+    display: none;
+}
+
+    .procesando-pago h3 {
+        width: 100%;
+        text-align: center;
+        font-family: generalFont;
+        font-weight: bolder;
+        color: #abc114;
+    }
+
+    .procesando-pago .proceso-pago-contenido {
+        padding-top: 20px;
+    }
+
+.has-error-dropdown {
+    color: #b94a48 !important;
+}
+
+.has-error-caret {
+    border-top: 10px solid #b94a48 !important;
+}
+
+.td-error {
+    background-color: #f2dede !important;
 }
 
 @media (max-width: 1200px) {
@@ -2098,6 +2220,7 @@ hr {
         font-size: 22px;
     }
 }
+
 
 @media (max-width: 1120px) {
 

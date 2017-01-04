@@ -9,6 +9,8 @@ using System.Web;
 using System.Web.Mvc;
 using VendeAgroWeb.Models;
 using VendeAgroWeb.Models.Administrador;
+using System.Web.Script.Serialization;
+using Newtonsoft.Json.Linq;
 
 namespace VendeAgroWeb.Controllers.Administrador
 {
@@ -1014,8 +1016,7 @@ namespace VendeAgroWeb.Controllers.Administrador
                             AnuncioPaqueteViewModel paqueteViewModel = null;
                             if (paquete != null)
                             {
-                                paqueteViewModel = new AnuncioPaqueteViewModel(paquete.nombre, anuncio.fecha_inicio,
-                                    anuncio.fecha_fin, paquete.activo);
+                                paqueteViewModel = new AnuncioPaqueteViewModel(paquete.nombre, paquete.activo);
                             }
 
                             var rutaVideo = _dbContext.Videos_Anuncio.Where(v => v.idAnuncio == id).FirstOrDefault()?.ruta;
@@ -1024,7 +1025,7 @@ namespace VendeAgroWeb.Controllers.Administrador
                             {
                                 fotos.Add(new FotoViewModel(foto.principal, foto.ruta));
                             }
-                            model = new AnuncioDetallesViewModel(anuncioViewModel, anuncio.estado, anuncio.activo, anuncio.descripcion, fotos, paqueteViewModel, rutaVideo);
+                            model = new AnuncioDetallesViewModel(anuncioViewModel, anuncio.estado, anuncio.activo, anuncio.descripcion, fotos, anuncio.fecha_inicio, anuncio.fecha_fin, paqueteViewModel, rutaVideo);
                         }
                     }
                 }
@@ -1444,9 +1445,116 @@ namespace VendeAgroWeb.Controllers.Administrador
 
         }
 
-        public async Task<ActionResult> NuevoAnuncio()
+        public async Task<ActionResult> NuevoAnuncio(int? id)
         {
-            return View();
+            NuevoAnuncioViewModel model = new NuevoAnuncioViewModel(id.Value, await ObtenerNombreUsuario(id));
+            return View(model);
+        }
+
+        [HttpPost]
+        public async Task<bool> NuevoAnuncio(string json)
+        {
+            var anuncio = JObject.Parse(json);
+            var titulo = (string)anuncio["jtitulo"];
+            var descripcion = (string)anuncio["jdescripcion"];
+            var precio = (double)anuncio["jprecio"];
+            var idUsuario = (int)anuncio["jidUsuario"];
+            var idSubcategoria = (int)anuncio["jidSubcategoria"];
+            var idCiudad = (int)anuncio["jidCiudad"];
+            var meses = (int)anuncio["jmeses"];
+            var fotoDisplay = (string)anuncio["jfotoDisplay"];
+            var fotos = (JArray)anuncio["jfotos"];
+            var video = (string)anuncio["jvideo"];
+
+            return await Task.Run(() =>
+            {
+                using (var _dbContext = new MercampoEntities())
+                {
+                    Startup.OpenDatabaseConnection(_dbContext);
+                    if (_dbContext.Database.Connection.State != ConnectionState.Open)
+                    {
+                        ModelState.AddModelError("", "Error en la base de datos, vuelva a intentarlo");
+                        return false;
+                    }
+                    else
+                    {
+                        var anuncioBD = _dbContext.Anuncios.Where(a => (a.titulo.ToLower() == titulo.ToLower())).FirstOrDefault();
+
+                        if (anuncioBD != null)
+                        {
+
+                            ModelState.AddModelError("", "Error ya existe un anuncio con ese título.");
+                            return false;
+                        }
+                        else
+                        {
+                            var nuevoAnuncio = _dbContext.Anuncios.Add(new Anuncio
+                            {
+                                titulo = titulo,
+                                descripcion = descripcion,
+                                precio = precio,
+                                activo = true,
+                                idUsuario = idUsuario,
+                                idSubcategoria = idSubcategoria,
+                                idCiudad = idCiudad, 
+                                estado = (int)EstadoAnuncio.Aprobado,
+                                clicks = 0, 
+                                vistas = 0,
+                                fecha_inicio = DateTime.Now,
+                                fecha_fin =  DateTime.Now.AddMonths(meses),
+                            });
+
+                            List<Fotos_Anuncio> fotosAnuncio = new List<Fotos_Anuncio>();
+
+                            _dbContext.Fotos_Anuncio.Add( new Fotos_Anuncio
+                            {
+                                ruta = fotoDisplay,
+                                idAnuncio = nuevoAnuncio.id,
+                                principal = true
+                            });
+
+                            foreach (var item in fotos)
+                            {
+                                var url = (string)item;
+                                _dbContext.Fotos_Anuncio.Add( new Fotos_Anuncio {
+                                    ruta = url,
+                                    idAnuncio = nuevoAnuncio.id,
+                                    principal = false
+                                });
+                            }
+
+                            _dbContext.Videos_Anuncio.Add(new Videos_Anuncio {
+                                ruta = video,
+                                idAnuncio = nuevoAnuncio.id
+                            });
+
+                            _dbContext.SaveChanges();
+                        }
+
+                        _dbContext.Database.Connection.Close();
+                        return true;
+                    }
+                }
+            });
+        }
+
+        public async Task<string> ObtenerNombreUsuario(int? idUsuario) {
+            return await Task.Run(() =>
+            {
+                using (var _dbContext = new MercampoEntities())
+                {
+                    Startup.OpenDatabaseConnection(_dbContext);
+                    if (_dbContext.Database.Connection.State != ConnectionState.Open)
+                    {
+                        return null;
+                    }
+                    var usuario = _dbContext.Usuarios.Where(u => u.id == idUsuario).FirstOrDefault();
+
+                    _dbContext.Database.Connection.Close();
+                    return usuario.nombre + " " + usuario.apellidos;
+                }
+
+            });
         }
 
         public async Task<ActionResult> CategoriasAnuncioPartial() {
@@ -1496,7 +1604,14 @@ namespace VendeAgroWeb.Controllers.Administrador
         public async Task<ActionResult> EstadosAnuncioPartial(int? idPais)
         {
             EstadosViewModel model = new EstadosViewModel(await ObtenerEstadosAnuncio(idPais));
-            return PartialView("EstadosAnuncioPartial");
+            return PartialView("EstadosAnuncioPartial", model);
+        }
+
+        [HttpPost]
+        public async Task<ActionResult> CiudadesAnuncioPartial(int? idEstado)
+        {
+            CiudadesViewModel model = new CiudadesViewModel(await ObtenerCiudadesAnuncio(idEstado));
+            return PartialView("CiudadesAnuncioPartial", model);
         }
 
         public async Task<ICollection<CategoriaViewModel>> ObtenerCategoriasAnuncio()
@@ -1565,6 +1680,31 @@ namespace VendeAgroWeb.Controllers.Administrador
                     foreach (var item in estados)
                     {
                         lista.Add(new EstadoViewModel(item.id, item.nombre));
+                    }
+
+                    _dbContext.Database.Connection.Close();
+                    return lista;
+                }
+
+            });
+        }
+
+        public async Task<ICollection<CiudadViewModel>> ObtenerCiudadesAnuncio(int? idEstado)
+        {
+            return await Task.Run(() =>
+            {
+                using (var _dbContext = new MercampoEntities())
+                {
+                    Startup.OpenDatabaseConnection(_dbContext);
+                    if (_dbContext.Database.Connection.State != ConnectionState.Open)
+                    {
+                        return null;
+                    }
+                    List<CiudadViewModel> lista = new List<CiudadViewModel>();
+                    var ciudades = _dbContext.Ciudads.Where(c => c.idEstado == idEstado);
+                    foreach (var item in ciudades)
+                    {
+                        lista.Add(new CiudadViewModel(item.id, item.nombre));
                     }
 
                     _dbContext.Database.Connection.Close();

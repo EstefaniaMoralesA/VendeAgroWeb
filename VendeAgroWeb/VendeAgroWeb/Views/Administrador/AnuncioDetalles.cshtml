@@ -99,6 +99,8 @@
         <h3><span>T&iacute;tulo: </span>@Model.Anuncio.Titulo</h3>
         <h4><span>Precio: </span>$@Model.Anuncio.Precio</h4>
         <p><span>Descripci&oacute;n: </span>@Model.Descripcion</p>
+        <p><span><strong>Fecha de inicio: </strong></span>@Model.FechaInicio.Value.ToString("dd-MM-yyyy")</p>
+        <p><span><strong>Fecha de fin: </strong></span>@Model.FechaFin.Value.ToString("dd-MM-yyyy")</p>
         <hr />
         <h2 style="margin-top:15px;">Detalles de compra</h2>
         <hr />
@@ -110,14 +112,6 @@
                         <tr>
                             <td><strong>Paquete</strong></td>
                             <td>@Model.Paquete.Nombre</td>
-                        </tr>
-                        <tr>
-                            <td><strong>Fecha de inicio</strong></td>
-                            <td>@Model.Paquete.FechaInicio.ToString("dd-MM-yyyy")</td>
-                        </tr>
-                        <tr>
-                            <td><strong>Fecha de fin</strong></td>
-                            <td>@Model.Paquete.FechaFin.ToString("dd-MM-yyyy")</td>
                         </tr>
                     }
                 }

@@ -340,5 +340,12 @@ namespace VendeAgroWeb.Controllers.Home
 
             return lista;
         }
+
+        public async Task<ActionResult> CategoriasPartial()
+        {
+            PaginaCategoriasViewModel model = new PaginaCategoriasViewModel(await ObtenerCategorias());
+            return PartialView("CategoriasPartial", model);
+        }
+
     }
 }

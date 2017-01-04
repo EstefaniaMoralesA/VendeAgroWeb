@@ -443,16 +443,11 @@ namespace VendeAgroWeb.Models.Administrador
     public class AnuncioPaqueteViewModel
     {
         private string _nombre;
-        private DateTime? _fechaInicio;
-        private DateTime? _fechaFin;
         private bool _activo;
-        private string _folio;
 
-        public AnuncioPaqueteViewModel(string nombre, DateTime? fechaInicio, DateTime? fechaFin, bool activo)
+        public AnuncioPaqueteViewModel(string nombre, bool activo)
         {
             _nombre = nombre;
-            _fechaInicio = fechaInicio;
-            _fechaFin = fechaFin;
             _activo = activo;
         }
 
@@ -461,24 +456,6 @@ namespace VendeAgroWeb.Models.Administrador
             get
             {
                 return _nombre;
-            }
-
-        }
-
-        public DateTime? FechaInicio
-        {
-            get
-            {
-                return _fechaInicio;
-            }
-
-        }
-
-        public DateTime? FechaFin
-        {
-            get
-            {
-                return _fechaFin;
             }
 
         }
@@ -524,18 +501,34 @@ namespace VendeAgroWeb.Models.Administrador
 
     public class NuevoAnuncioViewModel
     {
+        private int _idUsuario;
+        private string _nombreUsuario;
 
-        [Required(ErrorMessage = "Campo requerido")]
-        [Display(Name = "NuevoTitulo")]
-        public string Titulo { get; set; }
+        public string NombreUsuario
+        {
+            get
+            {
+                return _nombreUsuario;
+            }
+        }
 
-        [Required(ErrorMessage = "Campo requerido")]
-        [Display(Name = "NuevoPrecio")]
-        public int Precio { get; set; }
+        public int IdUsuario
+        {
+            get
+            {
+                return _idUsuario;
+            }
+        }
 
-        [Required(ErrorMessage = "Campo requerido")]
-        [Display(Name = "NuevaDescripcion")]
-        public string Descripcion { get; set; }
+        public NuevoAnuncioViewModel()
+        {
+
+        }
+
+        public NuevoAnuncioViewModel(int idUsuario, string nombreUsuario) {
+            _idUsuario = idUsuario;
+            _nombreUsuario = nombreUsuario;
+        }
     }
 
     public class AnuncioDetallesViewModel
@@ -545,11 +538,13 @@ namespace VendeAgroWeb.Models.Administrador
         private bool _activo;
         private string _descripcion;
         private ICollection<FotoViewModel> _fotos;
+        private DateTime? _fechaInicio;
+        private DateTime? _fechaFin;
         private AnuncioPaqueteViewModel _paquete;
         private string _video;
 
         public AnuncioDetallesViewModel(AnuncioViewModel anuncio, int status, bool activo,
-            string descripcion, List<FotoViewModel> fotos, AnuncioPaqueteViewModel paquete, string video)
+            string descripcion, List<FotoViewModel> fotos, DateTime? fechaInicio, DateTime? fechaFin, AnuncioPaqueteViewModel paquete, string video)
         {
             _anuncio = anuncio;
             _status = (EstadoAnuncio)status;
@@ -557,6 +552,8 @@ namespace VendeAgroWeb.Models.Administrador
             _descripcion = descripcion;
             _fotos = fotos;
             _paquete = paquete;
+            _fechaInicio = fechaInicio;
+            _fechaFin = fechaFin;
             _video = video;
         }
 
@@ -573,14 +570,6 @@ namespace VendeAgroWeb.Models.Administrador
             get
             {
                 return _video;
-            }
-        }
-
-        public AnuncioPaqueteViewModel Paquete
-        {
-            get
-            {
-                return _paquete;
             }
         }
 
@@ -621,6 +610,30 @@ namespace VendeAgroWeb.Models.Administrador
             get
             {
                 return _descripcion;
+            }
+        }
+
+        public DateTime? FechaInicio
+        {
+            get
+            {
+                return _fechaInicio;
+            }
+        }
+
+        public DateTime? FechaFin
+        {
+            get
+            {
+                return _fechaFin;
+            }
+        }
+
+        public AnuncioPaqueteViewModel Paquete
+        {
+            get
+            {
+                return _paquete;
             }
         }
     }
@@ -841,6 +854,53 @@ namespace VendeAgroWeb.Models.Administrador
         }
 
         public PaisViewModel(int id, string nombre)
+        {
+            _id = id;
+            _nombre = nombre;
+        }
+    }
+
+    public class CiudadesViewModel
+    {
+        private ICollection<CiudadViewModel> _ciudades;
+
+        public ICollection<CiudadViewModel> Ciudades
+        {
+            get
+            {
+                return _ciudades;
+            }
+        }
+
+        public CiudadesViewModel(ICollection<CiudadViewModel> ciudades)
+        {
+            _ciudades = ciudades;
+        }
+
+    }
+
+    public class CiudadViewModel
+    {
+        private int _id;
+        private string _nombre;
+
+        public int Id
+        {
+            get
+            {
+                return _id;
+            }
+        }
+
+        public string Nombre
+        {
+            get
+            {
+                return _nombre;
+            }
+        }
+
+        public CiudadViewModel(int id, string nombre)
         {
             _id = id;
             _nombre = nombre;

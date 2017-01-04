@@ -23,14 +23,11 @@
                     <div class="col-sm-12 busqueda-avanzada-container">
                         <div class="row">
                             <div class="dropdown">
-                                <button class="btn btn-default dropdown-toggle botones-grad busqueda-dropdown" type="button" data-toggle="dropdown">
+                                <button id="btn-categoria" class="btn btn-default dropdown-toggle botones-grad busqueda-dropdown" type="button" data-toggle="dropdown">
                                     Categoría
                                     <span class="caret"></span>
                                 </button>
-                                <ul class="dropdown-menu">
-                                    <li><a href="#">CSS</a></li>
-                                    <li><a href="#">JavaScript</a></li>
-                                </ul>
+                                <ul id="categorias" class="dropdown-menu"></ul>
                             </div>
                         </div>
                         <div class="row">
@@ -187,5 +184,29 @@
         $('.expander-3').removeClass('col-sm-4').addClass('col-sm-3');
         $('.expander-6').removeClass('col-sm-8').addClass('col-sm-6');
         $('.esconder-banners').show();
+    }
+
+    $("#btn-categoria").click(function () {
+        getCategorias();
+    });
+
+    function categoriasClick(elemento) {
+        $("#btn-categoria:first-child").html(elemento.text() + '<span class="caret"></span>');
+        getSubcategorias(elemento.data('id'));
+    }
+
+    function getCategorias() {
+        $.ajax({
+            type: "POST",
+            data: {},
+            url: '/Pagina/CategoriasPartial',
+            success: function (result) {
+                $("#categorias").html(result);
+            },
+            error: function (msg) {
+                console.log(msg);
+                alert("Error en categorias: " + msg);
+            }
+        });
     }
 </script>
