@@ -336,12 +336,11 @@
     <Content Include="img\fondoVACielo.jpg" />
     <Content Include="img\fondoVA.jpg" />
     <Content Include="img\horses.jpg" />
-    <Content Include="img\logo.png" />
     <Content Include="img\logoHorizontalAnunciate.png" />
     <Content Include="img\logoHorizontalMovil.png" />
-    <Content Include="img\logoHorizontal.png" />
     <Content Include="img\icon.png" />
-    <Content Include="img\logoResplandor.png" />
+    <Content Include="img\logoHorizontal.png" />
+    <Content Include="img\logo.png" />
     <Content Include="img\vacaContacto.jpg" />
     <Content Include="img\yegua.jpg" />
     <Content Include="Models\DatabaseModel.Context.tt">
@@ -473,7 +472,9 @@
     <Content Include="Views\Administrador\SubcategoriasAnuncioPartial.cshtml" />
     <Content Include="Views\Home\CategoriasPartial.cshtml" />
     <Content Include="Views\Home\SubcategoriasPartial.cshtml" />
-    <Content Include="Views\Home\PaisPartial.cshtml" />
+    <Content Include="Views\Home\PaisesPartial.cshtml" />
+    <Content Include="Views\Home\EstadosPartial.cshtml" />
+    <Content Include="Views\Home\CiudadesPartial.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

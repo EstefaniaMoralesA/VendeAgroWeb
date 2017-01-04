@@ -272,6 +272,165 @@ namespace VendeAgroWeb.Models.Pagina
         }
     }
 
+    public class PaginaPaisesViewModel
+    {
+        private ICollection<PaginaPaisViewModel> _paises;
+
+        public ICollection<PaginaPaisViewModel> Paises
+        {
+            get
+            {
+                return _paises;
+            }
+        }
+
+        public PaginaPaisesViewModel(ICollection<PaginaPaisViewModel> paises)
+        {
+            _paises = paises;
+        }
+
+    }
+
+    public class PaginaPaisViewModel
+    {
+        private int _id;
+        private string _nombre;
+
+        public int Id
+        {
+            get
+            {
+                return _id;
+            }
+        }
+
+        public string Nombre
+        {
+            get
+            {
+                return _nombre;
+            }
+        }
+
+        public PaginaPaisViewModel(string nombre)
+        {
+            _id = -1;
+            _nombre = nombre;
+        }
+
+        public PaginaPaisViewModel(int id, string nombre)
+        {
+            _id = id;
+            _nombre = nombre;
+        }
+    }
+
+    public class PaginaEstadosViewModel
+    {
+        private ICollection<PaginaEstadoViewModel> _estados;
+
+        public ICollection<PaginaEstadoViewModel> Estados
+        {
+            get
+            {
+                return _estados;
+            }
+        }
+
+        public PaginaEstadosViewModel(ICollection<PaginaEstadoViewModel> estados)
+        {
+            _estados = estados;
+        }
+
+    }
+
+    public class PaginaEstadoViewModel
+    {
+        private int _id;
+        private string _nombre;
+
+        public int Id
+        {
+            get
+            {
+                return _id;
+            }
+        }
+
+        public string Nombre
+        {
+            get
+            {
+                return _nombre;
+            }
+        }
+
+        public PaginaEstadoViewModel(string nombre)
+        {
+            _id = -1;
+            _nombre = nombre;
+        }
+
+        public PaginaEstadoViewModel(int id, string nombre)
+        {
+            _id = id;
+            _nombre = nombre;
+        }
+    }
+
+    public class PaginaCiudadesViewModel
+    {
+        private ICollection<PaginaCiudadViewModel> _ciudades;
+
+        public ICollection<PaginaCiudadViewModel> Ciudades
+        {
+            get
+            {
+                return _ciudades;
+            }
+        }
+
+        public PaginaCiudadesViewModel(ICollection<PaginaCiudadViewModel> ciudades)
+        {
+            _ciudades = ciudades;
+        }
+
+    }
+
+    public class PaginaCiudadViewModel
+    {
+        private int _id;
+        private string _nombre;
+
+        public int Id
+        {
+            get
+            {
+                return _id;
+            }
+        }
+
+        public string Nombre
+        {
+            get
+            {
+                return _nombre;
+            }
+        }
+
+        public PaginaCiudadViewModel(string nombre)
+        {
+            _id = -1;
+            _nombre = nombre;
+        }
+
+        public PaginaCiudadViewModel(int id, string nombre)
+        {
+            _id = id;
+            _nombre = nombre;
+        }
+    }
+
     public class PaginaPaqueteViewModel
     {
         private int _id;
@@ -377,10 +536,34 @@ namespace VendeAgroWeb.Models.Pagina
             }
         }
 
+        public PaginaCategoriaViewModel(string nombre)
+        {
+            _id = -1;
+            _nombre = nombre;
+        }
+
         public PaginaCategoriaViewModel(int id, string nombre)
         {
             _id = id;
             _nombre = nombre;
+        }
+    }
+
+    public class PaginaSubcategoriasViewModel
+    {
+        private ICollection<PaginaSubcategoriaViewModel> _subcategorias;
+
+        public ICollection<PaginaSubcategoriaViewModel> Subcategorias
+        {
+            get
+            {
+                return _subcategorias;
+            }
+        }
+
+        public PaginaSubcategoriasViewModel(ICollection<PaginaSubcategoriaViewModel> subcategorias)
+        {
+            _subcategorias = subcategorias;
         }
     }
 
@@ -403,6 +586,12 @@ namespace VendeAgroWeb.Models.Pagina
             {
                 return _nombre;
             }
+        }
+
+        public PaginaSubcategoriaViewModel(string nombre)
+        {
+            _id = -1;
+            _nombre = nombre;
         }
 
         public PaginaSubcategoriaViewModel(int id, string nombre)

@@ -22,7 +22,7 @@
                 <div class="col-sm-3 expander-3">
                     <div class="col-sm-12 busqueda-avanzada-container">
                         <div class="row">
-                            <div class="dropdown">
+                            <div id="categoria-dropdown" class="dropdown">
                                 <button id="btn-categoria" class="btn btn-default dropdown-toggle botones-grad busqueda-dropdown" type="button" data-toggle="dropdown">
                                     Categoría
                                     <span class="caret"></span>
@@ -31,54 +31,44 @@
                             </div>
                         </div>
                         <div class="row">
-                            <div class="dropdown">
-                                <button class="btn btn-default dropdown-toggle botones-grad busqueda-dropdown" type="button" data-toggle="dropdown">
+                            <div id="subcategoria-dropdown" class="dropdown">
+                                <button id="btn-subcategoria" class="btn btn-default dropdown-toggle botones-grad busqueda-dropdown" type="button" data-toggle="dropdown">
                                     Subcategoría
                                     <span class="caret"></span>
                                 </button>
-                                <ul class="dropdown-menu">
-                                    <li><a href="#">HTML</a></li>
-                                    <li><a href="#">CSS</a></li>
-                                    <li><a href="#">JavaScript</a></li>
+                                <ul id="subcategorias" class="dropdown-menu">
+                                    <li><a href="#">Elige una categoría...</a></li>
                                 </ul>
                             </div>
                         </div>
                         <div class="row">
-                            <div class="dropdown">
-                                <button class="btn btn-default dropdown-toggle botones-grad busqueda-dropdown" type="button" data-toggle="dropdown">
+                            <div id="pais-dropdown" class="dropdown">
+                                <button id="btn-pais" class="btn btn-default dropdown-toggle botones-grad busqueda-dropdown" type="button" data-toggle="dropdown">
                                     País
                                     <span class="caret"></span>
                                 </button>
-                                <ul class="dropdown-menu">
-                                    <li><a href="#">HTML</a></li>
-                                    <li><a href="#">CSS</a></li>
-                                    <li><a href="#">JavaScript</a></li>
-                                </ul>
+                                <ul id="paises" class="dropdown-menu"></ul>
                             </div>
                         </div>
                         <div class="row">
-                            <div class="dropdown">
-                                <button class="btn btn-default dropdown-toggle botones-grad busqueda-dropdown" type="button" data-toggle="dropdown">
+                            <div id="estado-dropdown" class="dropdown">
+                                <button id="btn-estado" class="btn btn-default dropdown-toggle botones-grad busqueda-dropdown" type="button" data-toggle="dropdown">
                                     Estado
                                     <span class="caret"></span>
                                 </button>
-                                <ul class="dropdown-menu">
-                                    <li><a href="#">HTML</a></li>
-                                    <li><a href="#">CSS</a></li>
-                                    <li><a href="#">JavaScript</a></li>
+                                <ul id="estados" class="dropdown-menu">
+                                    <li><a href="#">Elige un país...</a></li>
                                 </ul>
                             </div>
                         </div>
                         <div class="row">
-                            <div class="dropdown">
-                                <button class="btn btn-default dropdown-toggle botones-grad busqueda-dropdown" type="button" data-toggle="dropdown">
+                            <div id="ciudad-dropdown" class="dropdown">
+                                <button id="btn-ciudad" class="btn btn-default dropdown-toggle botones-grad busqueda-dropdown" type="button" data-toggle="dropdown">
                                     Ciudad
                                     <span class="caret"></span>
                                 </button>
-                                <ul class="dropdown-menu">
-                                    <li><a href="#">HTML</a></li>
-                                    <li><a href="#">CSS</a></li>
-                                    <li><a href="#">JavaScript</a></li>
+                                <ul id="ciudades" class="dropdown-menu">
+                                    <li><a href="#">Elige un estado...</a></li>
                                 </ul>
                             </div>
                         </div>
@@ -112,6 +102,11 @@
 @Scripts.Render("~/bundles/nouislider")
 
 <script>
+    var idCategoria = -1;
+    var idSubcategoria = -1;
+    var idPais = -1;
+    var idEstado = -1;
+    var idCiudad = -1;
 
     $(document).ready(function () {
         $.ajax({
@@ -123,7 +118,6 @@
             },
             error: function (msg) {
                 console.log(msg);
-                alert("Error en anuncios desktop: " + msg);
             }
         });
 
@@ -136,7 +130,6 @@
             },
             error: function (msg) {
                 console.log(msg);
-                alert("Error en anuncios movil: " + msg);
             }
         });
     });
@@ -190,22 +183,132 @@
         getCategorias();
     });
 
+    $("#btn-pais").click(function () {
+        getPaises();
+    });
+
     function categoriasClick(elemento) {
-        $("#btn-categoria:first-child").html(elemento.text() + '<span class="caret"></span>');
-        getSubcategorias(elemento.data('id'));
+        idCategoria = elemento.data('id');
+        if (idCategoria == -1) {
+            $("#btn-categoria:first-child").html("Categoría" + '<span class="caret"></span>');
+            $("#btn-subcategoria:first-child").html("Subcategoría" + '<span class="caret"></span>');
+        }
+        else {
+            $("#btn-categoria:first-child").html(elemento.text() + '<span class="caret"></span>');
+            getSubcategorias(idCategoria);
+        }
+        getAnunciosDestacadosFiltrados();
+    }
+
+    function subcategoriasClick(elemento) {
+        if (elemento.data('id') == -1) {
+            $("#btn-subcategoria:first-child").html("Subcategoría" + '<span class="caret"></span>');
+        }
+        else {
+            $("#btn-subcategoria:first-child").html(elemento.text() + '<span class="caret"></span>');
+        }
+    }
+
+    function paisesClick(elemento) {
+        $("#btn-pais:first-child").html(elemento.text() + '<span class="caret"></span>');
+        getEstados(elemento.data('id'));
+    }
+
+    function estadosClick(elemento) {
+        $("#btn-estado:first-child").html(elemento.text() + '<span class="caret"></span>');
+        getCiudades(elemento.data('id'));
+    }
+
+    function ciudadesClick(elemento) {
+        $("#btn-ciudad:first-child").html(elemento.text() + '<span class="caret"></span>');
     }
 
     function getCategorias() {
         $.ajax({
             type: "POST",
             data: {},
-            url: '/Pagina/CategoriasPartial',
+            url: '/Home/CategoriasPartial',
             success: function (result) {
                 $("#categorias").html(result);
             },
             error: function (msg) {
                 console.log(msg);
                 alert("Error en categorias: " + msg);
+            }
+        });
+    }
+
+    function getSubcategorias(id) {
+        $.ajax({
+            type: "POST",
+            data: {},
+            url: '/Home/SubcategoriasPartial?idCategoria=' + id,
+            success: function (result) {
+                $("#subcategorias").html(result);
+            },
+            error: function (msg) {
+                console.log(msg);
+                alert("Error en subcategorias: " + msg);
+            }
+        });
+    }
+
+    function getPaises() {
+        $.ajax({
+            type: "POST",
+            data: {},
+            url: '/Home/PaisesPartial',
+            success: function (result) {
+                $("#paises").html(result);
+            },
+            error: function (msg) {
+                console.log(msg);
+                alert("Error en paises: " + msg);
+            }
+        });
+    }
+
+    function getEstados(id) {
+        $.ajax({
+            type: "POST",
+            data: {},
+            url: '/Home/EstadosPartial?idPais=' + id,
+            success: function (result) {
+                $("#estados").html(result);
+            },
+            error: function (msg) {
+                console.log(msg);
+                alert("Error en estados: " + msg);
+            }
+        });
+    }
+
+    function getCiudades(id) {
+        $.ajax({
+            type: "POST",
+            data: {},
+            url: '/Home/CiudadesPartial?idEstado=' + id,
+            success: function (result) {
+                $("#ciudades").html(result);
+            },
+            error: function (msg) {
+                console.log(msg);
+                alert("Error en ciudades: " + msg);
+            }
+        });
+    }
+
+    function getAnunciosDestacadosFiltrados(){
+        $.ajax({
+            type: "POST",
+            data: {},
+            url: '/Home/DestacadosFiltradosPartial?idCategoria=' + idCategoria + "&idSubcategoria=" + idSubcategoria + "&idPais=" + idPais + "&idEstado=" + idEstado + "&idCiudad" + idCiudad,
+            success: function (result) {
+                $(".anuncios-container").html(result);
+            },
+            error: function (msg) {
+                console.log(msg);
+                alert("Error en filtros: " + msg);
             }
         });
     }

@@ -224,6 +224,64 @@ namespace VendeAgroWeb.Controllers.Home
             });
         }
 
+        [HttpPost]
+        public async Task<ActionResult> DestacadosFiltradosPartial(int idCategoria, int idSubcategoria, int idPais, int idEstado, int idCiudad) {
+            PortalAnunciosViewModel model = new PortalAnunciosViewModel(await ObtenerDestacadosFiltrados(idCategoria, idSubcategoria, idPais, idEstado, idCiudad), "", "", "");
+            return PartialView("_AnunciosPartial", model);
+        }
+
+        public async Task<ICollection<PortalAnuncioViewModel>> ObtenerDestacadosFiltrados(int idCategoria, int idSubcategoria, int idPais, int idEstado, int idCiudad) {
+            return await Task.Run(() =>
+            {
+                using (var _dbContext = new MercampoEntities())
+                {
+                    Startup.OpenDatabaseConnection(_dbContext);
+                    if (_dbContext.Database.Connection.State != ConnectionState.Open)
+                    {
+                        return null;
+                    }
+                    IQueryable<Anuncio> anuncios = null;
+                    if (idCategoria != -1)
+                    {
+                        if (idSubcategoria != -1)
+                        {
+                            if (idPais != -1)
+                            {
+                                if (idEstado != -1)
+                                {
+                                    if (idCiudad != -1)
+                                    {
+                                        anuncios = _dbContext.Anuncios.Where(a => a.activo == true && a.estado == (int)EstadoAnuncio.Aprobado && a.idSubcategoria == idSubcategoria && a.idCiudad == idCiudad).OrderByDescending(a => a.clicks).Take(20);
+                                    }
+                                    else
+                                    {
+                                        anuncios = _dbContext.Anuncios.Where(a => a.activo == true && a.estado == (int)EstadoAnuncio.Aprobado && a.idSubcategoria == idSubcategoria && a.Ciudad.idEstado == idEstado).OrderByDescending(a => a.clicks).Take(20);
+                                    }
+                                }
+                                else
+                                {
+                                    anuncios = _dbContext.Anuncios.Where(a => a.activo == true && a.estado == (int)EstadoAnuncio.Aprobado && a.idSubcategoria == idSubcategoria && a.Ciudad.Estado.idPais == idPais).OrderByDescending(a => a.clicks).Take(20);
+                                }
+                            }
+                            else
+                            {
+                                anuncios = _dbContext.Anuncios.Where(a => a.activo == true && a.estado == (int)EstadoAnuncio.Aprobado && a.idSubcategoria == idSubcategoria).OrderByDescending(a => a.clicks).Take(20);
+                            }
+                        }
+                        else
+                        {
+                            anuncios = _dbContext.Anuncios.Where(a => a.activo == true && a.estado == (int)EstadoAnuncio.Aprobado && a.Subcategoria.idCategoria == idCategoria).OrderByDescending(a => a.clicks).Take(20);
+                        }
+                    }
+
+                    var result = CreaAnuncios(anuncios.ToList(), _dbContext);
+                    _dbContext.Database.Connection.Close();
+
+                    return result;
+                }
+            });
+        }
+
         public async Task<ICollection<PortalAnuncioViewModel>> ObtenerOfertasDelDia()
         {
             return await Task.Run(() =>
@@ -247,6 +305,101 @@ namespace VendeAgroWeb.Controllers.Home
             });
         }
 
+        public async Task<ICollection<PaginaPaisViewModel>> ObtenerPaises()
+        {
+            return await Task.Run(() =>
+            {
+                using (var _dbContext = new MercampoEntities())
+                {
+                    Startup.OpenDatabaseConnection(_dbContext);
+                    if (_dbContext.Database.Connection.State != ConnectionState.Open)
+                    {
+                        return null;
+                    }
+                    List<PaginaPaisViewModel> lista = new List<PaginaPaisViewModel>();
+                    lista.Add(new PaginaPaisViewModel("Elige un país"));
+
+                    var paises = _dbContext.Pais;
+                    foreach (var item in paises)
+                    {
+                        lista.Add(new PaginaPaisViewModel(item.id, item.nombre));
+                    }
+
+                    _dbContext.Database.Connection.Close();
+                    return lista;
+                }
+
+            });
+        }
+
+        [HttpPost]
+        public async Task<ActionResult> EstadosPartial(int? idPais)
+        {
+            PaginaEstadosViewModel model = new PaginaEstadosViewModel(await ObtenerEstados(idPais));
+            return PartialView("EstadosPartial", model);
+        }
+
+        public async Task<ICollection<PaginaEstadoViewModel>> ObtenerEstados(int? idPais)
+        {
+            return await Task.Run(() =>
+            {
+                using (var _dbContext = new MercampoEntities())
+                {
+                    Startup.OpenDatabaseConnection(_dbContext);
+                    if (_dbContext.Database.Connection.State != ConnectionState.Open)
+                    {
+                        return null;
+                    }
+                    List<PaginaEstadoViewModel> lista = new List<PaginaEstadoViewModel>();
+                    lista.Add(new PaginaEstadoViewModel("Elige un estado"));
+
+                    var estados = _dbContext.Estadoes.Where(e => e.idPais == idPais);
+                    foreach (var item in estados)
+                    {
+                        lista.Add(new PaginaEstadoViewModel(item.id, item.nombre));
+                    }
+
+                    _dbContext.Database.Connection.Close();
+                    return lista;
+                }
+
+            });
+        }
+
+        [HttpPost]
+        public async Task<ActionResult> CiudadesPartial(int? idEstado)
+        {
+            PaginaCiudadesViewModel model = new PaginaCiudadesViewModel(await ObtenerCiudades(idEstado));
+            return PartialView("CiudadesPartial", model);
+        }
+
+        public async Task<ICollection<PaginaCiudadViewModel>> ObtenerCiudades(int? idEstado)
+        {
+            return await Task.Run(() =>
+            {
+                using (var _dbContext = new MercampoEntities())
+                {
+                    Startup.OpenDatabaseConnection(_dbContext);
+                    if (_dbContext.Database.Connection.State != ConnectionState.Open)
+                    {
+                        return null;
+                    }
+                    List<PaginaCiudadViewModel> lista = new List<PaginaCiudadViewModel>();
+                    lista.Add(new PaginaCiudadViewModel("Elige una ciudad"));
+
+                    var ciudades = _dbContext.Ciudads.Where(c => c.idEstado == idEstado);
+                    foreach (var item in ciudades)
+                    {
+                        lista.Add(new PaginaCiudadViewModel(item.id, item.nombre));
+                    }
+
+                    _dbContext.Database.Connection.Close();
+                    return lista;
+                }
+
+            });
+        }
+
         public async Task<ICollection<PaginaCategoriaViewModel>> ObtenerCategorias()
         {
             return await Task.Run(() =>
@@ -262,6 +415,8 @@ namespace VendeAgroWeb.Controllers.Home
                     var categorias = _dbContext.Categorias.Where(c => c.activo == true);
                     List<PaginaCategoriaViewModel> listaCategorias = new List<PaginaCategoriaViewModel>();
 
+                    listaCategorias.Add(new PaginaCategoriaViewModel("Elige una categoría"));
+
                     foreach (var categoria in categorias)
                     {
                         listaCategorias.Add(new PaginaCategoriaViewModel(categoria.id, categoria.nombre));
@@ -269,6 +424,35 @@ namespace VendeAgroWeb.Controllers.Home
 
                     _dbContext.Database.Connection.Close();
                     return listaCategorias;
+                }
+            });
+        }
+
+        public async Task<ICollection<PaginaSubcategoriaViewModel>> ObtenerSubcategorias(int? idCategoria)
+        {
+            return await Task.Run(() =>
+            {
+                using (var _dbContext = new MercampoEntities())
+                {
+                    Startup.OpenDatabaseConnection(_dbContext);
+                    if (_dbContext.Database.Connection.State != ConnectionState.Open)
+                    {
+                        return null;
+                    }
+
+                    var subcategorias = _dbContext.Subcategorias.Where(s => (s.activo == true) && (s.idCategoria == idCategoria));
+                    List<PaginaSubcategoriaViewModel> listaSubcategorias = new List<PaginaSubcategoriaViewModel>();
+
+                    listaSubcategorias.Add(new PaginaSubcategoriaViewModel("Elige una subcategoría"));
+
+
+                    foreach (var subcategoria in subcategorias)
+                    {
+                        listaSubcategorias.Add(new PaginaSubcategoriaViewModel(subcategoria.id, subcategoria.nombre));
+                    }
+
+                    _dbContext.Database.Connection.Close();
+                    return listaSubcategorias;
                 }
             });
         }
@@ -341,10 +525,25 @@ namespace VendeAgroWeb.Controllers.Home
             return lista;
         }
 
+        [HttpPost]
+        public async Task<ActionResult> SubcategoriasPartial(int? idCategoria)
+        {
+            PaginaSubcategoriasViewModel model = new PaginaSubcategoriasViewModel(await ObtenerSubcategorias(idCategoria));
+            return PartialView("SubcategoriasPartial", model);
+        }
+
+        [HttpPost]
         public async Task<ActionResult> CategoriasPartial()
         {
             PaginaCategoriasViewModel model = new PaginaCategoriasViewModel(await ObtenerCategorias());
             return PartialView("CategoriasPartial", model);
+        }
+
+        [HttpPost]
+        public async Task<ActionResult> PaisesPartial()
+        {
+            PaginaPaisesViewModel model = new PaginaPaisesViewModel(await ObtenerPaises());
+            return PartialView("PaisesPartial", model);
         }
 
     }

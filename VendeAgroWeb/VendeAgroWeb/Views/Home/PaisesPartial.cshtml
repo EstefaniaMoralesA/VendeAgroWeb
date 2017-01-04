@@ -1,0 +1,20 @@
+﻿@model VendeAgroWeb.Models.Pagina.PaginaPaisesViewModel
+
+@{
+    foreach (var item in Model.Paises)
+    {
+        <li><a data-id="@item.Id">@item.Nombre</a></li>
+    }
+}
+
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
+
+<script>
+    $("#pais-dropdown li a").click(function () {
+        paisesClick($(this));
+    });
+</script>
+

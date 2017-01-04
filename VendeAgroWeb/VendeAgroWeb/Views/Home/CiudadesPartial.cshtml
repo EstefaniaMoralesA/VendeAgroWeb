@@ -1,0 +1,19 @@
+﻿@model VendeAgroWeb.Models.Pagina.PaginaCiudadesViewModel
+
+@{
+    foreach (var item in Model.Ciudades)
+    {
+        <li><a data-id="@item.Id">@item.Nombre</a></li>
+    }
+}
+
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
+
+<script>
+    $("#ciudad-dropdown li a").click(function () {
+        ciudadesClick($(this));
+    });
+</script>

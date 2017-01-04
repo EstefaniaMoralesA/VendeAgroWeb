@@ -1,1 +1,19 @@
-﻿
+﻿@model VendeAgroWeb.Models.Pagina.PaginaSubcategoriasViewModel
+
+@{
+    foreach (var item in Model.Subcategorias)
+    {
+        <li><a data-id="@item.Id">@item.Nombre</a></li>
+    }
+}
+
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
+
+<script>
+    $("#subcategoria-dropdown li a").click(function () {
+        subcategoriasClick($(this));
+    });
+</script>

@@ -90,8 +90,18 @@ a {
     cursor: pointer;
 }
 
+.menu-min-height {
+    min-height: 70px;
+}
+
 .forma-busqueda {
-    padding: 15px 0px 0px 0px;
+    position: absolute;
+    top: 50%;
+    transform: translate(0, -50%);
+    -webkit-transform: translate(0, -50%);
+    -moz-transform: translate(0, -50%);
+    -o-transform: translate(0, -50%);
+    -ms-transform: translate(0, -50%);
 }
 
 .menu-redondeado-container {
@@ -106,8 +116,8 @@ a {
     border-radius: 134%;
     border-top-right-radius: 0;
     border-top-left-radius: 0;
-    width: 105%;
-    min-height: 125px;
+    width: 106%;
+    min-height: 143px;
     left: 50%;
     transform: translate(-50%, 0);
     -webkit-transform: translate(-50%, 0);
@@ -136,21 +146,15 @@ a {
     list-style: none;
     padding-left: 0px;
     font-size: 21px;
-    margin-top: 5px;
-    width: auto;
+    margin-top: 10px;
+    width: 100%;
     display: inline-block;
-    left: 50%;
-    position: relative;
-    transform: translate(-50%,0);
 }
-
-    .menu-tabs li:nth-child(1) {
-        padding-left: 0px;
-    }
 
     .menu-tabs li {
         float: left;
-        padding: 16px;
+        text-align: center;
+        width: 25%;
     }
 
         .menu-tabs li a {
@@ -163,9 +167,8 @@ a {
             }
 
 .logo-container {
-    width: 29%;
-    position: absolute;
-    height: 75%;
+    position: relative;
+    min-height: 70px;
 }
 
     .logo-container a {
@@ -174,9 +177,9 @@ a {
     }
 
         .logo-container a img {
-            width: 72%;
-            position: relative;
-            left: 45%;
+            width: 70%;
+            position: absolute;
+            left: 47%;
             top: 50%;
             transform: translate(-50%, -50%);
             -webkit-transform: translate(-50%, -50%);
@@ -186,7 +189,14 @@ a {
         }
 
 .login-menu-container ul {
-    padding: 15px 15px 0px 0px;
+    position: absolute;
+    top: 42%;
+    left: 40%;
+    transform: translate(0, -50%);
+    -webkit-transform: translate(0, -50%);
+    -moz-transform: translate(0, -50%);
+    -o-transform: translate(0, -50%);
+    -ms-transform: translate(0, -50%);
 }
 
     .login-menu-container ul li a {
@@ -227,13 +237,9 @@ a {
     height: 39px;
 }
 
-.menu-movil-container .menu-tabs li {
-    padding: 8px 13px 0px 0px !important;
+.menu-movil-container .menu-tabs li a {
+    font-size: 12px !important;
 }
-
-    .menu-movil-container .menu-tabs li a {
-        font-size: 12px !important;
-    }
 
 .movil-forma-busqueda .busqueda .glyphicon {
     font-size: 12px !important;
@@ -260,24 +266,38 @@ a {
     top: 60%;
     position: relative;
     transform: translate(0,-50%);
+    -o-transform: translate(0,-50%);
+    -ms-transform: translate(0,-50%);
+    -webkit-transform: translate(0,-50%);
+    -moz-transform: translate(0,-50%);
 }
 
-.login-menu-movil-container ul {
-    float: right;
-    margin-right: 5px;
+.login-menu-movil-container {
+    top: 60%;
+    position: relative;
+    transform: translate(0,-50%);
+    -o-transform: translate(0,-50%);
+    -ms-transform: translate(0,-50%);
+    -webkit-transform: translate(0,-50%);
+    -moz-transform: translate(0,-50%);
 }
 
-    .login-menu-movil-container ul li {
-        display: table-cell;
-        float: left;
+    .login-menu-movil-container ul {
+        float: right;
+        margin-right: 1px;
     }
 
-        .login-menu-movil-container ul li a {
-            padding: 2px 10px 2px 10px;
-            line-height: 20px;
-            font-size: 12px;
-            color: white;
+        .login-menu-movil-container ul li {
+            display: table-cell;
+            float: left;
         }
+
+            .login-menu-movil-container ul li a {
+                padding: 2px 15px 2px 10px;
+                line-height: 20px;
+                font-size: 12px;
+                color: white;
+            }
 
 .modal-registro-container {
     overflow-x: hidden;
@@ -521,6 +541,16 @@ div.social-wrap button {
         color: #04612d;
     }
 
+.carrito-boton {
+    position: absolute;
+    left: 50%;
+    transform: translate(-68%,-45%);
+    -ms-transform: translate(-68%, -45%);
+    -webkit-transform: translate(-68%, -45%);
+    -o-transform: translate(-68%, -45%);
+    -moz-transform: translate(-68%, -45%);
+}
+
 .carrito {
     color: white;
 }
@@ -552,22 +582,39 @@ div.social-wrap button {
     -webkit-transform: translate(0, -50%);
     -o-transform: translate(0, -50%);
     -moz-transform: translate(0, -50%);
-    transform: translate(0, -50%);
-    -ms-transform: translate(0, -50%);
-    -webkit-transform: translate(0, -50%);
-    -o-transform: translate(0, -50%);
-    -moz-transform: translate(0, -50%);
 }
 
     .anunciate-texto-container p {
-        font-size: 16px;
+        font-size: 20px;
         color: #04612d;
     }
 
 .anunciate-img {
-    width: 150px;
-    padding-bottom: 8px;
-    padding-left: 4px;
+    width: 176px;
+    padding-bottom: 2px;
+}
+
+.palomita-anunciate {
+    position: absolute;
+    font-size: 25px;
+}
+
+.titulo-anunciate {
+    margin-left: 25px;
+    font-weight: bolder;
+    font-size: 22px !important;
+}
+
+.texto-anunciate {
+    margin-left: 25px;
+}
+
+.titulo-mision-anunciate {
+    color: #04612d;
+    font-family: generalFont;
+    font-weight: bolder;
+    margin-bottom: 30px;
+    text-align: center;
 }
 
 .destacados-titulo-container {
@@ -2219,6 +2266,10 @@ hr {
     .anunciate-recados-texto h3 {
         font-size: 22px;
     }
+
+    .login-menu-container ul {
+        left: 32%;
+    }
 }
 
 
@@ -2226,10 +2277,6 @@ hr {
 
     .busqueda-titulo-container {
         min-height: 52px;
-    }
-
-    .logo-container a img {
-        width: 80%;
     }
 
     .ofertas-anuncio-titulo .anuncio-titulo p {
@@ -2272,6 +2319,10 @@ hr {
         margin-left: 0px;
         margin-right: 30px;
     }
+
+    .login-menu-container ul li a {
+        font-size: 15px;
+    }
 }
 
 
@@ -2281,8 +2332,8 @@ hr {
         font-size: 18px;
     }
 
-    .menu-tabs li {
-        padding: 9px;
+    .logo-container a img {
+        width: 80%;
     }
 }
 
@@ -2304,6 +2355,10 @@ hr {
     .botones-portal-container {
         width: 220px;
     }
+
+    .login-menu-container ul {
+        left: 23%;
+    }
 }
 
 @media (max-width: 833px) {
@@ -2322,6 +2377,10 @@ hr {
 
     .menu-tabs a {
         font-size: 15px;
+    }
+
+    .menu-container {
+        min-height: 136px;
     }
 }
 
@@ -2345,7 +2404,7 @@ hr {
     }
 
     .menu-tabs li {
-        padding: 15px 15px 5px 0px;
+        float: left;
         font-size: 13px;
     }
 
@@ -2518,7 +2577,6 @@ hr {
     }
 
         .anunciate-texto-container p {
-            font-size: 11px;
             padding-left: 15px;
             padding-right: 15px;
         }
