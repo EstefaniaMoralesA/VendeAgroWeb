@@ -533,11 +533,16 @@ div.social-wrap button {
         font-size: 16px;
     }
 
+.home-body-container h3 {
+    padding-left: 10px;
+}
+
 .busqueda-titulo-container {
     background-color: rgba(180,195,53,0.7);
 }
 
     .busqueda-titulo-container h3 {
+        margin-bottom: 12px;
         color: #04612d;
     }
 
@@ -773,10 +778,17 @@ div.social-wrap button {
             width: 100%;
         }
 
+.banners-fixed {
+    top: 160px;
+    z-index: 1000;
+    position: fixed;
+}
+
 .banner-lateral {
-    margin-top: -52px;
-    float: right;
-    width: 92%;
+    width: 90%;
+    position: relative;
+    height: 90%;
+    overflow: hidden;
 }
 
     .banner-lateral img {
@@ -1069,6 +1081,7 @@ div.social-wrap button {
 }
 
 .anuncios-container {
+    width: 100%;
     display: inline-block;
 }
 

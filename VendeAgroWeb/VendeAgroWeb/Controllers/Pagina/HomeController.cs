@@ -225,12 +225,20 @@ namespace VendeAgroWeb.Controllers.Home
         }
 
         [HttpPost]
-        public async Task<ActionResult> DestacadosFiltradosPartial(int idCategoria, int idSubcategoria, int idPais, int idEstado, int idCiudad) {
+        public async Task<ActionResult> DestacadosFiltradosPartial(int? idCategoria, int? idSubcategoria, int? idPais, int? idEstado, int? idCiudad) {
             PortalAnunciosViewModel model = new PortalAnunciosViewModel(await ObtenerDestacadosFiltrados(idCategoria, idSubcategoria, idPais, idEstado, idCiudad), "", "", "");
             return PartialView("_AnunciosPartial", model);
         }
 
-        public async Task<ICollection<PortalAnuncioViewModel>> ObtenerDestacadosFiltrados(int idCategoria, int idSubcategoria, int idPais, int idEstado, int idCiudad) {
+        [HttpPost]
+        public async Task<ActionResult> DestacadosFiltradosMovilPartial(int? idCategoria, int? idSubcategoria, int? idPais, int? idEstado, int? idCiudad)
+        {
+            PortalAnunciosViewModel model = new PortalAnunciosViewModel(await ObtenerDestacadosFiltrados(idCategoria, idSubcategoria, idPais, idEstado, idCiudad), "", "", "");
+            return PartialView("_AnunciosMovil", model);
+        }
+
+
+        public async Task<ICollection<PortalAnuncioViewModel>> ObtenerDestacadosFiltrados(int? idCategoria, int? idSubcategoria, int? idPais, int? idEstado, int? idCiudad) {
             return await Task.Run(() =>
             {
                 using (var _dbContext = new MercampoEntities())
