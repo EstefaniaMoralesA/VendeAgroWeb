@@ -792,13 +792,29 @@ div.social-wrap button {
     top: 160px;
     z-index: 1000;
     position: fixed;
+    width: inherit;
+}
+
+.busqueda-fixed {
+    position: fixed;
+    width: inherit;
+    padding-right: 44px;
+    top: 160px;
+}
+
+.banners-container {
+    padding-right: 15px;
+    padding-left: 15px;
 }
 
 .banner-lateral {
     width: 90%;
-    position: relative;
-    height: 90%;
-    overflow: hidden;
+    max-width: 330px;
+}
+
+.esconder-banners {
+    padding-left: 0px;
+    padding-right: 0px;
 }
 
     .banner-lateral img {

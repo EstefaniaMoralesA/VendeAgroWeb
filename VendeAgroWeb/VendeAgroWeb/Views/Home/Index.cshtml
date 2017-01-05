@@ -10,9 +10,9 @@
             @Html.Partial("_BannerCentral")
             <div class="row">
                 <div class="col-sm-3 expander-3">
+                    <div class="busqueda-fixed-container">
                     <div class="col-sm-12 busqueda-titulo-container titulos">
                         <div class="busqueda-container">
-                            <div class="busqueda-fixed">
                                 <h3>Búsqueda</h3>
                                 <div id="categoria-dropdown" class="dropdown">
                                     <button id="btn-categoria" class="btn btn-default dropdown-toggle botones-grad busqueda-dropdown" type="button" data-toggle="dropdown">
@@ -91,10 +91,8 @@
                     </div>
                 </div>
                 <div class="col-sm-3 esconder-banners">
-                    <div style="width: 100%; position: relative;">
-                        <div class="banners-container">
-                            @Html.Partial("_BannerLateral")
-                        </div>
+                    <div class="banners-container">
+                        @Html.Partial("_BannerLateral")
                     </div>
                 </div>
             </div>
@@ -406,12 +404,14 @@
     }
 
     $(window).scroll(function () {
+        if ($(window).width() <= 767) return;
+
         if ($(this).scrollTop() > 250) {
             $('.banners-container').addClass('banners-fixed');
-            $('.busqueda-fixed').addClass('banners-fixed');
+            $('.busqueda-fixed-container').addClass('busqueda-fixed');
         } else {
             $('.banners-container').removeClass('banners-fixed');
-            $('.busqueda-fixed').removeClass('banners-fixed');
+            $('.busqueda-fixed-container').removeClass('busqueda-fixed');
         }
     });
 </script>
