@@ -449,7 +449,7 @@ div.social-wrap button {
     }
 
 .dropdown {
-    margin-bottom: 23px;
+    margin-bottom: 19px;
     font-size: 18px;
 }
 
@@ -458,7 +458,7 @@ div.social-wrap button {
         border: none;
         font-weight: bolder;
         color: white;
-        font-size: 18px;
+        font-size: 16px;
         box-shadow: -2px 3px 10px #585858;
     }
 
@@ -476,6 +476,16 @@ div.social-wrap button {
         border-right: 8px solid transparent !important;
         border-left: 8px solid transparent !important;
     }
+
+#btn-precio {
+    padding: 8px 0px 8px 0px;
+    width: 100%;
+    border: none;
+    font-weight: bolder;
+    color: white;
+    font-size: 16px;
+    box-shadow: -2px 3px 10px #585858;
+}
 
 .slider-container {
     margin-top: 10px;

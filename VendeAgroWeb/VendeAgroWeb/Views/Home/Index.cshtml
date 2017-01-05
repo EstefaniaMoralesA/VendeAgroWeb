@@ -63,6 +63,11 @@
                                     <div class="slider" id="slider">
                                     </div>
                                 </div>
+                                <div style="margin-top: 19px;">
+                                    <button id="btn-precio" class="btn btn-default botones-grad" type="button">
+                                        Filtrar precio
+                                    </button>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -99,6 +104,7 @@
 
 @Scripts.Render("~/bundles/jquery")
 @Scripts.Render("~/bundles/nouislider")
+@Scripts.Render("~/bundles/wNumb")
 
 <script>
     var idCategoria = -1;
@@ -106,6 +112,8 @@
     var idPais = -1;
     var idEstado = -1;
     var idCiudad = -1;
+    var precioBajo = 100;
+    var precioAlto = 10000;
 
     $(document).ready(function () {
         $.ajax({
@@ -136,14 +144,18 @@
     var slider = document.getElementById('slider');
 
     noUiSlider.create(slider, {
-        start: [100, 5000],
-        step: 50,
+        start: [100, 250000],
+        step: 100,
         margin: 50,
         connect: true,
         range: {
             'min': 100,
-            'max': 5000
-        }
+            'max': 500000
+        },
+        format: wNumb({
+            thousand: ',',
+            decimals: 0
+        })
     });
 
     valueIzq = document.getElementById('value-izq'),
@@ -151,9 +163,11 @@
 
     slider.noUiSlider.on('update', function (values, handle) {
         if (!handle) {
-            valueIzq.innerHTML = parseFloat(values[handle]).toFixed(0);
+            precioBajo = parseFloat(values[handle]).toFixed(0);
+            valueIzq.innerHTML = values[handle];
         } else {
-            valueDer.innerHTML = parseFloat(values[handle]).toFixed(0);
+            precioAlto = parseFloat(values[handle]).toFixed(0);
+            valueDer.innerHTML = values[handle];
         }
     });
 
@@ -184,6 +198,10 @@
 
     $("#btn-pais").click(function () {
         getPaises();
+    });
+
+    $("#btn-precio").click(function () {
+        getAnunciosDestacadosFiltrados();
     });
 
     function categoriasClick(elemento) {

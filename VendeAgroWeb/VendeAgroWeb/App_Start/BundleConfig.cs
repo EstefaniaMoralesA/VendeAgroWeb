@@ -20,6 +20,9 @@ namespace VendeAgroWeb
             bundles.Add(new ScriptBundle("~/bundles/carousel/js").Include(
                         "~/Scripts/owl.carousel.js"));
 
+            bundles.Add(new ScriptBundle("~/bundles/wNumb").Include(
+                        "~/Scripts/wNumb.js"));
+
             // Use the development version of Modernizr to develop with and learn from. Then, when you're
             // ready for production, use the build tool at http://modernizr.com to pick only the tests you need.
             bundles.Add(new ScriptBundle("~/bundles/modernizr").Include(
