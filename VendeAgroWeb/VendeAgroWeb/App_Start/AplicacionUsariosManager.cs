@@ -322,10 +322,10 @@ namespace VendeAgroWeb
             }
         }
 
-        private string getToken()
+        public static string getToken()
         {
             StringBuilder sb = new StringBuilder();
-            Random random = new Random();
+            Random random = new Random((int)DateTime.Now.Ticks & (0x0000FFFF + new Random().Next(0, 100)));
 
             for (int i = 0; i < 20; i++)
             {

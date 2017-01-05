@@ -11,6 +11,7 @@ using VendeAgroWeb.Models;
 using VendeAgroWeb.Models.Administrador;
 using System.Web.Script.Serialization;
 using Newtonsoft.Json.Linq;
+using System.IO;
 
 namespace VendeAgroWeb.Controllers.Administrador
 {
@@ -1452,6 +1453,50 @@ namespace VendeAgroWeb.Controllers.Administrador
         }
 
         [HttpPost]
+        public string SubirFotos()
+        {
+            List<string> fotos = new List<string>();
+            try
+            {
+                foreach (string file in Request.Files)
+                {
+                    var fileContent = Request.Files[file];
+                    if (fileContent != null && fileContent.ContentLength > 0)
+                    {
+                        // get a stream
+                        var stream = fileContent.InputStream;
+                        // and optionally write the file to disk
+                        var fileExtension = Path.GetExtension(fileContent.FileName);
+                        var guid = Guid.NewGuid().ToString();
+                        var name = AplicacionUsuariosManager.Hash(Guid.NewGuid().ToString());
+                        string serverPath = Server.MapPath("~/Uploads/Images");
+
+                        if(!Directory.Exists(serverPath))
+                        {
+                            Directory.CreateDirectory(serverPath);
+                        }
+
+                        var path = Path.Combine(serverPath, $"{name}{fileExtension}");
+
+                        using (var fileStream = System.IO.File.Create(path))
+                        {
+                            stream.CopyTo(fileStream);
+                        }
+
+                        fotos.Add($"/Uploads/Images/{name}{fileExtension}");
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                Response.StatusCode = (int)HttpStatusCode.BadRequest;
+                return new JavaScriptSerializer().Serialize(Json(e.Message).Data);
+            }
+
+            return new JavaScriptSerializer().Serialize(Json(fotos).Data);
+        }
+
+        [HttpPost]
         public async Task<bool> NuevoAnuncio(string json)
         {
             var anuncio = JObject.Parse(json);
@@ -1523,10 +1568,14 @@ namespace VendeAgroWeb.Controllers.Administrador
                                 });
                             }
 
-                            _dbContext.Videos_Anuncio.Add(new Videos_Anuncio {
-                                ruta = video,
-                                idAnuncio = nuevoAnuncio.id
-                            });
+                            if (!string.IsNullOrEmpty(video))
+                            {
+                                _dbContext.Videos_Anuncio.Add(new Videos_Anuncio
+                                {
+                                    ruta = video,
+                                    idAnuncio = nuevoAnuncio.id
+                                });
+                            }
 
                             _dbContext.SaveChanges();
                         }

@@ -152,7 +152,7 @@
                                             <div class="btn btn-default image-preview-input" style="position: relative;">
                                                 <span class="glyphicon glyphicon-folder-open"></span>
                                                 <span style="padding-left: 3px;" class="image-preview-input-title">Elegir video</span>
-                                                <input class="input-absoluto" type="file" onchange="actualizaVideo(event)" multiple>
+                                                <input class="input-absoluto" type="file" onchange="actualizaVideo(event)">
                                             </div>
                                             <label id="video-no-seleccionado">No se ha seleccionado el video</label>
                                             <label id="video-seleccionado" style="display:none;">1 video seleccionado</label>
@@ -195,11 +195,16 @@
     var fotoDisplay = null;
     var fotos = [];
     var video = null;
+    var fotosFinal = [];
+    var fotoDisplayFinal = '';
+    var videoFinal = '';
     var validoCategoria = true;
     var validoSubcategoria = true;
     var validoPais = true;
     var validoEstado = true;
     var validoCiudad = true;
+    var numeroSubidosEsperado = 1;
+    var numeroSubidos = 0;
 
     $("#btn-categoria").click(function () {
         getCategorias();
@@ -337,6 +342,50 @@
         });
     }
 
+    function subirFotos(fotosInt, tipo)
+    {
+        if (fotosInt.length <= 0) return;
+        if (window.FormData !== undefined) {
+            var data = new FormData();
+            for (var x = 0; x < fotosInt.length; x++) {
+                data.append("file" + x, fotosInt[x]);
+            }
+
+            $.ajax({
+                type: "POST",
+                url: '/Administrador/SubirFotos',
+                data: data,
+                cache: false,
+                contentType: false,
+                processData: false,
+                success: function (result) {
+                    if (tipo == 0)
+                    {
+                        fotoDisplayFinal = JSON.parse(result)[0];
+                    }
+                    else
+                    {
+                        fotosFinal = JSON.parse(result);
+                    }
+
+                    numeroSubidos++;
+                    if (numeroSubidosEsperado === numeroSubidos)
+                    {
+                        agregarAnuncio();
+                    }
+                },
+                error: function (xhr, status, p3, p4) {
+                    var err = "Error " + " " + status + " " + p3 + " " + p4;
+                    if (xhr.responseText && xhr.responseText[0] == "{")
+                        err = JSON.parse(xhr.responseText).Message;
+                    console.log(err);
+                }
+            });
+        } else {
+            alert("This browser doesn't support HTML5 file uploads!");
+        }
+    }
+
     function agregarAnuncio() {
 
         var nuevoAnuncio = {
@@ -347,9 +396,9 @@
             jmeses: meses,
             jidSubcategoria: idSubcategoria,
             jidCiudad: idCiudad,
-            jfotoDisplay: fotoDisplay,
-            jfotos: fotos,
-            jvideo: video
+            jfotoDisplay: fotoDisplayFinal,
+            jfotos: fotosFinal,
+            jvideo: videoFinal
         };
 
         $.ajax({
@@ -357,8 +406,7 @@
             data: { "json": JSON.stringify(nuevoAnuncio) },
             url: "/Administrador/NuevoAnuncio",
             success: function (result) {
-                alert("entro");
-                window.location.href("Anuncios");
+                window.location = "Anuncios";
             },
             error: function (msg) {
                 console.log(msg);
@@ -380,8 +428,9 @@
             $(".img-selected").attr("src", "/img/foto-vacia.png");
             return;
         }
-        fotoDisplay = URL.createObjectURL(event.target.files[0]);
-        $(".img-selected").attr("src", fotoDisplay);
+        var foto = URL.createObjectURL(event.target.files[0]);
+        fotoDisplay = event.target.files[0];
+        $(".img-selected").attr("src", foto);
     };
 
     function validExtension(imagen) {
@@ -410,20 +459,31 @@
 
     function actualizaFotos(event) {
         $(".error-extensiones").html('').hide('');
+        if (event.target.files.length <= 0)
+        {
+            return;
+        }
+
+        fotos = [];
         var uploadFiles = event.target.files;
+        
         for (var i = 0; i < uploadFiles.length; i++) {
             if (!validExtension(uploadFiles[i])) {
                 mostrarErrorExtensiones("La extensión de una o más de las imágenes seleccionadas no es válida");
                 return;
             }
-            fotos.push(URL.createObjectURL(uploadFiles[i]));
+            fotos.push(uploadFiles[i]);
         }
-        $("#num-fotos").html(uploadFiles.length);
+        $("#num-fotos").html(fotos.length);
     }
 
     function actualizaVideo(event) {
         $(".error-extension-video").html('').hide('');
         var videoExt = event.target.files[0];
+        if (videoExt === undefined)
+        {
+            return;
+        }
         if (!validExtensionVideo(videoExt)) {
             mostrarErrorExtensionVideo("La extensión del video no es válida");
             return;
@@ -434,7 +494,7 @@
         }
         $("#video-no-seleccionado").hide();
         $("#video-seleccionado").show();
-        video = URL.createObjectURL(videoExt);
+        video = videoExt;
     }
 
     function mostrarErrorExtension(cadenaErrorExtension) {
@@ -582,8 +642,21 @@
             return;
         }
 
+        if (video != null)
+        {
+            numeroSubidosEsperado++;
+        }
+
+        if (fotos.length > 0)
+        {
+            numeroSubidosEsperado++;
+        }
+
         $(".error-nuevo-anuncio").hide('');
-        agregarAnuncio();
+        var arreglo = [];
+        arreglo.push(fotoDisplay);
+        subirFotos(arreglo, 0);
+        subirFotos(fotos, 1);
     });
 
 </script>
