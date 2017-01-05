@@ -113,7 +113,7 @@
     var idEstado = -1;
     var idCiudad = -1;
     var precioBajo = 100;
-    var precioAlto = 10000;
+    var precioAlto = 500000;
 
     $(document).ready(function () {
         $.ajax({
@@ -144,7 +144,7 @@
     var slider = document.getElementById('slider');
 
     noUiSlider.create(slider, {
-        start: [100, 250000],
+        start: [100, 500000],
         step: 100,
         margin: 50,
         connect: true,
@@ -162,11 +162,17 @@
     valueDer = document.getElementById('value-der');
 
     slider.noUiSlider.on('update', function (values, handle) {
+        var moneyFormat = wNumb({
+            thousand: ','
+        });
+
         if (!handle) {
-            precioBajo = parseFloat(values[handle]).toFixed(0);
+            precio = values[handle];
+            precioBajo = moneyFormat.from(precio);
             valueIzq.innerHTML = values[handle];
         } else {
-            precioAlto = parseFloat(values[handle]).toFixed(0);
+            precio = values[handle];
+            precioAlto = moneyFormat.from(precio);
             valueDer.innerHTML = values[handle];
         }
     });
@@ -373,7 +379,7 @@
         $.ajax({
             type: "POST",
             data: {},
-            url: '/Home/DestacadosFiltradosPartial?idCategoria=' + idCategoria + "&idSubcategoria=" + idSubcategoria + "&idPais=" + idPais + "&idEstado=" + idEstado + "&idCiudad=" + idCiudad,
+            url: '/Home/DestacadosFiltradosPartial?idCategoria=' + idCategoria + "&idSubcategoria=" + idSubcategoria + "&idPais=" + idPais + "&idEstado=" + idEstado + "&idCiudad=" + idCiudad + "&precioBajo=" + precioBajo + "&precioAlto=" + precioAlto,
             success: function (result) {
                 $(".anuncios-filtrados-container").html(result);
                 $('.loader-container').hide();
