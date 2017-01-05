@@ -248,7 +248,15 @@ namespace VendeAgroWeb.Controllers.Home
                     {
                         return null;
                     }
+
                     IQueryable<Anuncio> anuncios = null;
+
+                    if (idCategoria == -1 && idSubcategoria == -1 && idPais == -1 && idCiudad == -1 && idEstado == -1) {
+                        anuncios = _dbContext.Anuncios.Where(a => a.activo == true && a.estado == (int)EstadoAnuncio.Aprobado).OrderByDescending(a => a.clicks).Take(20);
+                        _dbContext.Database.Connection.Close();
+                        return CreaAnuncios(anuncios.ToList(), _dbContext);
+                    }
+
                     if (idCategoria != -1)
                     {
                         if (idSubcategoria != -1)
@@ -260,25 +268,62 @@ namespace VendeAgroWeb.Controllers.Home
                                     if (idCiudad != -1)
                                     {
                                         anuncios = _dbContext.Anuncios.Where(a => a.activo == true && a.estado == (int)EstadoAnuncio.Aprobado && a.idSubcategoria == idSubcategoria && a.idCiudad == idCiudad).OrderByDescending(a => a.clicks).Take(20);
+                                        _dbContext.Database.Connection.Close();
+                                        return CreaAnuncios(anuncios.ToList(), _dbContext);
                                     }
                                     else
                                     {
                                         anuncios = _dbContext.Anuncios.Where(a => a.activo == true && a.estado == (int)EstadoAnuncio.Aprobado && a.idSubcategoria == idSubcategoria && a.Ciudad.idEstado == idEstado).OrderByDescending(a => a.clicks).Take(20);
+                                        _dbContext.Database.Connection.Close();
+                                        return CreaAnuncios(anuncios.ToList(), _dbContext);
                                     }
                                 }
                                 else
                                 {
                                     anuncios = _dbContext.Anuncios.Where(a => a.activo == true && a.estado == (int)EstadoAnuncio.Aprobado && a.idSubcategoria == idSubcategoria && a.Ciudad.Estado.idPais == idPais).OrderByDescending(a => a.clicks).Take(20);
+                                    _dbContext.Database.Connection.Close();
+                                    return CreaAnuncios(anuncios.ToList(), _dbContext);
                                 }
                             }
                             else
                             {
                                 anuncios = _dbContext.Anuncios.Where(a => a.activo == true && a.estado == (int)EstadoAnuncio.Aprobado && a.idSubcategoria == idSubcategoria).OrderByDescending(a => a.clicks).Take(20);
+                                _dbContext.Database.Connection.Close();
+                                return CreaAnuncios(anuncios.ToList(), _dbContext);
                             }
                         }
                         else
                         {
                             anuncios = _dbContext.Anuncios.Where(a => a.activo == true && a.estado == (int)EstadoAnuncio.Aprobado && a.Subcategoria.idCategoria == idCategoria).OrderByDescending(a => a.clicks).Take(20);
+                            _dbContext.Database.Connection.Close();
+                            return CreaAnuncios(anuncios.ToList(), _dbContext);
+                        }
+                    }
+                    else
+                    {
+                        if (idPais != -1)
+                        {
+                            if (idEstado != -1)
+                            {
+                                if (idCiudad != -1)
+                                {
+                                    anuncios = _dbContext.Anuncios.Where(a => a.activo == true && a.estado == (int)EstadoAnuncio.Aprobado && a.idCiudad == idCiudad).OrderByDescending(a => a.clicks).Take(20);
+                                    _dbContext.Database.Connection.Close();
+                                    return CreaAnuncios(anuncios.ToList(), _dbContext);
+                                }
+                                else
+                                {
+                                    anuncios = _dbContext.Anuncios.Where(a => a.activo == true && a.estado == (int)EstadoAnuncio.Aprobado && a.Ciudad.idEstado == idEstado).OrderByDescending(a => a.clicks).Take(20);
+                                    _dbContext.Database.Connection.Close();
+                                    return CreaAnuncios(anuncios.ToList(), _dbContext);
+                                }
+                            }
+                            else
+                            {
+                                anuncios = _dbContext.Anuncios.Where(a => a.activo == true && a.estado == (int)EstadoAnuncio.Aprobado && a.Ciudad.Estado.idPais == idPais).OrderByDescending(a => a.clicks).Take(20);
+                                _dbContext.Database.Connection.Close();
+                                return CreaAnuncios(anuncios.ToList(), _dbContext);
+                            }
                         }
                     }
 
