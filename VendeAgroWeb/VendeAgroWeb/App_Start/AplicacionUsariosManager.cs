@@ -459,6 +459,17 @@ namespace VendeAgroWeb
             }
         }
 
+        private async Task<string> CrearClienteConektaId(string nombre, string email, string telefono)
+        {
+            if(nombre == null || email == null)
+            {
+                return string.Empty;
+            }
+
+            var cliente = await Startup.GetConektaLib().CreateClientAsync(nombre, email, telefono);
+            return cliente.Id;
+        }
+
         public PortalUsuario getUsuarioPortalActual(HttpRequestBase request)
         {
             return getUsuarioPortalActual(request.Cookies);

@@ -116,7 +116,7 @@ namespace VendeAgroWeb.Models
                         return new List<TarjetaViewModel>();
                     }
 
-                    var tarjetas = _dbContext.Usuario_Tarjeta.Where(t => t.idUsuario == _id);
+                    var tarjetas = _dbContext.Usuario_Tarjeta.Where(t => t.idUsuario == _id && t.activo == true);
 
                     List<TarjetaViewModel> tarjetasFinal = new List<TarjetaViewModel>();
                     foreach (var tarjeta in tarjetas)
