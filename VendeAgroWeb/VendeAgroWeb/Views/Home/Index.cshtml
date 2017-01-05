@@ -80,11 +80,6 @@
                         <div class="anuncios-container">
                             <img class="loader-anuncios" src="~/img/loader.gif" />
                         </div>
-                        <div style="display: none;" class="loader-container">
-                            <img class="loader-anuncios" src="~/img/loader.gif" />
-                        </div>
-                        <div style="display:none;" class="anuncios-filtrados-container">
-                        </div>
                         <div class="col-xs-12 anuncios-movil-container">
                             <img class="loader-anuncios" src="~/img/loader.gif" />
                         </div>
@@ -219,6 +214,7 @@
         idCategoria = elemento.data('id');
         if (idCategoria == -1) {
             $("#btn-categoria:first-child").html("Categor&iacute;a" + '<span class="caret"></span>');
+            $("#subcategorias").html('<li><a href="#">Elige una categoría...</a></li>');
         }
         else {
             $("#btn-categoria:first-child").html(elemento.text() + '<span class="caret"></span>');
@@ -254,6 +250,8 @@
         idPais = elemento.data('id');
         if (idPais == -1) {
             $("#btn-pais:first-child").html("Pa&iacute;s" + '<span class="caret"></span>');
+            $("#estados").html('<li><a href="#">Elige un país...</a></li>');
+            $("#ciudades").html('<li><a href="#">Elige un estado...</a></li>');
         }
         else {
             $("#btn-pais:first-child").html(elemento.text() + '<span class="caret"></span>');
@@ -275,6 +273,7 @@
         idEstado = elemento.data('id');
         if (idEstado == -1) {
             $("#btn-estado:first-child").html("Estado" + '<span class="caret"></span>');
+            $("#ciudades").html('<li><a href="#">Elige un estado...</a></li>');
         }
         else {
             $("#btn-estado:first-child").html(elemento.text() + '<span class="caret"></span>');
@@ -370,18 +369,15 @@
     }
 
     function getAnunciosDestacadosFiltrados() {
-        $('.loader-container').show();
-        $('.anuncios-container').hide();
-        $('.anuncios-filtrados-container').hide();
+        $('.anuncios-container').html('<img class="loader-anuncios" src="/img/loader.gif" />');
+        $('.anuncios-movil-container').html('<img class="loader-anuncios" src="/img/loader.gif" />');
 
         $.ajax({
             type: "POST",
             data: {},
             url: '/Home/DestacadosFiltradosPartial?idCategoria=' + idCategoria + "&idSubcategoria=" + idSubcategoria + "&idPais=" + idPais + "&idEstado=" + idEstado + "&idCiudad=" + idCiudad + "&precioBajo=" + precioBajo + "&precioAlto=" + precioAlto,
             success: function (result) {
-                $(".anuncios-filtrados-container").html(result);
-                $('.loader-container').hide();
-                $('.anuncios-filtrados-container').show();
+                $(".anuncios-container").html(result);
             },
             error: function (msg) {
                 console.log(msg);
@@ -395,7 +391,6 @@
             url: '/Home/DestacadosFiltradosMovilPartial?idCategoria=' + idCategoria + "&idSubcategoria=" + idSubcategoria + "&idPais=" + idPais + "&idEstado=" + idEstado + "&idCiudad=" + idCiudad,
             success: function (result) {
                 $(".anuncios-movil-container").html(result);
-                $('.loader-container').hide();
             },
             error: function (msg) {
                 console.log(msg);
