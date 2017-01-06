@@ -1,5 +1,4 @@
 ﻿@model VendeAgroWeb.Models.Pagina.PortalAnunciosViewModel
-
 @{
     foreach (var anuncio in Model.Anuncios)
     {
@@ -28,8 +27,8 @@
                         </div>
                         <div class="anuncio-botones-container">
                             <div class="row acciones-container">
-                                <button class="btn btn-default anuncio-boton menu-grad anuncio-preguntar" type="button">Preguntar</button>
-                                <button class="btn btn-default anuncio-boton menu-grad anuncio-detalles" type="button">Detalles</button>
+                                <button id="btn-preguntar" data-id="@anuncio.Id" class="btn btn-default anuncio-boton menu-grad anuncio-preguntar" type="button">Preguntar</button>
+                                <a id="btn-detalles" href="/Home/AnuncioDetalles?id=@anuncio.Id&consulta=@ConsultarDetalles.Index" class="btn btn-default anuncio-boton menu-grad anuncio-detalles">Detalles</a>
                             </div>
                         </div>
                     </div>

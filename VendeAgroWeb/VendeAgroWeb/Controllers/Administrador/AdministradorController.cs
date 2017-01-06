@@ -1232,7 +1232,7 @@ namespace VendeAgroWeb.Controllers.Administrador
 
                             double aPrecio = precio.HasValue ? precio.Value : 0.0;
                             int aMeses = meses.HasValue ? meses.Value : 0;
-                            ahorro = Math.Round((100 - ((aPrecio * 100) / (aMeses * paqueteBase.precio))), 2);
+                            ahorro = Math.Ceiling(Math.Round((100 - ((aPrecio * 100) / (aMeses * paqueteBase.precio))), 2));
                             _dbContext.SaveChanges();
                             _dbContext.Database.Connection.Close();
                         }
@@ -1246,7 +1246,7 @@ namespace VendeAgroWeb.Controllers.Administrador
         public double calculaAhorro(double precioPaqueteBase, int meses, double precio)
         {
             var precioReal = meses * precioPaqueteBase;
-            return Math.Round((100 - ((precio * 100) / precioReal)), 2);
+            return Math.Ceiling(Math.Round((100 - ((precio * 100) / precioReal)), 2));
         }
 
         public double calculaAhorro(Paquete paqueteBase, int meses, double precio)
@@ -1261,7 +1261,7 @@ namespace VendeAgroWeb.Controllers.Administrador
             }
             var precioBase = paqueteBase.precio;
             var precioReal = meses * precioBase;
-            return Math.Round((100 - ((precio * 100) / precioReal)), 2);
+            return Math.Ceiling(Math.Round((100 - ((precio * 100) / precioReal)), 2));
         }
 
         [HttpPost]

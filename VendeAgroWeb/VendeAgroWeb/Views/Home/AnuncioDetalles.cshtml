@@ -1,0 +1,159 @@
+﻿@model VendeAgroWeb.Models.Pagina.PortalDetallesAnuncioViewModel
+
+@{
+    ViewBag.Title = "Anuncio Detalles";
+}
+
+
+<div class="row" style="margin-top: 70px;">
+    <div class="col-sm-7">
+        <div class="row" style="margin-right: 0px;">
+            <div class="detalles-titulo-container">
+                <p class="titulo">@Model.Anuncio.Titulo</p>
+                <p class="precio">$@Model.Anuncio.Precio</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-7" style="margin-top: 30px;">
+        <div class="col-sm-4">
+            <div id="owl-demo" class="itemsScaleUp-false owl-carousel owl-theme">
+                @{
+                    foreach (var foto in Model.Fotos)
+                    {
+                        var clase = "";
+                        if (foto.Principal)
+                        {
+                            clase = "activo";
+                        }
+                        <div class="item @clase">
+                            <img src="@foto.Ruta" />
+                        </div>
+                    }
+
+                    if (Model.TieneVideo)
+                    {
+                        <div class="item video">
+                            <div class="video-link"><p>Video</p></div>
+                        </div>
+                    }
+                }
+            </div>
+        </div>
+
+        <div class="col-sm-8">
+            <div class="img-grande-container">
+                @{
+                    var fotoPrincipal = Model.Anuncio.FotoPrincipal;
+                    if (fotoPrincipal != null)
+                    {
+                        <img src="@fotoPrincipal" class="imagen-grande" />
+                    }
+                }
+            </div>
+            <div class="video-container" style="display:none;">
+                @{
+                    if (Model.TieneVideo)
+                    {
+                        <video style="width: 100%; height: 100%;" controls>
+                            <source src="@Model.Video" type="video/mp4">
+                        </video>
+                    }
+                }
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-5 texto-detalles-container" style="margin-top:30px;">
+        <div class="clicks-container">
+            <p class="clicks">
+                <span style="font-weight: bolder;">Clicks </span>
+                <img style="padding-bottom: 6px;" src="~/img/icono-mano.png" />
+            </p>
+            <div class="menu-grad circle">
+                <div class="clicks-numero-container">
+                    <p class="clicks-numero">@Model.Clicks</p>
+                </div>
+            </div>
+        </div>
+        <p style="color:#04612d; margin-top: 20px;">@Model.Descripcion</p>
+        <p class="contacto" style="margin-top:20px;">Contacto:</p>
+        <p class="contacto" style="margin-top:20px; margin-bottom: 0px;">@Model.Owner.NombreUsuario</p>
+        <p class="contacto" style="margin-bottom: 0px;"><img class="icono-contacto" src="~/img/icono-telefono.png"/>@Model.Owner.TelefonoContacto</p>
+        <p class="contacto"><img class="icono-contacto" src="~/img/icono-correo.png" />@Model.Owner.EmailContacto</p>
+    </div>
+    <div class="col-sm-7">
+        <a class="btn" href= @( @Model.Consulta == ConsultarDetalles.Index ? "/Home/Index" : (@Model.Consulta == ConsultarDetalles.OfertasDelDia ? "/Home/OfertasDelDia" : "/Home/ResultadosBusqueda?query=" + Model.Query))>
+            <p class="btn-regresar-detalles"><span class="glyphicon glyphicon-chevron-left"></span>Regresar</p>
+        </a>
+    </div>
+</div>
+
+@Scripts.Render("~/bundles/jquery")
+
+@section Scripts {
+    @Scripts.Render("~/bundles/carousel/js")
+}
+
+<style>
+    .owl-wrapper {
+        width: 100% !important;
+    }
+
+    .owl-item {
+        width: 90% !important;
+        height: auto !important;
+        max-width: 180px !important;
+        margin-bottom: 15px;
+    }
+</style>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#owl-demo").owlCarousel({
+            itemsScaleUp: false,
+            items: 5,
+            navigation: true
+        });
+
+        //var content = $(".owl-wrapper").html();
+        //var d = document.createElement('div');
+        //$(d).addClass("contenedor-carousel").html(content);
+        //$(".owl-wrapper").html('').append(d);
+        //if ($(d).width() > $("#owl-demo").width())
+        //    $(".owl-wrapper").html(content);
+
+        //recalcularTamanos();
+
+        $(".item").click(function () {
+            var src = $(this).children('img').attr('src');
+            $(".activo").removeClass("activo");
+            $(this).addClass("activo");
+            if ($(this).hasClass("video")) {
+                $(".img-grande-container").hide()
+                $(".video-container").show();
+                return;
+            }
+            $(".img-grande-container").show();
+            $(".video-container").hide();
+            $(".imagen-grande").attr("src", src);
+        });
+    });
+
+    $(window).ready(function () {
+        recalcularTamanos();
+    });
+
+    $(window).resize(function () {
+        recalcularTamanos();
+    });
+
+    function recalcularTamanos() {
+        var height = $(".item").height();
+        $(".owl-item").each(function () {
+            $(this).css("height", height + "px");
+        });
+
+        $(".video-container").css("height", $(".img-grande-container").first().innerHeight() + "px");
+    }
+
+
+</script>

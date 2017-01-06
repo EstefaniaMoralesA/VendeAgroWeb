@@ -48,12 +48,14 @@ namespace VendeAgroWeb.Models.Pagina
             }
         }
 
-        public AnunciateViewModel(ICollection<PaginaPaqueteViewModel> paquetes) {
+        public AnunciateViewModel(ICollection<PaginaPaqueteViewModel> paquetes)
+        {
             _paquetes = paquetes;
         }
     }
 
-    public class BeneficiosExtraViewModel {
+    public class BeneficiosExtraViewModel
+    {
         private double _totalCarrito;
         private PaqueteCarrito _paquete;
         private ICollection<PaginaBeneficioViewModel> _beneficios;
@@ -82,7 +84,8 @@ namespace VendeAgroWeb.Models.Pagina
             }
         }
 
-        public BeneficiosExtraViewModel(PaqueteCarrito paquete, ICollection<PaginaBeneficioViewModel> beneficios, double totalCarrito) {
+        public BeneficiosExtraViewModel(PaqueteCarrito paquete, ICollection<PaginaBeneficioViewModel> beneficios, double totalCarrito)
+        {
             _paquete = paquete;
             _beneficios = beneficios;
             _totalCarrito = totalCarrito;
@@ -108,18 +111,206 @@ namespace VendeAgroWeb.Models.Pagina
 
     }
 
+    public class PaginaFotoViewModel
+    {
+        private bool _principal;
+        private string _ruta;
+
+        public PaginaFotoViewModel(bool principal, string ruta)
+        {
+            _principal = principal;
+            _ruta = ruta;
+        }
+
+        public bool Principal
+        {
+            get
+            {
+                return _principal;
+            }
+        }
+
+        public string Ruta
+        {
+            get
+            {
+                return _ruta;
+            }
+        }
+    }
+
+    public class PaginaOwnerAnuncioViewModel
+    {
+        private int _idUsuario;
+        private string _nombreUsuario;
+        private string _telefonoContacto;
+        private string _emailContacto;
+
+        public string NombreUsuario
+        {
+            get
+            {
+                return _nombreUsuario;
+            }
+        }
+
+        public int IdUsuario
+        {
+            get
+            {
+                return _idUsuario;
+            }
+        }
+
+        public string TelefonoContacto
+        {
+            get
+            {
+                return _telefonoContacto;
+            }
+        }
+
+        public string EmailContacto
+        {
+            get
+            {
+                return _emailContacto;
+            }
+        }
+
+        public PaginaOwnerAnuncioViewModel(int idUsuario, string nombreUsuario, string telefonoContacto, string emailContacto)
+        {
+            _idUsuario = idUsuario;
+            _nombreUsuario = nombreUsuario;
+            _telefonoContacto = telefonoContacto;
+            _emailContacto = emailContacto;
+        }
+    }
+
+    public class QueryViewModel
+    {
+        private string _query;
+
+        public string Query
+        {
+            get
+            {
+                return _query;
+            }
+        }
+
+        public QueryViewModel(string query) {
+            _query = query;
+        }
+    }
+
+    public class PortalDetallesAnuncioViewModel
+    {
+        private PortalAnuncioViewModel _anuncio;
+        private string _descripcion;
+        private ICollection<PaginaFotoViewModel> _fotos;
+        private string _video;
+        private PaginaOwnerAnuncioViewModel _owner;
+        private int? _clicks;
+        private ConsultarDetalles _consulta;
+        private string _query;
+
+        public PortalDetallesAnuncioViewModel(PortalAnuncioViewModel anuncio, string descripcion, 
+            List<PaginaFotoViewModel> fotos, string video, PaginaOwnerAnuncioViewModel owner, int? clicks, ConsultarDetalles consulta, string query)
+        {
+            _anuncio = anuncio;
+            _descripcion = descripcion;
+            _fotos = fotos;
+            _video = video;
+            _owner = owner;
+            _clicks = clicks;
+            _consulta = consulta;
+            _query = query;
+        }
+
+        public bool TieneVideo
+        {
+            get
+            {
+                return _video != null;
+            }
+        }
+
+        public string Video
+        {
+            get
+            {
+                return _video;
+            }
+        }
+
+        public PortalAnuncioViewModel Anuncio
+        {
+            get
+            {
+                return _anuncio;
+            }
+        }
+
+        public ICollection<PaginaFotoViewModel> Fotos
+        {
+            get
+            {
+                return _fotos;
+            }
+        }
+
+        public string Descripcion
+        {
+            get
+            {
+                return _descripcion;
+            }
+        }
+
+        public PaginaOwnerAnuncioViewModel Owner
+        {
+            get
+            {
+                return _owner;
+            }
+        }
+
+        public int? Clicks
+        {
+            get
+            {
+                return _clicks;
+            }
+        }
+
+        public ConsultarDetalles Consulta
+        {
+            get
+            {
+                return _consulta;
+            }
+        }
+
+        public string Query
+        {
+            get
+            {
+                return _query;
+            }
+        }
+    }
+
     public class PortalAnuncioViewModel
     {
         private int _id;
         private string _titulo;
-        private string _usuario;
         private double? _precio;
         private string _categoria;
         private string _subcategoria;
         private string _estado;
         private string _ciudad;
         private string _fotoPrincipal;
-        private int? _clicks;
 
         public string Titulo
         {
@@ -177,22 +368,6 @@ namespace VendeAgroWeb.Models.Pagina
             }
         }
 
-        public int? Clicks
-        {
-            get
-            {
-                return _clicks;
-            }
-        }
-
-        public string Usuario
-        {
-            get
-            {
-                return _usuario;
-            }
-        }
-
         public int Id
         {
             get
@@ -201,22 +376,21 @@ namespace VendeAgroWeb.Models.Pagina
             }
         }
 
-        public PortalAnuncioViewModel(int id, string titulo, string usuario, double? precio, string categoria, string subcategoria, string estado, string ciudad, int? clicks, string fotoPrincipal)
+        public PortalAnuncioViewModel(int id, string titulo, double? precio, string categoria, string subcategoria, string estado, string ciudad, string fotoPrincipal)
         {
             _id = id;
             _titulo = titulo;
-            _usuario = usuario;
             _precio = precio;
             _categoria = categoria;
             _subcategoria = subcategoria;
             _estado = estado;
             _ciudad = ciudad;
-            _clicks = clicks ?? 0;
             _fotoPrincipal = fotoPrincipal;
         }
     }
 
-    public class PaginaBeneficioViewModel {
+    public class PaginaBeneficioViewModel
+    {
         private int _id;
         private string _descripcion;
         private double _precio;
@@ -263,7 +437,8 @@ namespace VendeAgroWeb.Models.Pagina
             }
         }
 
-        public PaginaBeneficioViewModel(int id, string descripcion, double precio, int tipo, int? numero) {
+        public PaginaBeneficioViewModel(int id, string descripcion, double precio, int tipo, int? numero)
+        {
             _id = id;
             _descripcion = descripcion;
             _precio = precio;
@@ -499,7 +674,8 @@ namespace VendeAgroWeb.Models.Pagina
         }
     }
 
-    public class PaginaCategoriasViewModel {
+    public class PaginaCategoriasViewModel
+    {
         private ICollection<PaginaCategoriaViewModel> _categorias;
 
         public ICollection<PaginaCategoriaViewModel> Categorias
@@ -510,7 +686,8 @@ namespace VendeAgroWeb.Models.Pagina
             }
         }
 
-        public PaginaCategoriasViewModel(ICollection<PaginaCategoriaViewModel> categorias) {
+        public PaginaCategoriasViewModel(ICollection<PaginaCategoriaViewModel> categorias)
+        {
             _categorias = categorias;
         }
     }
@@ -598,6 +775,34 @@ namespace VendeAgroWeb.Models.Pagina
         {
             _id = id;
             _nombre = nombre;
+        }
+    }
+
+    public class PortalAnunciosBusquedaViewModel
+    {
+        private ICollection<PortalAnuncioViewModel> _anuncios;
+        private string _query;
+
+        public PortalAnunciosBusquedaViewModel(ICollection<PortalAnuncioViewModel> anuncios, string query)
+        {
+            _anuncios = anuncios;
+            _query = query;
+        }
+
+        public ICollection<PortalAnuncioViewModel> Anuncios
+        {
+            get
+            {
+                return _anuncios;
+            }
+        }
+
+        public string Query
+        {
+            get
+            {
+                return _query;
+            }
         }
     }
 

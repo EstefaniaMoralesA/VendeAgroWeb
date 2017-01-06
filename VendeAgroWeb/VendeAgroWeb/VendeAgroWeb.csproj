@@ -253,6 +253,7 @@
     <Compile Include="Models\Conekta_Paquete.cs">
       <DependentUpon>DatabaseModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\ConsultarDetalles.cs" />
     <Compile Include="Models\DatabaseModel.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -328,21 +329,19 @@
     <Content Include="img\bannerLat2.jpg" />
     <Content Include="img\banner.jpg" />
     <Content Include="img\foto-vacia.png" />
+    <Content Include="img\icono-correo.png" />
+    <Content Include="img\icono-mano.png" />
+    <Content Include="img\icono-telefono.png" />
     <Content Include="img\loader.gif" />
-    <Content Include="img\caballo.jpg" />
-    <Content Include="img\caballoespanol.jpg" />
-    <Content Include="img\camera-icon.gif" />
     <Content Include="img\delete.png" />
     <Content Include="img\fondoVACielo.jpg" />
     <Content Include="img\fondoVA.jpg" />
-    <Content Include="img\horses.jpg" />
     <Content Include="img\logoHorizontalAnunciate.png" />
     <Content Include="img\logoHorizontalMovil.png" />
     <Content Include="img\icon.png" />
     <Content Include="img\logoHorizontal.png" />
     <Content Include="img\logo.png" />
     <Content Include="img\vacaContacto.jpg" />
-    <Content Include="img\yegua.jpg" />
     <Content Include="Models\DatabaseModel.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <DependentUpon>DatabaseModel.edmx</DependentUpon>
@@ -476,9 +475,13 @@
     <Content Include="Views\Home\PaisesPartial.cshtml" />
     <Content Include="Views\Home\EstadosPartial.cshtml" />
     <Content Include="Views\Home\CiudadesPartial.cshtml" />
+    <Content Include="Views\Home\AnuncioDetalles.cshtml" />
+    <Content Include="Views\Home\ResultadosBusqueda.cshtml" />
+    <Content Include="Views\Shared\_BusquedaPartial.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Views\ConsultarDetalles\" />
     <Folder Include="Views\Home\Shared\" />
   </ItemGroup>
   <ItemGroup>

@@ -1,0 +1,38 @@
+﻿@model VendeAgroWeb.Models.Pagina.QueryViewModel
+
+@{
+    ViewBag.Title = "Resultados Búsqueda";
+}
+
+<div class="row">
+    <div class="col-sm-12" style="margin-top: 50px;">
+        <input style="display:none;" id="query" value="@Model.Query" />
+        <div class="row" style="margin-left: 0px; margin-right: 0px;">
+            <h2 class="busqueda-titulo">Resultados de la búsqueda <span>"@Model.Query"</span></h2>
+        </div>
+        <div class="resultados-busqueda-container">
+            <div class="ofertas-anuncios-container">
+                <img src="~/img/loader.gif" class="loader-anuncios" />
+            </div>
+        </div>
+    </div>
+</div>
+
+@Scripts.Render("~/bundles/jquery")
+
+<script>
+    $(document).ready( function() {
+        $.ajax({
+            type: "POST",
+            data: {},
+            url: '/Home/ObtenerDestacadosFiltradosTexto?query=' + $('#query').val(),
+            success: function (result) {
+                $('.resultados-busqueda-container').html(result);
+            },
+            error: function (msg) {
+                console.log(msg);
+            }
+        });
+    });
+</script>
+

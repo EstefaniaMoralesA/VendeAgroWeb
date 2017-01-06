@@ -817,9 +817,9 @@ div.social-wrap button {
     padding-right: 0px;
 }
 
-    .banner-lateral img {
-        width: 100%;
-    }
+.banner-lateral img {
+    width: 100%;
+}
 
 .detalles {
     color: white;
@@ -1079,6 +1079,10 @@ div.social-wrap button {
     overflow: hidden;
 }
 
+    .movil-anuncio-imagen-container a {
+        display: block;
+    }
+
 .movil-anuncio-titulo {
     position: absolute;
     bottom: 0;
@@ -1104,6 +1108,8 @@ div.social-wrap button {
 
 .foto-anuncio {
     width: 100% !important;
+    max-height: 174px;
+    min-height: 174px;
 }
 
 .anuncios-container {
@@ -1155,7 +1161,7 @@ div.social-wrap button {
         }
 
 .ofertas-del-dia-container {
-    margin-top: 30px;
+    margin-top: 50px;
 }
 
     .ofertas-del-dia-container h2 {
@@ -1270,7 +1276,7 @@ div.social-wrap button {
 }
 
 .degradado-verde {
-    margin-top: -1px;
+    margin-top: 15px;
     height: 20px;
     background: #04612d !important;
     background: -webkit-linear-gradient(to right, rgb(161, 195, 64), rgb(180, 195, 53), #04612d, rgb(161, 195, 64)) !important;
@@ -2284,6 +2290,111 @@ hr {
 
 .td-error {
     background-color: #f2dede !important;
+}
+
+.detalles-titulo-container {
+    padding-top: 4px;
+    padding-bottom: 4px;
+    background-color: #04612d;
+    position: relative;
+    min-height: 40px;
+    margin-left: -50px;
+    width: calc(100% + 50px);
+    border-radius: 8px;
+}
+
+    .detalles-titulo-container p {
+        margin-bottom: 0;
+        color: white;
+        text-transform: capitalize;
+        font-family: BoldFont;
+    }
+
+    .detalles-titulo-container .titulo {
+        font-size: 18px;
+        left: 28px;
+        position: absolute;
+        padding: 3px 0px 1px 15px;
+    }
+
+    .detalles-titulo-container .precio {
+        font-size: 19px;
+        position: relative;
+        float: right;
+        padding: 3px 15px 1px 0px;
+    }
+
+.texto-detalles-container {
+    font-size: 18px;
+    font-family: generalFont;
+}
+
+    .texto-detalles-container .contacto {
+        color: #E42B22;
+    }
+
+    .texto-detalles-container .clicks {
+        color: #F6AB21;
+        display: inline-block;
+        margin-bottom: 0px;
+    }
+
+    .texto-detalles-container .clicks-container {
+        position: relative;
+    }
+
+.circle {
+    width: 35px;
+    height: 35px;
+    -moz-border-radius: 50px;
+    -webkit-border-radius: 50px;
+    border-radius: 50px;
+    display: inline-block;
+    position: absolute;
+    top: 0;
+    left: 88px;
+    width: 30px;
+    height: 30px;
+}
+
+.clicks-numero-container {
+    position: relative;
+    width: 30px;
+    height: 30px;
+}
+
+.clicks-numero {
+    font-size: 11px;
+    color: white;
+    font-weight: bolder;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    -webkit-transform: translate(-50%, -50%);
+    -moz-transform: translate(-50%, -50%);
+    -o-transform: translate(-50%, -50%);
+    -ms-transform: translate(-50%, -50%);
+}
+
+.icono-contacto {
+    padding-bottom: 3px;
+    margin-right: 5px;
+    width: 25px;
+}
+
+.btn-regresar-detalles {
+    color: #04612d;
+    font-size: 18px;
+    font-weight: bolder;
+    margin-left: -20px;
+}
+
+.busqueda-titulo {
+    font-family: BoldFont !important;
+    color: #cb5a20 !important;
+    font-size: 26px !important;
+    margin-left: 15px;
 }
 
 @media (max-width: 1200px) {

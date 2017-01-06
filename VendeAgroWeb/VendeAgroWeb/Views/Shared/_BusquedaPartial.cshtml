@@ -1,4 +1,4 @@
-﻿@model VendeAgroWeb.Models.Pagina.PortalAnunciosViewModel
+﻿@model VendeAgroWeb.Models.Pagina.PortalAnunciosBusquedaViewModel
 
 @{
     foreach (var anuncio in Model.Anuncios)
@@ -7,7 +7,7 @@
             <div class="anuncio-movil col-xs-12">
                 <div class="row">
                     <div class="movil-anuncio-imagen-container">
-                        <a href="/Home/AnuncioDetalles?id=@anuncio.Id&consulta=@ConsultarDetalles.OfertasDelDia"><img class="foto-anuncio" src="@anuncio.FotoPrincipal" /></a>
+                        <a href="/Home/AnuncioDetalles?id=@anuncio.Id&consulta=@ConsultarDetalles.ResultadosDeBusqueda&query=@Model.Query"><img class="foto-anuncio" src="@anuncio.FotoPrincipal" /></a>
                     </div>
                     <div class="movil-anuncio-titulo ofertas-anuncio-titulo">
                         <div class="row anuncio-titulo">
@@ -20,4 +20,3 @@
         </div>
     }
 }
-

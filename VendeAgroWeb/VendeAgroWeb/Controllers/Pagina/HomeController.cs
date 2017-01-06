@@ -237,6 +237,42 @@ namespace VendeAgroWeb.Controllers.Home
             return PartialView("_AnunciosMovil", model);
         }
 
+        public ActionResult ResultadosBusqueda(string query)
+        {
+            return View(new QueryViewModel(query));
+        }
+
+        public async Task<ActionResult> ObtenerDestacadosFiltradosTexto(string query) {
+
+            return await Task.Run(() =>
+            {
+                using (var _dbContext = new MercampoEntities())
+                {
+                    Startup.OpenDatabaseConnection(_dbContext);
+                    if (_dbContext.Database.Connection.State != ConnectionState.Open)
+                    {
+                        return null;
+                    }
+
+                    IQueryable<Anuncio> anuncios = null;
+
+                    if (query == null)
+                    {
+                        return null;
+                    }
+
+                    anuncios = _dbContext.Anuncios.Where(a => a.activo == true && a.estado == (int)EstadoAnuncio.Aprobado && (
+                    a.Subcategoria.nombre == query || a.Subcategoria.Categoria.nombre == query || a.Ciudad.nombre == query || a.Ciudad.Estado.nombre == query
+                    || a.Ciudad.Estado.Pai.nombre == query || a.titulo.Contains(query) == true)).Take(20);
+
+                    _dbContext.Database.Connection.Close();
+                    PortalAnunciosBusquedaViewModel model = new PortalAnunciosBusquedaViewModel(CreaAnuncios(anuncios.ToList(), _dbContext), query);
+                    return PartialView("_BusquedaPartial", model);
+                }
+            });
+
+        }
+
 
         public async Task<ICollection<PortalAnuncioViewModel>> ObtenerDestacadosFiltrados(int? idCategoria, int? idSubcategoria, int? idPais, int? idEstado, int? idCiudad, double? precioBajo, double? precioAlto) {
             return await Task.Run(() =>
@@ -453,6 +489,65 @@ namespace VendeAgroWeb.Controllers.Home
             });
         }
 
+        public async Task<ActionResult> AnuncioDetalles(int? id, ConsultarDetalles consulta, string query)
+        {
+            if (id == null)
+            {
+                return HttpNotFound("Parámetro inválido se espera un id de un anuncio");
+            }
+
+            HttpNotFoundResult result = null;
+            PortalDetallesAnuncioViewModel model = null;
+
+            await Task.Run(() =>
+            {
+                using (var _dbContext = new MercampoEntities())
+                {
+                    Startup.OpenDatabaseConnection(_dbContext);
+                    if (_dbContext.Database.Connection.State != ConnectionState.Open)
+                    {
+                        result = HttpNotFound("Error en la base de datos");
+                    }
+                    else
+                    {
+                        var anuncio = _dbContext.Anuncios.Where(a => a.id == id).FirstOrDefault();
+                        if (anuncio == null)
+                        {
+                            result = HttpNotFound("No se encontro el anuncio con el id solicitado");
+                        }
+                        else
+                        {
+                            anuncio.clicks += 1;
+                            _dbContext.SaveChanges();
+                            var anuncioViewModel = new PortalAnuncioViewModel(anuncio.id, anuncio.titulo, anuncio.precio, anuncio.Subcategoria.Categoria.nombre, anuncio.Subcategoria.nombre, 
+                                anuncio.Ciudad.Estado.nombre, anuncio.Ciudad.nombre, anuncio.Fotos_Anuncio.Where(f => f.principal == true).FirstOrDefault()?.ruta);
+
+                            List<PaginaFotoViewModel> fotos = new List<PaginaFotoViewModel>();
+
+                            var rutaVideo = anuncio.Videos_Anuncio.Where(v => v.idAnuncio == id).FirstOrDefault()?.ruta;
+
+                            string nombre = anuncio.Usuario.nombre + " " + anuncio.Usuario.apellidos;
+                            var owner = new PaginaOwnerAnuncioViewModel(anuncio.Usuario.id, nombre, anuncio.Usuario.telefono, anuncio.Usuario.email);
+
+                            foreach (var foto in anuncio.Fotos_Anuncio)
+                            {
+                                fotos.Add(new PaginaFotoViewModel(foto.principal, foto.ruta));
+                            }
+
+                            model = new PortalDetallesAnuncioViewModel(anuncioViewModel, anuncio.descripcion, fotos, rutaVideo, owner, anuncio.clicks, consulta, query);
+                        }
+                    }
+                }
+            });
+
+            if (result != null)
+            {
+                return result;
+            }
+
+            return View(model);
+        }
+
         public async Task<ICollection<PaginaCategoriaViewModel>> ObtenerCategorias()
         {
             return await Task.Run(() =>
@@ -568,11 +663,7 @@ namespace VendeAgroWeb.Controllers.Home
             List<PortalAnuncioViewModel> lista = new List<PortalAnuncioViewModel>();
             foreach (var item in anuncios)
             {
-                var categoria = _dbContext.Categorias.Where(c => c.id == item.Subcategoria.idCategoria).FirstOrDefault()?.nombre;
-
-                var estado = _dbContext.Estadoes.Where(e => e.id == item.Ciudad.idEstado).FirstOrDefault()?.nombre;
-                string fotoPrincipal = item.Fotos_Anuncio.Where(f => f.principal == true).FirstOrDefault()?.ruta;
-                lista.Add(new PortalAnuncioViewModel(item.id, item.titulo, item.Usuario.nombre, item.precio, categoria, item.Subcategoria.nombre, estado, item.Ciudad.nombre, item.clicks, fotoPrincipal ?? string.Empty));
+                lista.Add(new PortalAnuncioViewModel(item.id, item.titulo, item.precio, item.Subcategoria.Categoria.nombre, item.Subcategoria.nombre, item.Ciudad.Estado.nombre, item.Ciudad.nombre, item.Fotos_Anuncio.Where(f => f.principal == true).FirstOrDefault()?.ruta));
             }
 
             return lista;
