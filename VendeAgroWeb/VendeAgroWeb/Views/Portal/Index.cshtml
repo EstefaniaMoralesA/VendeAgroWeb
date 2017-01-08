@@ -39,24 +39,3 @@
         </div>
     </div>
 </div>
-
-@Scripts.Render("~/bundles/jquery")
-
-<script>
-    $('#btn-mis-anuncios').click(function() {
-        $.ajax({
-            type: "POST",
-            url: '/Portal/AnunciosActivosPartial?id=' ,
-            data: data,
-            cache: false,
-            contentType: false,
-            processData: false,
-            success: function (result) {
-               
-            },
-            error: function (xhr, status, p3, p4) {
-               
-            }
-        });
-    });
-</script>

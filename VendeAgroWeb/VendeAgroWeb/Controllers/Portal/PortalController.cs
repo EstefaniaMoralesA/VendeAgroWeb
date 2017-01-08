@@ -19,7 +19,11 @@ namespace VendeAgroWeb.Controllers.Administrador
         // GET: Usuario_Administrador
         public async Task<ActionResult> Index()
         {
-            return View();
+            if (Startup.GetAplicacionUsuariosManager().VerificarPortalSesion() == LoginStatus.Incorrecto)
+            {
+                return RedirectToAction("Index", "Home");
+            }
+            return View(Startup.GetAplicacionUsuariosManager().getUsuarioPortalActual(Request));
         }
 
         [HttpPost]
@@ -59,6 +63,10 @@ namespace VendeAgroWeb.Controllers.Administrador
 
         public ActionResult MisAnuncios()
         {
+            if (Startup.GetAplicacionUsuariosManager().VerificarPortalSesion() == LoginStatus.Incorrecto)
+            {
+                return RedirectToAction("Index", "Home");
+            }
             return View();
         }
 
@@ -93,8 +101,12 @@ namespace VendeAgroWeb.Controllers.Administrador
                     var anuncios = _dbContext.Anuncios.Where(a => a.activo == true && a.idUsuario == id);
 
                     foreach (var item in anuncios) {
-                        var tiempoRestante = (item.fecha_fin.Value - item.fecha_inicio.Value).Days;
-                        lista.Add(new AnuncioViewModel(item.id, item.titulo, item.estado, tiempoRestante));
+                        var tiempoRestante = (item.fecha_fin.Value - DateTime.Now).Days;
+                        var duracion = (item.fecha_fin.Value - item.fecha_inicio.Value).Days;
+                        var porcentajeDuracion = (int)((tiempoRestante * 100.0) / duracion);
+                        if (porcentajeDuracion < 0) porcentajeDuracion = 0;
+                        var imagenPrincipal = item.Fotos_Anuncio.Where(foto => foto.principal == true).FirstOrDefault()?.ruta ?? string.Empty;
+                        lista.Add(new AnuncioViewModel(item.id, item.titulo, item.estado, porcentajeDuracion, imagenPrincipal));
                     }
                     
                     _dbContext.Database.Connection.Close();
@@ -116,101 +128,6 @@ namespace VendeAgroWeb.Controllers.Administrador
         public ActionResult CrearAnuncio()
         {
             return View();
-        }
-
-        // GET: Usuario_Administrador/Details/5
-        public async Task<ActionResult> Details(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Usuario_Administrador usuario_Administrador = await db.Usuario_Administrador.FindAsync(id);
-            if (usuario_Administrador == null)
-            {
-                return HttpNotFound();
-            }
-            return View(usuario_Administrador);
-        }
-
-        // GET: Usuario_Administrador/Create
-        public ActionResult Create()
-        {
-            return View();
-        }
-
-        // POST: Usuario_Administrador/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Create([Bind(Include = "id,nombre,email,token,confirmaEmail,password,activo")] Usuario_Administrador usuario_Administrador)
-        {
-            if (ModelState.IsValid)
-            {
-                db.Usuario_Administrador.Add(usuario_Administrador);
-                await db.SaveChangesAsync();
-                return RedirectToAction("Index");
-            }
-
-            return View(usuario_Administrador);
-        }
-
-        // GET: Usuario_Administrador/Edit/5
-        public async Task<ActionResult> Edit(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Usuario_Administrador usuario_Administrador = await db.Usuario_Administrador.FindAsync(id);
-            if (usuario_Administrador == null)
-            {
-                return HttpNotFound();
-            }
-            return View(usuario_Administrador);
-        }
-
-        // POST: Usuario_Administrador/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Edit([Bind(Include = "id,nombre,email,token,confirmaEmail,password,activo")] Usuario_Administrador usuario_Administrador)
-        {
-            if (ModelState.IsValid)
-            {
-                db.Entry(usuario_Administrador).State = EntityState.Modified;
-                await db.SaveChangesAsync();
-                return RedirectToAction("Index");
-            }
-            return View(usuario_Administrador);
-        }
-
-        // GET: Usuario_Administrador/Delete/5
-        public async Task<ActionResult> Delete(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Usuario_Administrador usuario_Administrador = await db.Usuario_Administrador.FindAsync(id);
-            if (usuario_Administrador == null)
-            {
-                return HttpNotFound();
-            }
-            return View(usuario_Administrador);
-        }
-
-        // POST: Usuario_Administrador/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<ActionResult> DeleteConfirmed(int id)
-        {
-            Usuario_Administrador usuario_Administrador = await db.Usuario_Administrador.FindAsync(id);
-            db.Usuario_Administrador.Remove(usuario_Administrador);
-            await db.SaveChangesAsync();
-            return RedirectToAction("Index");
         }
 
         protected override void Dispose(bool disposing)

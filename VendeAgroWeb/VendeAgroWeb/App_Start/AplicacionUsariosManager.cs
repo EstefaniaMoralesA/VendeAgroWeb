@@ -217,7 +217,8 @@ namespace VendeAgroWeb
 
         public LoginStatus VerificarPortalSesion()
         {
-            if (getUsuarioPortalActual(HttpContext.Current.Request) != null) return LoginStatus.Exitoso;
+            var request = HttpContext.Current.Request;
+            if (getUsuarioPortalActual(request) != null) return LoginStatus.Exitoso;
             return LoginStatus.Incorrecto;
         }
 
@@ -423,7 +424,7 @@ namespace VendeAgroWeb
 
                     var usuarioId = _dbContext.Usuarios.Where(u => u.idConekta == clienteIdConekta).FirstOrDefault()?.id;
 
-                    if(usuarioId == null)
+                    if (usuarioId == null)
                     {
                         _dbContext.Database.Connection.Close();
                         return false;
@@ -461,7 +462,7 @@ namespace VendeAgroWeb
 
         private async Task<string> CrearClienteConektaId(string nombre, string email, string telefono)
         {
-            if(nombre == null || email == null)
+            if (nombre == null || email == null)
             {
                 return string.Empty;
             }
