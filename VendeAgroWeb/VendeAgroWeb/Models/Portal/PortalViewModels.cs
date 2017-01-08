@@ -94,48 +94,22 @@ namespace VendeAgroWeb.Models.Portal
 
     public class AnuncioViewModel
     {
-        private int _id;
-        private string _titulo;
-        private EstadoAnuncio _estado;
-        private int _tiempoRestante;
-        public string Titulo
-        {
-            get
-            {
-                return _titulo;
-            }
-        }
+        public string Titulo { get; set; }
 
-        public int Id
-        {
-            get
-            {
-                return _id;
-            }
-        }
+        public int Id { get; set; }
 
-        public EstadoAnuncio Estado
-        {
-            get
-            {
-                return _estado;
-            }
-        }
+        public EstadoAnuncio Estado { get; set; }
 
-        public int TiempoRestante
-        {
-            get
-            {
-                return _tiempoRestante;
-            }
-        }
+        public int TiempoRestante { get; set; }
+        public string ImagenPrincipal { get; set; }
 
-        public AnuncioViewModel(int id, string titulo, int estado, int tiempoRestante)
+        public AnuncioViewModel(int id, string titulo, int estado, int tiempoRestante, string imagenPrincipal)
         {
-            _id = id;
-            _titulo = titulo;
-            _estado = (EstadoAnuncio)estado;
-            _tiempoRestante = tiempoRestante;
+            Id = id;
+            Titulo = titulo;
+            Estado = (EstadoAnuncio)estado;
+            TiempoRestante = tiempoRestante;
+            ImagenPrincipal = imagenPrincipal;
         }
     }
 

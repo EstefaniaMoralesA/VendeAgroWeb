@@ -18,12 +18,18 @@
             <div class="boton-container boton-bienvenido">
                 <div class="dropdown">
                     <button class="btn btn-default dropdown-toggle botones-grad nombre-bienvenido-boton" type="button" data-toggle="dropdown">
-                        <p>Estefania</p>
+                        <p>@Startup.GetAplicacionUsuariosManager().getUsuarioPortalActual(Request).Nombre</p>
                         <span class="caret" style="position: absolute; right: 22px; top: 19px; color:white;"></span>
                     </button>
                     <ul class="dropdown-menu">
-                        <li><a href="#">Log out</a></li>
+                        <li><a href="javascript:document.getElementById('logoutForm').submit()">Log out</a></li>
                     </ul>
+                    @{
+                        using (Html.BeginForm("LogOut", "Portal", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
+                        {
+                            @Html.AntiForgeryToken()
+                        }
+                    }
                 </div>
             </div>
         </div>
@@ -32,7 +38,7 @@
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
     @RenderSection("scripts", required: false)
-    
+
     <div class="row">
         <div class="col-sm-12">
             @RenderBody()

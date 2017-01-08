@@ -1,11 +1,9 @@
-﻿@model VendeAgroWeb.Models.Portal.MisAnunciosViewModel
-
-@{
+﻿@{
     ViewBag.Title = "Mis Anuncios";
     Layout = "Shared/_PortalLayout.cshtml";
 }
 
-
+<input type="hidden" id="id" value="@Startup.GetAplicacionUsuariosManager().getUsuarioPortalActual(Request).Id" />
 <div class="row mis-anuncios-global">
     <div class="col-sm-12 boton-atras-container">
         <div class="col-sm-3" style="display: inline-block">
@@ -26,6 +24,7 @@
         <ul class="nav nav-pills nav-justified">
             <li><a id="activos-pill" href="#activos" data-toggle="pill">Activos</a></li>
             <li><a id="vencidos-pill" href="#vencidos" data-toggle="pill">Vencidos</a></li>
+            <li><a id="pendientes-pill" href="#pendientes" data-toggle="pill">Pendientes</a></li>
         </ul>
     </div>
 </div>
@@ -34,10 +33,13 @@
     <div class="row" style="margin-top:30px">
         <div class="tab-content" id="tabs">
             <div class="tab-pane" id="activos">
-                <p>Activos</p>
+                <img class="loader-anuncios" src="~/img/loader.gif" />
             </div>
             <div class="tab-pane" id="vencidos">
                 <p>Vencidos</p>
+            </div>
+            <div class="tab-pane" id="pendientes">
+                <p>Pendientes</p>
             </div>
         </div>
     </div>
@@ -74,10 +76,11 @@
     });
 
     function getActivos() {
+        var id = $("#id").val();
         $.ajax({
             type: "POST",
             data: {},
-            url: '/Portal/AnunciosActivosPartial',
+            url: '/Portal/AnunciosActivosPartial?id='+id,
             success: function (result) {
                 $("#activos").html(result);
             },
@@ -90,6 +93,10 @@
 
     $("#vencidos-pill").click(function () {
         activaPill('vencidos');
+    });
+
+    $("#pendientes-pill").click(function () {
+        activaPill('pendientes');
     });
 
     function activaPill(pill) {

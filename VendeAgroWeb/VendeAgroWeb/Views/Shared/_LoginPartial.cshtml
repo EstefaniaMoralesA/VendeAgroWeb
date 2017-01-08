@@ -6,7 +6,7 @@
 
     <ul class="nav navbar-nav navbar-right login-container">
         <li>
-            @Html.ActionLink(Startup.GetAplicacionUsuariosManager().getUsuarioPortalActual(Request).Nombre, "Index", "Manage", routeValues: null, htmlAttributes: new { title = "Manage" })
+            @Html.ActionLink(Startup.GetAplicacionUsuariosManager().getUsuarioPortalActual(Request).Nombre, "Index", "Portal", routeValues: null, htmlAttributes: new { title = "Portal" })
         </li>
         <li><a href="javascript:document.getElementById('logoutForm').submit()">Log out</a></li>
     </ul>

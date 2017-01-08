@@ -1,44 +1,43 @@
 ﻿@model VendeAgroWeb.Models.Portal.MisAnunciosViewModel
-    @{
-        foreach (var item in Model.Anuncios)
+@{
+    foreach (var item in Model.Anuncios)
+    {
+        if (item.Estado == EstadoAnuncio.Vacio)
         {
-            if (item.Estado == EstadoAnuncio.Vacio)
-            {
-                 <div class="col-sm-4 col-md-3">
+            <div style="padding-right:35px;" class="col-sm-4 col-md-3">
 
-                 </div>
-            }
-            else
-            {
-                <div class="col-sm-4 col-md-3">
-                    <div class="row">
-                        <a class="btn btn-default menu-grad btn-renovar">
-                            <p>Renovar</p>
-                        </a>
-                    </div>
-                    <div class="row">
-                        <div class="mis-anuncios-paquete-container">
-                            <div class="degradado-verde"></div>
-                            <div class="mis-anuncios-anuncio">
-                                <a class="mi-anuncio-link">
-                                    <div class="mis-anuncios-wrapper">
-                                        <p class="wrapper-texto">Ver detalles</p>
-                                        <div class="mis-anuncios-imagen-container">
-                                            <img class="foto-anuncio" src="~/img/yegua.jpg" />
-                                        </div>
-                                        <div class="movil-anuncio-titulo ofertas-anuncio-titulo">
-                                            <div class="row mis-anuncios-anuncio-titulo anuncio-aprobado">
-                                                <p class="titulo">@item.Titulo</p>
-                                                <p class="estado"><strong><span class="glyphicon glyphicon-check"></span></strong>Aprobado</p>
-                                            </div>
+            </div>
+        }
+        else
+        {
+            <div style="padding-right:35px;" class="col-sm-4 col-md-3">
+                <div class="row">
+                    <a class="btn btn-default menu-grad btn-renovar">
+                        <p>Renovar</p>
+                    </a>
+                </div>
+                <div class="row">
+                    <div class="mis-anuncios-paquete-container">
+                        <div style="width:@item.TiempoRestante%" class="degradado-verde"></div>
+                        <div class="mis-anuncios-anuncio">
+                            <a class="mi-anuncio-link">
+                                <div class="mis-anuncios-wrapper">
+                                    <p class="wrapper-texto">Ver detalles</p>
+                                    <div class="mis-anuncios-imagen-container">
+                                        <img class="foto-anuncio" src="" />
+                                    </div>
+                                    <div class="movil-anuncio-titulo ofertas-anuncio-titulo">
+                                        <div class="row mis-anuncios-anuncio-titulo anuncio-aprobado">
+                                            <p class="titulo">@item.Titulo</p>
+                                            <p class="estado"><strong><span class="glyphicon glyphicon-check"></span></strong>Aprobado</p>
                                         </div>
                                     </div>
-                                </a>
-                            </div>
+                                </div>
+                            </a>
                         </div>
                     </div>
                 </div>
-            }
+            </div>
         }
     }
-
+}
