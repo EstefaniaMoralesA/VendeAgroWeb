@@ -1,0 +1,36 @@
+﻿@model VendeAgroWeb.Models.Pagina.PaginaBannersLateralesViewModel
+
+@{
+    if (Model.Banners.Count == 0)
+    {
+        <script>
+            redistribuirTamanos();
+        </script>
+    }
+    else
+    {
+        var cont = 0;
+        foreach (var item in Model.Banners)
+        {
+            cont++;
+            <div class="banner-lateral @(cont == 1 ? "banner-lateral1" : "banner-lateral2")">
+                @if (@cont == 1)
+                {
+                    <a target="_blank" href="http://@item.Link" class="banner-lateral-link"></a>
+                }
+                else
+                {
+                    <a target="_blank" href="http://@item.Link" class="banner-lateral-link"></a>
+                }
+            </div>
+            <script>
+                if (@cont == 1) {
+                    $('.banner-lateral1').css("background", "url(@item.Ruta) center no-repeat");
+                }
+                else {
+                    $('.banner-lateral2').css("background", "url(@item.Ruta) center no-repeat");
+                }
+            </script>
+        }
+    }
+}

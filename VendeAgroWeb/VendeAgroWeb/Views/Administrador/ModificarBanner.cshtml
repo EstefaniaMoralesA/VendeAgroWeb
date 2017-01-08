@@ -1,0 +1,147 @@
+﻿
+@model VendeAgroWeb.Models.Administrador.NuevoBannerViewModel
+
+@{
+    ViewBag.Title = "Modificar Banner";
+    Layout = "Shared/_AdministradorLayout.cshtml";
+}
+
+
+<div class="row agregar-categoria-container">
+    <h2>Modificar Banner</h2>
+    <p style="text-align: center; font-size: 18px; margin-top: 40px;">
+        <span>Tipo:</span>
+        @{
+            if (Model.Tipo == 1)
+            {
+                <span>Banner Central</span>
+            }
+            else
+            {
+                <span>Banner Lateral</span>
+            }
+        }
+    </p>
+    <div class="col-sm-6 col-sm-offset-3">
+        <div class="row">
+            <div class="error-row alert alert-danger" style="text-align:center;">
+                <p id="error-mensaje"></p>
+            </div>
+        </div>
+        <div class="row" style="margin-top: 20px;">
+            <div class="col-sm-12" style="text-align: center;">
+                @{
+                    if (@Model.Ruta == null)
+                    {
+                        <img class="img-selected foto-vacia" src="~/img/foto-vacia.png" />
+                    }
+                    else
+                    {
+                        <img class="img-selected foto-vacia" src="@Model.Ruta" />
+                    }
+                }
+            </div>
+            <div class="row" style="margin-left: 0px; margin-right: 0px;">
+                <div class="col-sm-offset-3 col-sm-6" style="margin-top: 20px;">
+                    <div class="form-group" style="width: 100%;">
+                        <div class="btn btn-success image-preview-input" id="img-inp-btn" style="width: 100%;">
+                            <span class="glyphicon glyphicon-folder-open"></span>
+                            <span style="padding-left: 3px;" class="image-preview-input-title">Modificar</span>
+                            <input class="input-absoluto" type="file" id="imagen" onchange="loadFile(event)">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <form action="/Administrador/ModificarBanner" method="post" id="modificar-banner">
+
+                @Html.AntiForgeryToken()
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+                @Html.EditorFor(model => model.Id, new { htmlAttributes = new { @class = "form-control", type = "hidden", value = Model.Id } })
+                @Html.EditorFor(model => model.Ruta, new { htmlAttributes = new { @class = "form-control", type = "hidden", id = "rutaFoto" } })
+                @Html.EditorFor(model => model.Tipo, new { htmlAttributes = new { @class = "form-control", type = "hidden", value = Model.Tipo } })
+
+                <div class="col-sm-12" style="margin-top: 20px;">
+                    <div class="form-group">
+                        @Html.EditorFor(model => model.Link, new { htmlAttributes = new { @class = "form-control", placeholder = "Link a la página del anunciante", value = Model.Link } })
+                        @Html.ValidationMessageFor(model => model.Link, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group boton-guardar-container" style="margin-top: 20px">
+                    <a id="btn-submit" class="btn btn-primary btn-lg btn-login">Guardar Cambios</a>
+                </div>
+            </form>
+            <div class="login-boton-container">
+                <a class="btn btn-default btn-lg btn-login" href="/Administrador/Banners" style="margin-top:10px">Cancelar</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+@Scripts.Render("~/bundles/jquery")
+
+<script>
+
+    var fotoBanner;
+    var arregloFoto = [];
+
+    $('#btn-submit').click(function () {
+        arregloFoto.push(fotoBanner);
+        subirFoto(arregloFoto);
+    });
+
+    function loadFile(event) {
+        $(".error-extension").html('').hide('');
+        if (!validExtension(event.target.files[0])) {
+            $("#imagen").val("");
+            $(".error-row").html("La extensión de la imagen no es válida").show('');
+            $(".img-selected").attr("src", "/img/foto-vacia.png");
+            return;
+        }
+
+        if (event.target.files.length == 0) {
+            $(".img-selected").attr("src", "/img/foto-vacia.png");
+            return;
+        }
+        fotoBanner = event.target.files[0];
+        $(".img-selected").attr("src", URL.createObjectURL(event.target.files[0]));
+    };
+
+    function validExtension(imagen) {
+        var ext = imagen.name.split('.').pop().toLowerCase();
+        if ($.inArray(ext, ['gif', 'png', 'jpg', 'jpeg']) == -1) {
+            return false;
+        }
+        return true;
+    }
+
+    function subirFoto(fotoUrl) {
+        if (window.FormData !== undefined) {
+            var data = new FormData();
+            for (var x = 0; x < fotoUrl.length; x++) {
+                data.append("file" + x, fotoUrl[x]);
+            }
+
+            $.ajax({
+                type: "POST",
+                url: '/Administrador/SubirFotos',
+                data: data,
+                cache: false,
+                contentType: false,
+                processData: false,
+                success: function (result) {
+                    $('#rutaFoto').val(JSON.parse(result)[0]);
+                    $('#modificar-banner').submit();
+                },
+                error: function (xhr, status, p3, p4) {
+                    var err = "Error " + " " + status + " " + p3 + " " + p4;
+                    if (xhr.responseText && xhr.responseText[0] == "{")
+                        err = JSON.parse(xhr.responseText).Message;
+                    console.log(err);
+                }
+            });
+        } else {
+            alert("This browser doesn't support HTML5 file uploads!");
+        }
+    }
+</script>

@@ -366,6 +366,44 @@ namespace VendeAgroWeb.Controllers.Administrador
             return View(model);
         }
 
+        public async Task<ActionResult> Banners()
+        {
+            if (await Startup.GetAplicacionUsuariosManager().VerificarAdminSesionAsync() == LoginStatus.Incorrecto)
+            {
+                return RedirectToAction("Login", "Administrador");
+            }
+
+            BannersViewModel model = new BannersViewModel(await ObtenerBanners());
+
+            return View(model);
+        }
+
+        public async Task<ICollection<BannerViewModel>> ObtenerBanners()
+        {
+            return await Task.Run(() =>
+            {
+                using (var _dbContext = new MercampoEntities())
+                {
+                    Startup.OpenDatabaseConnection(_dbContext);
+                    if (_dbContext.Database.Connection.State != ConnectionState.Open)
+                    {
+                        return null;
+                    }
+
+                    List<BannerViewModel> lista = new List<BannerViewModel>();
+                    var banners = _dbContext.Banners;
+                    foreach (var item in banners)
+                    {
+                        lista.Add(new BannerViewModel(item.Id, item.ruta, item.link, item.activo, item.tipo));
+                    }
+
+                    _dbContext.Database.Connection.Close();
+                    return lista;
+                }
+            });
+        }
+
+
         public async Task<ICollection<CategoriaViewModel>> ObtenerCategorias()
         {
             return await Task.Run(() =>
@@ -650,6 +688,93 @@ namespace VendeAgroWeb.Controllers.Administrador
                     return nombre;
                 }
             });
+        }
+
+        [HttpPost]
+        public async Task<bool> CambiarEstadoBanner(int? id, int? tipo)
+        {
+
+            if (id == null || tipo == null)
+            {
+                return false;
+            }
+
+            return await Task.Run(() =>
+            {
+                using (var _dbContext = new MercampoEntities())
+                {
+                    Startup.OpenDatabaseConnection(_dbContext);
+                    if (_dbContext.Database.Connection.State != ConnectionState.Open)
+                    {
+                        return false;
+                    }
+
+                    var banner = _dbContext.Banners.Where(b => b.Id == id).FirstOrDefault();
+
+                    if (banner == null)
+                    {
+                        _dbContext.Database.Connection.Close();
+                        return false;
+                    }
+
+                    if (tipo == 0)
+                    {
+                        banner.activo = false;
+                    }
+                    else
+                    {
+                        if(banner.ruta == null || banner.link == null)
+                        {
+                            return false;
+                        }
+                        banner.activo = true;
+                    }
+                    _dbContext.SaveChanges();
+                    _dbContext.Database.Connection.Close();
+
+                }
+                return true;
+            });
+        }
+
+
+        public async Task<ActionResult> ModificarBanner(int? id)
+        {
+            var model = new NuevoBannerViewModel();
+            if (id == null)
+            {
+                return RedirectToAction("Banners", "Administrador");
+            }
+
+            bool estado = true;
+
+            await Task.Run(() =>
+            {
+                using (var _dbContext = new MercampoEntities())
+                {
+                    Startup.OpenDatabaseConnection(_dbContext);
+                    if (_dbContext.Database.Connection.State != ConnectionState.Open)
+                    {
+                        estado = false;
+                    }
+                    else
+                    {
+                        var banner = _dbContext.Banners.Where(p => p.Id == id).FirstOrDefault();
+                        model.Id = banner.Id;
+                        model.Ruta = banner.ruta;
+                        model.Link = banner.link;
+                        model.Tipo = banner.tipo;
+
+                        _dbContext.Database.Connection.Close();
+                    }
+                }
+
+            });
+            if (!estado)
+            {
+                return RedirectToAction("Paquetes", "Administrador");
+            }
+            return View(model);
         }
 
         [HttpPost]
@@ -1126,6 +1251,58 @@ namespace VendeAgroWeb.Controllers.Administrador
         [HttpPost]
         [ValidateAntiForgeryToken]
         [AllowAnonymous]
+        public async Task<ActionResult> ModificarBanner(NuevoBannerViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+
+            bool estado = true;
+
+            await Task.Run(() =>
+            {
+                using (var _dbContext = new MercampoEntities())
+                {
+                    Startup.OpenDatabaseConnection(_dbContext);
+                    if (_dbContext.Database.Connection.State != ConnectionState.Open)
+                    {
+                        ModelState.AddModelError("", "Error en la base de datos, vuelva a intentarlo");
+                        estado = false;
+                    }
+                    else
+                    {
+                        var banner = _dbContext.Banners.Where(b => b.Id == model.Id).FirstOrDefault();
+
+                        if (banner == null)
+                        {
+                            ModelState.AddModelError("", "Error banner no encontrado, vuelva a intentarlo");
+                            estado = false;
+                        }
+                        else
+                        {
+                            banner.ruta = model.Ruta;
+                            banner.link = model.Link;
+                            banner.activo = true;
+
+                            _dbContext.SaveChanges();
+                        }
+
+                        _dbContext.Database.Connection.Close();
+                    }
+                }
+
+            });
+            if (estado)
+            {
+                return RedirectToAction("Banners", "Administrador");
+            }
+            return View(model);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [AllowAnonymous]
         public async Task<ActionResult> ModificarPaquete(NuevoPaqueteViewModel model)
         {
             if (!ModelState.IsValid)
@@ -1495,6 +1672,7 @@ namespace VendeAgroWeb.Controllers.Administrador
 
             return new JavaScriptSerializer().Serialize(Json(fotos).Data);
         }
+
 
         [HttpPost]
         public async Task<bool> NuevoAnuncio(string json)

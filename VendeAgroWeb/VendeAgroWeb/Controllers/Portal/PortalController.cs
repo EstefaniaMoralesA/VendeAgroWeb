@@ -62,14 +62,45 @@ namespace VendeAgroWeb.Controllers.Administrador
             return View();
         }
 
-        public ActionResult AnunciosActivosPartial()
+        public async Task<ActionResult> AnunciosActivosPartial(int? id)
         {
-            return PartialView("AnunciosActivosPartial");
+            MisAnunciosViewModel model = new MisAnunciosViewModel(await ObtenerAnunciosActivos(id));
+            return PartialView("AnunciosActivosPartial", model);
         }
 
         public ActionResult AnunciosVencidosPartial()
         {
             return PartialView("AnunciosVencidosPartial");
+        }
+
+        public async Task<ICollection<AnuncioViewModel>> ObtenerAnunciosActivos(int? id)
+        {
+            if (id == null) {
+                return null;
+            }
+            return await Task.Run(() =>
+            {
+                using (var _dbContext = new MercampoEntities())
+                {
+                    Startup.OpenDatabaseConnection(_dbContext);
+                    if (_dbContext.Database.Connection.State != ConnectionState.Open)
+                    {
+                        return null;
+                    }
+
+                    List<AnuncioViewModel> lista = new List<AnuncioViewModel>();
+
+                    var anuncios = _dbContext.Anuncios.Where(a => a.activo == true && a.idUsuario == id);
+
+                    foreach (var item in anuncios) {
+                        var tiempoRestante = (item.fecha_fin.Value - item.fecha_inicio.Value).Days;
+                        lista.Add(new AnuncioViewModel(item.id, item.titulo, item.estado, tiempoRestante));
+                    }
+                    
+                    _dbContext.Database.Connection.Close();
+                    return lista;
+                }
+            });
         }
 
         public ActionResult MisPagos()

@@ -49,7 +49,7 @@ namespace VendeAgroWeb.Controllers.Home
         [HttpPost]
         public async Task<bool> InsertaBeneficiosEnCarrito(int index, string json)
         {
-            var beneficios =  new JavaScriptSerializer().Deserialize<List<int>>(json);
+            var beneficios = new JavaScriptSerializer().Deserialize<List<int>>(json);
             var paquete = Startup.GetCarritoDeCompra().Paquetes.ElementAt(index);
             foreach (var item in beneficios) {
                 if (item == -1) {
@@ -63,7 +63,7 @@ namespace VendeAgroWeb.Controllers.Home
             }
             return true;
         }
-    
+
         public async Task<BeneficioCarrito> ObtenerBeneficio(int id)
         {
             return await Task.Run(() =>
@@ -356,7 +356,7 @@ namespace VendeAgroWeb.Controllers.Home
                             }
                             else
                             {
-                                anuncios = _dbContext.Anuncios.Where(a => a.activo == true && a.estado == (int)EstadoAnuncio.Aprobado && a.Ciudad.Estado.idPais == idPais ).OrderByDescending(a => a.clicks).Take(20);
+                                anuncios = _dbContext.Anuncios.Where(a => a.activo == true && a.estado == (int)EstadoAnuncio.Aprobado && a.Ciudad.Estado.idPais == idPais).OrderByDescending(a => a.clicks).Take(20);
                                 _dbContext.Database.Connection.Close();
                                 return CreaAnuncios(anuncios.ToList(), _dbContext);
                             }
@@ -519,7 +519,7 @@ namespace VendeAgroWeb.Controllers.Home
                         {
                             anuncio.clicks += 1;
                             _dbContext.SaveChanges();
-                            var anuncioViewModel = new PortalAnuncioViewModel(anuncio.id, anuncio.titulo, anuncio.precio, anuncio.Subcategoria.Categoria.nombre, anuncio.Subcategoria.nombre, 
+                            var anuncioViewModel = new PortalAnuncioViewModel(anuncio.id, anuncio.titulo, anuncio.precio, anuncio.Subcategoria.Categoria.nombre, anuncio.Subcategoria.nombre,
                                 anuncio.Ciudad.Estado.nombre, anuncio.Ciudad.nombre, anuncio.Fotos_Anuncio.Where(f => f.principal == true).FirstOrDefault()?.ruta);
 
                             List<PaginaFotoViewModel> fotos = new List<PaginaFotoViewModel>();
@@ -635,7 +635,7 @@ namespace VendeAgroWeb.Controllers.Home
         {
             if (anuncios.Count <= 1) return anuncios;
 
-            Random r = new Random((int)DateTime.Now.Ticks & (0x0000FFFF + new Random().Next(0,anuncios.Count)));
+            Random r = new Random((int)DateTime.Now.Ticks & (0x0000FFFF + new Random().Next(0, anuncios.Count)));
             if (anuncios.Count == 2)
             {
                 var random = r.Next(1, 10);
@@ -688,6 +688,63 @@ namespace VendeAgroWeb.Controllers.Home
         {
             PaginaPaisesViewModel model = new PaginaPaisesViewModel(await ObtenerPaises());
             return PartialView("PaisesPartial", model);
+        }
+
+        [HttpPost]
+        public async Task<ActionResult> BannerCentralPartial()
+        {
+            return await Task.Run(() =>
+            {
+                using (var _dbContext = new MercampoEntities())
+                {
+                    Startup.OpenDatabaseConnection(_dbContext);
+                    if (_dbContext.Database.Connection.State != ConnectionState.Open)
+                    {
+                        return null;
+                    }
+
+                    var banner = _dbContext.Banners.Where(b => b.tipo == (int)BannerTipo.Central).FirstOrDefault();
+
+                    if (banner.activo == false) {
+                        return PartialView("BannerCentralPartial", null);
+                    }
+
+                    var model = new PaginaBannerCentralViewModel(banner.Id, banner.ruta, banner.link);
+
+                    _dbContext.Database.Connection.Close();
+                    return PartialView("BannerCentralPartial", model);
+                }
+            });
+
+        }
+
+        [HttpPost]
+        public async Task<ActionResult> BannersLateralesPartial()
+        {
+            return await Task.Run(() =>
+            {
+                using (var _dbContext = new MercampoEntities())
+                {
+                    Startup.OpenDatabaseConnection(_dbContext);
+                    if (_dbContext.Database.Connection.State != ConnectionState.Open)
+                    {
+                        return null;
+                    }
+
+                    List<PaginaBannerCentralViewModel> lista = new List<PaginaBannerCentralViewModel>();
+                    var banners = _dbContext.Banners.Where(b => b.tipo != (int)BannerTipo.Central && b.ruta != null && b.activo == true);
+
+                    foreach (var banner in banners) {
+                        lista.Add(new PaginaBannerCentralViewModel(banner.Id, banner.ruta, banner.link));
+                    }
+
+                    _dbContext.Database.Connection.Close();
+
+                    var model = new PaginaBannersLateralesViewModel(lista);
+                    return PartialView("BannersLateralesPartial", model);
+                }
+            });
+
         }
 
     }

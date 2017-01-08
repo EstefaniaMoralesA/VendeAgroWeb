@@ -7,7 +7,7 @@
     <div class="col-sm-12" style="padding-right: 0px; padding-left: 0px;">
         <div class="col-sm-4 botones-inicio-portal" style="min-height: 210px;">
             <div class="botones-portal-container1 botones-portal-container" style="background-color: #E42B22;">
-                <a class="btn link-boton-portal" href="/Portal/MisAnuncios">
+                <a id="btn-mis-anuncios" class="btn link-boton-portal" href="/Portal/MisAnuncios">
                     <div class="botones-portal-contenido">
                         <span class="glyphicon glyphicon-th-large"></span>
                         <p>Mis anuncios</p>
@@ -39,3 +39,24 @@
         </div>
     </div>
 </div>
+
+@Scripts.Render("~/bundles/jquery")
+
+<script>
+    $('#btn-mis-anuncios').click(function() {
+        $.ajax({
+            type: "POST",
+            url: '/Portal/AnunciosActivosPartial?id=' ,
+            data: data,
+            cache: false,
+            contentType: false,
+            processData: false,
+            success: function (result) {
+               
+            },
+            error: function (xhr, status, p3, p4) {
+               
+            }
+        });
+    });
+</script>

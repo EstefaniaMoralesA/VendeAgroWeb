@@ -1,0 +1,130 @@
+﻿@model VendeAgroWeb.Models.Administrador.BannersViewModel
+
+@{
+    ViewBag.Title = "Administración Banners";
+    Layout = "Shared/_AdministradorLayout.cshtml";
+}
+
+<div class="row">
+    <div class="col-sm-offset-1 col-sm-10" style="text-align: center;">
+        <h2 class="mis-anuncios-titulo">Banners</h2>
+
+        <div class="row">
+            <div class="error-row alert alert-danger" style="text-align:center;">
+                <p id="error-mensaje"></p>
+            </div>
+        </div>
+
+        <div class="table-responsive" style="margin-top: 20px;">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th class="banners-titulos">Foto</th>
+                        <th class="banners-titulos">Ruta</th>
+                        <th class="banners-titulos">Tipo</th>
+                        <th class="banners-titulos">Link Banner</th>
+                        <th></th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @{
+                        foreach (var item in Model.Banners)
+                        {
+                            <tr class="row-tabla-foto">
+                                @{
+                                    if (@item.Ruta == null)
+                                    {
+                                        <td><img class="img-selected foto-vacia" src="~/img/foto-vacia.png" /></td>
+                                        <td class="td-wrap-texto">No hay foto seleccionada</td>
+                                    }
+                                    else
+                                    {
+                                        <td><img class="img-selected foto-vacia" src="@item.Ruta" /></td>
+                                        <td class="td-wrap-texto">@item.Ruta</td>
+                                    }
+                                    if (@item.Tipo == 1)
+                                    {
+                                        <td>Banner Central</td>
+                                    }
+                                    else
+                                    {
+                                        <td>Banner Lateral</td>
+                                    }
+                                    if (@item.Link == null)
+                                    {
+                                        <td>Link vacío</td>
+                                    }
+                                    else
+                                    {
+                                        <td>@item.Link</td>
+                                    }
+                                    if (item.Activo)
+                                    {
+                                        <td><a data-id="@item.Id" class="btn btn-danger btn-banner-desactivar btn-10-caracteres btn-categorias-desactivar">desactivar</a></td>
+                                    }
+                                    else
+                                    {
+                                        if (@item.Ruta == null)
+                                        {
+                                            <td><a class="btn btn-default btn-7-caracteres btn-categorias-activar" style="cursor:not-allowed;">activar</a></td>
+                                        }
+                                        else
+                                        {
+                                            <td><a data-id="@item.Id" class="btn btn-success btn-7-caracteres btn-banner-activar">activar</a></td>
+                                        }
+                                    }
+                                }
+                                <td><a class="btn btn-default btn-9-caracteres" href="/Administrador/ModificarBanner?id=@item.Id">modificar</a></td>
+                            </tr>
+                            }
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(".btn-banner-activar").click(function () {
+        var id = $(this).data('id');
+
+        $.ajax({
+            type: "POST",
+            url: "/Administrador/CambiarEstadoBanner?id=" + id + "&tipo=" + 1,
+            data: {},
+            success: function (result) {
+                if (result) {
+                    location.reload();
+                }
+                else {
+                    $(".error-row").html("Hubo un error al cambiar el status del banner.").show('');
+                }
+            },
+            error: function (msg) {
+                console.log(msg);
+            }
+        });
+    });
+
+    $(".btn-banner-desactivar").click(function () {
+        var id = $(this).data('id');
+
+        $.ajax({
+            type: "POST",
+            url: "/Administrador/CambiarEstadoBanner?id=" + id + "&tipo=" + 0,
+            data: {},
+            success: function (result) {
+                if (result) {
+                    location.reload();
+                }
+                else {
+                    $(".error-row").html("Hubo un error al cambiar el status del banner.").show('');
+                }
+            },
+            error: function (msg) {
+                console.log(msg);
+            }
+        });
+    });
+</script>

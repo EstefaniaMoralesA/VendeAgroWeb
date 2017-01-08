@@ -870,6 +870,62 @@ namespace VendeAgroWeb.Models.Pagina
         public string IdConekta { get; private set; }
     }
 
+    public class PaginaBannersLateralesViewModel
+    {
+        private ICollection<PaginaBannerCentralViewModel> _banners;
+
+        public ICollection<PaginaBannerCentralViewModel> Banners
+        {
+            get
+            {
+                return _banners;
+            }
+        }
+
+        public PaginaBannersLateralesViewModel(ICollection<PaginaBannerCentralViewModel> banners)
+        {
+            _banners = banners;
+        }
+
+    }
+
+    public class PaginaBannerCentralViewModel
+    {
+        private int _id;
+        private string _ruta;
+        private string _link;
+
+        public string Ruta
+        {
+            get
+            {
+                return _ruta;
+            }
+        }
+
+        public string Link
+        {
+            get
+            {
+                return _link;
+            }
+        }
+
+        public int Id
+        {
+            get
+            {
+                return _id;
+            }
+        }
+
+        public PaginaBannerCentralViewModel(int id, string ruta, string link) {
+            _id = id;
+            _ruta = ruta;
+            _link = link;
+        }
+    }
+
     public enum BeneficiosExtraTipo
     {
         Fotos = 1,

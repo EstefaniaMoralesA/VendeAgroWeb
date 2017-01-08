@@ -233,83 +233,87 @@
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\Administrador\AdministradorViewModels.cs" />
     <Compile Include="Models\Anuncio.cs">
-      <DependentUpon>DatabaseModel.tt</DependentUpon>
+      <DependentUpon>MercampoModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Anuncio_Beneficio.cs">
-      <DependentUpon>DatabaseModel.tt</DependentUpon>
+      <DependentUpon>MercampoModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Banner.cs">
-      <DependentUpon>DatabaseModel.tt</DependentUpon>
+      <DependentUpon>MercampoModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\BannerTipo.cs" />
     <Compile Include="Models\Beneficio.cs">
-      <DependentUpon>DatabaseModel.tt</DependentUpon>
+      <DependentUpon>MercampoModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Categoria.cs">
-      <DependentUpon>DatabaseModel.tt</DependentUpon>
+      <DependentUpon>MercampoModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Ciudad.cs">
-      <DependentUpon>DatabaseModel.tt</DependentUpon>
+      <DependentUpon>MercampoModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Conekta_Paquete.cs">
-      <DependentUpon>DatabaseModel.tt</DependentUpon>
+      <DependentUpon>MercampoModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\ConsultarDetalles.cs" />
-    <Compile Include="Models\DatabaseModel.Context.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>DatabaseModel.Context.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\DatabaseModel.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>DatabaseModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\DatabaseModel.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>DatabaseModel.edmx</DependentUpon>
-    </Compile>
     <Compile Include="Models\Estado.cs">
-      <DependentUpon>DatabaseModel.tt</DependentUpon>
+      <DependentUpon>MercampoModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\EstadoAnuncio.cs" />
     <Compile Include="Models\Fotos_Anuncio.cs">
-      <DependentUpon>DatabaseModel.tt</DependentUpon>
+      <DependentUpon>MercampoModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
+    <Compile Include="Models\MercampoModel.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>MercampoModel.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\MercampoModel.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>MercampoModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\MercampoModel.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>MercampoModel.edmx</DependentUpon>
+    </Compile>
     <Compile Include="Models\Metrica.cs">
-      <DependentUpon>DatabaseModel.tt</DependentUpon>
+      <DependentUpon>MercampoModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Pagina\PaginaViewModels.cs" />
     <Compile Include="Models\Pago.cs">
-      <DependentUpon>DatabaseModel.tt</DependentUpon>
+      <DependentUpon>MercampoModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Pago_Concepto.cs">
-      <DependentUpon>DatabaseModel.tt</DependentUpon>
+      <DependentUpon>MercampoModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Pai.cs">
-      <DependentUpon>DatabaseModel.tt</DependentUpon>
+      <DependentUpon>MercampoModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Paquete.cs">
-      <DependentUpon>DatabaseModel.tt</DependentUpon>
+      <DependentUpon>MercampoModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Portal\PortalViewModels.cs" />
     <Compile Include="Models\Subcategoria.cs">
-      <DependentUpon>DatabaseModel.tt</DependentUpon>
+      <DependentUpon>MercampoModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Table.cs">
+      <DependentUpon>MercampoModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\UserModels.cs" />
     <Compile Include="Models\Usuario.cs">
-      <DependentUpon>DatabaseModel.tt</DependentUpon>
+      <DependentUpon>MercampoModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Usuario_Administrador.cs">
-      <DependentUpon>DatabaseModel.tt</DependentUpon>
+      <DependentUpon>MercampoModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Usuario_Tarjeta.cs">
-      <DependentUpon>DatabaseModel.tt</DependentUpon>
+      <DependentUpon>MercampoModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Videos_Anuncio.cs">
-      <DependentUpon>DatabaseModel.tt</DependentUpon>
+      <DependentUpon>MercampoModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
@@ -325,9 +329,6 @@
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
-    <Content Include="img\banner1.jpg" />
-    <Content Include="img\bannerLat2.jpg" />
-    <Content Include="img\banner.jpg" />
     <Content Include="img\foto-vacia.png" />
     <Content Include="img\icono-correo.png" />
     <Content Include="img\icono-mano.png" />
@@ -342,15 +343,15 @@
     <Content Include="img\logoHorizontal.png" />
     <Content Include="img\logo.png" />
     <Content Include="img\vacaContacto.jpg" />
-    <Content Include="Models\DatabaseModel.Context.tt">
+    <Content Include="Models\MercampoModel.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>DatabaseModel.edmx</DependentUpon>
-      <LastGenOutput>DatabaseModel.Context.cs</LastGenOutput>
+      <DependentUpon>MercampoModel.edmx</DependentUpon>
+      <LastGenOutput>MercampoModel.Context.cs</LastGenOutput>
     </Content>
-    <Content Include="Models\DatabaseModel.tt">
+    <Content Include="Models\MercampoModel.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>DatabaseModel.edmx</DependentUpon>
-      <LastGenOutput>DatabaseModel.cs</LastGenOutput>
+      <DependentUpon>MercampoModel.edmx</DependentUpon>
+      <LastGenOutput>MercampoModel.cs</LastGenOutput>
     </Content>
     <Content Include="Scripts\ai.0.22.19-build00125.js" />
     <Content Include="Scripts\ai.0.22.19-build00125.min.js" />
@@ -363,12 +364,12 @@
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />
     <Content Include="fonts\Nexa Bold.otf" />
     <Content Include="fonts\Nexa Light.otf" />
-    <EntityDeploy Include="Models\DatabaseModel.edmx">
+    <EntityDeploy Include="Models\MercampoModel.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>DatabaseModel.Designer.cs</LastGenOutput>
+      <LastGenOutput>MercampoModel.Designer.cs</LastGenOutput>
     </EntityDeploy>
-    <Content Include="Models\DatabaseModel.edmx.diagram">
-      <DependentUpon>DatabaseModel.edmx</DependentUpon>
+    <Content Include="Models\MercampoModel.edmx.diagram">
+      <DependentUpon>MercampoModel.edmx</DependentUpon>
     </Content>
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
@@ -427,9 +428,9 @@
     <Content Include="Views\Shared\_MenuPagina.cshtml" />
     <Content Include="Views\Shared\_MenuMovilPagina.cshtml" />
     <Content Include="Views\Shared\_MenuPaginaTabs.cshtml" />
-    <Content Include="Views\Shared\_BannerCentral.cshtml" />
+    <Content Include="Views\Shared\BannerCentralPartial.cshtml" />
     <Content Include="Views\Shared\_AnunciosPartial.cshtml" />
-    <Content Include="Views\Shared\_BannerLateral.cshtml" />
+    <Content Include="Views\Shared\BannersLateralesPartial.cshtml" />
     <Content Include="Views\Shared\_Registro.cshtml" />
     <Content Include="Views\Administrador\OlvidoContrasena.cshtml" />
     <Content Include="Views\Administrador\Shared\_LoginLayout.cshtml" />
@@ -478,9 +479,12 @@
     <Content Include="Views\Home\AnuncioDetalles.cshtml" />
     <Content Include="Views\Home\ResultadosBusqueda.cshtml" />
     <Content Include="Views\Shared\_BusquedaPartial.cshtml" />
+    <Content Include="Views\Administrador\Banners.cshtml" />
+    <Content Include="Views\Administrador\ModificarBanner.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Views\BannerTipo\" />
     <Folder Include="Views\ConsultarDetalles\" />
     <Folder Include="Views\Home\Shared\" />
   </ItemGroup>

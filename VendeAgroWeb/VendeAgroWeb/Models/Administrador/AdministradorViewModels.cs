@@ -225,7 +225,6 @@ namespace VendeAgroWeb.Models.Administrador
         [Display(Name = "Descripción del paquete")]
         [StringLength(200, MinimumLength = 3, ErrorMessage = "El número de caracteres no puede ser mayor a 200")]
         public string Descripcion { get; set; }
-
     }
 
     public class PaqueteViewModel {
@@ -764,6 +763,96 @@ namespace VendeAgroWeb.Models.Administrador
             _activo = activo;
             _nombreCategoria = nombreCategoria;
             _numAnuncios = numAnuncios;
+        }
+    }
+
+    public class NuevoBannerViewModel
+    {
+        public int Id { get; set; }
+        public int Tipo { get; set; }
+
+        [Required(ErrorMessage = "Campo requerido")]
+        [Display(Name = "NuevaRuta")]
+        public string Ruta { get; set; }
+
+        [Required(ErrorMessage = "Campo requerido")]
+        [Display(Name = "Link")]
+        public string Link { get; set; }
+
+    }
+
+    public class BannersViewModel
+    {
+        private ICollection<BannerViewModel> _banners;
+
+        public ICollection<BannerViewModel> Banners
+        {
+            get
+            {
+                return _banners;
+            }
+        }
+
+        public BannersViewModel(ICollection<BannerViewModel> banners) {
+            _banners = banners;
+        }
+    }
+
+    public class BannerViewModel
+    {
+        private int _id;
+        private string _ruta;
+        private string _link;
+        private bool _activo;
+        private int _tipo;
+
+        public int Id
+        {
+            get
+            {
+                return _id;
+            }
+        }
+
+        public string Ruta
+        {
+            get
+            {
+                return _ruta;
+            }
+        }
+
+        public bool Activo
+        {
+            get
+            {
+                return _activo;
+            }
+        }
+
+        public int Tipo
+        {
+            get
+            {
+                return _tipo;
+            }
+        }
+
+        public string Link
+        {
+            get
+            {
+                return _link;
+            }
+        }
+
+        public BannerViewModel(int id, string ruta, string link, bool activo, int tipo)
+        {
+            _id = id;
+            _ruta = ruta;
+            _link = link;
+            _activo = activo;
+            _tipo = tipo;
         }
     }
 

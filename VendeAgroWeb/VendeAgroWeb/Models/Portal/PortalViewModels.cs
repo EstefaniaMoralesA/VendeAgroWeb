@@ -97,7 +97,7 @@ namespace VendeAgroWeb.Models.Portal
         private int _id;
         private string _titulo;
         private EstadoAnuncio _estado;
-
+        private int _tiempoRestante;
         public string Titulo
         {
             get
@@ -122,11 +122,20 @@ namespace VendeAgroWeb.Models.Portal
             }
         }
 
-        public AnuncioViewModel(int id, string titulo, int estado)
+        public int TiempoRestante
+        {
+            get
+            {
+                return _tiempoRestante;
+            }
+        }
+
+        public AnuncioViewModel(int id, string titulo, int estado, int tiempoRestante)
         {
             _id = id;
             _titulo = titulo;
             _estado = (EstadoAnuncio)estado;
+            _tiempoRestante = tiempoRestante;
         }
     }
 

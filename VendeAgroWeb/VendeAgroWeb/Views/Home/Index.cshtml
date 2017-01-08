@@ -7,12 +7,15 @@
 <div class="row">
     <div class="col-sm-12">
         <div class="col-sm-12 home-body-container">
-            @Html.Partial("_BannerCentral")
+            <div class="row">
+                <div class="banner-central-container">
+                </div>
+            </div>
             <div class="row">
                 <div class="col-sm-3 expander-3">
                     <div class="busqueda-fixed-container">
-                    <div class="col-sm-12 busqueda-titulo-container titulos">
-                        <div class="busqueda-container">
+                        <div class="col-sm-12 busqueda-titulo-container titulos">
+                            <div class="busqueda-container">
                                 <h3>Búsqueda</h3>
                                 <div id="categoria-dropdown" class="dropdown">
                                     <button id="btn-categoria" class="btn btn-default dropdown-toggle botones-grad busqueda-dropdown" type="button" data-toggle="dropdown">
@@ -87,7 +90,6 @@
                 </div>
                 <div class="col-sm-3 esconder-banners">
                     <div class="banners-container">
-                        @Html.Partial("_BannerLateral")
                     </div>
                 </div>
             </div>
@@ -107,8 +109,17 @@
     var idCiudad = -1;
     var precioBajo = 100;
     var precioAlto = 500000;
+    var tamanosRedistribuidos = false;
 
     $(document).ready(function () {
+        getAnunciosDestacados();
+        getAnunciosDestacadosMovil();
+        recalcularTamanos();
+        getBannerCentral();
+        getBannersLaterales();
+    });
+
+    function getAnunciosDestacados() {
         $.ajax({
             type: "POST",
             data: {},
@@ -120,7 +131,9 @@
                 console.log(msg);
             }
         });
+    }
 
+    function getAnunciosDestacadosMovil() {
         $.ajax({
             type: "POST",
             data: {},
@@ -132,7 +145,7 @@
                 console.log(msg);
             }
         });
-    });
+    }
 
     var slider = document.getElementById('slider');
 
@@ -170,13 +183,18 @@
         }
     });
 
-    $(document).ready(function () {
-        recalcularTamanos();
+    $(window).resize(function () {
+        if (!tamanosRedistribuidos) {
+            recalcularTamanos();
+        }
     });
 
-    $(window).resize(function () {
-        recalcularTamanos();
-    });
+    function redistribuirTamanos() {
+        $('.expander-3').removeClass('col-sm-3').addClass('col-sm-4');
+        $('.expander-6').removeClass('col-sm-6').addClass('col-sm-8');
+        $('.esconder-banners').hide();
+        tamanosRedistribuidos = true;
+    }
 
     function recalcularTamanos() {
         var width = $(window).innerWidth();
@@ -293,6 +311,34 @@
         getAnunciosDestacadosFiltrados();
     }
 
+    function getBannerCentral() {
+        $.ajax({
+            type: "POST",
+            data: {},
+            url: '/Home/BannerCentralPartial',
+            success: function (result) {
+                $(".banner-central-container").html(result);
+            },
+            error: function (msg) {
+                console.log(msg);
+            }
+        });
+    }
+
+    function getBannersLaterales() {
+        $.ajax({
+            type: "POST",
+            data: {},
+            url: '/Home/BannersLateralesPartial',
+            success: function (result) {
+                $(".banners-container").html(result);
+            },
+            error: function (msg) {
+                console.log(msg);
+            }
+        });
+    }
+
     function getCategorias() {
         $.ajax({
             type: "POST",
@@ -401,7 +447,7 @@
     $(window).scroll(function () {
         if ($(window).width() <= 767) return;
 
-        if ($(this).scrollTop() > 250) {
+        if ($(this).scrollTop() > 340) {
             $('.banners-container').addClass('banners-fixed');
             $('.busqueda-fixed-container').addClass('busqueda-fixed');
         } else {

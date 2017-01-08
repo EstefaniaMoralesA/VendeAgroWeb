@@ -16,10 +16,10 @@
 
                 <div class="form-horizontal">
                     @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-                    <div class="col-sm-9 registro-campos">
+                    <div class="col-sm-9 login-campos">
                         <div class="form-group">
                             <div class="login-campo">
-                                <input class="form-control campos-registro text-box single-line" data-val="true" data-val-email="The Email field is not a valid e-mail address." data-val-required="The Email field is required." id="EmailLogin" name="Email" placeholder="Email" type="email" value="">
+                                <input class="form-control campos-registro text-box single-line" data-val="true" data-val-email="El email introducido no es válido." data-val-required="*Campo requerido." id="EmailLogin" name="Email" placeholder="Email" type="email" value="">
                                 @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
                             </div>
                         </div>

@@ -14,7 +14,7 @@ namespace VendeAgroWeb.Models
     
     public partial class Banner
     {
-        public int id { get; set; }
+        public int Id { get; set; }
         public string ruta { get; set; }
         public string link { get; set; }
         public bool activo { get; set; }

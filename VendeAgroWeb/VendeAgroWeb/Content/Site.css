@@ -301,7 +301,7 @@ a {
 
 .modal-registro-container {
     overflow-x: hidden;
-    height: 96%;
+    height: 100%;
     width: 750px !important;
 }
 
@@ -315,7 +315,7 @@ a {
     border-top-right-radius: 0 !important;
     border-top-left-radius: 0 !important;
     width: 143% !important;
-    min-height: 94%;
+    min-height: 100%;
     left: 50% !important;
     transform: translate(-50%, 0) !important;
     -webkit-transform: translate(-50%, 0) !important;
@@ -332,12 +332,33 @@ a {
 }
 
 .registro-campos {
-    left: 13%;
     text-align: center;
 }
 
+.registro-completo {
+    width: 750px !important;
+    position: absolute;
+    top: 55%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+    -o-transform: translate(-50%,-50%);
+    -webkit-transform: translate(-50%,-50%);
+    -ms-transform: translate(0,-50%);
+    -moz-transform: translate(0,-50%);
+}
+
+.proceso-registro-contenido {
+    position: absolute;
+    top: 50%;
+    transform: translate(0,-50%);
+    -o-transform: translate(0,-50%);
+    -webkit-transform: translate(0,-50%);
+    -ms-transform: translate(0,-50%);
+    -moz-transform: translate(0,-50%);
+}
+
 .registro-campo {
-    margin-bottom: 25px;
+    margin-bottom: 15px;
 }
 
 .login-campo {
@@ -347,12 +368,13 @@ a {
 }
 
 .registrate-facebook {
+    min-height: 35px;
     margin-left: 13%;
     text-align: center;
 }
 
 .campos-registro {
-    height: 44px;
+    height: 39px;
     border-radius: 10px;
     background-color: rgba(255,255,255,0.6);
     color: #04612d;
@@ -765,6 +787,7 @@ div.social-wrap button {
 }
 
 .banner-central-container {
+    padding-right: 15px;
     padding-left: 0px;
     width: 100%;
     overflow: hidden;
@@ -772,21 +795,6 @@ div.social-wrap button {
     margin-top: 30px;
     margin-bottom: 30px;
 }
-
-.banner-central span {
-    width: 100%;
-    display: inline-block;
-}
-
-    .banner-central span a {
-        width: 100%;
-        display: inline-block;
-    }
-
-        .banner-central span a img {
-            height: 200px;
-            width: 100%;
-        }
 
 .banners-fixed {
     top: 160px;
@@ -808,8 +816,17 @@ div.social-wrap button {
 }
 
 .banner-lateral {
-    width: 90%;
+    width: 100%;
     max-width: 330px;
+    margin-bottom: 30px;
+    background-size: cover !important;
+    height: 300px;
+}
+
+.banner-lateral-link {
+    width: 100%;
+    height: 100%;
+    display: block;
 }
 
 .esconder-banners {
@@ -894,10 +911,9 @@ div.social-wrap button {
 
     .menu-administrador-container .logo-home {
         display: inline-block;
-        width: 56%;
-        min-width: 222px;
+        width: 45%;
         position: relative;
-        left: 50%;
+        left: 30%;
         top: 50%;
         transform: translate(-50%, -50%);
         -webkit-transform: translate(-50%, -50%);
@@ -1044,6 +1060,9 @@ div.social-wrap button {
 .agregar-categoria-container h2 {
     text-align: center;
     text-transform: capitalize;
+    color: #E42B22;
+    font-family: generalFont;
+    font-weight: bolder;
 }
 
 .boton-guardar-container {
@@ -2397,6 +2416,36 @@ hr {
     margin-left: 15px;
 }
 
+.banners-titulos {
+    text-align: center !important;
+}
+
+#img-banner {
+    margin-top: 13px;
+    min-height: 34px;
+}
+
+.table-responsive {
+    overflow-x: auto;
+}
+
+.td-wrap-texto {
+    overflow: hidden;
+    max-width: 339px;
+    word-wrap: break-word;
+}
+
+.banner-central-link {
+    display: block;
+    width: 100%;
+    height: 100%;
+}
+
+.banner-central {
+    height: 300px;
+    background-size: cover !important;
+}
+
 @media (max-width: 1200px) {
     .base {
         height: 270px !important;
@@ -2438,7 +2487,7 @@ hr {
     }
 
     .registro-container {
-        margin-top: 120px;
+        margin-top: 160px;
     }
 
     .registro-campo {

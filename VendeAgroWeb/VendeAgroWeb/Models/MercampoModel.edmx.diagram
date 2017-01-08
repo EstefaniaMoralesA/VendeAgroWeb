@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="723c9ca25d4b42ea855763673f049a10" Name="Diagram1">
+        <EntityTypeShape EntityType="MercampoModel.Anuncio" Width="1.5" PointX="3" PointY="7.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="MercampoModel.Anuncio_Beneficio" Width="1.5" PointX="5.25" PointY="6.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="MercampoModel.Banner" Width="1.5" PointX="3.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="MercampoModel.Beneficio" Width="1.5" PointX="3" PointY="27.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="MercampoModel.Categoria" Width="1.5" PointX="1.5" PointY="23.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="MercampoModel.Ciudad" Width="1.5" PointX="0.75" PointY="4.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="MercampoModel.Conekta_Paquete" Width="1.5" PointX="6" PointY="9.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="MercampoModel.Estado" Width="1.5" PointX="1.5" PointY="1.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="MercampoModel.Fotos_Anuncio" Width="1.5" PointX="5.25" PointY="12.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="MercampoModel.Metrica" Width="1.5" PointX="3.75" PointY="3.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="MercampoModel.Pago" Width="1.5" PointX="3" PointY="16.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="MercampoModel.Pago_Concepto" Width="1.5" PointX="5.25" PointY="16.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="MercampoModel.Pai" Width="1.5" PointX="1.5" PointY="14.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="MercampoModel.Paquete" Width="1.5" PointX="0.75" PointY="16.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="MercampoModel.Subcategoria" Width="1.5" PointX="0.75" PointY="20.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="MercampoModel.Table" Width="1.5" PointX="5.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="MercampoModel.Usuario" Width="1.5" PointX="0.75" PointY="8.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="MercampoModel.Usuario_Administrador" Width="1.5" PointX="7.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="MercampoModel.Usuario_Tarjeta" Width="1.5" PointX="3" PointY="20.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="MercampoModel.Videos_Anuncio" Width="1.5" PointX="5.25" PointY="20.625" IsExpanded="true" />
+        <AssociationConnector Association="MercampoModel.FK__Anuncio__idCiuda__5AEE82B9" ManuallyRouted="false" />
+        <AssociationConnector Association="MercampoModel.FK__Anuncio__idPaque__14270015" ManuallyRouted="false" />
+        <AssociationConnector Association="MercampoModel.FK__Anuncio__idSubca__59FA5E80" ManuallyRouted="false" />
+        <AssociationConnector Association="MercampoModel.FK__Anuncio__idUsuar__59063A47" ManuallyRouted="false" />
+        <AssociationConnector Association="MercampoModel.FK__Anuncio_B__idAnu__5BE2A6F2" ManuallyRouted="false" />
+        <AssociationConnector Association="MercampoModel.FK__Fotos_Anu__idAnu__628FA481" ManuallyRouted="false" />
+        <AssociationConnector Association="MercampoModel.FK__Videos_An__idAnu__693CA210" ManuallyRouted="false" />
+        <AssociationConnector Association="MercampoModel.FK__Anuncio_B__idBen__5CD6CB2B" ManuallyRouted="false" />
+        <AssociationConnector Association="MercampoModel.FK__Pago_Conc__idBen__66603565" ManuallyRouted="false" />
+        <AssociationConnector Association="MercampoModel.FK__Subcatego__idCat__6754599E" ManuallyRouted="false" />
+        <AssociationConnector Association="MercampoModel.FK__Ciudad__idEstado__5FB337D6" ManuallyRouted="false" />
+        <AssociationConnector Association="MercampoModel.FK__Conekta_P__idPaq__60A75C0F" ManuallyRouted="false" />
+        <AssociationConnector Association="MercampoModel.FK__Conekta_P__idUsu__619B8048" ManuallyRouted="false" />
+        <AssociationConnector Association="MercampoModel.FK__Estado__idPais__6FE99F9F" ManuallyRouted="false" />
+        <AssociationConnector Association="MercampoModel.FK__Pago__idUsuario__6383C8BA" ManuallyRouted="false" />
+        <AssociationConnector Association="MercampoModel.FK__Pago_Conc__idPag__6477ECF3" ManuallyRouted="false" />
+        <AssociationConnector Association="MercampoModel.FK__Pago_Conc__idPaq__656C112C" ManuallyRouted="false" />
+        <AssociationConnector Association="MercampoModel.FK__Usuario_T__idUsu__68487DD7" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>
