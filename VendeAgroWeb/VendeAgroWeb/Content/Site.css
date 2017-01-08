@@ -347,6 +347,18 @@ a {
     -moz-transform: translate(0,-50%);
 }
 
+.login-completo {
+    width: 750px !important;
+    position: absolute;
+    top: 55%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+    -o-transform: translate(-50%,-50%);
+    -webkit-transform: translate(-50%,-50%);
+    -ms-transform: translate(0,-50%);
+    -moz-transform: translate(0,-50%);
+}
+
 .proceso-registro-contenido {
     position: absolute;
     top: 50%;
@@ -1500,7 +1512,7 @@ div.social-wrap button {
 }
 
 .logo-login img {
-    width: 40%;
+    width: 50%;
     margin-bottom: 25px;
 }
 
