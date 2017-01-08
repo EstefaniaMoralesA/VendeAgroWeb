@@ -72,7 +72,8 @@ namespace VendeAgroWeb.Controllers.Administrador
 
         public async Task<ActionResult> AnunciosActivosPartial()
         {
-            MisAnunciosViewModel model = new MisAnunciosViewModel(await ObtenerAnunciosActivos());
+            var id = Startup.GetAplicacionUsuariosManager().getUsuarioPortalActual(Request).Id;
+            MisAnunciosViewModel model = new MisAnunciosViewModel(await ObtenerAnunciosActivos(id));
             return PartialView("AnunciosActivosPartial", model);
         }
 
@@ -81,7 +82,7 @@ namespace VendeAgroWeb.Controllers.Administrador
             return PartialView("AnunciosVencidosPartial");
         }
 
-        public async Task<ICollection<AnuncioViewModel>> ObtenerAnunciosActivos()
+        public async Task<ICollection<AnuncioViewModel>> ObtenerAnunciosActivos(int id)
         {
             return await Task.Run(() =>
             {
@@ -95,7 +96,6 @@ namespace VendeAgroWeb.Controllers.Administrador
 
                     List<AnuncioViewModel> lista = new List<AnuncioViewModel>();
 
-                    var id = Startup.GetAplicacionUsuariosManager().getUsuarioPortalActual(Request).Id;
                     var anuncios = _dbContext.Anuncios.Where(a => a.activo == true && a.idUsuario == id);
 
                     foreach (var item in anuncios) {

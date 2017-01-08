@@ -3,7 +3,6 @@
     Layout = "Shared/_PortalLayout.cshtml";
 }
 
-<input type="hidden" id="id" value="@Startup.GetAplicacionUsuariosManager().getUsuarioPortalActual(Request).Id" />
 <div class="row mis-anuncios-global">
     <div class="col-sm-12 boton-atras-container">
         <div class="col-sm-3" style="display: inline-block">
@@ -80,7 +79,7 @@
         $.ajax({
             type: "POST",
             data: {},
-            url: '/Portal/AnunciosActivosPartial?id='+id,
+            url: '/Portal/AnunciosActivosPartial',
             success: function (result) {
                 $("#activos").html(result);
             },
