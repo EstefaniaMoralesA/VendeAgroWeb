@@ -4,41 +4,161 @@
     ViewBag.Title = "Nueva Tarjeta";
 }
 
-<div class="row carrito-de-compra-titulo col-sm-10 col-sm-offset-1">
-    <h2 class="mi-cuenta-titulo" style="text-align: center;">Nueva Tarjeta</h2>
-</div>
-<div class="row tarjeta" style="margin-left: 0px; margin-right: 0px;">
-    <div class="alert alert-danger error-tarjeta">
+<div class="row">
+    <div class="col-sm-12">
+        <div class="row nueva-tarjeta-titulo col-sm-offset-2 col-sm-8" style="margin-top: 60px;">
+            <h2 class="mi-cuenta-titulo" style="text-align: center;">Nueva Tarjeta</h2>
+            <div class="row tarjeta" style="margin-left: 0px; margin-right: 0px; margin-top:20px; font-size: 16px;">
+                <div class="alert alert-danger error-tarjeta">
 
+                </div>
+                <form class="form-horizontal">
+                    <input class="form-control" id="id-usuario" value="@Model.Id" style="display: none;"/>
+                    <div class="form-group">
+                        <div class="col-sm-12">
+                            <input class="form-control" id="nombre-tarjeta" placeholder="Nombre en la tarjeta" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-sm-6">
+                            <input class="form-control" id="numero" placeholder="N&uacute;mero de la tarjeta" />
+                        </div>
+                        <div class="col-sm-6">
+                            <input class="form-control" id="codigo" placeholder="C&oacute;digo de seguridad" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-sm-6">
+                            <h4>Fecha de vencimiento</h4>
+                        </div>
+                        <div class="col-sm-2">
+                            <input class="form-control" id="mes" placeholder="Mes" />
+                        </div>
+                        <div class="col-sm-2">
+                            <input class="form-control" id="anio" placeholder="A&ntilde;o" />
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="col-sm-6 col-sm-offset-3">
+                <div class="row">
+                    <a id="btn-nueva-tarjeta" class="btn btn-default botones-grad agregar-tarjeta-boton pagar-boton" style="color:white;">Agregar Tarjeta</a>
+                </div>
+                <div class="row">
+                    <a href="/Portal/Perfil" class="btn btn-default agregar-tarjeta-boton pagar-boton">Cancelar</a>
+                </div>
+            </div>
+        </div>
     </div>
-    <form class="form-horizontal">
-        <div class="form-group">
-            <div class="col-sm-12">
-                <input class="form-control" id="nombre-tarjeta" placeholder="Nombre en la tarjeta" />
-            </div>
-        </div>
-        <div class="form-group">
-            <div class="col-sm-6">
-                <input class="form-control" id="numero" placeholder="N&uacute;mero de la tarjeta" />
-            </div>
-            <div class="col-sm-6">
-                <input class="form-control" id="codigo" placeholder="C&oacute;digo de seguridad" />
-            </div>
-        </div>
-        <div class="form-group">
-            <div class="col-sm-6">
-                <h4>Fecha de vencimiento</h4>
-            </div>
-            <div class="col-sm-2">
-                <input class="form-control" id="mes" placeholder="Mes" />
-            </div>
-            <div class="col-sm-2">
-                <input class="form-control" id="anio" placeholder="A&ntilde;o" />
-            </div>
-        </div>
-    </form>
 </div>
-<div style="margin-top: 30px;">
-    <a class="btn btn-default btn-atras pagar-boton atras-pago-boton" id="paso2-atras">Paso Anterior</a>
-    <a class="btn btn-default botones-grad pagar-boton continuar-pago-boton" id="paso2-continuar">Finalizar Pago</a>
-</div>
+
+@Scripts.Render("~/bundles/jquery")
+
+<script type="text/javascript" src="https://conektaapi.s3.amazonaws.com/v0.3.2/js/conekta.js"></script>
+
+<script>
+    $("#btn-nueva-tarjeta").click(function () {
+        var nombre = $("#nombre-tarjeta").val();
+        var numero = $("#numero").val();
+        var codigo = $("#codigo").val();
+        var mes = $("#mes").val();
+        var anio = $("#anio").val();
+        var valido = true;
+        var cadenaError = "<strong>Error:</strong> </br>";
+
+        if (nombre.length < 5) {
+            valido = false;
+            cadenaError += "    - Introduzca un nombre v&aacute;lido. </br>";
+            $("#nombre-tarjeta").addClass("has-error");
+        }
+        else {
+            $("#nombre-tarjeta").removeClass("has-error");
+        }
+
+        if (!(Conekta.card.validateNumber(numero))) {
+            valido = false;
+            cadenaError += "    - Introduce un n&uacute;mero de tarjeta v&aacute;lido. </br>";
+            $("#numero").addClass("has-error");
+        }
+        else {
+            $("#numero").removeClass("has-error");
+        }
+
+        if (!(Conekta.card.validateCVC(codigo))) {
+            valido = false;
+            cadenaError += "    - Introduce un c&oacute;digo de seguridad v&aacute;lido. </br>";
+            $("#codigo").addClass("has-error");
+        }
+        else {
+            $("#codigo").removeClass("has-error");
+        }
+
+        if (!(Conekta.card.validateExpirationDate(mes, anio))) {
+            valido = false;
+            cadenaError += "    - Introduce una fecha de vencimiento v&aacute;lida. </br>";
+            $("#mes").addClass("has-error");
+            $("#anio").addClass("has-error");
+        }
+        else {
+            $("#mes").removeClass("has-error");
+            $("#anio").removeClass("has-error");
+        }
+
+        if (!valido) {
+            $(".error-tarjeta").html(cadenaError).show('');
+            return;
+        }
+
+        $(".error-tarjeta").hide('');
+        $(".procesando-pago").show('');
+
+        Conekta.setPublishableKey('key_G4trRCLgCH4zYs5bEDDyWAQ');
+
+        var errorResponseHandler, successResponseHandler, tokenParams;
+        tokenParams = {
+            "card": {
+                "number": numero,
+                "name": nombre,
+                "exp_year": anio,
+                "exp_month": mes,
+                "cvc": codigo
+            }
+        };
+
+        successResponseHandler = function (token) {
+            $(".procesando-pago").hide('');
+            var idUsuario = $('#id-usuario').val();
+
+            $.ajax({
+                type: 'POST',
+                data: {id: idUsuario, tokenTarjeta: token},
+                url: '/Portal/AgregarTarjeta',
+                success: function (response) {
+                    if (response) {
+                        location.reload();
+                        return;
+                    }
+                    else {
+                        $(".error-row").html("Hubo un error al modificar el nombre. Porfavor vuelva a intentarlo.").show('');
+                        return;
+                    }
+                },
+                error: function (err) {
+                    $(".error-row").html("Hubo un error al modificar. Porfavor vuelva a intentarlo.").show('');
+                    return;
+                }
+            });
+            return token;
+        };
+
+        errorResponseHandler = function (error) {
+            $(".procesando-pago").hide('');
+            $(".error-tarjeta").html(error).show('');
+            return;
+        };
+
+        window.setTimeout(function () {
+            Conekta.token.create(tokenParams, successResponseHandler, errorResponseHandler);
+        }, 1500);
+    });
+</script>

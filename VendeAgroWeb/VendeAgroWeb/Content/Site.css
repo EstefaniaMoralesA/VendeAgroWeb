@@ -313,7 +313,9 @@ a {
     width: 0px !important;
 }
 
-.modal-dialog.modal-registro-container { -ms-overflow-style: none; }
+.modal-dialog.modal-registro-container {
+    -ms-overflow-style: none;
+}
 
 .modal-registro {
     position: relative !important;
@@ -321,7 +323,7 @@ a {
     border-top-right-radius: 0 !important;
     border-top-left-radius: 0 !important;
     width: 143% !important;
-    padding-top:143px !important;
+    padding-top: 143px !important;
     padding-bottom: 15px !important;
     min-height: 100%;
     left: 50% !important;
@@ -1555,7 +1557,7 @@ div.social-wrap button {
 .pagar-boton {
     padding: 8px 25px 8px 25px;
     font-weight: bolder;
-    font-size: 20px;
+    font-size: 16px;
 }
 
 .continuar-pago-boton {
@@ -2470,6 +2472,16 @@ hr {
 .data-tarjetas {
     text-align: center;
     min-width: 50px;
+}
+
+.nueva-tarjeta-titulo {
+    font-size: 30px !important;
+    color: #E42B22 !important;
+}
+
+.agregar-tarjeta-boton {
+    width: 100%;
+    margin-top: 10px;
 }
 
 @media (max-width: 1200px) {

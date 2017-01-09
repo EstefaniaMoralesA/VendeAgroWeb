@@ -152,7 +152,7 @@
             </table>
             <div class="col-sm-6 col-sm-offset-3" style="margin-top: 30px;">
                 <h2 class="mi-cuenta-titulo" style="text-align: center;">Mis Tarjetas</h2>
-                <a class="btn btn-success" href="/Portal/NuevaTarjeta?id=@Model.Usuario.Id" style="width: 100%; margin-top: 20px; margin-bottom: 25px;">Agregar Tarjeta</a>
+                <a class="btn pagar-boton botones-grad" href="/Portal/NuevaTarjeta?id=@Model.Usuario.Id" style="width: 100%; margin-top: 20px; margin-bottom: 25px; color: white;">Agregar Tarjeta</a>
                 @{
                     if (Model.Usuario.Tarjetas.Count() > 0)
                     {

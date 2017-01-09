@@ -305,6 +305,12 @@ namespace VendeAgroWeb.Controllers.Administrador
             });
         }
 
+        [HttpPost]
+        public async Task<bool> AgregarTarjeta(int? id, string tokenTarjeta)
+        {
+            return true;
+        }
+
         public ActionResult CrearAnuncio()
         {
             return View();
