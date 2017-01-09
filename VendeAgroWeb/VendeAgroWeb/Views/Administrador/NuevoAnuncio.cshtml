@@ -32,10 +32,10 @@
                 </div>
                 <input class="form-control" id="id-usuario" value="@Model.IdUsuario" type="hidden" />
                 <div class="form-group form-nuevo-anuncio form-titulo">
-                    <input class="form-control" placeholder="Título del anuncio" id= "anuncio-titulo"  />
+                    <input class="form-control" placeholder="Título del anuncio" id="anuncio-titulo" />
                 </div>
                 <div class="form-group form-nuevo-anuncio form-precio">
-                    <input class="form-control" type="text" onkeypress='return (event.charCode >= 48 && event.charCode <= 57) || event.charCode == 46' placeholder="Precio del producto" id="anuncio-precio"/>
+                    <input class="form-control" type="text" onkeypress='return (event.charCode >= 48 && event.charCode <= 57) || event.charCode == 46' placeholder="Precio del producto" id="anuncio-precio" />
                 </div>
                 <div class="form-group form-nuevo-anuncio form-descripcion">
                     <textarea cols="20" data-val="true" class="form-control" placeholder="Descripción del producto" id="anuncio-descripcion" name="Descripcion" rows="2"></textarea>
@@ -104,17 +104,27 @@
 
                         </div>
                         <div class="table-responsive">
-                            <table class="table table-striped table-responsive">
+                            <table class="table table-responsive">
                                 <tbody>
                                     <tr class="row-tabla-foto">
                                         <td class="foto-tabla-titulo">Foto de display</td>
-                                        <td><img class="img-selected foto-vacia" src="~/img/foto-vacia.png"/></td>
+                                        <td><img class="img-selected foto-vacia" src="~/img/foto-vacia.png" /></td>
                                         <td>
                                             <div class="form-group">
                                                 <div class="btn btn-success image-preview-input" id="img-inp-btn">
                                                     <span class="glyphicon glyphicon-folder-open"></span>
                                                     <span style="padding-left: 3px;" class="image-preview-input-title">Modificar</span>
                                                     <input class="input-absoluto" type="file" id="imagen" onchange="loadFile(event)">
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr style="border-top: 2px white solid;border-bottom: lightgrey 1px solid;" class="row-tabla-foto">
+                                        <td colspan="3">
+                                            <div style="margin-top:5px !important;" class="progress">
+                                                <div class="progress-bar" id="progress-principal" role="progressbar" aria-valuenow="0"
+                                                     aria-valuemin="0" aria-valuemax="100" style="width:0%">
+                                                    <span class="sr-only">0%</span>
                                                 </div>
                                             </div>
                                         </td>
@@ -146,7 +156,12 @@
                                             </div>
                                             <label><span id="num-fotos">0</span> foto(s) seleccionada(s)</label>
                                         </div>
-                                        
+                                        <div class="progress">
+                                            <div class="progress-bar" id="progress-fotos" role="progressbar" aria-valuenow="0"
+                                                 aria-valuemin="0" aria-valuemax="100" style="width:0%">
+                                                <span class="sr-only">0%</span>
+                                            </div>
+                                        </div>
                                         <h4>Selecciona el video desde tu computadora</h4>
                                         <div class="form-group">
                                             <div class="btn btn-default image-preview-input" style="position: relative;">
@@ -156,6 +171,12 @@
                                             </div>
                                             <label id="video-no-seleccionado">No se ha seleccionado el video</label>
                                             <label id="video-seleccionado" style="display:none;">1 video seleccionado</label>
+                                        </div>
+                                        <div class="progress">
+                                            <div class="progress-bar" id="progress-video" role="progressbar" aria-valuenow="0"
+                                                 aria-valuemin="0" aria-valuemax="100" style="width:0%">
+                                                <span class="sr-only">0%</span>
+                                            </div>
                                         </div>
                                     </div>
                                 </form>
@@ -264,7 +285,7 @@
         else {
             $("#btn-ciudades:first-child").html(elemento.text() + '<span class="caret has-error-caret ciudad-caret"></span>');
         }
-       idCiudad = elemento.data('id');
+        idCiudad = elemento.data('id');
     }
 
     function getCategorias() {
@@ -342,37 +363,76 @@
         });
     }
 
-    function subirFotos(fotosInt, tipo)
-    {
+    function subirVideo(videoInt) {
+        if (videoInt == null || videoInt == undefined) return;
+        if (window.FormData !== undefined) {
+            var data = new FormData();
+            data.append("video", videoInt);
+
+            $.ajax({
+                type: "POST",
+                url: '/Administrador/SubirVideo',
+                data: data,
+                xhr: function () {  // Custom XMLHttpRequest
+                    var myXhr = $.ajaxSettings.xhr();
+                    if (myXhr.upload) { // Check if upload property exists
+                        myXhr.upload.addEventListener('progress', progressVideo, false); // For handling the progress of the upload
+                    }
+                    return myXhr;
+                },
+                cache: false,
+                contentType: false,
+                processData: false,
+                success: function (result) {
+                    videoFinal = JSON.parse(result);
+                    numeroSubidos++;
+                },
+                error: function (xhr, status, p3, p4) {
+                    var err = "Error " + " " + status + " " + p3 + " " + p4;
+                    if (xhr.responseText && xhr.responseText[0] == "{")
+                        err = JSON.parse(xhr.responseText).Message;
+                    console.log(err);
+                }
+            });
+        } else {
+            alert("This browser doesn't support HTML5 file uploads!");
+        }
+    }
+
+    function subirFotos(fotosInt, tipo) {
         if (fotosInt.length <= 0) return;
         if (window.FormData !== undefined) {
             var data = new FormData();
             for (var x = 0; x < fotosInt.length; x++) {
-                data.append("file" + x, fotosInt[x]);
+                data.append("file" + tipo + x, fotosInt[x]);
             }
 
             $.ajax({
                 type: "POST",
                 url: '/Administrador/SubirFotos',
                 data: data,
+                xhr: function () {  // Custom XMLHttpRequest
+                    var myXhr = $.ajaxSettings.xhr();
+                    if (myXhr.upload) { // Check if upload property exists
+                        if (tipo == 0)
+                            myXhr.upload.addEventListener('progress', progressPrincipal, false); // For handling the progress of the upload
+                        else
+                            myXhr.upload.addEventListener('progress', progressFotos, false); // For handling the progress of the upload
+                    }
+                    return myXhr;
+                },
                 cache: false,
                 contentType: false,
                 processData: false,
                 success: function (result) {
-                    if (tipo == 0)
-                    {
+                    if (tipo == 0) {
                         fotoDisplayFinal = JSON.parse(result)[0];
                     }
-                    else
-                    {
+                    else {
                         fotosFinal = JSON.parse(result);
                     }
 
                     numeroSubidos++;
-                    if (numeroSubidosEsperado === numeroSubidos)
-                    {
-                        agregarAnuncio();
-                    }
                 },
                 error: function (xhr, status, p3, p4) {
                     var err = "Error " + " " + status + " " + p3 + " " + p4;
@@ -459,14 +519,13 @@
 
     function actualizaFotos(event) {
         $(".error-extensiones").html('').hide('');
-        if (event.target.files.length <= 0)
-        {
+        if (event.target.files.length <= 0) {
             return;
         }
 
         fotos = [];
         var uploadFiles = event.target.files;
-        
+
         for (var i = 0; i < uploadFiles.length; i++) {
             if (!validExtension(uploadFiles[i])) {
                 mostrarErrorExtensiones("La extensión de una o más de las imágenes seleccionadas no es válida");
@@ -480,8 +539,7 @@
     function actualizaVideo(event) {
         $(".error-extension-video").html('').hide('');
         var videoExt = event.target.files[0];
-        if (videoExt === undefined)
-        {
+        if (videoExt === undefined) {
             return;
         }
         if (!validExtensionVideo(videoExt)) {
@@ -548,7 +606,7 @@
         }
 
         meses = $("#anuncio-meses").val();
-        
+
         if (meses == '') {
             valido = false;
             $('.form-meses').addClass('has-error');
@@ -642,13 +700,11 @@
             return;
         }
 
-        if (video != null)
-        {
+        if (video != null) {
             numeroSubidosEsperado++;
         }
 
-        if (fotos.length > 0)
-        {
+        if (fotos.length > 0) {
             numeroSubidosEsperado++;
         }
 
@@ -657,6 +713,48 @@
         arreglo.push(fotoDisplay);
         subirFotos(arreglo, 0);
         subirFotos(fotos, 1);
+        subirVideo(video);
+        checarDone();
     });
 
+    function checarDone() {
+        if (numeroSubidosEsperado === numeroSubidos) {
+            agregarAnuncio();
+            return;
+        }
+        var t = setTimeout(checarDone, 500);
+    }
+
+    function progressPrincipal(e) {
+        var val = Math.floor(e.loaded / e.total * 100);
+        $('#progress-principal').css('width', val + '%').attr('aria-valuenow', val);
+        $('#progress-principal').html(val + "%");
+    }
+
+    function progressFotos(e) {
+        if (e.lengthComputable) {
+            //$('.progress-bar').attr('aria-valuenow',''+e.loaded.toString());
+            var val = Math.floor(e.loaded / e.total * 100);
+            $('#progress-fotos').css('width', val + '%').attr('aria-valuenow', val);
+            $('#progress-fotos').html(val + "%");
+            // console.log(e.loaded/e.total*100);
+        }
+    }
+
+    function progressVideo(e) {
+        if (e.lengthComputable) {
+            //$('.progress-bar').attr('aria-valuenow',''+e.loaded.toString());
+            var val = Math.floor(e.loaded / e.total * 100);
+            $('#progress-video').css('width', val + '%').attr('aria-valuenow', val);
+            $('#progress-video').html(val + "%");
+            // console.log(e.loaded/e.total*100);
+        }
+    }
+
 </script>
+<style>
+    .progress {
+        margin-bottom: 15px !important;
+        margin-top: 15px !important;
+    }
+</style>

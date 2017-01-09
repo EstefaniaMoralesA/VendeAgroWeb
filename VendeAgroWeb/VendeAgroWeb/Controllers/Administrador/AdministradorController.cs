@@ -1673,6 +1673,50 @@ namespace VendeAgroWeb.Controllers.Administrador
             return new JavaScriptSerializer().Serialize(Json(fotos).Data);
         }
 
+        [HttpPost]
+        public string SubirVideo()
+        {
+            var result = string.Empty;
+            try
+            {
+                foreach (string file in Request.Files)
+                {
+                    var fileContent = Request.Files[file];
+                    if (fileContent != null && fileContent.ContentLength > 0)
+                    {
+                        // get a stream
+                        var stream = fileContent.InputStream;
+                        // and optionally write the file to disk
+                        var fileExtension = Path.GetExtension(fileContent.FileName);
+                        var guid = Guid.NewGuid().ToString();
+                        var name = AplicacionUsuariosManager.Hash(Guid.NewGuid().ToString());
+                        string serverPath = Server.MapPath("~/Uploads/Videos");
+
+                        if (!Directory.Exists(serverPath))
+                        {
+                            Directory.CreateDirectory(serverPath);
+                        }
+
+                        var path = Path.Combine(serverPath, $"{name}{fileExtension}");
+
+                        using (var fileStream = System.IO.File.Create(path))
+                        {
+                            stream.CopyTo(fileStream);
+                        }
+
+                        result = $"/Uploads/Videos/{name}{fileExtension}";
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                Response.StatusCode = (int)HttpStatusCode.BadRequest;
+                return new JavaScriptSerializer().Serialize(Json(e.Message).Data);
+            }
+
+            return new JavaScriptSerializer().Serialize(Json(result).Data);
+        }
+
 
         [HttpPost]
         public async Task<bool> NuevoAnuncio(string json)

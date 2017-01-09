@@ -1,8 +1,8 @@
 ﻿using Microsoft.Owin;
+using Openpay;
 using Owin;
 using System;
 using VendeAgroWeb.Models;
-using Conekta;
 
 [assembly: OwinStartupAttribute(typeof(VendeAgroWeb.Startup))]
 namespace VendeAgroWeb
@@ -13,7 +13,7 @@ namespace VendeAgroWeb
         private static CarritoDeCompra _carrito;
         private static ServicioEmail _servicioEmail;
         private static string _baseUrl;
-        private static ConektaLib _conektaLib;
+        private static OpenpayAPI api;
 
         public void Configuration(IAppBuilder app)
         {
@@ -22,8 +22,10 @@ namespace VendeAgroWeb
             _carrito = new CarritoDeCompra();
             _servicioEmail = new ServicioEmail();
             _baseUrl = "http://localhost:50827";
-            _conektaLib = new ConektaLib("key_G4trRCLgCH4zYs5bEDDyWAQ");
+            api = new OpenpayAPI("sk_6f55e32ca0b74855b4ec592a56f5c152", "m4tpnfpemahz4tgdvadb");
         }
+
+        public static OpenpayAPI OpenPayLib => api;
 
         public static string getBaseUrl() => _baseUrl;
 
@@ -32,8 +34,6 @@ namespace VendeAgroWeb
         public static CarritoDeCompra GetCarritoDeCompra() => _carrito;
 
         public static ServicioEmail GetServicioEmail() => _servicioEmail;
-
-        public static ConektaLib GetConektaLib() => _conektaLib;
 
         public static void OpenDatabaseConnection(MercampoEntities _dbContext)
         {

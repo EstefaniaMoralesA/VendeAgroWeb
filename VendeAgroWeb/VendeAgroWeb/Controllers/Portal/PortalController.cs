@@ -9,6 +9,7 @@ using System.Web;
 using System.Web.Mvc;
 using VendeAgroWeb.Models;
 using VendeAgroWeb.Models.Portal;
+using Openpay;
 
 namespace VendeAgroWeb.Controllers.Administrador
 {
@@ -127,7 +128,15 @@ namespace VendeAgroWeb.Controllers.Administrador
 
                     var usuarioActual = Startup.GetAplicacionUsuariosManager().getUsuarioPortalActual(Request);
                     var tarjetaActual = usuarioActual.Tarjetas.Where(t => t.Id == id).FirstOrDefault();
-                    //var tarjeta = Startup.GetConektaLib().DeleteCardAsync(usuarioActual.IdConekta, tarjetaActual.IdConekta);
+
+                    try
+                    {
+                        Startup.OpenPayLib.CardService.Delete(usuarioActual.IdConekta, tarjetaActual.IdConekta);
+                    }
+                    catch (OpenpayException e)
+                    {
+                        return null;
+                    }
 
                     var tarjetaBD = _dbContext.Usuario_Tarjeta.Where(t => t.id == id).FirstOrDefault();
 
@@ -151,7 +160,11 @@ namespace VendeAgroWeb.Controllers.Administrador
         public ActionResult NuevaTarjeta(int? id)
         {
             if (id == null) {
-                return null;
+                return RedirectToAction("Index", "Home");
+            }
+            if (Startup.GetAplicacionUsuariosManager().VerificarPortalSesion() == LoginStatus.Incorrecto)
+            {
+                return RedirectToAction("Index", "Home");
             }
             NuevaTarjetaViewModel model = new NuevaTarjetaViewModel(id.Value);
             return View(model);
@@ -306,9 +319,9 @@ namespace VendeAgroWeb.Controllers.Administrador
         }
 
         [HttpPost]
-        public async Task<bool> AgregarTarjeta(int? id, string tokenTarjeta)
+        public async Task<bool> AgregarTarjeta(int? id, string tokenTarjeta, string sessionId)
         {
-            return true;
+            return await Startup.GetAplicacionUsuariosManager().AgregarTarjetaAsync(id.Value, tokenTarjeta, sessionId);
         }
 
         public ActionResult CrearAnuncio()

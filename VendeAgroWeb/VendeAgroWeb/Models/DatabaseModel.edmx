@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="MercampoModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012.Azure" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+      <Schema Namespace="VendeAgroModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012.Azure" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="Anuncio">
           <Key>
             <PropertyRef Name="id" />
@@ -202,7 +202,7 @@
           </Key>
           <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="tipoTarjeta" Type="int" Nullable="false" />
-          <Property Name="digitosTarjeta" Type="int" Nullable="false" />
+          <Property Name="digitosTarjeta" Type="varchar" MaxLength="4" />
           <Property Name="tokenTarjeta" Type="varchar" MaxLength="40" Nullable="false" />
           <Property Name="idUsuario" Type="int" Nullable="false" />
           <Property Name="activo" Type="bit" Nullable="false" />
@@ -451,7 +451,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityContainer Name="MercampoModelStoreContainer">
+        <EntityContainer Name="VendeAgroModelStoreContainer">
           <EntitySet Name="Anuncio" EntityType="Self.Anuncio" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Anuncio_Beneficio" EntityType="Self.Anuncio_Beneficio" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Banner" EntityType="Self.Banner" Schema="dbo" store:Type="Tables" />
@@ -549,7 +549,7 @@
     </edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
-      <Schema Namespace="MercampoModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+      <Schema Namespace="VendeAgroModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
         <EntityType Name="Anuncio">
           <Key>
             <PropertyRef Name="id" />
@@ -781,7 +781,7 @@
           </Key>
           <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="tipoTarjeta" Type="Int32" Nullable="false" />
-          <Property Name="digitosTarjeta" Type="Int32" Nullable="false" />
+          <Property Name="digitosTarjeta" Type="String" MaxLength="4" FixedLength="false" Unicode="false" />
           <Property Name="tokenTarjeta" Type="String" MaxLength="40" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="idUsuario" Type="Int32" Nullable="false" />
           <Property Name="activo" Type="Boolean" Nullable="false" />
@@ -1131,9 +1131,9 @@
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
-        <EntityContainerMapping StorageEntityContainer="MercampoModelStoreContainer" CdmEntityContainer="MercampoEntities">
+        <EntityContainerMapping StorageEntityContainer="VendeAgroModelStoreContainer" CdmEntityContainer="MercampoEntities">
           <EntitySetMapping Name="Anuncios">
-            <EntityTypeMapping TypeName="MercampoModel.Anuncio">
+            <EntityTypeMapping TypeName="VendeAgroModel.Anuncio">
               <MappingFragment StoreEntitySet="Anuncio">
                 <ScalarProperty Name="id" ColumnName="id" />
                 <ScalarProperty Name="titulo" ColumnName="titulo" />
@@ -1154,7 +1154,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Anuncio_Beneficio">
-            <EntityTypeMapping TypeName="MercampoModel.Anuncio_Beneficio">
+            <EntityTypeMapping TypeName="VendeAgroModel.Anuncio_Beneficio">
               <MappingFragment StoreEntitySet="Anuncio_Beneficio">
                 <ScalarProperty Name="id" ColumnName="id" />
                 <ScalarProperty Name="idAnuncio" ColumnName="idAnuncio" />
@@ -1163,7 +1163,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Banners">
-            <EntityTypeMapping TypeName="MercampoModel.Banner">
+            <EntityTypeMapping TypeName="VendeAgroModel.Banner">
               <MappingFragment StoreEntitySet="Banner">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="ruta" ColumnName="ruta" />
@@ -1174,7 +1174,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Beneficios">
-            <EntityTypeMapping TypeName="MercampoModel.Beneficio">
+            <EntityTypeMapping TypeName="VendeAgroModel.Beneficio">
               <MappingFragment StoreEntitySet="Beneficio">
                 <ScalarProperty Name="id" ColumnName="id" />
                 <ScalarProperty Name="descripcion" ColumnName="descripcion" />
@@ -1185,7 +1185,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Categorias">
-            <EntityTypeMapping TypeName="MercampoModel.Categoria">
+            <EntityTypeMapping TypeName="VendeAgroModel.Categoria">
               <MappingFragment StoreEntitySet="Categoria">
                 <ScalarProperty Name="id" ColumnName="id" />
                 <ScalarProperty Name="nombre" ColumnName="nombre" />
@@ -1194,7 +1194,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Ciudads">
-            <EntityTypeMapping TypeName="MercampoModel.Ciudad">
+            <EntityTypeMapping TypeName="VendeAgroModel.Ciudad">
               <MappingFragment StoreEntitySet="Ciudad">
                 <ScalarProperty Name="id" ColumnName="id" />
                 <ScalarProperty Name="nombre" ColumnName="nombre" />
@@ -1203,7 +1203,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Conekta_Paquete">
-            <EntityTypeMapping TypeName="MercampoModel.Conekta_Paquete">
+            <EntityTypeMapping TypeName="VendeAgroModel.Conekta_Paquete">
               <MappingFragment StoreEntitySet="Conekta_Paquete">
                 <ScalarProperty Name="id" ColumnName="id" />
                 <ScalarProperty Name="idPaquete" ColumnName="idPaquete" />
@@ -1215,7 +1215,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Estadoes">
-            <EntityTypeMapping TypeName="MercampoModel.Estado">
+            <EntityTypeMapping TypeName="VendeAgroModel.Estado">
               <MappingFragment StoreEntitySet="Estado">
                 <ScalarProperty Name="id" ColumnName="id" />
                 <ScalarProperty Name="nombre" ColumnName="nombre" />
@@ -1224,7 +1224,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Fotos_Anuncio">
-            <EntityTypeMapping TypeName="MercampoModel.Fotos_Anuncio">
+            <EntityTypeMapping TypeName="VendeAgroModel.Fotos_Anuncio">
               <MappingFragment StoreEntitySet="Fotos_Anuncio">
                 <ScalarProperty Name="id" ColumnName="id" />
                 <ScalarProperty Name="ruta" ColumnName="ruta" />
@@ -1234,7 +1234,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Metricas">
-            <EntityTypeMapping TypeName="MercampoModel.Metrica">
+            <EntityTypeMapping TypeName="VendeAgroModel.Metrica">
               <MappingFragment StoreEntitySet="Metricas">
                 <ScalarProperty Name="id" ColumnName="id" />
                 <ScalarProperty Name="visitas" ColumnName="visitas" />
@@ -1243,7 +1243,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Pagoes">
-            <EntityTypeMapping TypeName="MercampoModel.Pago">
+            <EntityTypeMapping TypeName="VendeAgroModel.Pago">
               <MappingFragment StoreEntitySet="Pago">
                 <ScalarProperty Name="id" ColumnName="id" />
                 <ScalarProperty Name="idUsuario" ColumnName="idUsuario" />
@@ -1257,7 +1257,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Pago_Concepto">
-            <EntityTypeMapping TypeName="MercampoModel.Pago_Concepto">
+            <EntityTypeMapping TypeName="VendeAgroModel.Pago_Concepto">
               <MappingFragment StoreEntitySet="Pago_Concepto">
                 <ScalarProperty Name="id" ColumnName="id" />
                 <ScalarProperty Name="idPago" ColumnName="idPago" />
@@ -1268,7 +1268,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Pais">
-            <EntityTypeMapping TypeName="MercampoModel.Pai">
+            <EntityTypeMapping TypeName="VendeAgroModel.Pai">
               <MappingFragment StoreEntitySet="Pais">
                 <ScalarProperty Name="id" ColumnName="id" />
                 <ScalarProperty Name="nombre" ColumnName="nombre" />
@@ -1276,7 +1276,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Paquetes">
-            <EntityTypeMapping TypeName="MercampoModel.Paquete">
+            <EntityTypeMapping TypeName="VendeAgroModel.Paquete">
               <MappingFragment StoreEntitySet="Paquete">
                 <ScalarProperty Name="id" ColumnName="id" />
                 <ScalarProperty Name="nombre" ColumnName="nombre" />
@@ -1291,7 +1291,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Subcategorias">
-            <EntityTypeMapping TypeName="MercampoModel.Subcategoria">
+            <EntityTypeMapping TypeName="VendeAgroModel.Subcategoria">
               <MappingFragment StoreEntitySet="Subcategoria">
                 <ScalarProperty Name="id" ColumnName="id" />
                 <ScalarProperty Name="nombre" ColumnName="nombre" />
@@ -1301,7 +1301,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Tables">
-            <EntityTypeMapping TypeName="MercampoModel.Table">
+            <EntityTypeMapping TypeName="VendeAgroModel.Table">
               <MappingFragment StoreEntitySet="Table">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="ruta" ColumnName="ruta" />
@@ -1312,7 +1312,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Usuarios">
-            <EntityTypeMapping TypeName="MercampoModel.Usuario">
+            <EntityTypeMapping TypeName="VendeAgroModel.Usuario">
               <MappingFragment StoreEntitySet="Usuario">
                 <ScalarProperty Name="id" ColumnName="id" />
                 <ScalarProperty Name="nombre" ColumnName="nombre" />
@@ -1328,7 +1328,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Usuario_Administrador">
-            <EntityTypeMapping TypeName="MercampoModel.Usuario_Administrador">
+            <EntityTypeMapping TypeName="VendeAgroModel.Usuario_Administrador">
               <MappingFragment StoreEntitySet="Usuario_Administrador">
                 <ScalarProperty Name="id" ColumnName="id" />
                 <ScalarProperty Name="nombre" ColumnName="nombre" />
@@ -1342,7 +1342,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Usuario_Tarjeta">
-            <EntityTypeMapping TypeName="MercampoModel.Usuario_Tarjeta">
+            <EntityTypeMapping TypeName="VendeAgroModel.Usuario_Tarjeta">
               <MappingFragment StoreEntitySet="Usuario_Tarjeta">
                 <ScalarProperty Name="id" ColumnName="id" />
                 <ScalarProperty Name="tipoTarjeta" ColumnName="tipoTarjeta" />
@@ -1354,7 +1354,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Videos_Anuncio">
-            <EntityTypeMapping TypeName="MercampoModel.Videos_Anuncio">
+            <EntityTypeMapping TypeName="VendeAgroModel.Videos_Anuncio">
               <MappingFragment StoreEntitySet="Videos_Anuncio">
                 <ScalarProperty Name="id" ColumnName="id" />
                 <ScalarProperty Name="ruta" ColumnName="ruta" />

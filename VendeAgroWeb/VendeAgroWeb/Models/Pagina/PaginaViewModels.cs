@@ -856,7 +856,7 @@ namespace VendeAgroWeb.Models.Pagina
 
     public class TarjetaViewModel
     {
-        public TarjetaViewModel(int id, TarjetaTipo tipo, int digitos, string idConekta)
+        public TarjetaViewModel(int id, TarjetaTipo tipo, string digitos, string idConekta)
         {
             Id = id;
             Tipo = tipo;
@@ -866,7 +866,7 @@ namespace VendeAgroWeb.Models.Pagina
 
         public int Id { get; private set; }
         public TarjetaTipo Tipo { get; private set; }
-        public int Digitos { get; private set; }
+        public string Digitos { get; private set; }
         public string IdConekta { get; private set; }
     }
 

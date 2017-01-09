@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Openpay;
+using Openpay.Entities;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Cryptography;
@@ -6,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Script.Serialization;
 using VendeAgroWeb.Models;
 using VendeAgroWeb.Models.Pagina;
 
@@ -174,6 +177,7 @@ namespace VendeAgroWeb
                         return RegistroStatus.TelefonoOcupado;
                     }
 
+                    var tokenId = CrearClienteConektaId(model.Nombre, model.Apellidos, model.Email, model.Celular);
                     string tokenSesion = getToken();
                     string tokenEmail = getToken();
                     _dbContext.Usuarios.Add(new Usuario
@@ -185,7 +189,8 @@ namespace VendeAgroWeb
                         email = model.Email,
                         confirmaEmail = true,
                         tokenSesion = tokenSesion,
-                        tokenEmail = tokenEmail
+                        tokenEmail = tokenEmail,
+                        idConekta = tokenId
                     });
 
                     _dbContext.SaveChanges();
@@ -406,7 +411,7 @@ namespace VendeAgroWeb
             return null;
         }
 
-        public async Task<bool> AgregarTarjetaAsync(int id, string tokenTarjeta)
+        public async Task<bool> AgregarTarjetaAsync(int id, string tokenTarjeta, string sessionId)
         {
             using (var _dbContext = new MercampoEntities())
             {
@@ -416,6 +421,7 @@ namespace VendeAgroWeb
                     return false;
                 }
 
+
                 var usuario = _dbContext.Usuarios.Where(u => u.id == id).FirstOrDefault();
 
                 if (usuario == null)
@@ -424,30 +430,27 @@ namespace VendeAgroWeb
                     return false;
                 }
 
-                string idCliente = null;
-                if (usuario.idConekta == null)
-                    idCliente = await CrearClienteConektaId(usuario.nombre, usuario.email, usuario.telefono, tokenTarjeta);
+                Card request = new Card();
+                request.TokenId = tokenTarjeta;
+                request.DeviceSessionId = sessionId;
 
-                if (idCliente == null)
+                try
+                {
+                    request = Startup.OpenPayLib.CardService.Create(usuario.idConekta, request);
+                }
+                catch (OpenpayException e)
                 {
                     _dbContext.Database.Connection.Close();
                     return false;
                 }
 
-                usuario.idConekta = idCliente;
-                var tarjeta = await Startup.GetConektaLib().AddCardAsync(idCliente, tokenTarjeta);
-
-                if (tarjeta == null)
-                {
-                    _dbContext.Database.Connection.Close();
-                    return false;
-                }
+                string last4 = request.CardNumber.Substring(request.CardNumber.Length-4, 4);
 
                 _dbContext.Usuario_Tarjeta.Add(new Usuario_Tarjeta
                 {
-                    tipoTarjeta = GetTipoTarjeta(tarjeta.Brand),
-                    digitosTarjeta = int.Parse(tarjeta.Last4),
-                    tokenTarjeta = tarjeta.Id,
+                    tipoTarjeta = GetTipoTarjeta(request.Brand),
+                    digitosTarjeta = last4,
+                    tokenTarjeta = request.Id,
                     idUsuario = id,
                     activo = true
                 });
@@ -460,7 +463,7 @@ namespace VendeAgroWeb
         {
             switch (tipo.ToLower())
             {
-                case "amex":
+                case "american_express":
                     return (int)TarjetaTipo.Amex;
                 case "mastercard":
                     return (int)TarjetaTipo.MasterCard;
@@ -472,15 +475,24 @@ namespace VendeAgroWeb
             }
         }
 
-        private async Task<string> CrearClienteConektaId(string nombre, string email, string telefono, string tarjeta)
+        private string CrearClienteConektaId(string nombre, string apellidos, string email, string telefono)
         {
             if (nombre == null || email == null)
             {
                 return string.Empty;
             }
 
-            var cliente = await Startup.GetConektaLib().CreateClientAsync(nombre, email, telefono, new string[] { tarjeta }, "00001", string.Empty, string.Empty, string.Empty);
-            return cliente.Id;
+            Customer request = new Customer();
+            request.ExternalId = getToken();
+            request.Name = nombre;
+            request.LastName = apellidos;
+            request.Email = email;
+            request.PhoneNumber = telefono;
+            request.RequiresAccount = false;
+
+            request = Startup.OpenPayLib.CustomerService.Create(request);
+            return request.Id;
+
         }
 
         public PortalUsuario getUsuarioPortalActual(HttpRequestBase request)

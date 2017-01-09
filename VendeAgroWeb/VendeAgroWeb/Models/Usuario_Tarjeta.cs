@@ -16,7 +16,7 @@ namespace VendeAgroWeb.Models
     {
         public int id { get; set; }
         public int tipoTarjeta { get; set; }
-        public int digitosTarjeta { get; set; }
+        public string digitosTarjeta { get; set; }
         public string tokenTarjeta { get; set; }
         public int idUsuario { get; set; }
         public bool activo { get; set; }
