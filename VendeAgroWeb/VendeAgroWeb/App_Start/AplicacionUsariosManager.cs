@@ -161,13 +161,13 @@ namespace VendeAgroWeb
             {
                 using (var _dbContext = new MercampoEntities())
                 {
-                    var usuario = _dbContext.Usuarios.Where(u => u.email == model.Email).FirstOrDefault();
+                    var usuario = _dbContext.Usuarios.Where(u => u.email.Equals(model.Email, StringComparison.InvariantCulture)).FirstOrDefault();
                     if (usuario != null)
                     {
                         return RegistroStatus.MailOcupado;
                     }
 
-                    usuario = _dbContext.Usuarios.Where(u => u.telefono == model.Celular).FirstOrDefault();
+                    usuario = _dbContext.Usuarios.Where(u => u.telefono.Equals(model.Celular,StringComparison.InvariantCulture)).FirstOrDefault();
 
                     if (usuario != null)
                     {

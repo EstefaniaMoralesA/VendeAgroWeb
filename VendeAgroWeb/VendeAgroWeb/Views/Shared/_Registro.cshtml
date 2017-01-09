@@ -12,7 +12,7 @@
             <h3 style="text-align: center; color: white;">Procesando registro, favor de no recargar la p&aacute;gina.</h3>
             <img class="loader-anuncios" src="~/img/loader.gif" />
         </div>
-        <div class="registro-campos" style="display: none;">
+        <div class="registro-campos" style="display:none;">
             <div class="error-row alert alert-danger" style="text-align:center;">
                 <p id="error-mensaje"></p>
             </div>
@@ -55,20 +55,21 @@
 
                     <div class="form-group" style="text-align: center;">
                         <div class="text-container" style="position: relative; display: inline-block;">
-                            <a id="boton-Registro" class="btn btn-default registrar-boton menu-grad">Reg&iacute;strate</a>
+                            <a class="btn btn-default registrar-boton menu-grad boton-Registro">Reg&iacute;strate</a>
                             <span class="glyphicon glyphicon-user" style="position: absolute; left: 22px; top: 12px; color:white;"></span>
+                        </div>
+                    </div>
+                    <div class="col-sm-9 registrate-facebook">
+                        <p class="registrate-texto">O regístrate con</p>
+                    </div>
+                    <div class="col-sm-9 registrate-facebook">
+                        <div class="social-wrap a">
+                            <button id="facebook">Facebook</button>
                         </div>
                     </div>
                 </div>
             }
-            <div class="col-sm-9 registrate-facebook">
-                <p class="registrate-texto">O regístrate con</p>
-            </div>
-            <div class="col-sm-9 registrate-facebook">
-                <div class="social-wrap a">
-                    <button id="facebook">Facebook</button>
-                </div>
-            </div>
+            
         </div>
         <div class="registro-completo">
             <div class="col-sm-offset-3 col-sm-offset-6" id="registro-llena" style="margin-right:25%;">
@@ -83,114 +84,123 @@
 
 <script>
     $(document).ready(function(){
+        $.when(mueveRegistro()).done(agregaClick);
+    });
+
+    function mueveRegistro(){
         $('#registro-llena').html($('.registro-campos').html());
-    });
+        $('.registro-campos').html('');
+    }
 
-    $("#boton-Registro").click(function () {
-        alert('entro');
-        var nombre = $("input#NombreRegistro").val();
-        var apellidos = $("input#ApellidosRegistro").val();
-        var email = $("input#EmailRegistro").val();
-        var password = $("#PasswordRegistro").val();
-        var passwordConfirm = $("#ConfirmarPassRegistro").val();
-        var celular = $("#CelularRegistro").val();
-        var valido = true;
-        if (password.length < 6) {
-            $(".field-validation-valid[data-valmsg-for='Password']").html($("#PasswordRegistro").data("val-length")).show();
-            valido = false;
-        }
-        else {
-            $(".field-validation-valid[data-valmsg-for='Password']").html('').hide();
 
-        }
-        if (password !== passwordConfirm) {
-            $(".field-validation-valid[data-valmsg-for='ConfirmPassword']").html($("#ConfirmarPassRegistro").data("val-equalto")).show();
-            valido = false;
-        }
-        else {
-            $(".field-validation-valid[data-valmsg-for='ConfirmPassword']").html('').hide();
-
-        }
-
-        if (celular == "") {
-            $(".field-validation-valid[data-valmsg-for='Celular']").html($("#CelularRegistro").data("val-required")).show();
-            valido = false;
-        }
-        else {
-            if(celular.length < 10 || celular.length > 14){
-                $(".field-validation-valid[data-valmsg-for='Celular']").html($("#CelularRegistro").data("val-length")).show();
-                return;
+    function agregaClick() {
+        $(".boton-Registro").click(function () {
+            var nombre = $("input#NombreRegistro").val();
+            var apellidos = $("input#ApellidosRegistro").val();
+            var email = $("input#EmailRegistro").val();
+            var password = $("#PasswordRegistro").val();
+            var passwordConfirm = $("#ConfirmarPassRegistro").val();
+            var celular = $("#CelularRegistro").val();
+            var valido = true;
+            if (password.length < 6) {
+                $(".field-validation-valid[data-valmsg-for='Password']").html($("#PasswordRegistro").data("val-length")).show();
+                valido = false;
             }
-            if(!$.isNumeric(celular) && celular.charAt(0) != '+'){
-                $(".field-validation-valid[data-valmsg-for='Celular']").html($("#CelularRegistro").data("val-length")).show();
-                return;
+            else {
+                $(".field-validation-valid[data-valmsg-for='Password']").html('').hide();
+
             }
-            $(".field-validation-valid[data-valmsg-for='Celular']").html('').hide();
+            if (password !== passwordConfirm) {
+                $(".field-validation-valid[data-valmsg-for='ConfirmPassword']").html($("#ConfirmarPassRegistro").data("val-equalto")).show();
+                valido = false;
+            }
+            else {
+                $(".field-validation-valid[data-valmsg-for='ConfirmPassword']").html('').hide();
 
-        }
+            }
 
-        if (nombre == "") {
-            $(".field-validation-valid[data-valmsg-for='Nombre']").html($("#NombreRegistro").data("val-required")).show();
-            valido = false;
-        }
-        else {
-            $(".field-validation-valid[data-valmsg-for='Nombre']").html('').hide();
-
-        }
-
-        if (apellidos == "") {
-            $(".field-validation-valid[data-valmsg-for='Apellidos']").html($("#ApellidosRegistro").data("val-required")).show();
-            valido = false;
-        }
-        else {
-            $(".field-validation-valid[data-valmsg-for='Apellidos']").html('').hide();
-
-        }
-        if (email.length <= 0) {
-            $(".field-validation-valid[data-valmsg-for='Email']").html($("#EmailRegistro").data("val-required")).show();
-            valido = false;
-        }
-        else if (!validateEmail(email)) {
-            $(".field-validation-valid[data-valmsg-for='Email']").html($("#EmailRegistro").data("val-email")).show();
-            valido = false;
-        }
-        else {
-            $(".field-validation-valid[data-valmsg-for='Email']").hide();
-        }
-
-        if (!valido) {
-            return;
-        }
-
-        alert('entro');
-        $('#registro-llena').html($('.proceso-registro-contenido').html());
-
-        $.ajax({
-            type: 'POST',
-            data: { email: email, password: password, nombre: nombre, apellidos: apellidos, telefono: celular },
-            url: '/Portal/Registro',
-            success: function (response) {
-                if (response == "MailOcupado") {
-                    alert('entro');
-                    $('#registro-llena').html($('.registro-campos').html());
-                    $(".error-row").html("El email introducido ya se encuentra registrado en el sistema.").show('');
+            if (celular == "") {
+                $(".field-validation-valid[data-valmsg-for='Celular']").html($("#CelularRegistro").data("val-required")).show();
+                valido = false;
+            }
+            else {
+                if(celular.length < 10 || celular.length > 14){
+                    $(".field-validation-valid[data-valmsg-for='Celular']").html($("#CelularRegistro").data("val-length")).show();
                     return;
                 }
-                else if (response == "TelefonoOcupado") {
-                    $("#alerta").html("El celular ya esta ocupado.").show();
+                if(!$.isNumeric(celular) && celular.charAt(0) != '+'){
+                    $(".field-validation-valid[data-valmsg-for='Celular']").html($("#CelularRegistro").data("val-length")).show();
                     return;
                 }
-                location.reload();
-            },
-            error: function (err) {
+                $(".field-validation-valid[data-valmsg-for='Celular']").html('').hide();
 
             }
+
+            if (nombre == "") {
+                $(".field-validation-valid[data-valmsg-for='Nombre']").html($("#NombreRegistro").data("val-required")).show();
+                valido = false;
+            }
+            else {
+                $(".field-validation-valid[data-valmsg-for='Nombre']").html('').hide();
+
+            }
+
+            if (apellidos == "") {
+                $(".field-validation-valid[data-valmsg-for='Apellidos']").html($("#ApellidosRegistro").data("val-required")).show();
+                valido = false;
+            }
+            else {
+                $(".field-validation-valid[data-valmsg-for='Apellidos']").html('').hide();
+
+            }
+            if (email.length <= 0) {
+                $(".field-validation-valid[data-valmsg-for='Email']").html($("#EmailRegistro").data("val-required")).show();
+                valido = false;
+            }
+            else if (!validateEmail(email)) {
+                $(".field-validation-valid[data-valmsg-for='Email']").html($("#EmailRegistro").data("val-email")).show();
+                valido = false;
+            }
+            else {
+                $(".field-validation-valid[data-valmsg-for='Email']").hide();
+            }
+
+            if (!valido) {
+                return;
+            }
+
+            $('#registro-llena').css('opacity', '0');
+            $('.proceso-registro-contenido').show();
+
+            $.ajax({
+                type: 'POST',
+                data: { email: email, password: password, nombre: nombre, apellidos: apellidos, telefono: celular },
+                url: '/Portal/Registro',
+                success: function (response) {
+                    if (response == "MailOcupado") {
+                        $('.proceso-registro-contenido').hide();
+                        $('#registro-llena').css('opacity', '1');
+                        $(".error-row").html("El email introducido ya se encuentra registrado en el sistema.").show('');
+                        return;
+                    }
+                    else if (response == "TelefonoOcupado") {
+                        $('.proceso-registro-contenido').hide();
+                        $('#registro-llena').css('opacity', '1');
+                        $("#alerta").html("El celular ya esta ocupado.").show();
+                        return;
+                    }
+                    window.location = "/Portal";
+                },
+                error: function (err) {
+
+                }
+            });
+
         });
-
-    });
+    }
 
     function validateEmail(email) {
-        var re = /^(([^<>()[\]\\.,;:\s@('@')\"]+(\.[^<>()[\]\\.,;:\s@('@')\"]+)*)|(\".+\"))@('@')((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;;
+        var re = /^(([^<>()[\]\\.,;:\s@('@')\"]+(\.[^<>()[\]\\.,;:\s@('@')\"]+)*)|(\".+\"))@('@')((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
         return re.test(email);
     }
 </script>
