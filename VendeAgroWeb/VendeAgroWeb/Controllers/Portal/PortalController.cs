@@ -31,7 +31,7 @@ namespace VendeAgroWeb.Controllers.Administrador
         {
             var model = new RegistroViewModel
             {
-                Email = email,
+                Email = email.ToLower(),
                 Password = password,
                 Celular = telefono,
                 Nombre = nombre,

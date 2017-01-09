@@ -309,12 +309,20 @@ a {
     margin-top: 140px;
 }
 
+.modal-dialog.modal-registro-container::-webkit-scrollbar {
+    width: 0px !important;
+}
+
+.modal-dialog.modal-registro-container { -ms-overflow-style: none; }
+
 .modal-registro {
     position: relative !important;
     border-radius: 134% !important;
     border-top-right-radius: 0 !important;
     border-top-left-radius: 0 !important;
     width: 143% !important;
+    padding-top:143px !important;
+    padding-bottom: 15px !important;
     min-height: 100%;
     left: 50% !important;
     transform: translate(-50%, 0) !important;
@@ -337,14 +345,14 @@ a {
 
 .registro-completo {
     width: 750px !important;
-    position: absolute;
+    position: relative;
     top: 55%;
     left: 50%;
-    transform: translate(-50%,-50%);
-    -o-transform: translate(-50%,-50%);
-    -webkit-transform: translate(-50%,-50%);
-    -ms-transform: translate(0,-50%);
-    -moz-transform: translate(0,-50%);
+    transform: translate(-50%,0%);
+    -o-transform: translate(-50%,0%);
+    -webkit-transform: translate(-50%,0%);
+    -ms-transform: translate(0,0%);
+    -moz-transform: translate(0,0%);
 }
 
 .login-completo {
@@ -362,11 +370,12 @@ a {
 .proceso-registro-contenido {
     position: absolute;
     top: 50%;
-    transform: translate(0,-50%);
-    -o-transform: translate(0,-50%);
-    -webkit-transform: translate(0,-50%);
-    -ms-transform: translate(0,-50%);
-    -moz-transform: translate(0,-50%);
+    left: 50%;
+    transform: translate(-50%,-50%);
+    -o-transform: translate(-50%,-50%);
+    -webkit-transform: translate(-50%,-50%);
+    -ms-transform: translate(-50%,-50%);
+    -moz-transform: translate(-50%,-50%);
 }
 
 .registro-campo {
