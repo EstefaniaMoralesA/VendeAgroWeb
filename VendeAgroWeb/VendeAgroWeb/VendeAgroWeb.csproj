@@ -329,6 +329,7 @@
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
+    <Content Include="img\amex.png" />
     <Content Include="img\foto-vacia.png" />
     <Content Include="img\icono-correo.png" />
     <Content Include="img\icono-mano.png" />
@@ -342,7 +343,9 @@
     <Content Include="img\icon.png" />
     <Content Include="img\logoHorizontal.png" />
     <Content Include="img\logo.png" />
+    <Content Include="img\mastercard.png" />
     <Content Include="img\vacaContacto.jpg" />
+    <Content Include="img\visa.png" />
     <Content Include="Models\MercampoModel.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <DependentUpon>MercampoModel.edmx</DependentUpon>
@@ -481,6 +484,7 @@
     <Content Include="Views\Shared\_BusquedaPartial.cshtml" />
     <Content Include="Views\Administrador\Banners.cshtml" />
     <Content Include="Views\Administrador\ModificarBanner.cshtml" />
+    <Content Include="Views\Portal\NuevaTarjeta.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

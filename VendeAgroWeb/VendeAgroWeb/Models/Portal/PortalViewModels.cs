@@ -113,11 +113,9 @@ namespace VendeAgroWeb.Models.Portal
         }
     }
 
-    public class PaqueteViewModel
+    public class NuevaTarjetaViewModel
     {
         private int _id;
-        private string _nombre;
-        private int _meses;
 
         public int Id
         {
@@ -126,6 +124,19 @@ namespace VendeAgroWeb.Models.Portal
                 return _id;
             }
         }
+
+        public NuevaTarjetaViewModel(int id) {
+            _id = id;
+        }
+    }
+
+    public class PaqueteViewModel
+    {
+        private int _id;
+        private string _nombre;
+        private int _meses;
+
+        
 
         public string Nombre
         {
@@ -153,44 +164,20 @@ namespace VendeAgroWeb.Models.Portal
 
     public class PerfilViewModel
     {
-        private int _id;
-        private string _nombre;
-        private string _apellidos;
-        private string _telefono;
-        private string _email;
+        private PortalUsuario _usuario;
 
-        [Required(ErrorMessage = "Campo requerido")]
-        [Display(Name = "Nombre")]
-        public string Nombre { get; set; }
 
-        [Required(ErrorMessage = "Campo requerido")]
-        [Display(Name = "Apellidos")]
-        public string Apellidos { get; set; }
-
-        [Required]
-        [Display(Name = "Celular")]
-        [StringLength(14, ErrorMessage = "El teléfono celular no es válido.", MinimumLength = 10)]
-        public string Celular { get; set; }
-
-        [Required(ErrorMessage = "Campo requerido")]
-        [Display(Name = "Email")]
-        public string Email { get; set; }
-
-        [Required]
-        [StringLength(100, ErrorMessage = "La contraseña debe de ser mínimo de 6 caracteres.", MinimumLength = 6)]
-        [DataType(DataType.Password)]
-        [Display(Name = "Contraseña")]
-        public string PasswordNueva { get; set; }
-
-        [Required]
-        [DataType(DataType.Password)]
-        [Display(Name = "Confirmar Contraseña")]
-        [Compare("PasswordNueva", ErrorMessage = "La contraseña y su confirmacion no son iguales.")]
-        public string ConfirmPassword { get; set; }
-
-        public PerfilViewModel() {
+        public PerfilViewModel(PortalUsuario usuario) {
+            _usuario = usuario;
         }
 
+        public PortalUsuario Usuario
+        {
+            get
+            {
+                return _usuario;
+            }
+        }
     }
 
 

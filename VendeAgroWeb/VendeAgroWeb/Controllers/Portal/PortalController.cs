@@ -113,16 +113,196 @@ namespace VendeAgroWeb.Controllers.Administrador
             });
         }
 
+        public async Task<ActionResult> BorrarTarjeta(int? id)
+        {
+            return await Task.Run(() =>
+            {
+                using (var _dbContext = new MercampoEntities())
+                {
+                    Startup.OpenDatabaseConnection(_dbContext);
+                    if (_dbContext.Database.Connection.State != ConnectionState.Open)
+                    {
+                        return null;
+                    }
 
+                    var usuarioActual = Startup.GetAplicacionUsuariosManager().getUsuarioPortalActual(Request);
+                    var tarjetaActual = usuarioActual.Tarjetas.Where(t => t.Id == id).FirstOrDefault();
+                    //var tarjeta = Startup.GetConektaLib().DeleteCardAsync(usuarioActual.IdConekta, tarjetaActual.IdConekta);
+
+                    var tarjetaBD = _dbContext.Usuario_Tarjeta.Where(t => t.id == id).FirstOrDefault();
+
+                    if (tarjetaBD == null)
+                    {
+                        return null;
+                    }
+                    else
+                    {
+                        tarjetaBD.activo = false;
+                        _dbContext.SaveChanges();
+                    }
+
+
+                    _dbContext.Database.Connection.Close();
+                    return RedirectToAction("Perfil", "Portal");
+                }
+            });
+        }
+
+        public ActionResult NuevaTarjeta(int? id)
+        {
+            if (id == null) {
+                return null;
+            }
+            NuevaTarjetaViewModel model = new NuevaTarjetaViewModel(id.Value);
+            return View(model);
+        }
 
         public ActionResult MisPagos()
         {
             return View();
         }
 
-        public async Task<ActionResult> Perfil(int? id)
+        public async Task<ActionResult> Perfil() 
         {
-            return View();
+            var usuario = Startup.GetAplicacionUsuariosManager().getUsuarioPortalActual(Request);
+            PerfilViewModel model = new PerfilViewModel(usuario);
+            return View(model);
+        }
+
+        public async Task<bool> CambiarNombre(string nombre, string apellidos) {
+            return await Task.Run(() =>
+            {
+                using (var _dbContext = new MercampoEntities())
+                {
+                    Startup.OpenDatabaseConnection(_dbContext);
+                    if (_dbContext.Database.Connection.State != ConnectionState.Open)
+                    {
+                        return false;
+                    }
+
+                    var idActual = Startup.GetAplicacionUsuariosManager().getUsuarioPortalActual(Request).Id;
+                    var usuario = _dbContext.Usuarios.Where(u => u.id == idActual).FirstOrDefault();
+
+                    if (usuario == null)
+                    {
+                        return false;
+                    }
+                    else
+                    {
+                        usuario.nombre = nombre;
+                        usuario.apellidos = apellidos;
+
+                        _dbContext.SaveChanges();
+                    }
+
+                    _dbContext.Database.Connection.Close();
+                    return true;
+                }
+            });
+        }
+
+        public async Task<bool> CambiarTelefono(string telefono)
+        {
+            return await Task.Run(() =>
+            {
+                using (var _dbContext = new MercampoEntities())
+                {
+                    Startup.OpenDatabaseConnection(_dbContext);
+                    if (_dbContext.Database.Connection.State != ConnectionState.Open)
+                    {
+                        return false;
+                    }
+
+                    var idActual = Startup.GetAplicacionUsuariosManager().getUsuarioPortalActual(Request).Id;
+                    var usuario = _dbContext.Usuarios.Where(u => u.id == idActual).FirstOrDefault();
+
+                    if (usuario == null)
+                    {
+                        return false;
+                    }
+                    else
+                    {
+                        usuario.telefono = telefono;
+
+                        _dbContext.SaveChanges();
+                    }
+
+                    _dbContext.Database.Connection.Close();
+                    return true;
+                }
+            });
+        }
+
+        public async Task<RegistroStatus> CambiarEmail(string email)
+        {
+            return await Task.Run(() =>
+            {
+                using (var _dbContext = new MercampoEntities())
+                {
+                    Startup.OpenDatabaseConnection(_dbContext);
+                    if (_dbContext.Database.Connection.State != ConnectionState.Open)
+                    {
+                        return RegistroStatus.Incorrecto;
+                    }
+
+                    var usuario = _dbContext.Usuarios.Where(u => u.email == email).FirstOrDefault();
+
+                    if (usuario != null)
+                    {
+                        return RegistroStatus.MailOcupado;
+                    }
+
+                    var idActual = Startup.GetAplicacionUsuariosManager().getUsuarioPortalActual(Request).Id;
+
+                    usuario = _dbContext.Usuarios.Where(u => u.id == idActual).FirstOrDefault();
+
+                    if (usuario == null)
+                    {
+                        return RegistroStatus.Incorrecto;
+                    }
+                    else
+                    {
+                        usuario.email = email;
+
+                        _dbContext.SaveChanges();
+                    }
+
+                    _dbContext.Database.Connection.Close();
+                    return RegistroStatus.Exitoso;
+                }
+            });
+        }
+
+        [HttpPost]
+        public async Task<bool> CambiarPassword(string contrasena)
+        {
+            return await Task.Run(() =>
+            {
+                using (var _dbContext = new MercampoEntities())
+                {
+                    Startup.OpenDatabaseConnection(_dbContext);
+                    if (_dbContext.Database.Connection.State != ConnectionState.Open)
+                    {
+                        return false;
+                    }
+
+                    var idActual = Startup.GetAplicacionUsuariosManager().getUsuarioPortalActual(Request).Id;
+                    var usuario = _dbContext.Usuarios.Where(u => u.id == idActual).FirstOrDefault();
+
+                    if (usuario == null)
+                    {
+                        return false;
+                    }
+                    else
+                    {
+                        usuario.password = AplicacionUsuariosManager.Hash(contrasena);
+                        _dbContext.SaveChanges();
+                    }
+
+                    _dbContext.Database.Connection.Close();
+                    return true;
+                }
+            });
         }
 
         public ActionResult CrearAnuncio()

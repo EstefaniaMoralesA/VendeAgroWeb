@@ -22,222 +22,410 @@
 <div class="row" style="margin-top: 30px">
     <div class="col-sm-12">
         <div class="col-sm-8 col-sm-offset-2">
+            <div class="error-row alert alert-danger" style="text-align:center;">
+                <p></p>
+            </div>
             <table class="lista-perfil table table-responsive">
                 <tbody>
-                @{
-                    <tr id="cambiar-nombre">
-                        <td class="titulo-datos-perfil">Nombre</td>
-                        <td class="dato-datos-perfil">
-                           Estefania
-                        </td>
-                        <td class="editar-datos-perfil"><a>Editar</a></td>
-                    </tr>
-                    <tr class="llenar-campos-perfil" id="cambiar-nombre-panel" style="display:none;">
-                        <td class="titulo-datos-perfil">Nombre Completo</td>
-                        <td>
-                        @using (Html.BeginForm())
-                        {
-                            @Html.AntiForgeryToken()
-                            <div class="row row-no-margen">
+                    @{
+                        @Html.ValidationSummary()
+                        <tr id="cambiar-nombre">
+                            <td class="titulo-datos-perfil">Nombre</td>
+                            <td class="dato-datos-perfil">
+                                @Model.Usuario.Nombre @Model.Usuario.Apellidos
+                            </td>
+                            <td class="editar-datos-perfil"><a>Editar</a></td>
+                        </tr>
+                        <tr class="llenar-campos-perfil" id="cambiar-nombre-panel" style="display:none;">
+                            <td class="titulo-datos-perfil">Nombre Completo</td>
+                            <td>
+                                <div class="row row-no-margen">
                                     <p>Nombre</p>
                                     <div class="form-group forma">
-                                        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-                                        @Html.EditorFor(model => model.Nombre, new { htmlAttributes = new { @class = "form-control", style = "width: 100%;" } })
-                                        @Html.ValidationMessageFor(model => model.Nombre, "", new { @class = "text-danger validation" })
+                                        <input id="in-nombre" class="form-control text-box single-line" data-val="true" data-val-required="*Campo requerido." name="Nombre" type="text">
                                     </div>
-                            </div>
-                            <div class="row row-no-margen">
-                                <p>Apellidos</p>
-                                <div class="form-group forma">
-                                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-                                    @Html.EditorFor(model => model.Apellidos, new { htmlAttributes = new { @class = "form-control", style = "width: 100%;" } })
-                                    @Html.ValidationMessageFor(model => model.Apellidos, "", new { @class = "text-danger validation" })
+                                    @Html.ValidationMessage("Nombre", new { @class = "text-danger" })
                                 </div>
-                            </div>
-                            <div class="row row-no-margen">
-                                <div class="form-group forma" style="padding-right: 15px;">
-                                    <a class="btn btn-success perfil-guardar">guardar</a>
+                                <div class="row row-no-margen">
+                                    <p>Apellidos</p>
+                                    <div class="form-group forma">
+                                        <input id="in-apellidos" class="form-control text-box single-line" data-val="true" data-val-required="*Campo requerido." name="Apellidos" type="text">
+                                    </div>
+                                    @Html.ValidationMessage("Apellidos", new { @class = "text-danger" })
                                 </div>
-                                <a class="btn btn-default perfil-cancelar" id="cancelar-cambiar-nombre">cancelar</a>
-                            </div>
-                        }
-                        </td>
-                        <td></td>
-                    </tr>
-                    <tr id="cambiar-celular">
-                        <td class="titulo-datos-perfil">Teléfono Móvil</td>
-                        <td class="dato-datos-perfil">
-                            2221143403
-                        </td>
-                        <td class="editar-datos-perfil"><a>Editar</a></td>
-                    </tr>
-                    <tr class="llenar-campos-perfil" id="cambiar-celular-panel" style="display:none;">
-                        <td class="titulo-datos-perfil">Teléfono Móvil</td>
-                        <td>
-                            @using (Html.BeginForm())
-                            {
-                                @Html.AntiForgeryToken()
+                                <div class="row row-no-margen">
+                                    <div class="form-group forma" style="padding-right: 15px;">
+                                        <a id="btn-guardar-nombre" class="btn btn-success perfil-guardar">guardar</a>
+                                    </div>
+                                    <a class="btn btn-default perfil-cancelar" id="cancelar-cambiar-nombre">cancelar</a>
+                                </div>
+                            </td>
+                            <td></td>
+                        </tr>
+                        <tr id="cambiar-celular">
+                            <td class="titulo-datos-perfil">Teléfono Móvil</td>
+                            <td class="dato-datos-perfil">
+                                @Model.Usuario.Telefono
+                            </td>
+                            <td class="editar-datos-perfil"><a>Editar</a></td>
+                        </tr>
+                        <tr class="llenar-campos-perfil" id="cambiar-celular-panel" style="display:none;">
+                            <td class="titulo-datos-perfil">Teléfono Móvil</td>
+                            <td>
                                 <div class="row row-no-margen">
                                     <p>Número</p>
                                     <div class="form-group forma">
-                                        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-                                        @Html.EditorFor(model => model.Celular, new { htmlAttributes = new { @class = "form-control", style = "width: 100%;" } })
-                                        @Html.ValidationMessageFor(model => model.Celular, "", new { @class = "text-danger validation" })
+                                        <input id="in-telefono" class="form-control text-box single-line" data-val="true" data-val-required="*Campo requerido." data-val-length="El teléfono no es válido." data-val-length-max="14" data-val-length-min="10" name="Telefono" type="text">
                                     </div>
+                                    @Html.ValidationMessage("Telefono", new { @class = "text-danger" })
                                 </div>
                                 <div class="row row-no-margen">
                                     <div class="form-group forma" style="padding-right: 15px;">
-                                        <a class="btn btn-success perfil-guardar">guardar</a>
+                                        <a id="btn-guardar-telefono" class="btn btn-success perfil-guardar">guardar</a>
                                     </div>
                                     <a class="btn btn-default perfil-cancelar" id="cancelar-cambiar-celular">cancelar</a>
                                 </div>
-                            }
-                        </td>
-                        <td></td>
-                    </tr>
-                    <tr id="cambiar-email">
-                        <td class="titulo-datos-perfil">Correo electrónico</td>
-                        <td class="dato-datos-perfil">
-                            estefi_ma94@hotmail.com
-                        </td>
-                        <td class="editar-datos-perfil"><a>Editar</a></td>
-                    </tr>
-                    <tr class="llenar-campos-perfil" id="cambiar-email-panel" style="display:none;">
-                        <td class="titulo-datos-perfil">Correo electrónico</td>
-                        <td>
-                            @using (Html.BeginForm())
-                            {
-                                @Html.AntiForgeryToken()
+                            </td>
+                            <td></td>
+                        </tr>
+                        <tr id="cambiar-email">
+                            <td class="titulo-datos-perfil">Correo electrónico</td>
+                            <td class="dato-datos-perfil">
+                                @Model.Usuario.Email
+                            </td>
+                            <td class="editar-datos-perfil"><a>Editar</a></td>
+                        </tr>
+                        <tr class="llenar-campos-perfil" id="cambiar-email-panel" style="display:none;">
+                            <td class="titulo-datos-perfil">Correo electrónico</td>
+                            <td>
                                 <div class="row row-no-margen">
                                     <p>Email</p>
                                     <div class="form-group forma">
-                                        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-                                        @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control", style = "width: 100%;" } })
-                                        @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger validation" })
+                                        <input id="in-email" class="form-control text-box single-line" data-val="true" data-val-required="*Campo requerido." data-val-email="El email introducido no es válido." name="Email" type="email">
                                     </div>
+                                    @Html.ValidationMessage("Email", new { @class = "text-danger" })
                                 </div>
                                 <div class="row row-no-margen">
                                     <div class="form-group forma" style="padding-right: 15px;">
-                                        <a class="btn btn-success perfil-guardar">guardar</a>
+                                        <a id="btn-guardar-email" class="btn btn-success perfil-guardar">guardar</a>
                                     </div>
                                     <a class="btn btn-default perfil-cancelar" id="cancelar-cambiar-email">cancelar</a>
                                 </div>
-                            }
-                        </td>
-                        <td></td>
-                    </tr>
-                    <tr id="cambiar-password">
-                        <td class="titulo-datos-perfil">Contraseña</td>
-                        <td class="dato-datos-perfil">
-                            ****************
-                        </td>
-                        <td class="editar-datos-perfil"><a>Editar</a></td>
-                    </tr>
-                    <tr class="llenar-campos-perfil" id="cambiar-password-panel" style="display:none;">
-                        <td class="titulo-datos-perfil">Contraseña</td>
-                        <td>
-                            @using (Html.BeginForm())
-                            {
-                                @Html.AntiForgeryToken()
+                            </td>
+                            <td></td>
+                        </tr>
+                        <tr id="cambiar-password">
+                            <td class="titulo-datos-perfil">Contraseña</td>
+                            <td class="dato-datos-perfil">
+                                ****************
+                            </td>
+                            <td class="editar-datos-perfil"><a>Editar</a></td>
+                        </tr>
+                        <tr class="llenar-campos-perfil" id="cambiar-password-panel" style="display:none;">
+                            <td class="titulo-datos-perfil">Contraseña</td>
+                            <td>
                                 <div class="row row-no-margen">
                                     <p>Nueva Contraseña</p>
                                     <div class="form-group forma">
-                                        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-                                        @Html.EditorFor(model => model.PasswordNueva, new { htmlAttributes = new { @class = "form-control", style = "width: 100%;" } })
-                                        @Html.ValidationMessageFor(model => model.PasswordNueva, "", new { @class = "text-danger validation" })
+                                        <input id="in-password" class="form-control text-box single-line" data-val="true" data-val-required="*Campo requerido." data-val-length="La contraseña debe de ser mínimo de 6 caracteres." data-val-length-max="100" data-val-length-min="6" id="Password" name="Pass" type="password">
                                     </div>
+                                    @Html.ValidationMessage("Pass", new { @class = "text-danger" })
                                 </div>
                                 <div class="row row-no-margen">
                                     <p>Repite Nueva Contraseña</p>
                                     <div class="form-group forma">
-                                        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-                                        @Html.EditorFor(model => model.ConfirmPassword, new { htmlAttributes = new { @class = "form-control", style = "width: 100%;" } })
-                                        @Html.ValidationMessageFor(model => model.ConfirmPassword, "", new { @class = "text-danger validation" })
+                                        <input id="in-password-confirma" class="form-control text-box single-line password" data-val="true" data-val-equalto="La contraseña y su confirmacion no son iguales." data-val-equalto-other="*.Password" id="ConfirmPassword" name="ConfirmPass" type="password">
                                     </div>
+                                    @Html.ValidationMessage("ConfirmPass", new { @class = "text-danger" })
                                 </div>
                                 <div class="row row-no-margen">
                                     <div class="form-group forma" style="padding-right: 15px;">
-                                        <a class="btn btn-success perfil-guardar">guardar</a>
+                                        <a id="btn-guardar-pass" class="btn btn-success perfil-guardar">guardar</a>
                                     </div>
                                     <a class="btn btn-default perfil-cancelar" id="cancelar-cambiar-password">cancelar</a>
                                 </div>
-                            }
-                        </td>
-                        <td></td>
-                    </tr>
-                }
-
+                            </td>
+                            <td></td>
+                        </tr>
+                    }
                 </tbody>
             </table>
+            <div class="col-sm-6 col-sm-offset-3" style="margin-top: 30px;">
+                <h2 class="mi-cuenta-titulo" style="text-align: center;">Mis Tarjetas</h2>
+                <a class="btn btn-success" href="/Portal/NuevaTarjeta?id=@Model.Usuario.Id" style="width: 100%; margin-top: 20px; margin-bottom: 25px;">Agregar Tarjeta</a>
+                @{
+                    if (Model.Usuario.Tarjetas.Count() > 0)
+                    {
+                        <table class="lista-tarjetas table table-responsive">
+                            <tbody>
+                                @{
+                                    foreach (var item in Model.Usuario.Tarjetas)
+                                    {
+                                        <tr>
+                                            @{
+                                                if (item.Tipo == VendeAgroWeb.Models.Pagina.TarjetaTipo.MasterCard)
+                                                {
+                                                    <td class="data-tarjetas"><img style="width: 56%;" src="~/img/mastercard.png" /></td>
+                                                }
+                                                else
+                                                {
+                                                    if (item.Tipo == VendeAgroWeb.Models.Pagina.TarjetaTipo.Visa)
+                                                    {
+                                                        <td class="data-tarjetas"><img style="width: 40%;" src="~/img/visa.png" /></td>
+                                                    }
+                                                    else
+                                                    {
+                                                        <td class="data-tarjetas"><img style="width: 42%;" src="~/img/amex.png" /></td>
+                                                    }
+                                                }
+                                                <td style="min-width:120px;"><span>************</span>@item.Digitos</td>
+                                                <td><a class="btn btn-danger" href="/Portal/BorrarTarjeta?id=@item.Id" style="padding-left: 30px; padding-right: 30px;">borrar</a></td>
+                                            }
+                                        </tr>
+                                                }
+                                }
+                            </tbody>
+                        </table>
+                                                }
+                }
+            </div>
         </div>
     </div>
-</div>
 
-@Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/jquery")
 
-<script>
-    $("#cambiar-nombre").click(function () {
-        $("#cambiar-nombre-panel").show();
-        $("#cambiar-nombre").hide();
-        $("#cambiar-celular").show();
-        $("#cambiar-email").show();
-        $("#cambiar-password").show();
-        $("#cambiar-celular-panel").hide();
-        $("#cambiar-email-panel").hide();
-        $("#cambiar-password-panel").hide();
+    <script>
+        $("#cambiar-nombre").click(function () {
+            $("#cambiar-nombre-panel").show();
+            $("#cambiar-nombre").hide();
+            $("#cambiar-celular").show();
+            $("#cambiar-email").show();
+            $("#cambiar-password").show();
+            $("#cambiar-celular-panel").hide();
+            $("#cambiar-email-panel").hide();
+            $("#cambiar-password-panel").hide();
+        });
 
-    });
+        $("#btn-guardar-nombre").click(function () {
+            var nombre = $("#in-nombre").val();
+            var apellidos = $("#in-apellidos").val();
+            var valido = true;
 
-    $("#cancelar-cambiar-nombre").click(function () {
-        $("#cambiar-nombre-panel").hide();
-        $("#cambiar-nombre").show();
-    });
+            if (nombre == "") {
+                $(".field-validation-valid[data-valmsg-for='Nombre']").html($("#in-nombre").data("val-required")).show();
+                valido = false;
+            }
+            else {
+                $(".field-validation-valid[data-valmsg-for='Nombre']").html('').hide();
+            }
+            if (apellidos == "") {
+                $(".field-validation-valid[data-valmsg-for='Apellidos']").html($("#in-apellidos").data("val-required")).show();
+                valido = false;
+            }
+            else {
+                $(".field-validation-valid[data-valmsg-for='Apellidos']").html('').hide();
+            }
 
-    $("#cambiar-celular").click(function () {
-        $("#cambiar-celular-panel").show();
-        $("#cambiar-celular").hide();
-        $("#cambiar-nombre").show();
-        $("#cambiar-email").show();
-        $("#cambiar-password").show();
-        $("#cambiar-nombre-panel").hide();
-        $("#cambiar-email-panel").hide();
-        $("#cambiar-password-panel").hide();
-    });
+            if (!valido) {
+                return;
+            }
 
-    $("#cancelar-cambiar-celular").click(function () {
-        $("#cambiar-celular-panel").hide();
-        $("#cambiar-celular").show();
-    });
+            $.ajax({
+                type: 'POST',
+                data: {},
+                url: '/Portal/CambiarNombre?nombre=' + nombre + "&apellidos=" + apellidos,
+                success: function (response) {
+                    if (response) {
+                        location.reload();
+                        return;
+                    }
+                    else {
+                        $(".error-row").html("Hubo un error al modificar el nombre. Porfavor vuelva a intentarlo.").show('');
+                        return;
+                    }
+                },
+                error: function (err) {
+                    $(".error-row").html("Hubo un error al modificar. Porfavor vuelva a intentarlo.").show('');
+                    return;
+                }
+            });
+        });
 
-    $("#cambiar-email").click(function () {
-        $("#cambiar-email-panel").show();
-        $("#cambiar-email").hide();
-        $("#cambiar-nombre").show();
-        $("#cambiar-celular").show();
-        $("#cambiar-password").show();
-        $("#cambiar-nombre-panel").hide();
-        $("#cambiar-celular-panel").hide();
-        $("#cambiar-password-panel").hide();
-    });
+        $("#btn-guardar-telefono").click(function () {
+            var telefono = $("#in-telefono").val();
+            var valido = true;
 
-    $("#cancelar-cambiar-email").click(function () {
-        $("#cambiar-email-panel").hide();
-        $("#cambiar-email").show();
-    });
+            if (telefono == "") {
+                $(".field-validation-valid[data-valmsg-for='Telefono']").html($("#in-telefono").data("val-required")).show();
+                return;
+            }
+            if (telefono.length < 10 || telefono.length > 14) {
+                $(".field-validation-valid[data-valmsg-for='Telefono']").html($("#in-telefono").data("val-length")).show();
+                return;
+            }
+            if(!$.isNumeric(telefono) && telefono.charAt(0) != '+'){
+                $(".field-validation-valid[data-valmsg-for='Telefono']").html($("#in-telefono").data("val-length")).show();
+                return;
+            }
 
-    $("#cambiar-password").click(function () {
-        $("#cambiar-password-panel").show();
-        $("#cambiar-password").hide();
-        $("#cambiar-nombre").show();
-        $("#cambiar-email").show();
-        $("#cambiar-celular").show();
-        $("#cambiar-nombre-panel").hide();
-        $("#cambiar-email-panel").hide();
-        $("#cambiar-celular-panel").hide();
-    });
+            $(".field-validation-valid[data-valmsg-for='Telefono']").html('').hide();
 
-    $("#cancelar-cambiar-password").click(function () {
-        $("#cambiar-password-panel").hide();
-        $("#cambiar-password").show();
-    });
-</script>
+            $.ajax({
+                type: 'POST',
+                data: {},
+                url: '/Portal/CambiarTelefono?telefono=' + telefono,
+                success: function (response) {
+                    if (response) {
+                        location.reload();
+                        return;
+                    }
+                    else {
+                        $(".error-row").html("Hubo un error al modificar el tel&eacute;fono. Porfavor vuelva a intentarlo.").show('');
+                        return;
+                    }
+                },
+                error: function (err) {
+                    $(".error-row").html("Hubo un error al modificar el tel&eacute;fono. Porfavor vuelva a intentarlo.").show('');
+                    return;
+                }
+            });
+        });
+
+        $("#btn-guardar-email").click(function () {
+            var email = $("#in-email").val();
+
+            if (email.length <= 0) {
+                $(".field-validation-valid[data-valmsg-for='Email']").html($("#in-email").data("val-required")).show();
+                return;
+            }
+            if (!validateEmail(email)) {
+                $(".field-validation-valid[data-valmsg-for='Email']").html($("#in-email").data("val-email")).show();
+                return;
+            }
+
+            $(".field-validation-valid[data-valmsg-for='Email']").hide();
+
+            $.ajax({
+                type: 'POST',
+                data: {},
+                url: '/Portal/CambiarEmail?email=' + email,
+                success: function (response) {
+                    if (response == "Exitoso") {
+                        location.reload();
+                        return;
+                    }
+                    if(response == "MailOcupado"){
+                        $(".error-row").html("Hubo un error al modificar el email. El email introducido ya está ocupado.").show('');
+                        return;
+                    }
+                    $(".error-row").html("Hubo un error al modificar el email. Por favor vuelva a intentarlo").show('');
+                    return;
+                },
+                error: function (err) {
+                    $(".error-row").html("Hubo un error al modificar el email. Porfavor vuelva a intentarlo.").show('');
+                    return;
+                }
+            });
+        });
+
+        $("#btn-guardar-pass").click(function () {
+            var password = $("#in-password").val();
+            var passwordConfirm = $("#in-password-confirma").val();
+            var valido = true;
+
+            if (password.length < 6) {
+                $(".field-validation-valid[data-valmsg-for='Pass']").html($("#in-password").data("val-length")).show();
+                valido = false;
+            }
+            else {
+                $(".field-validation-valid[data-valmsg-for='Pass']").html('').hide();
+            }
+            if (password !== passwordConfirm) {
+                $(".field-validation-valid[data-valmsg-for='ConfirmPass']").html($("#in-password-confirma").data("val-equalto")).show();
+                valido = false;
+            }
+            else {
+                $(".field-validation-valid[data-valmsg-for='ConfirmPass']").html('').hide();
+            }
+
+            if(!valido){
+                return;
+            }
+
+            $.ajax({
+                type: 'POST',
+                data: {contrasena: password},
+                url: '/Portal/CambiarPassword',
+                success: function (response) {
+                    if (response) {
+                        location.reload();
+                        return;
+                    }
+                    $(".error-row").html("Hubo un error al modificar la contraseña. Por favor vuelva a intentarlo").show('');
+                    return;
+                },
+                error: function (err) {
+                    $(".error-row").html("Hubo un error al modificar la contraseña. Porfavor vuelva a intentarlo.").show('');
+                    return;
+                }
+            });
+        });
+
+        function validateEmail(email) {
+            var re = /^(([^<>()[\]\\.,;:\s@('@')\"]+(\.[^<>()[\]\\.,;:\s@('@')\"]+)*)|(\".+\"))@('@')((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;;
+            return re.test(email);
+        }
+
+        $("#cancelar-cambiar-nombre").click(function () {
+            $("#cambiar-nombre-panel").hide();
+            $("#cambiar-nombre").show();
+        });
+
+        $("#cambiar-celular").click(function () {
+            $("#cambiar-celular-panel").show();
+            $("#cambiar-celular").hide();
+            $("#cambiar-nombre").show();
+            $("#cambiar-email").show();
+            $("#cambiar-password").show();
+            $("#cambiar-nombre-panel").hide();
+            $("#cambiar-email-panel").hide();
+            $("#cambiar-password-panel").hide();
+        });
+
+        $("#cancelar-cambiar-celular").click(function () {
+            $("#cambiar-celular-panel").hide();
+            $("#cambiar-celular").show();
+        });
+
+        $("#cambiar-email").click(function () {
+            $("#cambiar-email-panel").show();
+            $("#cambiar-email").hide();
+            $("#cambiar-nombre").show();
+            $("#cambiar-celular").show();
+            $("#cambiar-password").show();
+            $("#cambiar-nombre-panel").hide();
+            $("#cambiar-celular-panel").hide();
+            $("#cambiar-password-panel").hide();
+        });
+
+        $("#cancelar-cambiar-email").click(function () {
+            $("#cambiar-email-panel").hide();
+            $("#cambiar-email").show();
+        });
+
+        $("#cambiar-password").click(function () {
+            $("#cambiar-password-panel").show();
+            $("#cambiar-password").hide();
+            $("#cambiar-nombre").show();
+            $("#cambiar-email").show();
+            $("#cambiar-celular").show();
+            $("#cambiar-nombre-panel").hide();
+            $("#cambiar-email-panel").hide();
+            $("#cambiar-celular-panel").hide();
+        });
+
+        $("#cancelar-cambiar-password").click(function () {
+            $("#cambiar-password-panel").hide();
+            $("#cambiar-password").show();
+        });
+    </script>

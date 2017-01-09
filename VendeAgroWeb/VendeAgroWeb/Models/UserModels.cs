@@ -104,7 +104,7 @@ namespace VendeAgroWeb.Models
 
         public string IdConekta => _idConekta;
 
-        private ICollection<TarjetaViewModel> Tarjetas
+        public ICollection<TarjetaViewModel> Tarjetas
         {
             get
             {

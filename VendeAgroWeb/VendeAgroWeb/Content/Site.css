@@ -2458,6 +2458,11 @@ hr {
     background-size: cover !important;
 }
 
+.data-tarjetas {
+    text-align: center;
+    min-width: 50px;
+}
+
 @media (max-width: 1200px) {
     .base {
         height: 270px !important;
