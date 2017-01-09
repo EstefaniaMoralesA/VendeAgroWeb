@@ -186,7 +186,7 @@
                     else if (response == "TelefonoOcupado") {
                         $('.proceso-registro-contenido').hide();
                         $('#registro-llena').css('opacity', '1');
-                        $("#alerta").html("El celular ya esta ocupado.").show();
+                        $(".error-row").html("El celular ya esta ocupado.").show();
                         return;
                     }
                     window.location = "/Portal";

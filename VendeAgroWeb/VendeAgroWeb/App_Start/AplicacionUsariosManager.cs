@@ -167,7 +167,7 @@ namespace VendeAgroWeb
                         return RegistroStatus.MailOcupado;
                     }
 
-                    usuario = _dbContext.Usuarios.Where(u => u.telefono.Equals(model.Celular,StringComparison.InvariantCulture)).FirstOrDefault();
+                    usuario = _dbContext.Usuarios.Where(u => u.telefono.Equals(model.Celular, StringComparison.InvariantCulture)).FirstOrDefault();
 
                     if (usuario != null)
                     {
@@ -185,8 +185,7 @@ namespace VendeAgroWeb
                         email = model.Email,
                         confirmaEmail = true,
                         tokenSesion = tokenSesion,
-                        tokenEmail = tokenEmail,
-
+                        tokenEmail = tokenEmail
                     });
 
                     _dbContext.SaveChanges();
@@ -407,41 +406,54 @@ namespace VendeAgroWeb
             return null;
         }
 
-        public async Task<bool> AgregarTarjetaAsync(string clienteIdConekta, string tokenTarjeta)
+        public async Task<bool> AgregarTarjetaAsync(int id, string tokenTarjeta)
         {
-            var tarjeta = await Startup.GetConektaLib().AddCardAsync(clienteIdConekta, tokenTarjeta);
-            if (tarjeta == null) return false;
-
-            return await Task.Run(() =>
+            using (var _dbContext = new MercampoEntities())
             {
-                using (var _dbContext = new MercampoEntities())
+                Startup.OpenDatabaseConnection(_dbContext);
+                if (_dbContext.Database.Connection.State != System.Data.ConnectionState.Open)
                 {
-                    Startup.OpenDatabaseConnection(_dbContext);
-                    if (_dbContext.Database.Connection.State != System.Data.ConnectionState.Open)
-                    {
-                        return false;
-                    }
-
-                    var usuarioId = _dbContext.Usuarios.Where(u => u.idConekta == clienteIdConekta).FirstOrDefault()?.id;
-
-                    if (usuarioId == null)
-                    {
-                        _dbContext.Database.Connection.Close();
-                        return false;
-                    }
-
-                    _dbContext.Usuario_Tarjeta.Add(new Usuario_Tarjeta
-                    {
-                        tipoTarjeta = GetTipoTarjeta(tarjeta.Brand),
-                        digitosTarjeta = int.Parse(tarjeta.Last4),
-                        tokenTarjeta = tarjeta.Id,
-                        idUsuario = usuarioId.Value,
-                        activo = true
-                    });
-                    _dbContext.SaveChanges();
-                    return true;
+                    return false;
                 }
-            });
+
+                var usuario = _dbContext.Usuarios.Where(u => u.id == id).FirstOrDefault();
+
+                if (usuario == null)
+                {
+                    _dbContext.Database.Connection.Close();
+                    return false;
+                }
+
+                string idCliente = null;
+                if (usuario.idConekta == null)
+                    idCliente = await CrearClienteConektaId(usuario.nombre, usuario.email, usuario.telefono, tokenTarjeta);
+
+                if (idCliente == null)
+                {
+                    _dbContext.Database.Connection.Close();
+                    return false;
+                }
+
+                usuario.idConekta = idCliente;
+                var tarjeta = await Startup.GetConektaLib().AddCardAsync(idCliente, tokenTarjeta);
+
+                if (tarjeta == null)
+                {
+                    _dbContext.Database.Connection.Close();
+                    return false;
+                }
+
+                _dbContext.Usuario_Tarjeta.Add(new Usuario_Tarjeta
+                {
+                    tipoTarjeta = GetTipoTarjeta(tarjeta.Brand),
+                    digitosTarjeta = int.Parse(tarjeta.Last4),
+                    tokenTarjeta = tarjeta.Id,
+                    idUsuario = id,
+                    activo = true
+                });
+                _dbContext.SaveChanges();
+                return true;
+            }
         }
 
         private int GetTipoTarjeta(string tipo)
@@ -460,14 +472,14 @@ namespace VendeAgroWeb
             }
         }
 
-        private async Task<string> CrearClienteConektaId(string nombre, string email, string telefono)
+        private async Task<string> CrearClienteConektaId(string nombre, string email, string telefono, string tarjeta)
         {
             if (nombre == null || email == null)
             {
                 return string.Empty;
             }
 
-            var cliente = await Startup.GetConektaLib().CreateClientAsync(nombre, email, telefono);
+            var cliente = await Startup.GetConektaLib().CreateClientAsync(nombre, email, telefono, new string[] { tarjeta }, "00001", string.Empty, string.Empty, string.Empty);
             return cliente.Id;
         }
 
