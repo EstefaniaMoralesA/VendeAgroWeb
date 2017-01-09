@@ -1,39 +1,69 @@
 ﻿@model VendeAgroWeb.Models.Pagina.PortalAnunciosViewModel
 @{
-    foreach (var anuncio in Model.Anuncios)
+    if (Model.Anuncios.Count <= 0)
     {
-        <div class="anuncio-desktop">
-            <div class="anuncio-container">
-                <div class="row anuncio-titulo">
-                    <p class="titulo">@anuncio.Titulo</p>
-                    <p class="precio">$@anuncio.Precio</p>
-                </div>
-                <div class="col-sm-12 anuncio-contenido">
-                    <div class="row">
-                        <div style="padding-left:0px;">
-                            <div class="imagen-container">
-                                <a><img src="@anuncio.FotoPrincipal" /></a>
+        <div class="no-hay-anuncios">
+            <p style="
+               text-align: center;
+               font-size: 20px;
+               margin-top: 50px;
+               margin-left: 20px;
+               margin-right: 20px;
+               ">Por el momento no hay anuncios disponibles.</p>
+            <a style="
+               text-align: center;
+               font-size: 26px;
+               display: block;
+               margin-left: 20px;
+               margin-right: 20px;
+               margin-top: 10px;
+               color: #abc114;
+               ">Se el primero en anunciarte!</a>
+        </div>
+    }
+    else
+    {
+        foreach (var anuncio in Model.Anuncios)
+        {
+            <div class="anuncio-desktop">
+                <div class="anuncio-container">
+                    <div class="row anuncio-titulo">
+                        <p class="titulo">@anuncio.Titulo</p>
+                        <p class="precio">$@anuncio.Precio</p>
+                    </div>
+                    <div class="col-sm-12 anuncio-contenido">
+                        <div class="row">
+                            <div style="padding-left:0px;">
+                                <div class="imagen-container">
+                                    <a class="btn-fotos" data-id="@anuncio.Id"><img src="@anuncio.FotoPrincipal" /></a>
+                                </div>
                             </div>
-                        </div>
-                        <div class="col-sm-3" style="margin-left: 13px;">
-                            <div class="row informacion-container">
-                                <p class="titulo">Categoria</p>
-                                <p class="informacion">@anuncio.Categoria</p>
-                                <p class="titulo">Subcategoria</p>
-                                <p class="informacion">@anuncio.Subcategoria</p>
-                                <p class="titulo">Estado</p>
-                                <p class="informacion">@anuncio.Estado</p>
+                            <div class="col-sm-3" style="margin-left: 13px;">
+                                <div class="row informacion-container">
+                                    <p class="titulo">Categoria</p>
+                                    <p class="informacion">@anuncio.Categoria</p>
+                                    <p class="titulo">Subcategoria</p>
+                                    <p class="informacion">@anuncio.Subcategoria</p>
+                                    <p class="titulo">Estado</p>
+                                    <p class="informacion">@anuncio.Estado</p>
+                                </div>
                             </div>
-                        </div>
-                        <div class="anuncio-botones-container">
-                            <div class="row acciones-container">
-                                <button id="btn-preguntar" data-id="@anuncio.Id" class="btn btn-default anuncio-boton menu-grad anuncio-preguntar" type="button">Preguntar</button>
-                                <a id="btn-detalles" href="/Home/AnuncioDetalles?id=@anuncio.Id&consulta=@ConsultarDetalles.Index" class="btn btn-default anuncio-boton menu-grad anuncio-detalles">Detalles</a>
+                            <div class="anuncio-botones-container">
+                                <div class="row acciones-container">
+                                    <button id="btn-preguntar" data-id="@anuncio.Id" class="btn btn-default anuncio-boton menu-grad anuncio-preguntar" type="button">Preguntar</button>
+                                    <a id="btn-detalles" href="/Home/AnuncioDetalles?id=@anuncio.Id&consulta=@ConsultarDetalles.Index" class="btn btn-default anuncio-boton menu-grad anuncio-detalles">Detalles</a>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
+        }
     }
 }
+
+<script>
+    $('.btn-fotos').click(function () {
+        fotosClick($(this).data('id'));
+    });
+</script>

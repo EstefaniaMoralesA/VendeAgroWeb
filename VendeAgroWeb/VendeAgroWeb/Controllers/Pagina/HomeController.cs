@@ -489,6 +489,58 @@ namespace VendeAgroWeb.Controllers.Home
             });
         }
 
+        public async Task<ActionResult> GaleriaAnuncio(int? id)
+        {
+            if (id == null)
+            {
+                return HttpNotFound("Parámetro inválido se espera un id de un anuncio");
+            }
+
+            HttpNotFoundResult result = null;
+            GaleriaAnuncioViewModel model = null;
+
+            await Task.Run(() =>
+            {
+                using (var _dbContext = new MercampoEntities())
+                {
+                    Startup.OpenDatabaseConnection(_dbContext);
+                    if (_dbContext.Database.Connection.State != ConnectionState.Open)
+                    {
+                        result = HttpNotFound("Error en la base de datos");
+                    }
+                    else
+                    {
+                        var anuncio = _dbContext.Anuncios.Where(a => a.id == id).FirstOrDefault();
+                        if (anuncio == null)
+                        {
+                            result = HttpNotFound("No se encontro el anuncio con el id solicitado");
+                        }
+                        else
+                        {
+                            anuncio.clicks += 1;
+                            _dbContext.SaveChanges();
+
+                            List<PaginaFotoViewModel> fotos = new List<PaginaFotoViewModel>();
+
+                            foreach (var foto in anuncio.Fotos_Anuncio)
+                            {
+                                fotos.Add(new PaginaFotoViewModel(foto.principal, foto.ruta));
+                            }
+
+                            model = new GaleriaAnuncioViewModel(fotos);
+                        }
+                    }
+                }
+            });
+
+            if (result != null)
+            {
+                return result;
+            }
+
+            return PartialView("GaleriaAnuncio", model);
+        }
+
         public async Task<ActionResult> AnuncioDetalles(int? id, ConsultarDetalles consulta, string query)
         {
             if (id == null)

@@ -1,19 +1,43 @@
 ﻿@model VendeAgroWeb.Models.Pagina.PortalAnunciosViewModel
 
 @{
-    foreach (var anuncio in Model.Anuncios)
+    if (Model.Anuncios.Count <= 0)
     {
-        <div class="anuncio-movil">
-            <div class="movil-anuncio-imagen-container">
-                <a><img class="foto-anuncio" src="@anuncio.FotoPrincipal" /></a>
-            </div>
-            <div class="movil-anuncio-titulo">
-                <div class="row anuncio-titulo">
-                    <p class="titulo">@anuncio.Titulo</p>
-                    <p class="precio">$@anuncio.Precio</p>
+        <div class="no-hay-anuncios">
+            <p style="
+               text-align: center;
+               font-size: 20px;
+               margin-top: 50px;
+               margin-left: 20px;
+               margin-right: 20px;
+               ">Por el momento no hay anuncios disponibles.</p>
+            <a style="
+               text-align: center;
+               font-size: 26px;
+               display: block;
+               margin-left: 20px;
+               margin-right: 20px;
+               margin-top: 10px;
+               color: #abc114;
+               ">Se el primero en anunciarte!</a>
+        </div>
+    }
+    else
+    {
+        foreach (var anuncio in Model.Anuncios)
+        {
+            <div class="anuncio-movil">
+                <div class="movil-anuncio-imagen-container">
+                    <a><img class="foto-anuncio" src="@anuncio.FotoPrincipal" /></a>
+                </div>
+                <div class="movil-anuncio-titulo">
+                    <div class="row anuncio-titulo">
+                        <p class="titulo">@anuncio.Titulo</p>
+                        <p class="precio">$@anuncio.Precio</p>
+                    </div>
                 </div>
             </div>
-        </div>
+        }
     }
 }
 

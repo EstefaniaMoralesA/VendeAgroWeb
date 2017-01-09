@@ -5,6 +5,9 @@
 }
 
 <div class="row">
+    <div class="carrusel-imagenes-container">
+
+    </div>
     <div class="col-sm-12">
         <div class="col-sm-12 home-body-container">
             <div class="row">
@@ -140,6 +143,20 @@
             url: '/Home/AnunciosDestacadosMovilPartial',
             success: function (result) {
                 $(".anuncios-movil-container").html(result);
+            },
+            error: function (msg) {
+                console.log(msg);
+            }
+        });
+    }
+
+    function fotosClick(id) {
+        $.ajax({
+            type: "POST",
+            data: {},
+            url: '/Home/GaleriaAnuncio?id=' + id,
+            success: function (result) {
+                $(".carrusel-imagenes-container").html(result);
             },
             error: function (msg) {
                 console.log(msg);

@@ -204,6 +204,24 @@ namespace VendeAgroWeb.Models.Pagina
         }
     }
 
+    public class GaleriaAnuncioViewModel {
+        private ICollection<PaginaFotoViewModel> _fotos;
+
+        public ICollection<PaginaFotoViewModel> Fotos
+        {
+            get
+            {
+                return _fotos;
+            }
+        }
+
+        public GaleriaAnuncioViewModel(ICollection<PaginaFotoViewModel> fotos)
+        {
+            _fotos = fotos;
+        }
+
+    }
+
     public class PortalDetallesAnuncioViewModel
     {
         private PortalAnuncioViewModel _anuncio;
