@@ -2561,6 +2561,22 @@ hr {
     .login-menu-container ul {
         left: 32%;
     }
+
+    .titulo-mision-anunciate {
+        font-size: 27px;
+    }
+
+    .anunciate-img {
+        width: 154px;
+    }
+
+    .anunciate-texto-container p {
+        font-size: 16px;
+    }
+
+    .titulo-anunciate {
+        font-size: 20px;
+    }
 }
 
 
