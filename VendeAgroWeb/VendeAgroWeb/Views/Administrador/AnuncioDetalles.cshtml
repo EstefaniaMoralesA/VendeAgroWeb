@@ -50,7 +50,7 @@
 
         <div class="img-grande-container">
             @{
-                var fotoPrincipal = Model.Fotos.Where(f => f.Principal == true)?.FirstOrDefault();
+                var fotoPrincipal = Model.Fotos.Where(f => f.Principal == true).FirstOrDefault();
                 if (fotoPrincipal != null)
                 {
                     <img src="@fotoPrincipal.Ruta" class="imagen-grande" />

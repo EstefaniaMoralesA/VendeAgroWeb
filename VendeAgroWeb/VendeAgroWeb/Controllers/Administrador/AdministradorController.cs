@@ -1646,7 +1646,7 @@ namespace VendeAgroWeb.Controllers.Administrador
                         var fileExtension = Path.GetExtension(fileContent.FileName);
                         var guid = Guid.NewGuid().ToString();
                         var name = AplicacionUsuariosManager.Hash(Guid.NewGuid().ToString());
-                        string serverPath = Server.MapPath("~/Uploads/Images");
+                        string serverPath = Server.MapPath("~/img/Uploads/Images");
 
                         if(!Directory.Exists(serverPath))
                         {
@@ -1660,7 +1660,7 @@ namespace VendeAgroWeb.Controllers.Administrador
                             stream.CopyTo(fileStream);
                         }
 
-                        fotos.Add($"/Uploads/Images/{name}{fileExtension}");
+                        fotos.Add($"/img/Uploads/Images/{name}{fileExtension}");
                     }
                 }
             }
@@ -1690,7 +1690,7 @@ namespace VendeAgroWeb.Controllers.Administrador
                         var fileExtension = Path.GetExtension(fileContent.FileName);
                         var guid = Guid.NewGuid().ToString();
                         var name = AplicacionUsuariosManager.Hash(Guid.NewGuid().ToString());
-                        string serverPath = Server.MapPath("~/Uploads/Videos");
+                        string serverPath = Server.MapPath("~/img/Uploads/Videos");
 
                         if (!Directory.Exists(serverPath))
                         {
@@ -1704,7 +1704,7 @@ namespace VendeAgroWeb.Controllers.Administrador
                             stream.CopyTo(fileStream);
                         }
 
-                        result = $"/Uploads/Videos/{name}{fileExtension}";
+                        result = $"/img/Uploads/Videos/{name}{fileExtension}";
                     }
                 }
             }
