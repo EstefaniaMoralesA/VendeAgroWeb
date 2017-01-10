@@ -56,7 +56,7 @@
         activaTab('activos');
     });
 
-    $(window).load(function () {
+    $(window).on('load',function () {
         _id = getUrlParameter('id');
         if (typeof _id == 'undefined') {
             _id = "";
