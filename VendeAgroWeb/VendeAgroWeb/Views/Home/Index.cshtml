@@ -100,7 +100,6 @@
     </div>
 </div>
 
-@Scripts.Render("~/bundles/jquery")
 @Scripts.Render("~/bundles/nouislider")
 @Scripts.Render("~/bundles/wNumb")
 
@@ -465,11 +464,18 @@
         if ($(window).width() <= 767) return;
 
         if ($(this).scrollTop() > 340) {
-            $('.banners-container').addClass('banners-fixed');
-            $('.busqueda-fixed-container').addClass('busqueda-fixed');
+            var offsetAnuncios = offsetBottom(".expander-6");
+            var offsetBanners = offsetBottom(".esconder-banners");
+            if(offsetAnuncios >= offsetBanners)
+                $('.banners-container').addClass('banners-fixed');
+            var offsetBusqueda = offsetBottom(".expander-3");
+            if(offsetAnuncios >= offsetBusqueda || offsetAnuncios <= offsetBanners)
+                $('.busqueda-fixed-container').addClass('busqueda-fixed');
         } else {
             $('.banners-container').removeClass('banners-fixed');
             $('.busqueda-fixed-container').removeClass('busqueda-fixed');
         }
     });
+
+    function offsetBottom(el, i) { i = i || 0; return $(el)[i].getBoundingClientRect().bottom }
 </script>

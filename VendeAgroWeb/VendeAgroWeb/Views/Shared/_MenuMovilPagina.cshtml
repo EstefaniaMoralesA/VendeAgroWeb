@@ -12,9 +12,9 @@
         <div class="col-xs-12" style="padding-left: 25px; padding-right: 25px">
             <form role="search" class="form-horizontal movil-forma-busqueda">
                 <div class="input-group">
-                    <input type="text" class="form-control" id="buscar" placeholder="Buscar">
+                    <input type="text" class="form-control" id="buscar-movil" placeholder="Buscar">
                     <div class="input-group-btn">
-                        <a class="btn btn-default busqueda botones-grad botones-shadow">
+                        <a id="busqueda-movil" class="btn btn-default busqueda botones-grad botones-shadow">
                             <span class="glyphicon glyphicon-search"></span>
                         </a>
                     </div>
@@ -28,3 +28,10 @@
         </div>
     </div>
 </div>
+<script>
+    $("#busqueda-movil").click(function () {
+        var query = $('#buscar-movil').val();
+        query = query.toLowerCase();
+        window.location = "/Home/ResultadosBusqueda?query=" + query;
+    });
+</script>

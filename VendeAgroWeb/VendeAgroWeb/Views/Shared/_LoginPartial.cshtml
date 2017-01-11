@@ -22,21 +22,15 @@
 else
 {
     <div class="botones-menu">
-        <a class="btn btn-primary btn-8-caracteres btn-ingresar botones-shadow botones-grad" data-target="#login" data-toggle="modal" id="loginLink"><span class="icono-ingresar glyphicon glyphicon-user"></span>Ingresar</a>
+        <a class="btn btn-primary btn-8-caracteres btn-ingresar botones-shadow botones-grad loginLink" onclick="abrirModalLogin(1)"  id=""><span class="icono-ingresar glyphicon glyphicon-user"></span>Ingresar</a>
         <a class="btn btn-default carrito botones-grad botones-shadow" href="/Home/CarritoDeCompra">
             <span class="glyphicon glyphicon-shopping-cart"></span>
         </a>
     </div>
 }
 
-@Scripts.Render("~/bundles/jquery")
-@Scripts.Render("~/bundles/bootstrap.min")
+
 
 <script>
 
-    $('#loginLink').click(function () {
-        if ($('#login').hasClass('in')) {
-            $('#login').modal('hide');
-        }
-    });
 </script>

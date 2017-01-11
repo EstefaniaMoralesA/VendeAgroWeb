@@ -6,6 +6,10 @@
     <title>@ViewBag.Title Mercampo</title>
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap.min")
+    @Scripts.Render("~/bundles/jqueryval")
+    @RenderSection("scripts", required: false)
 </head>
 <body>
     <div class="wrapper">
@@ -41,13 +45,20 @@
         </div>
     </div>
 
-    @Scripts.Render("~/bundles/jquery")
-    @Scripts.Render("~/bundles/bootstrap")
-    @RenderSection("scripts", required: false)
+    
 </body>
 </html>
 
 <script>
+
+    function abrirModalLogin(a) {
+        if ($('#login').hasClass('in')) {
+            $('#login').modal('hide');
+            return;
+        }
+        $('#login').modal('show');
+    }
+
     document.getElementById("olvidaste-contrasena-cliente").click(function () {
         $("#login-cliente").hide();
         $("#olvidaste-cliente").show();
