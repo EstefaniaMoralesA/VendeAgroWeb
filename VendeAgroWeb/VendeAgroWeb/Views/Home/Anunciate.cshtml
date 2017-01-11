@@ -7,37 +7,43 @@
 <div class="anunciate-container">
     <section class="anunciate-mision-container">
         <div class="col-sm-offset-2 col-sm-8 anunciate-texto-container">
-            <h2 class="titulo-mision-anunciate">¿Por qué anunciarse con <span><img src="~/img/logoHorizontalAnunciate.png" class="anunciate-img" />?</span></h2>
-            <ul style="list-style:none;">
-                <li>
-                    <p class="palomita-anunciate">&#10004;</p>
-                    <p class="titulo-anunciate">Experiencia</p>
-                    <p class="texto-anunciate">Somos una empresa que nace de la experiencia en el sector agrario, que sabe de las carencias y necesidades del mismo.</p>
-                </li>
-                <li>
-                    <p class="palomita-anunciate">&#10004;</p>
-                    <p class="titulo-anunciate">Accesible</p>
-                    <p class="texto-anunciate">Contamos con una operación comercial accesible para los proveedores que tengan la intención de potencializar su mercado local y nacional.</></p>
-                </li>
-                <li>
-                    <p class="palomita-anunciate">&#10004;</p>
-                    <p class="titulo-anunciate">Sin comisiones</p>
-                    <p class="texto-anunciate">Ofertamos espacios publicitarios, no manejamos comisiones sobre ventas y tratos.</p>
-                </li>
-                <li>
-                    <p class="palomita-anunciate">&#10004;</p>
-                    <p class="titulo-anunciate">Trato directo</p>
-                    <p class="texto-anunciate">Ofrecemos un trato directo con los clientes potenciales.</p>
-                </li>
-            </ul>
-                
-
+            <div class="row" style="min-height: calc(100vh - 270px - 45px);">
+                <div class="texto-container">
+                    <h2 class="titulo-mision-anunciate">¿Por qué anunciarse con <span><img src="~/img/logoHorizontalAnunciate.png" class="anunciate-img" />?</span></h2>
+                    <ul style="list-style:none; text-align: center; padding-left: 0px;">
+                        <li>
+                            <div class="col-sm-12 titulo-anunciate-container">
+                                <p class="titulo-anunciate">&#10004; Experiencia</p>
+                            </div>
+                            <p class="texto-anunciate">Somos una empresa que nace de la experiencia en el sector agrario, que sabe de las carencias y necesidades del mismo. </p>
+                        </li>
+                        <li>
+                            <div class="col-sm-12 titulo-anunciate-container">
+                                <p class="titulo-anunciate accesible">&#10004; Accesible</p>
+                            </div>
+                            <p class="texto-anunciate">Contamos con una operación comercial accesible para los proveedores que tengan la intención de potencializar su mercado local y nacional.</p>
+                        </li>
+                        <li>
+                            <div class="col-sm-12 titulo-anunciate-container">
+                                <p class="titulo-anunciate sin-comisiones">&#10004; Sin comisiones</p>
+                            </div>
+                            <p class="texto-anunciate">Ofertamos espacios publicitarios, no manejamos comisiones sobre ventas y tratos.</p>
+                        </li>
+                        <li>
+                            <div class="col-sm-12 titulo-anunciate-container">
+                                <p class="titulo-anunciate trato-directo">&#10004; Trato directo</p>
+                            </div>
+                            <p class="texto-anunciate">Ofrecemos un trato directo con los clientes potenciales.</p>
+                        </li>
+                    </ul>
+                </div>
+            </div>
         </div>
         <div class="col-sm-offset-2 col-sm-8 planes-texto-container">
-            <div class="row">
+            <div class="row" style="margin-left: 0px; margin-right: 0px;">
                 <a href="#paquetes">Planes</a>
             </div>
-            <div class="row">
+            <div class="row" style="margin-left: 0px; margin-right: 0px;">
                 <a href="#paquetes"><span class="glyphicon glyphicon-chevron-down"></span></a>
             </div>
         </div>
@@ -46,8 +52,8 @@
     </section>
     <section class="anunciate-paquetes-container" id="paquetes">
         <div class="anunciate-wrapper">
-            <div class="col-md-offset-2 col-md-8 anunciate-cont @(Model.Paquetes.Count() <= 4 ? "anunciate-recados-margen-grande" : "anunciate-recados-margen-chico")">
-                <div class="row bases-container">
+            <div class="anunciate-cont @(Model.Paquetes.Count() <= 4 ? "anunciate-recados-margen-grande" : "anunciate-recados-margen-chico")">
+                <div class="bases-container">
                     @{
                         int cont = 1;
                     }
@@ -69,7 +75,7 @@
                                             <h2>@item.Meses<span> MESES</span></h2>
                                         }
                                     }
-                                    <ul style="margin-top: 15px; margin-bottom: 15px;">
+                                    <ul class="texto-anunciate-base" style="margin-top: 15px; margin-bottom: 15px;">
                                         <li>@item.Nombre</li>
                                         <li>@item.Descripcion</li>
                                     </ul>

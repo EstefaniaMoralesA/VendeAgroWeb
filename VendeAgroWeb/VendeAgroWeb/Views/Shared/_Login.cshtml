@@ -25,22 +25,21 @@
                                 @Html.ValidationMessageFor(m => model.Email, "", new { @class = "text-danger" })
                             </div>
                         </div>
-
-                        <div class="form-group">
+                        <div class="form-group" style="margin-bottom: 5px;">
                             <div class="login-campo">
                                 <input class="form-control campos-registro text-box single-line password" data-val="true" data-val-length="La contraseña debe de ser mínimo de 6 caracteres." data-val-length-max="100" data-val-length-min="6" data-val-required="The Contraseña field is required." id="PasswordLogin" name="Password" placeholder="Contraseña" type="password">
                                 @Html.ValidationMessageFor(m => model.Password, "", new { @class = "text-danger" })
                             </div>
                         </div>
-
-                        <div class="form-group" style="text-align: center;">
+                        <p id="olvidaste-contrasena-cliente" style="text-align: center;"><a class="registrate-texto">¿Olvidaste tu contraseña?</a></p>
+                        <div class="form-group" style="text-align: center; margin-top: 20px;">
                             <div class="text-container" style="position: relative; display: inline-block;">
                                 <a id="boton-iniciarSesion" class="btn btn-default registrar-boton menu-grad">Iniciar Sesi&oacute;n</a>
                                 <span class="glyphicon glyphicon-user" style="position: absolute; left: 22px; top: 12px; color:white;"></span>
                             </div>
                         </div>
-                        <div class="olvidaste-contrasena-cliente">
-                            <p id="olvidaste-contrasena-cliente"><a class="registrate-texto btn">¿Olvidaste tu contraseña?</a></p>
+                        <div class="olvidaste-contrasena-cliente" style="margin-top: 30px;">
+                            <p style="display: inline-block;" class="registrate-texto">¿No tienes cuenta?</p><a style="margin-left: 10px;">Regístrate aquí</a>
                         </div>
                     </div>
                 </div>

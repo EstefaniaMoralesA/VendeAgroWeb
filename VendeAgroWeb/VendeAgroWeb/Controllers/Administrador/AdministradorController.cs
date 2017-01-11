@@ -1780,6 +1780,12 @@ namespace VendeAgroWeb.Controllers.Administrador
                                 principal = true
                             });
 
+                            _dbContext.Anuncio_Beneficio.Add(new Anuncio_Beneficio
+                            {
+                                idAnuncio = nuevoAnuncio.id,
+                                idBeneficio = 4
+                            });
+
                             foreach (var item in fotos)
                             {
                                 var url = (string)item;

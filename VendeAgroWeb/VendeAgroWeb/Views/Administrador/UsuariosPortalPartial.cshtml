@@ -28,24 +28,31 @@
             @{
                 if (Model.Tipo == 1)
                 {
-                    foreach (var item in Model.UsuariosPortal)
+                    if (Model.UsuariosPortal.Count < 1)
                     {
-                        <tr>
-                            <td class="filtro">@item.Nombre</td>
-                            <td class="filtro">@item.Apellidos</td>
-                            <td class="filtro">@item.Telefono</td>
-                            <td class="filtro">@item.Email</td>
-                            @if (item.NumAnuncios > 0)
-                            {
-                                <td><a href="/Administrador/Anuncios?id=@item.Id&tipo=usuario" class="btn btn-primary btn-8-caracteres btn-categorias-anuncios"><span>@item.NumAnuncios </span>anuncios</a></td>
-                            }
-                            else
-                            {
-                                <td><a class="btn btn-default btn-8-caracteres btn-categorias-anuncios" style="cursor:not-allowed;"><span>@item.NumAnuncios </span>anuncios</a></td>
-                            }
-                            <td><a data-id="@item.Id" class="btn btn-success btn-5-caracteres btn-usuario-pagos">pagos</a></td>
-                            <td><a href="/Administrador/NuevoAnuncio?id=@item.Id" class="btn btn-primary btn-5-caracteres btn-usuario-pagos">nuevo anuncio</a></td>
-                        </tr>
+                        <tr><td colspan="9">Por el momento, no hay clientes registrados en el sistema.</td></tr>
+                    }
+                    else
+                    {
+                        foreach (var item in Model.UsuariosPortal)
+                        {
+                            <tr>
+                                <td class="filtro">@item.Nombre</td>
+                                <td class="filtro">@item.Apellidos</td>
+                                <td class="filtro">@item.Telefono</td>
+                                <td class="filtro">@item.Email</td>
+                                @if (item.NumAnuncios > 0)
+                                {
+                                    <td><a href="/Administrador/Anuncios?id=@item.Id&tipo=usuario" class="btn btn-primary btn-8-caracteres btn-categorias-anuncios"><span>@item.NumAnuncios </span>anuncios</a></td>
+                                }
+                                else
+                                {
+                                    <td><a class="btn btn-default btn-8-caracteres btn-categorias-anuncios" style="cursor:not-allowed;"><span>@item.NumAnuncios </span>anuncios</a></td>
+                                }
+                                <td><a data-id="@item.Id" class="btn btn-success btn-5-caracteres btn-usuario-pagos">pagos</a></td>
+                                <td><a href="/Administrador/NuevoAnuncio?id=@item.Id" class="btn btn-primary btn-5-caracteres btn-usuario-pagos">nuevo anuncio</a></td>
+                            </tr>
+                        }
                     }
                 }
             }
