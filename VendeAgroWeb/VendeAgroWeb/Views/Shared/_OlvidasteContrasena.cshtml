@@ -1,16 +1,36 @@
-﻿@*@model VendeAgroWeb.Models.Portal.OlvidasteContrasenaViewModel*@
+﻿@model VendeAgroWeb.Models.Portal.OlvidasteContrasenaViewModel
 
-@{
-    ViewBag.Title = "Olvidaste Contraseña";
-}
-
-
-<div class="row login-cliente-container hideMe" id="olvidaste-cliente">
+<div class="row">
     <div class="col-sm-12">
         <div class="col-sm-6 col-sm-offset-3">
             <div class="logo-login" style="text-align: center;">
                 <img src="~/img/logo.png" />
             </div>
+
+            @using (Html.BeginForm())
+            {
+                @Html.AntiForgeryToken()
+
+                <div class="form-horizontal">
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                    <div class="login-campos">
+                        <div class="form-group">
+                            <div class="login-campo">
+                                <input class="form-control campos-registro text-box single-line" data-val="true" data-val-email="El email introducido no es válido." data-val-required="*Campo requerido." id="EmailLogin" name="Email" placeholder="Email" type="email" value="">
+                                @Html.ValidationMessageFor(m => Model.Email, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="col-sm-8 col-sm-offset-2">
+                            <div class="form-group" style="text-align: center; margin-top: 20px; margin-left: 0px; margin-right: 0px;">
+                                <div class="text-container" style="position: relative; display: inline-block; width: 100%;">
+                                    <a id="boton-olvidasteContrasena" class="btn btn-default registrar-boton menu-grad" style="width: 100%; padding-left: 0px; padding-right: 0px;">Recuperar Contraseña</a>
+                                </div>
+                            </div>
+                            <a id="btn-registrate-aqui" class="btn btn-default registrar-boton" style="width: 100%; padding-left: 0px; padding-right: 0px; color: black !important;">Cancelar</a>
+                        </div>
+                    </div>
+                </div>
+            }
         </div>
     </div>
 </div>

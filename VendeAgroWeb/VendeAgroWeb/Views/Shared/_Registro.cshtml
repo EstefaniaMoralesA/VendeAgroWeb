@@ -1,12 +1,6 @@
-﻿@{
-    VendeAgroWeb.Models.Portal.RegistroViewModel model = new VendeAgroWeb.Models.Portal.RegistroViewModel();
-}
+﻿@model VendeAgroWeb.Models.Portal.RegistroViewModel
 
-@{
-    ViewBag.Title = "Registro";
-}
-
-<div class="row" id="registro-cliente">
+<div class="row">
     <div class="registro">
         <div class="proceso-registro-contenido" style="display:none;">
             <h3 style="text-align: center; color: white;">Procesando registro, favor de no recargar la p&aacute;gina.</h3>
@@ -25,32 +19,32 @@
                     @Html.ValidationSummary(true, "", new { @class = "text-danger" })
                     <div class="form-group registro-campo">
                         <input id="NombreRegistro" class="form-control campos-registro text-box single-line" data-val="true" data-val-required="*Campo requerido." id="Nombre" name="Nombre" placeholder="Nombre" type="text">
-                        @Html.ValidationMessageFor(m => model.Nombre, "", new { @class = "text-danger" })
+                        @Html.ValidationMessageFor(m => Model.Nombre, "", new { @class = "text-danger" })
                     </div>
 
                     <div class="form-group registro-campo">
                         <input id="ApellidosRegistro" class="form-control campos-registro text-box single-line" data-val="true" data-val-required="*Campo requerido." id="Apellidos" name="Apellidos" placeholder="Apellidos" type="text">
-                        @Html.ValidationMessageFor(m => model.Apellidos, "", new { @class = "text-danger" })
+                        @Html.ValidationMessageFor(m => Model.Apellidos, "", new { @class = "text-danger" })
                     </div>
 
                     <div class="form-group registro-campo">
                         <input id="CelularRegistro" class="form-control campos-registro text-box single-line" data-val="true" data-val-length="El celular no es válido." data-val-length-max="14" data-val-length-min="10" data-val-required="*Campo requerido." id="Celular" name="Celular" placeholder="Teléfono" type="text">
-                        @Html.ValidationMessageFor(m => model.Celular, "", new { @class = "text-danger" })
+                        @Html.ValidationMessageFor(m => Model.Celular, "", new { @class = "text-danger" })
                     </div>
 
                     <div class="form-group registro-campo">
                         <input id="EmailRegistro" class="form-control campos-registro text-box single-line" data-val="true" data-val-email="El email introducido no es válido." data-val-required="*Campo requerido." id="Email" name="Email" placeholder="Email" type="email">
-                        @Html.ValidationMessageFor(m => model.Email, "", new { @class = "text-danger" })
+                        @Html.ValidationMessageFor(m => Model.Email, "", new { @class = "text-danger" })
                     </div>
 
                     <div class="form-group registro-campo">
                         <input id="PasswordRegistro" class="form-control campos-registro text-box single-line password" data-val="true" data-val-length="La contraseña debe de ser mínimo de 6 caracteres." data-val-length-max="100" data-val-length-min="6" data-val-required="*Campo requerido." id="Password" name="Password" placeholder="Contraseña" type="password">
-                        @Html.ValidationMessageFor(m => model.Password, "", new { @class = "text-danger" })
+                        @Html.ValidationMessageFor(m => Model.Password, "", new { @class = "text-danger" })
                     </div>
 
                     <div class="form-group registro-campo">
                         <input id="ConfirmarPassRegistro" class="form-control campos-registro text-box single-line password" data-val="true" data-val-equalto="La contraseña y su confirmacion no son iguales." data-val-equalto-other="*.Password" id="ConfirmPassword" name="ConfirmPassword" placeholder="Confirmar contraseña" type="password">
-                        @Html.ValidationMessageFor(m => model.ConfirmPassword, "", new { @class = "text-danger" })
+                        @Html.ValidationMessageFor(m => Model.ConfirmPassword, "", new { @class = "text-danger" })
                     </div>
 
                     <div class="form-group" style="text-align: center;">

@@ -56,6 +56,10 @@ namespace VendeAgroWeb.Models.Portal
 
     public class OlvidasteContrasenaViewModel
     {
+        [Required]
+        [EmailAddress]
+        [Display(Name = "Email")]
+        public string Email { get; set; }
     }
 
     public class CrearAnuncioViewModel

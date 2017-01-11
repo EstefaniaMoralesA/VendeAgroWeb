@@ -170,6 +170,20 @@ namespace VendeAgroWeb.Controllers.Administrador
             return View(model);
         }
 
+        [HttpPost]
+        public async Task<ActionResult> RegistroPartial()
+        {
+            RegistroViewModel model = new RegistroViewModel();
+            return PartialView("_Registro", model);
+        }
+
+        [HttpPost]
+        public async Task<ActionResult> OlvidasteContrasenaPartial()
+        {
+            OlvidasteContrasenaViewModel model = new OlvidasteContrasenaViewModel();
+            return PartialView("_OlvidasteContrasena", model);
+        }
+
         public ActionResult MisPagos()
         {
             return View();
