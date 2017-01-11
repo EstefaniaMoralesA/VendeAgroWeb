@@ -4,11 +4,14 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@ViewBag.Title Mercampo</title>
+    @Styles.Render("~/Content/nouislider")
     @Styles.Render("~/Content/css")
-    @Scripts.Render("~/bundles/modernizr")
     @Scripts.Render("~/bundles/jquery")
-    @Scripts.Render("~/bundles/bootstrap.min")
     @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/modernizr")
+    @Scripts.Render("~/bundles/bootstrap")
+    @Scripts.Render("~/bundles/wNumb")
+    @Scripts.Render("~/bundles/nouislider")
     @RenderSection("scripts", required: false)
 </head>
 <body>
