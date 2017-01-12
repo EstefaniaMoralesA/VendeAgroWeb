@@ -37,9 +37,12 @@ namespace VendeAgroWeb
 
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/bootstrap.css",
-                      "~/Content/site.css",
-                      "~/Content/nouislider.min.css"
+                      "~/Content/site.css"
                       ));
+
+            bundles.Add(new StyleBundle("~/Content/nouislider").Include(
+                      "~/Content/nouislider.min.css"
+               ));
 
             bundles.Add(new StyleBundle("~/owl/css").Include(
                      "~/Content/owl.carousel.css",

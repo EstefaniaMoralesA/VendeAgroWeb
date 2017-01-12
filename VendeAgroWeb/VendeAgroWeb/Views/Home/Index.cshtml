@@ -100,9 +100,6 @@
     </div>
 </div>
 
-@Scripts.Render("~/bundles/nouislider")
-@Scripts.Render("~/bundles/wNumb")
-
 <script>
     var idCategoria = -1;
     var idSubcategoria = -1;
@@ -114,6 +111,7 @@
     var tamanosRedistribuidos = false;
 
     $(document).ready(function () {
+        setSlider();
         getAnunciosDestacados();
         getAnunciosDestacadosMovil();
         recalcularTamanos();
@@ -163,41 +161,44 @@
         });
     }
 
-    var slider = document.getElementById('slider');
+    function setSlider() {
+        var slider = document.getElementById('slider');
 
-    noUiSlider.create(slider, {
-        start: [100, 500000],
-        step: 100,
-        margin: 50,
-        connect: true,
-        range: {
-            'min': 100,
-            'max': 500000
-        },
-        format: wNumb({
-            thousand: ',',
-            decimals: 0
-        })
-    });
-
-    valueIzq = document.getElementById('value-izq'),
-    valueDer = document.getElementById('value-der');
-
-    slider.noUiSlider.on('update', function (values, handle) {
-        var moneyFormat = wNumb({
-            thousand: ','
+        noUiSlider.create(slider, {
+            start: [100, 500000],
+            step: 100,
+            margin: 50,
+            connect: true,
+            range: {
+                'min': 100,
+                'max': 500000
+            }
+            ,
+            format: wNumb({
+                thousand: ',',
+                decimals: 0
+            })
         });
 
-        if (!handle) {
-            precio = values[handle];
-            precioBajo = moneyFormat.from(precio);
-            valueIzq.innerHTML = values[handle];
-        } else {
-            precio = values[handle];
-            precioAlto = moneyFormat.from(precio);
-            valueDer.innerHTML = values[handle];
-        }
-    });
+        valueIzq = document.getElementById('value-izq'),
+        valueDer = document.getElementById('value-der');
+
+        slider.noUiSlider.on('update', function (values, handle) {
+            var moneyFormat = wNumb({
+                thousand: ','
+            });
+
+            if (!handle) {
+                precio = values[handle];
+                precioBajo = moneyFormat.from(precio);
+                valueIzq.innerHTML = values[handle];
+            } else {
+                precio = values[handle];
+                precioAlto = moneyFormat.from(precio);
+                valueDer.innerHTML = values[handle];
+            }
+        });
+    }
 
     $(window).resize(function () {
         if (!tamanosRedistribuidos) {

@@ -4,15 +4,20 @@
     if (Model != null)
     {
         <div class="banner-central">
-            <a  target="_blank" class="banner-central-link" href="http://@Model.Link"></a>
+            <a target="_blank" class="banner-central-link" href="http://@Model.Link"></a>
         </div>
+
+
+        <script>
+
+            $(document).ready(function () {
+                $('.banner-central').css("background", "url(@Model.Ruta) center no-repeat");
+
+            });
+
+        </script>
     }
+
 }
 
-<script>
-    $(document).ready(function () {
-        $('.banner-central').css("background", "url(@Model.Ruta) center no-repeat");
 
-    });
-
-</script>
