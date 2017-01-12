@@ -348,15 +348,25 @@ namespace VendeAgroWeb
             return sb.ToString();
         }
 
-        private void setCookie(string name, string value, HttpResponse response)
+        public static void setCookie(string name, string value, HttpResponseBase response)
+        {
+            setCookie(name, value, response.Cookies);
+        }
+
+        public static void setCookie(string name, string value, HttpResponse response)
+        {
+            setCookie(name, value, response.Cookies);
+        }
+
+        private static void setCookie(string name, string value, HttpCookieCollection cookies)
         {
             HttpCookie myCookie = new HttpCookie(name);
             myCookie["token"] = value;
             myCookie.Expires = DateTime.Now.AddDays(5d);
-            response.Cookies.Add(myCookie);
+            cookies.Add(myCookie);
         }
 
-        private void borrarCookie(HttpResponse response, string nombre)
+        public static void borrarCookie(HttpResponse response, string nombre)
         {
             HttpCookie temp = response.Cookies[nombre];
             temp.Expires = DateTime.Now.AddDays(-1D);

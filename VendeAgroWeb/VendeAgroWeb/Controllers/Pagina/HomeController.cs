@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -39,9 +40,11 @@ namespace VendeAgroWeb.Controllers.Home
 
         public async Task<ActionResult> BeneficiosExtra(int? id)
         {
+            if (!id.HasValue) return RedirectToAction("CarritoDeCompra");
             var paquete = await ObtenerPaquete(id);
-            var carrito = Startup.GetCarritoDeCompra();
+            var carrito = Startup.GetCarritoDeCompra(Request.Cookies);
             var paqueteCarrito = carrito.insertarPaqueteEnCarrito(carrito.Paquetes.Count(), paquete.Nombre, paquete.Meses, paquete.Precio);
+            UpdateCarritoCookie(carrito, Response);
             BeneficiosExtraViewModel model = new BeneficiosExtraViewModel(paqueteCarrito, await ObtenerBeneficios(), carrito.TotalCarrito);
             return View(model);
         }
@@ -50,7 +53,8 @@ namespace VendeAgroWeb.Controllers.Home
         public async Task<bool> InsertaBeneficiosEnCarrito(int index, string json)
         {
             var beneficios = new JavaScriptSerializer().Deserialize<List<int>>(json);
-            var paquete = Startup.GetCarritoDeCompra().Paquetes.ElementAt(index);
+            var carrito = Startup.GetCarritoDeCompra(Request.Cookies);
+            var paquete = carrito.Paquetes.ElementAt(index);
             foreach (var item in beneficios) {
                 if (item == -1) {
                     continue;
@@ -61,6 +65,8 @@ namespace VendeAgroWeb.Controllers.Home
                 }
                 paquete.agregaBeneficioAPaquete(beneficio);
             }
+            carrito.Paquetes[index] = paquete;
+            UpdateCarritoCookie(carrito, Response);
             return true;
         }
 
@@ -151,24 +157,31 @@ namespace VendeAgroWeb.Controllers.Home
         }
 
         public ActionResult EliminaPaqueteDeCarrito(int index) {
-            if (Startup.GetCarritoDeCompra().borraPaqueteDeCarrito(index)) {
-                return RedirectToAction("CarritoDeCompra");
-            }
+            var carrito = Startup.GetCarritoDeCompra(Request.Cookies);
+            carrito.borraPaqueteDeCarrito(index);
+            UpdateCarritoCookie(carrito, Response);
             return RedirectToAction("CarritoDeCompra");
+        }
+
+        public void UpdateCarritoCookie(CarritoDeCompra carrito, HttpResponseBase response)
+        {
+            var serializedCarrito = Startup.SerializeCarrito(carrito);
+            Debug.WriteLine(serializedCarrito);
+            AplicacionUsuariosManager.setCookie("carritoVendeAgro", serializedCarrito, Response);
         }
 
         public ActionResult EliminaBeneficioDePaquete(int index, int id)
         {
-            if (Startup.GetCarritoDeCompra().Paquetes.ElementAt(index).borraBeneficioDePaquete(id))
-            {
-                return RedirectToAction("CarritoDeCompra");
-            }
+            var carrito = Startup.GetCarritoDeCompra(Request.Cookies);
+            carrito.Paquetes.ElementAt(index).borraBeneficioDePaquete(id);
+            UpdateCarritoCookie(carrito, Response);
             return RedirectToAction("CarritoDeCompra");
         }
 
         public ActionResult CarritoDeCompra()
         {
-            return View(Startup.GetCarritoDeCompra());
+            var carrito = Startup.GetCarritoDeCompra(Request.Cookies);
+            return View(carrito);
         }
 
         public async Task<ActionResult> AnunciosDestacadosPartial()
