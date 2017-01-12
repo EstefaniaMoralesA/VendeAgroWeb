@@ -170,11 +170,10 @@ namespace VendeAgroWeb.Controllers.Administrador
             return View(model);
         }
 
-        [HttpPost]
-        public async Task<ActionResult> RegistroPartial()
-        {
+        public ActionResult Registro()
+        { 
             RegistroViewModel model = new RegistroViewModel();
-            return PartialView("_Registro", model);
+            return View("_Registro", model);
         }
 
         [HttpPost]
