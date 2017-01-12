@@ -313,6 +313,10 @@ a {
     margin-top: 140px;
 }
 
+.registro-general {
+    margin-top: 30px;
+}
+
 .modal-dialog.modal-registro-container::-webkit-scrollbar {
     width: 0px !important;
 }
@@ -349,18 +353,6 @@ a {
     text-align: center;
 }
 
-.registro-completo {
-    width: 750px !important;
-    position: relative;
-    top: 55%;
-    left: 50%;
-    transform: translate(-50%,0%);
-    -o-transform: translate(-50%,0%);
-    -webkit-transform: translate(-50%,0%);
-    -ms-transform: translate(0,0%);
-    -moz-transform: translate(0,0%);
-}
-
 .login-completo {
     width: 750px !important;
     position: absolute;
@@ -375,7 +367,7 @@ a {
 
 .proceso-registro-contenido {
     position: absolute;
-    top: 50%;
+    top: 45%;
     left: 50%;
     transform: translate(-50%,-50%);
     -o-transform: translate(-50%,-50%);
@@ -457,12 +449,12 @@ a {
 @import url(http://fonts.googleapis.com/css?family=Merriweather+Sans);
 
 div.social-wrap button {
-    padding-right: 45px;
+    padding-right: 26px;
     height: 35px;
     background: none;
     border: none;
     display: block;
-    background-size: 35px 35px;
+    background-size: 33px 35px;
     background-position: right center;
     background-repeat: no-repeat;
     border-radius: 4px;
@@ -470,11 +462,11 @@ div.social-wrap button {
     font-family: "Merriweather Sans", sans-serif;
     font-size: 16px;
     margin-bottom: 15px;
-    width: 160px;
+    width: 155px;
     border-bottom: 2px solid transparent;
     border-left: 1px solid transparent;
     border-right: 1px solid transparent;
-    box-shadow: 0 4px 2px -2px gray;
+    box-shadow: 0 4px 2px -2px grey;
     text-shadow: rgba(0, 0, 0, .5) -1px -1px 0;
 }
 
@@ -821,14 +813,15 @@ div.social-wrap button {
     .anuncio-titulo .titulo {
         position: absolute;
         left: 0;
-        padding: 0px 0px 1px 15px;
+        padding: 1px 0px 1px 6px;
     }
 
-    .anuncio-titulo .precio {
-        position: relative;
-        float: right;
-        padding: 1px 15px 1px 0px;
-    }
+
+.anuncio-titulo .precio {
+    position: relative;
+    float: right;
+    padding: 1px 15px 1px 0px;
+}
 
 .anuncio-contenido .imagen-container {
     padding-left: 0px;
@@ -1169,20 +1162,22 @@ div.social-wrap button {
 
 .movil-anuncio-titulo {
     position: absolute;
-    bottom: 0;
+    bottom: 9px;
     width: 100%;
     right: 0px;
 }
 
     .movil-anuncio-titulo .anuncio-titulo {
-        padding-top: 10px;
+        padding-top: 0px;
         padding-bottom: 10px;
         background-color: rgba(255, 255, 255, 0.8);
     }
 
         .movil-anuncio-titulo .anuncio-titulo p {
-            font-size: 14px;
+            font-size: 11px;
             color: #04612d;
+            float: right;
+            padding-right: 0px;
         }
 
 
@@ -2088,6 +2083,10 @@ div.social-wrap button {
     min-height: 50px;
 }
 
+.check-precio-container {
+    min-height: 50px;
+}
+
 .check-beneficio input {
     width: 20px;
     height: 20px;
@@ -2163,7 +2162,7 @@ hr {
 .paquete-por-comprar {
     background-color: rgb(2, 117, 216);
     color: white;
-    height: 150px;
+    height: 110px;
     position: relative;
     margin-bottom: 20px;
 }
@@ -2607,6 +2606,10 @@ hr {
     width: 100%;
 }
 
+iframe {
+    position: absolute;
+}
+
 @media (max-width: 1200px) {
     .base {
         height: 270px !important;
@@ -2645,6 +2648,14 @@ hr {
 
     .titulo-anunciate {
         font-size: 20px;
+    }
+
+    .paquete-por-comprar-texto h2 {
+        font-size: 25px;
+    }
+
+    .palomita {
+        font-size: 25px;
     }
 }
 
@@ -2871,7 +2882,11 @@ hr {
     }
 
     footer p {
-        font-size: 12px;
+        font-size: 10px;
+    }
+
+    .footer-container {
+        height: 62px;
     }
 
     .btn-login {
@@ -3106,9 +3121,9 @@ hr {
         height: 30px;
     }
 
-        .text-container span {
-            top: 7px !important;
-        }
+    .text-container span {
+        top: 7px !important;
+    }
 
     .registro-container {
         margin-top: 140px;
@@ -3289,6 +3304,131 @@ hr {
         padding-bottom: 5px;
         margin-right: 8px;
     }
+
+    .registro-general {
+        margin-top: 0px;
+    }
+
+    .primer-paso-contenedor {
+        width: 45%;
+    }
+
+    .segundo-paso-contenedor {
+        width: 45%;
+    }
+
+    .pasos-pago {
+        font-size: 11px;
+    }
+
+    .carrito-de-compra-titulo {
+        margin: 0px 0px 20px 0px;
+    }
+
+        .carrito-de-compra-titulo h2 {
+            font-size: 23px !important;
+        }
+
+    .tabla-carrito th {
+        font-size: 13px;
+    }
+
+    .tabla-carrito td {
+        font-size: 12px;
+    }
+
+    .beneficios-extra-container {
+        margin-top: 20px;
+    }
+
+    .beneficios-extra-titulo {
+        font-size: 23px !important;
+    }
+
+    .paquete-por-comprar-texto h2 {
+        font-size: 17px;
+    }
+
+    .palomita {
+        font-size: 17px;
+    }
+
+    .paquete-por-comprar {
+        height: 75px;
+    }
+
+    .beneficios-container {
+        margin-top: 0px;
+    }
+
+    .check-beneficio label {
+        font-size: 12px;
+    }
+
+    .check-beneficio input {
+        width: 13px;
+        height: 13px;
+        margin-right: 0px;
+    }
+
+    .check-container {
+        width: 76%;
+        display: inline-block;
+        min-height: 35px;
+    }
+
+    .check-precio-container {
+        display: inline-block;
+        min-height: 35px;
+    }
+
+    .texto-beneficio {
+        font-size: 15px;
+        top: 82%;
+    }
+
+    hr {
+        margin-bottom: 0px;
+    }
+
+    .total-beneficios-extra h2 {
+        font-size: 15px;
+    }
+
+    #total-con-beneficios {
+        margin-left: 10px;
+        margin-right: 10px;
+    }
+
+    .ir-al-carrito {
+        font-size: 12px;
+    }
+
+    .beneficios-boton {
+        padding: 8px 12px 8px 12px;
+        font-size: 12px;
+    }
+
+    #paso1 h2 {
+        font-size: 20px;
+    }
+
+    #codigo {
+        margin-top: 15px;
+    }
+
+    #anio {
+        margin-top: 15px;
+    }
+
+    .atras-pago-boton {
+        padding-left: 20px;
+        padding-right: 20px;
+    }
+
+    .pagar-boton {
+        font-size: 13px;
+    }
 }
 
 @media (max-width:496px) {
@@ -3378,22 +3518,23 @@ hr {
     .anunciate-texto-container {
         margin-top: 178px;
     }
+}
 
-    @media (max-width:321px) {
-        .portal-container {
-            margin-top: 0px !important;
-        }
-
-        .botones-portal-container {
-            width: 175px;
-            min-height: 100px;
-        }
-
-        .link-boton-portal {
-            min-height: 100px;
-        }
-
-        .botones-inicio-portal {
-            min-height: 118px !important;
-        }
+@media (max-width:321px) {
+    .portal-container {
+        margin-top: 0px !important;
     }
+
+    .botones-portal-container {
+        width: 175px;
+        min-height: 100px;
+    }
+
+    .link-boton-portal {
+        min-height: 100px;
+    }
+
+    .botones-inicio-portal {
+        min-height: 118px !important;
+    }
+}

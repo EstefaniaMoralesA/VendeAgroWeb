@@ -4,74 +4,78 @@
     ViewBag.Title = "Registro";
 }
 
-<div class="row" style="margin-top: 50px;">
-
-    <div class="registro">
-        <div class="proceso-registro-contenido" style="display:none;">
-            <h3 style="text-align: center; color: white;">Procesando registro, favor de no recargar la p&aacute;gina.</h3>
-            <img class="loader-anuncios" src="~/img/loader.gif" />
-        </div>
-        <div class="registro-campos" style="display:none;">
-            <div class="error-row alert alert-danger" style="text-align:center;">
-                <p id="error-mensaje"></p>
+<div class="col-sm-12">
+    <div class="row registro-general">
+        <div class="col-sm-6 col-sm-offset-3">
+            <div class="logo-login" style="text-align: center;">
+                <h2 style="font-size: 30px !important; color: #E42B22 !important; margin-bottom: 20px;">Registro</h2>
             </div>
-
-            @using (Html.BeginForm())
-            {
-                @Html.AntiForgeryToken()
-
-                <div class="form-horizontal">
-                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-                    <div class="form-group registro-campo">
-                        <input id="NombreRegistro" class="form-control campos-registro text-box single-line" data-val="true" data-val-required="*Campo requerido." id="Nombre" name="Nombre" placeholder="Nombre" type="text">
-                        @Html.ValidationMessageFor(m => Model.Nombre, "", new { @class = "text-danger" })
-                    </div>
-
-                    <div class="form-group registro-campo">
-                        <input id="ApellidosRegistro" class="form-control campos-registro text-box single-line" data-val="true" data-val-required="*Campo requerido." id="Apellidos" name="Apellidos" placeholder="Apellidos" type="text">
-                        @Html.ValidationMessageFor(m => Model.Apellidos, "", new { @class = "text-danger" })
-                    </div>
-
-                    <div class="form-group registro-campo">
-                        <input id="CelularRegistro" class="form-control campos-registro text-box single-line" data-val="true" data-val-length="El celular no es válido." data-val-length-max="14" data-val-length-min="10" data-val-required="*Campo requerido." id="Celular" name="Celular" placeholder="Teléfono" type="text">
-                        @Html.ValidationMessageFor(m => Model.Celular, "", new { @class = "text-danger" })
-                    </div>
-
-                    <div class="form-group registro-campo">
-                        <input id="EmailRegistro" class="form-control campos-registro text-box single-line" data-val="true" data-val-email="El email introducido no es válido." data-val-required="*Campo requerido." id="Email" name="Email" placeholder="Email" type="email">
-                        @Html.ValidationMessageFor(m => Model.Email, "", new { @class = "text-danger" })
-                    </div>
-
-                    <div class="form-group registro-campo">
-                        <input id="PasswordRegistro" class="form-control campos-registro text-box single-line password" data-val="true" data-val-length="La contraseña debe de ser mínimo de 6 caracteres." data-val-length-max="100" data-val-length-min="6" data-val-required="*Campo requerido." id="Password" name="Password" placeholder="Contraseña" type="password">
-                        @Html.ValidationMessageFor(m => Model.Password, "", new { @class = "text-danger" })
-                    </div>
-
-                    <div class="form-group registro-campo">
-                        <input id="ConfirmarPassRegistro" class="form-control campos-registro text-box single-line password" data-val="true" data-val-equalto="La contraseña y su confirmacion no son iguales." data-val-equalto-other="*.Password" id="ConfirmPassword" name="ConfirmPassword" placeholder="Confirmar contraseña" type="password">
-                        @Html.ValidationMessageFor(m => Model.ConfirmPassword, "", new { @class = "text-danger" })
-                    </div>
-
-                    <div class="form-group" style="text-align: center;">
-                        <div class="text-container" style="position: relative; display: inline-block;">
-                            <a class="btn btn-default registrar-boton menu-grad boton-Registro">Reg&iacute;strate</a>
-                            <span class="glyphicon glyphicon-user" style="position: absolute; left: 22px; top: 12px; color:white;"></span>
-                        </div>
-                    </div>
-                    <div class="col-sm-9 registrate-facebook">
-                        <p class="registrate-texto">O regístrate con</p>
-                    </div>
-                    <div class="col-sm-9 registrate-facebook">
-                        <div class="social-wrap a">
-                            <button id="facebook">Facebook</button>
-                        </div>
-                    </div>
+            <div class="registro">
+                <div class="proceso-registro-contenido" style="display:none;">
+                    <h3 style="text-align: center; color: #F6AB21;">Procesando registro, favor de no recargar la p&aacute;gina.</h3>
+                    <img class="loader-anuncios" src="~/img/loader.gif" />
                 </div>
-            }
-            
-        </div>
-        <div class="registro-completo">
-            <div class="col-sm-offset-3 col-sm-offset-6" id="registro-llena" style="margin-right:25%;">
+                <div class="registro-campos" style="display:none;">
+                    <div class="error-row alert alert-danger" style="text-align:center;">
+                        <p id="error-mensaje"></p>
+                    </div>
+
+                    @using (Html.BeginForm())
+            {
+                        @Html.AntiForgeryToken()
+
+                        <div class="form-horizontal">
+                            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                            <div class="form-group registro-campo">
+                                <input id="NombreRegistro" class="form-control campos-registro text-box single-line" data-val="true" data-val-required="*Campo requerido." id="Nombre" name="Nombre" placeholder="Nombre" type="text">
+                                @Html.ValidationMessageFor(m => Model.Nombre, "", new { @class = "text-danger" })
+                            </div>
+
+                            <div class="form-group registro-campo">
+                                <input id="ApellidosRegistro" class="form-control campos-registro text-box single-line" data-val="true" data-val-required="*Campo requerido." id="Apellidos" name="Apellidos" placeholder="Apellidos" type="text">
+                                @Html.ValidationMessageFor(m => Model.Apellidos, "", new { @class = "text-danger" })
+                            </div>
+
+                            <div class="form-group registro-campo">
+                                <input id="CelularRegistro" class="form-control campos-registro text-box single-line" data-val="true" data-val-length="El celular no es válido." data-val-length-max="14" data-val-length-min="10" data-val-required="*Campo requerido." id="Celular" name="Celular" placeholder="Teléfono" type="text">
+                                @Html.ValidationMessageFor(m => Model.Celular, "", new { @class = "text-danger" })
+                            </div>
+
+                            <div class="form-group registro-campo">
+                                <input id="EmailRegistro" class="form-control campos-registro text-box single-line" data-val="true" data-val-email="El email introducido no es válido." data-val-required="*Campo requerido." id="Email" name="Email" placeholder="Email" type="email">
+                                @Html.ValidationMessageFor(m => Model.Email, "", new { @class = "text-danger" })
+                            </div>
+
+                            <div class="form-group registro-campo">
+                                <input id="PasswordRegistro" class="form-control campos-registro text-box single-line password" data-val="true" data-val-length="La contraseña debe de ser mínimo de 6 caracteres." data-val-length-max="100" data-val-length-min="6" data-val-required="*Campo requerido." id="Password" name="Password" placeholder="Contraseña" type="password">
+                                @Html.ValidationMessageFor(m => Model.Password, "", new { @class = "text-danger" })
+                            </div>
+
+                            <div class="form-group registro-campo">
+                                <input id="ConfirmarPassRegistro" class="form-control campos-registro text-box single-line password" data-val="true" data-val-equalto="La contraseña y su confirmacion no son iguales." data-val-equalto-other="*.Password" id="ConfirmPassword" name="ConfirmPassword" placeholder="Confirmar contraseña" type="password">
+                                @Html.ValidationMessageFor(m => Model.ConfirmPassword, "", new { @class = "text-danger" })
+                            </div>
+
+                            <div class="form-group" style="text-align: center;">
+                                <div class="text-container" style="position: relative; display: inline-block;">
+                                    <a class="btn btn-default registrar-boton menu-grad boton-Registro">Reg&iacute;strate</a>
+                                    <span class="glyphicon glyphicon-user" style="position: absolute; left: 22px; top: 12px; color:white;"></span>
+                                </div>
+                            </div>
+                            <div style="text-align: center;">
+                                <p class="registrate-texto">O regístrate con</p>
+                            </div>
+                            <div class="col-sm-9 registrate-facebook">
+                                <div class="social-wrap a">
+                                    <button id="facebook">Facebook</button>
+                                </div>
+                            </div>
+                        </div>
+                    }
+
+                </div>
+            </div>
+            <div id="registro-llena">
 
             </div>
         </div>

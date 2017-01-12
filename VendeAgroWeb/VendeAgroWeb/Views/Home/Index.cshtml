@@ -86,7 +86,7 @@
                         <div class="anuncios-container">
                             <img class="loader-anuncios" src="~/img/loader.gif" />
                         </div>
-                        <div class="col-xs-12 anuncios-movil-container">
+                        <div class="col-xs-10 col-xs-offset-1 anuncios-movil-container">
                             <img class="loader-anuncios" src="~/img/loader.gif" />
                         </div>
                     </div>
@@ -106,8 +106,10 @@
     var idPais = -1;
     var idEstado = -1;
     var idCiudad = -1;
-    var precioBajo = 100;
-    var precioAlto = 500000;
+    var precioBajo = 0;
+    var precioAlto = 1000000;
+    var precioBajoActual = -1;
+    var precioAltoActual = -1;
     var tamanosRedistribuidos = false;
 
     $(document).ready(function () {
@@ -165,12 +167,12 @@
         var slider = document.getElementById('slider');
 
         noUiSlider.create(slider, {
-            start: [100, 500000],
+            start: [0, 500000],
             step: 100,
             margin: 50,
             connect: true,
             range: {
-                'min': 100,
+                'min': 0,
                 'max': 500000
             }
             ,
@@ -190,11 +192,11 @@
 
             if (!handle) {
                 precio = values[handle];
-                precioBajo = moneyFormat.from(precio);
+                precioBajoActual = moneyFormat.from(precio);
                 valueIzq.innerHTML = values[handle];
             } else {
                 precio = values[handle];
-                precioAlto = moneyFormat.from(precio);
+                precioAltoActual = moneyFormat.from(precio);
                 valueDer.innerHTML = values[handle];
             }
         });
@@ -235,6 +237,8 @@
     });
 
     $("#btn-precio").click(function () {
+        precioBajo = precioBajoActual;
+        precioAlto = precioAltoActual;
         getAnunciosDestacadosFiltrados();
     });
 
@@ -451,7 +455,7 @@
         $.ajax({
             type: "POST",
             data: {},
-            url: '/Home/DestacadosFiltradosMovilPartial?idCategoria=' + idCategoria + "&idSubcategoria=" + idSubcategoria + "&idPais=" + idPais + "&idEstado=" + idEstado + "&idCiudad=" + idCiudad,
+            url: '/Home/DestacadosFiltradosMovilPartial?idCategoria=' + idCategoria + "&idSubcategoria=" + idSubcategoria + "&idPais=" + idPais + "&idEstado=" + idEstado + "&idCiudad=" + idCiudad + "&precioBajo=" + precioBajo + "&precioAlto=" + precioAlto,
             success: function (result) {
                 $(".anuncios-movil-container").html(result);
             },
