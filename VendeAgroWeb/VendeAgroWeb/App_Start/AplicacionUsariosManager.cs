@@ -82,7 +82,7 @@ namespace VendeAgroWeb
                     string mailMensaje = "<p>Estimado {0},</p>" +
                     "<p>Para cambiar tu contraseña da click <a href=\'" + Startup.getBaseUrl() + "/Administrador/CambiarContrasena?token=" + "{1}\'>AQUÍ</a></p>";
 
-                    var result = Startup.GetServicioEmail().SendAsync(string.Format(mailMensaje, usuario.nombre, usuario.password), "Recuperar Contraseña VendeAgro", usuario.email);
+                    var result = Startup.GetServicioEmail().SendAsync(string.Format(mailMensaje, usuario.nombre, usuario.password), "Recuperar Contraseña Mercampo", usuario.email);
 
                     _dbContext.Database.Connection.Close();
                     return OlvidoContrasenaStatus.MailEnviado;
@@ -197,10 +197,10 @@ namespace VendeAgroWeb
                     setCookie("VendeAgroUser", tokenSesion, response);
 
                     var usuarioRegistrado = _dbContext.Usuarios.Where(u => u.email == model.Email).FirstOrDefault();
-                    string mailMensaje = "<p>Estimado {0} gracias por registrarte en vendeagro.com</p>" +
+                    string mailMensaje = "<p>Estimado {0} gracias por registrarte en mercampo.mx</p>" +
                     "<p>Para completar tu registro y poder hacer login da click <a href=\'" + Startup.getBaseUrl() + "/Portal/ConfirmarMail?token=" + "{1}\'>AQUÍ</a></p>";
 
-                    var result = Startup.GetServicioEmail().SendAsync(string.Format(mailMensaje, model.Nombre + " " + model.Apellidos, tokenEmail), "Registro VendeAgro", model.Email);
+                    var result = Startup.GetServicioEmail().SendAsync(string.Format(mailMensaje, model.Nombre + " " + model.Apellidos, tokenEmail), "Registro Mercampo", model.Email);
                     return RegistroStatus.Exitoso;
                 }
 

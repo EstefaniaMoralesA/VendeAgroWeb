@@ -14,7 +14,7 @@ namespace VendeAgroWeb
         private NetworkCredential _credenciales;
         public ServicioEmail()
         {
-            _mailSalida = "santiatlas11@hotmail.com";
+            _mailSalida = "buzon@mercampo.mx";
             _credenciales = new NetworkCredential
             {
                 UserName = "santiatlas11@hotmail.com",
@@ -22,7 +22,7 @@ namespace VendeAgroWeb
             };
         }
 
-        public string MailContacto => "santiatlas11@hotmail.com";
+        public string MailContacto => "buzon@mercampo.mx";
 
         public async Task<bool> SendAsync(string mensaje, string asunto, string destinatario)
         {
