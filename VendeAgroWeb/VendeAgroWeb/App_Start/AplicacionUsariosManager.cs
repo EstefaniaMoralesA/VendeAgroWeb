@@ -82,7 +82,7 @@ namespace VendeAgroWeb
                     string mailMensaje = "<p>Estimado {0},</p>" +
                     "<p>Para cambiar tu contraseña da click <a href=\'" + Startup.getBaseUrl() + "/Administrador/CambiarContrasena?token=" + "{1}\'>AQUÍ</a></p>";
 
-                    var result = Startup.GetServicioEmail().SendAsync(string.Format(mailMensaje, usuario.nombre, usuario.password), "Recuperar Contraseña VendeAgro", usuario.email);
+                    var result = Startup.GetServicioEmail().SendAsync(string.Format(mailMensaje, usuario.nombre, usuario.password), "Recuperar Contraseña Mercampo", usuario.email);
 
                     _dbContext.Database.Connection.Close();
                     return OlvidoContrasenaStatus.MailEnviado;
@@ -197,10 +197,10 @@ namespace VendeAgroWeb
                     setCookie("VendeAgroUser", tokenSesion, response);
 
                     var usuarioRegistrado = _dbContext.Usuarios.Where(u => u.email == model.Email).FirstOrDefault();
-                    string mailMensaje = "<p>Estimado {0} gracias por registrarte en vendeagro.com</p>" +
+                    string mailMensaje = "<p>Estimado {0} gracias por registrarte en mercampo.mx</p>" +
                     "<p>Para completar tu registro y poder hacer login da click <a href=\'" + Startup.getBaseUrl() + "/Portal/ConfirmarMail?token=" + "{1}\'>AQUÍ</a></p>";
 
-                    var result = Startup.GetServicioEmail().SendAsync(string.Format(mailMensaje, model.Nombre + " " + model.Apellidos, tokenEmail), "Registro VendeAgro", model.Email);
+                    var result = Startup.GetServicioEmail().SendAsync(string.Format(mailMensaje, model.Nombre + " " + model.Apellidos, tokenEmail), "Registro Mercampo", model.Email);
                     return RegistroStatus.Exitoso;
                 }
 
@@ -348,15 +348,25 @@ namespace VendeAgroWeb
             return sb.ToString();
         }
 
-        private void setCookie(string name, string value, HttpResponse response)
+        public static void setCookie(string name, string value, HttpResponseBase response)
+        {
+            setCookie(name, value, response.Cookies);
+        }
+
+        public static void setCookie(string name, string value, HttpResponse response)
+        {
+            setCookie(name, value, response.Cookies);
+        }
+
+        private static void setCookie(string name, string value, HttpCookieCollection cookies)
         {
             HttpCookie myCookie = new HttpCookie(name);
             myCookie["token"] = value;
             myCookie.Expires = DateTime.Now.AddDays(5d);
-            response.Cookies.Add(myCookie);
+            cookies.Add(myCookie);
         }
 
-        private void borrarCookie(HttpResponse response, string nombre)
+        public static void borrarCookie(HttpResponse response, string nombre)
         {
             HttpCookie temp = response.Cookies[nombre];
             temp.Expires = DateTime.Now.AddDays(-1D);

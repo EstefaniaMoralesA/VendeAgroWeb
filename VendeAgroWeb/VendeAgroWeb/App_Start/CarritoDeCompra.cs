@@ -3,14 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Runtime.Serialization;
 using System.Web.Http;
 
 namespace VendeAgroWeb
 {
+    [DataContract]
     public class CarritoDeCompra
     {
-        private double _totalCarrito;
-        
         public CarritoDeCompra() {
             if (Paquetes == null)
             {
@@ -18,6 +18,7 @@ namespace VendeAgroWeb
             }
         }
 
+        [DataMember]
         public List<PaqueteCarrito> Paquetes { get; private set; }
 
         public double TotalCarrito
@@ -57,47 +58,25 @@ namespace VendeAgroWeb
 
     }
 
+    [DataContract]
     public class PaqueteCarrito
     {
-        private int _id;
-        private string _nombre;
-        private int _meses;
-        private double _precio;
+        [DataMember]
+        public int Id { get; private set; }
 
-        public int Id
-        {
-            get
-            {
-                return _id;
-            }
-        }
+        [DataMember]
+        public string Nombre { get; private set; }
 
-        public string Nombre
-        {
-            get
-            {
-                return _nombre;
-            }
-        }
+        [DataMember]
+        public int Meses { get; private set; }
 
-        public int Meses
-        {
-            get
-            {
-                return _meses;
-            }
-        }
+        [DataMember]
+        public double Precio { get; private set; }
 
-        public double Precio
-        {
-            get
-            {
-                return _precio;
-            }
-        }
-
+        [DataMember]
         public List<BeneficioCarrito> Beneficios { get; private set; }
 
+        [DataMember]
         public double TotalBeneficios { get;  private set;}
 
         public void agregaBeneficioAPaquete(BeneficioCarrito beneficio) {
@@ -121,70 +100,40 @@ namespace VendeAgroWeb
         }
 
         public PaqueteCarrito(int id, string nombre, int meses, double precio) {
-            _id = id;
-            _nombre = nombre;
-            _meses = meses;
-            _precio = precio;
+            Id = id;
+            Nombre = nombre;
+            Meses = meses;
+            Precio = precio;
             Beneficios = new List<BeneficioCarrito>();
 
         }
     }
 
+    [DataContract]
     public class BeneficioCarrito
     {
-        private int _id;
-        private string _descripcion;
-        private double _precio;
-        private int _tipo;
-        private int? _numero;
+        [DataMember]
+        public int Id { get; private set; }
 
-        public int Id
-        {
-            get
-            {
-                return _id;
-            }
-        }
+        [DataMember]
+        public string Descripcion { get; private set; }
 
-        public string Descripcion
-        {
-            get
-            {
-                return _descripcion;
-            }
-        }
+        [DataMember]
+        public double Precio { get; private set; }
 
-        public double Precio
-        {
-            get
-            {
-                return _precio;
-            }
-        }
+        [DataMember]
+        public int Tipo { get; private set; }
 
-        public int Tipo
-        {
-            get
-            {
-                return _tipo;
-            }
-        }
-
-        public int? Numero
-        {
-            get
-            {
-                return _numero;
-            }
-        }
+        [DataMember]
+        public int? Numero { get; private set; }
 
         public BeneficioCarrito(int id, string descripcion, double precio, int tipo, int? numero)
         {
-            _id = id;
-            _descripcion = descripcion;
-            _precio = precio;
-            _tipo = tipo;
-            _numero = numero;
+            Id = id;
+            Descripcion = descripcion;
+            Precio = precio;
+            Tipo = tipo;
+            Numero = numero;
         }
     }
 }
