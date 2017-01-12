@@ -170,6 +170,13 @@ namespace VendeAgroWeb.Controllers.Administrador
             return View(model);
         }
 
+        [HttpPost]
+        public ActionResult LoginPartial()
+        {
+            return PartialView("_Login");
+
+        }
+
         public ActionResult Registro()
         { 
             RegistroViewModel model = new RegistroViewModel();

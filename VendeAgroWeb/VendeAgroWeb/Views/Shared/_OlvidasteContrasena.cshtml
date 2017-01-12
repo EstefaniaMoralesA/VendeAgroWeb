@@ -26,7 +26,7 @@
                                     <a id="boton-olvidasteContrasena" class="btn btn-default registrar-boton menu-grad" style="width: 100%; padding-left: 0px; padding-right: 0px;">Recuperar Contraseña</a>
                                 </div>
                             </div>
-                            <a id="btn-registrate-aqui" class="btn btn-default registrar-boton" style="width: 100%; padding-left: 0px; padding-right: 0px; color: black !important;">Cancelar</a>
+                            <a id="btn-cancelar" class="btn btn-default registrar-boton" style="width: 100%; padding-left: 0px; padding-right: 0px; color: black !important;">Cancelar</a>
                         </div>
                     </div>
                 </div>
@@ -34,3 +34,20 @@
         </div>
     </div>
 </div>
+
+<script>
+    $("#btn-cancelar").click(function () {
+        $.ajax({
+            type: 'POST',
+            data: {},
+            url: '/Portal/LoginPartial',
+            success: function (response) {
+                $('.login-completo').html(response);
+                return;
+            },
+            error: function (err) {
+
+            }
+        });
+    });
+</script>
