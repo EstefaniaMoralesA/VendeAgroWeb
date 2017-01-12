@@ -1,15 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Diagnostics;
 using System.Linq;
-using System.Threading;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Script.Serialization;
 using VendeAgroWeb.Models;
-using VendeAgroWeb.Models.Administrador;
 using VendeAgroWeb.Models.Pagina;
 
 namespace VendeAgroWeb.Controllers.Home
@@ -166,7 +163,6 @@ namespace VendeAgroWeb.Controllers.Home
         public void UpdateCarritoCookie(CarritoDeCompra carrito, HttpResponseBase response)
         {
             var serializedCarrito = Startup.SerializeCarrito(carrito);
-            Debug.WriteLine(serializedCarrito);
             AplicacionUsuariosManager.setCookie("carritoVendeAgro", serializedCarrito, Response);
         }
 

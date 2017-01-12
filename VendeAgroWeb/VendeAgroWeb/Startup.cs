@@ -6,10 +6,9 @@ using System.IO;
 using System.Runtime.Serialization.Json;
 using System.Text;
 using System.Web;
-using System.Web.Script.Serialization;
 using VendeAgroWeb.Models;
 
-[assembly: OwinStartupAttribute(typeof(VendeAgroWeb.Startup))]
+[assembly: OwinStartup(typeof(VendeAgroWeb.Startup))]
 namespace VendeAgroWeb
 {
     public partial class Startup
