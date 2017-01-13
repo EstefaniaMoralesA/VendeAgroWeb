@@ -1145,13 +1145,22 @@ namespace VendeAgroWeb.Controllers.Administrador
                                 paqueteViewModel = new AnuncioPaqueteViewModel(paquete.nombre, paquete.activo);
                             }
 
+                            var beneficios = _dbContext.Anuncio_Beneficio.Where(b => b.idAnuncio == anuncio.id);
+                            List<BeneficioViewModel> listaBeneficios = new List<BeneficioViewModel>();
+
+                            foreach (var beneficio in beneficios)
+                            {
+                                listaBeneficios.Add(new BeneficioViewModel(beneficio.idBeneficio, beneficio.Beneficio.descripcion, beneficio.Beneficio.precio));
+                            }
+
                             var rutaVideo = _dbContext.Videos_Anuncio.Where(v => v.idAnuncio == id).FirstOrDefault()?.ruta;
 
+                            
                             foreach (var foto in anuncio.Fotos_Anuncio)
                             {
                                 fotos.Add(new FotoViewModel(foto.principal, foto.ruta));
                             }
-                            model = new AnuncioDetallesViewModel(anuncioViewModel, anuncio.estado, anuncio.activo, anuncio.descripcion, fotos, anuncio.fecha_inicio, anuncio.fecha_fin, paqueteViewModel, rutaVideo);
+                            model = new AnuncioDetallesViewModel(anuncioViewModel, anuncio.estado, anuncio.activo, anuncio.descripcion, fotos, anuncio.fecha_inicio, anuncio.fecha_fin, paqueteViewModel, listaBeneficios, rutaVideo);
                         }
                     }
                 }

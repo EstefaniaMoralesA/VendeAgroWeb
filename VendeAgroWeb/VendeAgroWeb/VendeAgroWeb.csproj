@@ -330,6 +330,7 @@
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
     <Content Include="img\amex.png" />
+    <Content Include="img\fbook.png" />
     <Content Include="img\foto-vacia.png" />
     <Content Include="img\icono-correo.png" />
     <Content Include="img\icono-mano.png" />

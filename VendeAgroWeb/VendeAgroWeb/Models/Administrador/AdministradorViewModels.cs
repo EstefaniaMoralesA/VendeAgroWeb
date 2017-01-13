@@ -540,10 +540,11 @@ namespace VendeAgroWeb.Models.Administrador
         private DateTime? _fechaInicio;
         private DateTime? _fechaFin;
         private AnuncioPaqueteViewModel _paquete;
+        private ICollection<BeneficioViewModel> _beneficios;
         private string _video;
 
         public AnuncioDetallesViewModel(AnuncioViewModel anuncio, int status, bool activo,
-            string descripcion, List<FotoViewModel> fotos, DateTime? fechaInicio, DateTime? fechaFin, AnuncioPaqueteViewModel paquete, string video)
+            string descripcion, List<FotoViewModel> fotos, DateTime? fechaInicio, DateTime? fechaFin, AnuncioPaqueteViewModel paquete, ICollection<BeneficioViewModel> beneficios, string video)
         {
             _anuncio = anuncio;
             _status = (EstadoAnuncio)status;
@@ -553,6 +554,7 @@ namespace VendeAgroWeb.Models.Administrador
             _paquete = paquete;
             _fechaInicio = fechaInicio;
             _fechaFin = fechaFin;
+            _beneficios = beneficios;
             _video = video;
         }
 
@@ -633,6 +635,14 @@ namespace VendeAgroWeb.Models.Administrador
             get
             {
                 return _paquete;
+            }
+        }
+
+        public ICollection<BeneficioViewModel> Beneficios
+        {
+            get
+            {
+                return _beneficios;
             }
         }
     }

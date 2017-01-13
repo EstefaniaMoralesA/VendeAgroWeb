@@ -817,11 +817,11 @@ div.social-wrap button {
     }
 
 
-.anuncio-titulo .precio {
-    position: relative;
-    float: right;
-    padding: 1px 15px 1px 0px;
-}
+    .anuncio-titulo .precio {
+        position: relative;
+        float: right;
+        padding: 1px 15px 1px 0px;
+    }
 
 .anuncio-contenido .imagen-container {
     padding-left: 0px;
@@ -2610,6 +2610,27 @@ iframe {
     position: absolute;
 }
 
+.fbook-boton {
+    display: block;
+    width: 30px;
+    height: 30px;
+}
+
+    .fbook-boton img {
+        width: 30px;
+        height: 30px;
+    }
+
+.fbook-boton-hide {
+    display: none;
+}
+
+.fbook-boton-container {
+    position: absolute;
+    right: -3%;
+    width: 30px !important;
+}
+
 @media (max-width: 1200px) {
     .base {
         height: 270px !important;
@@ -2757,6 +2778,21 @@ iframe {
     .login-menu-container ul {
         left: 23%;
     }
+
+    .fbook-boton-container {
+        right: -2%;
+        top: 16%;
+    }
+
+    .fbook-boton {
+        width: 25px;
+        height: 25px;
+    }
+
+        .fbook-boton img {
+            width: 25px;
+            height: 25px;
+        }
 }
 
 @media (max-width: 833px) {
@@ -3431,6 +3467,15 @@ iframe {
     .pagar-boton {
         font-size: 13px;
     }
+
+    .fbook-boton-container {
+        display: none;
+    }
+
+    .fbook-boton-hide {
+        display: inline-block;
+        margin-right: 10px;
+    }
 }
 
 @media (max-width:496px) {
@@ -3538,5 +3583,13 @@ iframe {
 
     .botones-inicio-portal {
         min-height: 118px !important;
+    }
+
+    .menu-movil-container .carrito span {
+        font-size: 9px;
+    }
+
+    .icono-ingresar{
+        display: none;
     }
 }

@@ -119,8 +119,12 @@
                 <tr>
                     <td><strong>Beneficios</strong></td>
                     <td>
-                        <p><span class="glyphicon glyphicon-check"></span> 10 fotos</p>
-                        <p><span class="glyphicon glyphicon-check"></span> Oferta del d&iacute;a</p>
+                        @{
+                            foreach (var item in Model.Beneficios)
+                            {
+                                <p><span class="glyphicon glyphicon-check"></span>@item.Descripcion</p>
+                            }
+                        }
                     </td>
                 </tr>
             </tbody>
@@ -224,12 +228,12 @@
                     return;
                 }
                 alert("Error en la base de datos, vuelva a intentarlo.");
-                
+
             },
             error: function (e) {
                 alert("Se presento un error, volver a intentarlo");
             }
-            
+
         })
     });
 
@@ -262,8 +266,8 @@
         width: 50%;
     }
 
-    .video-container{
+    .video-container {
         margin-bottom: 30px;
-        display:none;
+        display: none;
     }
 </style>
