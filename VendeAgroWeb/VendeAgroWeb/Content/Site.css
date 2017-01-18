@@ -2612,13 +2612,13 @@ iframe {
 
 .fbook-boton {
     display: block;
-    width: 30px;
-    height: 30px;
+    width: 20px;
+    height: 20px;
 }
 
     .fbook-boton img {
-        width: 30px;
-        height: 30px;
+        width: 20px;
+        height: 20px;
     }
 
 .fbook-boton-hide {
@@ -2627,8 +2627,17 @@ iframe {
 
 .fbook-boton-container {
     position: absolute;
-    right: -3%;
+    right: 1%;
+    top: 14%;
     width: 30px !important;
+}
+
+.link-privacidad {
+    text-align: center;
+    color: #cb5a20;
+    margin-bottom: 0px;
+    font-size: 13px;
+    display: block;
 }
 
 @media (max-width: 1200px) {
@@ -2677,6 +2686,10 @@ iframe {
 
     .palomita {
         font-size: 25px;
+    }
+
+    .fbook-boton-container {
+        top: 20%;
     }
 }
 
@@ -2778,21 +2791,6 @@ iframe {
     .login-menu-container ul {
         left: 23%;
     }
-
-    .fbook-boton-container {
-        right: -2%;
-        top: 16%;
-    }
-
-    .fbook-boton {
-        width: 25px;
-        height: 25px;
-    }
-
-        .fbook-boton img {
-            width: 25px;
-            height: 25px;
-        }
 }
 
 @media (max-width: 833px) {
@@ -2817,6 +2815,11 @@ iframe {
     .carrito .glyphicon {
         font-size: 13px;
         padding-top: 4px;
+    }
+
+    .fbook-boton-container {
+        right: -1%;
+        top: 20%;
     }
 }
 
@@ -3589,7 +3592,7 @@ iframe {
         font-size: 9px;
     }
 
-    .icono-ingresar{
+    .icono-ingresar {
         display: none;
     }
 }

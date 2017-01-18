@@ -375,6 +375,7 @@
     <Content Include="Models\DatabaseModel.edmx.diagram">
       <DependentUpon>DatabaseModel.edmx</DependentUpon>
     </Content>
+    <Content Include="Content\Aviso Privacidad Mercampo.pdf" />
     <None Include="Properties\PublishProfiles\GoDaddy.pubxml" />
     <None Include="Properties\PublishProfiles\mercampo.mx - Web Deploy.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
