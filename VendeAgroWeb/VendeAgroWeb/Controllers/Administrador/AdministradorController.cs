@@ -723,7 +723,7 @@ namespace VendeAgroWeb.Controllers.Administrador
                     }
                     else
                     {
-                        if(banner.ruta == null || banner.link == null)
+                        if (banner.ruta == null || banner.link == null)
                         {
                             return false;
                         }
@@ -1046,7 +1046,7 @@ namespace VendeAgroWeb.Controllers.Administrador
 
                 var estado = _dbContext.Estadoes.Where(e => e.id == item.Ciudad.idEstado).FirstOrDefault()?.nombre;
 
-                lista.Add(new AnuncioViewModel(item.id, item.titulo, item.Usuario.nombre, item.precio, categoria, item.Subcategoria.nombre, estado, item.Ciudad.nombre, item.clicks));
+                lista.Add(new AnuncioViewModel(item.id, item.titulo, item.Usuario.nombre, item.precio, categoria, item.Subcategoria.nombre, estado, item.Ciudad.nombre, item.clicks, (EstadoAnuncio)item.estado, item.activo));
             }
 
             return lista;
@@ -1101,6 +1101,39 @@ namespace VendeAgroWeb.Controllers.Administrador
 
         }
 
+        public async Task<ActionResult> DesactivarAnuncio(int? id)
+        {
+            if (await Startup.GetAplicacionUsuariosManager().VerificarAdminSesionAsync() == LoginStatus.Incorrecto)
+            {
+                return RedirectToAction("Login", "Administrador");
+            }
+
+            if (id == null)
+            {
+                return HttpNotFound("Parámetro inválido se espera un id de un anuncio");
+            }
+
+            using (var _dbContext = new MercampoEntities())
+            {
+                Startup.OpenDatabaseConnection(_dbContext);
+                if (_dbContext.Database.Connection.State != ConnectionState.Open)
+                {
+                    return HttpNotFound("Error en la base de datos");
+                }
+                var anuncio = _dbContext.Anuncios.Where(a => a.id == id).FirstOrDefault();
+                if (anuncio == null)
+                {
+                    return HttpNotFound(string.Format("No se encontro el anuncio con id:{0}.", id));
+                }
+
+                anuncio.fecha_fin = DateTime.Now;
+                anuncio.activo = false;
+                _dbContext.SaveChanges();
+            }
+
+            return RedirectToAction("Anuncios", "Administrador");
+        }
+
         public async Task<ActionResult> AnuncioDetalles(int? id)
         {
             if (await Startup.GetAplicacionUsuariosManager().VerificarAdminSesionAsync() == LoginStatus.Incorrecto)
@@ -1135,7 +1168,7 @@ namespace VendeAgroWeb.Controllers.Administrador
                         {
                             var anuncioViewModel = new AnuncioViewModel(anuncio.id, anuncio.titulo, anuncio.Usuario.nombre, anuncio.precio,
                                 anuncio.Subcategoria.Categoria.nombre, anuncio.Subcategoria.nombre, anuncio.Ciudad.Estado.nombre,
-                                anuncio.Ciudad.nombre, anuncio.clicks);
+                                anuncio.Ciudad.nombre, anuncio.clicks, (EstadoAnuncio)anuncio.estado, anuncio.activo);
                             List<FotoViewModel> fotos = new List<FotoViewModel>();
                             var paquete = _dbContext.Paquetes.Where(p => p.id == anuncio.idPaquete).FirstOrDefault();
 
@@ -1160,7 +1193,7 @@ namespace VendeAgroWeb.Controllers.Administrador
                             {
                                 fotos.Add(new FotoViewModel(foto.principal, foto.ruta));
                             }
-                            model = new AnuncioDetallesViewModel(anuncioViewModel, anuncio.estado, anuncio.activo, anuncio.descripcion, fotos, anuncio.fecha_inicio, anuncio.fecha_fin, paqueteViewModel, listaBeneficios, rutaVideo);
+                            model = new AnuncioDetallesViewModel(anuncioViewModel, anuncio.descripcion, fotos, anuncio.fecha_inicio, anuncio.fecha_fin, paqueteViewModel, listaBeneficios, rutaVideo);
                         }
                     }
                 }
@@ -1716,7 +1749,7 @@ namespace VendeAgroWeb.Controllers.Administrador
                         var name = AplicacionUsuariosManager.Hash(Guid.NewGuid().ToString());
                         string serverPath = Server.MapPath("~/img/Uploads/Images");
 
-                        if(!Directory.Exists(serverPath))
+                        if (!Directory.Exists(serverPath))
                         {
                             Directory.CreateDirectory(serverPath);
                         }
@@ -1831,17 +1864,17 @@ namespace VendeAgroWeb.Controllers.Administrador
                                 activo = true,
                                 idUsuario = idUsuario,
                                 idSubcategoria = idSubcategoria,
-                                idCiudad = idCiudad, 
+                                idCiudad = idCiudad,
                                 estado = (int)EstadoAnuncio.Aprobado,
-                                clicks = 0, 
+                                clicks = 0,
                                 vistas = 0,
                                 fecha_inicio = DateTime.Now,
-                                fecha_fin =  DateTime.Now.AddMonths(meses),
+                                fecha_fin = DateTime.Now.AddMonths(meses),
                             });
 
                             List<Fotos_Anuncio> fotosAnuncio = new List<Fotos_Anuncio>();
 
-                            _dbContext.Fotos_Anuncio.Add( new Fotos_Anuncio
+                            _dbContext.Fotos_Anuncio.Add(new Fotos_Anuncio
                             {
                                 ruta = fotoDisplay,
                                 idAnuncio = nuevoAnuncio.id,
@@ -1857,7 +1890,8 @@ namespace VendeAgroWeb.Controllers.Administrador
                             foreach (var item in fotos)
                             {
                                 var url = (string)item;
-                                _dbContext.Fotos_Anuncio.Add( new Fotos_Anuncio {
+                                _dbContext.Fotos_Anuncio.Add(new Fotos_Anuncio
+                                {
                                     ruta = url,
                                     idAnuncio = nuevoAnuncio.id,
                                     principal = false
@@ -1903,7 +1937,8 @@ namespace VendeAgroWeb.Controllers.Administrador
             });
         }
 
-        public async Task<string> ObtenerNombreUsuario(int? idUsuario) {
+        public async Task<string> ObtenerNombreUsuario(int? idUsuario)
+        {
             return await Task.Run(() =>
             {
                 using (var _dbContext = new MercampoEntities())
@@ -1922,7 +1957,8 @@ namespace VendeAgroWeb.Controllers.Administrador
             });
         }
 
-        public async Task<ActionResult> CategoriasAnuncioPartial() {
+        public async Task<ActionResult> CategoriasAnuncioPartial()
+        {
             CategoriasViewModel model = new CategoriasViewModel(await ObtenerCategoriasAnuncio());
             return PartialView("CategoriasAnuncioPartial", model);
         }
@@ -1991,7 +2027,7 @@ namespace VendeAgroWeb.Controllers.Administrador
                         return null;
                     }
                     List<CategoriaViewModel> lista = new List<CategoriaViewModel>();
-                    var categorias = _dbContext.Categorias.Where(c=> c.activo == true);
+                    var categorias = _dbContext.Categorias.Where(c => c.activo == true);
                     foreach (var item in categorias)
                     {
                         lista.Add(new CategoriaViewModel(item.id, item.nombre));
