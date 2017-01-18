@@ -1193,7 +1193,7 @@ namespace VendeAgroWeb.Controllers.Administrador
                             {
                                 fotos.Add(new FotoViewModel(foto.principal, foto.ruta));
                             }
-                            model = new AnuncioDetallesViewModel(anuncioViewModel, anuncio.descripcion, fotos, anuncio.fecha_inicio, anuncio.fecha_fin, paqueteViewModel, rutaVideo);
+                            model = new AnuncioDetallesViewModel(anuncioViewModel, anuncio.descripcion, fotos, anuncio.fecha_inicio, anuncio.fecha_fin, paqueteViewModel, listaBeneficios, rutaVideo);
                         }
                     }
                 }
