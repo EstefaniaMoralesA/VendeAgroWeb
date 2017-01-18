@@ -489,6 +489,7 @@
     <Content Include="Views\Administrador\ModificarBanner.cshtml" />
     <Content Include="Views\Portal\NuevaTarjeta.cshtml" />
     <Content Include="Views\Home\GaleriaAnuncio.cshtml" />
+    <Content Include="Views\Administrador\RenovarAnuncio.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

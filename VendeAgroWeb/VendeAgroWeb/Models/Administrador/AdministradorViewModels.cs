@@ -530,6 +530,39 @@ namespace VendeAgroWeb.Models.Administrador
         }
     }
 
+    public class RenovarAnuncioViewModel
+    {
+        private int _idAnuncio;
+        private string _tituloAnuncio;
+
+        [Required(ErrorMessage = "Campo requerido")]
+        [Display(Name = "Meses")]
+        [Range(0, int.MaxValue, ErrorMessage = "Introduzca un valor numérico")]
+        public int Meses { get; set; }
+
+        public RenovarAnuncioViewModel(int id, string tituloAnuncio)
+        {
+            _idAnuncio = id;
+            _tituloAnuncio = tituloAnuncio;
+        }
+
+        public string TituloAnuncio
+        {
+            get
+            {
+                return _tituloAnuncio;
+            }
+        }
+
+        public int IdAnuncio
+        {
+            get
+            {
+                return _idAnuncio;
+            }
+        }
+    }
+
     public class AnuncioDetallesViewModel
     {
         private AnuncioViewModel _anuncio;
@@ -652,13 +685,15 @@ namespace VendeAgroWeb.Models.Administrador
         private string _nombreCategoria;
         private string _nombreSubcategoria;
         private string _nombreUsuario;
+        private EstadoAnuncio _estadoAnuncios;
 
-        public AnunciosViewModel(ICollection<AnuncioViewModel> anuncios, string nombreCategoria, string nombreSubcategoria, string nombreUsuario)
+        public AnunciosViewModel(ICollection<AnuncioViewModel> anuncios, string nombreCategoria, string nombreSubcategoria, string nombreUsuario, EstadoAnuncio estadoAnuncios)
         {
             _anuncios = anuncios;
             _nombreCategoria = nombreCategoria;
             _nombreSubcategoria = nombreSubcategoria;
             _nombreUsuario = nombreUsuario;
+            _estadoAnuncios = estadoAnuncios;
         }
 
         public ICollection<AnuncioViewModel> Anuncios
@@ -690,6 +725,14 @@ namespace VendeAgroWeb.Models.Administrador
             get
             {
                 return _nombreUsuario;
+            }
+        }
+
+        public EstadoAnuncio EstadoAnuncios
+        {
+            get
+            {
+                return _estadoAnuncios;
             }
         }
     }

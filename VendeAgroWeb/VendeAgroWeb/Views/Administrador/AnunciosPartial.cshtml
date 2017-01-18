@@ -55,6 +55,13 @@
                             <td class="filtro">@item.Ciudad</td>
                             <td>@item.Clicks</td>
                             <td><a class="btn btn-primary btn-8-caracteres" href="/Administrador/AnuncioDetalles?id=@item.Id">detalles</a></td>
+                            @{
+                                if (Model.EstadoAnuncios == EstadoAnuncio.Aprobado || Model.EstadoAnuncios == EstadoAnuncio.Vencido)
+                                {
+                                    <td><a class="btn btn-success btn-8-caracteres" href="/Administrador/RenovarAnuncio?id=@item.Id">renovar</a></td>
+
+                                }
+                            }
                         </tr>
                     }
                 }

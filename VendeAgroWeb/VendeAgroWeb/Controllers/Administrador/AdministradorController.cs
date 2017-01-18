@@ -879,25 +879,25 @@ namespace VendeAgroWeb.Controllers.Administrador
 
         public async Task<ActionResult> AnunciosActivosPartial(int? id, string tipo)
         {
-            AnunciosViewModel model = new AnunciosViewModel(await ObtenerAnunciosAprobados(id, tipo), await ObtenerCategoriaNombre(id, tipo), await ObtenerSubcategoriaNombre(id, tipo), await ObtenerUsuarioNombre(id, tipo));
+            AnunciosViewModel model = new AnunciosViewModel(await ObtenerAnunciosAprobados(id, tipo), await ObtenerCategoriaNombre(id, tipo), await ObtenerSubcategoriaNombre(id, tipo), await ObtenerUsuarioNombre(id, tipo), EstadoAnuncio.Aprobado);
             return PartialView("AnunciosPartial", model);
         }
 
         public async Task<ActionResult> AnunciosVencidosPartial(int? id, string tipo)
         {
-            AnunciosViewModel model = new AnunciosViewModel(await ObtenerAnunciosVencidos(id, tipo), "", "", "");
+            AnunciosViewModel model = new AnunciosViewModel(await ObtenerAnunciosVencidos(id, tipo), "", "", "", EstadoAnuncio.Vencido);
             return PartialView("AnunciosPartial", model);
         }
 
         public async Task<ActionResult> AnunciosPendientesPartial(int? id, string tipo)
         {
-            AnunciosViewModel model = new AnunciosViewModel(await ObtenerAnunciosPorAprobar(id, tipo), "", "", "");
+            AnunciosViewModel model = new AnunciosViewModel(await ObtenerAnunciosPorAprobar(id, tipo), "", "", "", EstadoAnuncio.PendientePorAprobar);
             return PartialView("AnunciosPartial", model);
         }
 
         public async Task<ActionResult> AnunciosNoAprobadosPartial(int? id, string tipo)
         {
-            AnunciosViewModel model = new AnunciosViewModel(await ObtenerAnunciosNoAprobados(id, tipo), "", "", "");
+            AnunciosViewModel model = new AnunciosViewModel(await ObtenerAnunciosNoAprobados(id, tipo), "", "", "", EstadoAnuncio.NoAprobado);
             return PartialView("AnunciosPartial", model);
         }
 
@@ -1638,6 +1638,65 @@ namespace VendeAgroWeb.Controllers.Administrador
             return View(model);
         }
 
+        public async Task<ActionResult> RenovarAnuncio(int? id)
+        {
+            RenovarAnuncioViewModel model = new RenovarAnuncioViewModel(id.Value, await ObtenerTituloAnuncio(id));
+            return View(model);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [AllowAnonymous]
+        public async Task<ActionResult> RenovarAnuncio(RenovarAnuncioViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+
+            bool estado = true;
+
+            await Task.Run(() =>
+            {
+                using (var _dbContext = new MercampoEntities())
+                {
+                    Startup.OpenDatabaseConnection(_dbContext);
+                    if (_dbContext.Database.Connection.State != ConnectionState.Open)
+                    {
+                        ModelState.AddModelError("", "Error en la base de datos, vuelva a intentarlo");
+                        estado = false;
+                    }
+                    else
+                    {
+                        var anuncio = _dbContext.Anuncios.Where(a => a.id == model.IdAnuncio).FirstOrDefault();
+
+                        if (anuncio == null)
+                        {
+                            ModelState.AddModelError("", "Error anuncio no encontrado, vuelva a intentarlo");
+                            estado = false;
+                        }
+                        else
+                        {
+                            var fechaNueva = new DateTime();
+                            if (DateTime.Compare(anuncio.fecha_fin.Value, DateTime.Now) >= 0) {
+                                fechaNueva = anuncio.fecha_fin.Value.AddMonths(model.Meses);
+                            }
+                        }
+
+                        _dbContext.Database.Connection.Close();
+                    }
+                }
+
+            });
+            if (estado)
+            {
+                return RedirectToAction("Paquetes", "Administrador");
+            }
+            return View(model);
+
+            return View(model);
+        }
+
         [HttpPost]
         public string SubirFotos()
         {
@@ -1821,6 +1880,26 @@ namespace VendeAgroWeb.Controllers.Administrador
                         return true;
                     }
                 }
+            });
+        }
+
+        public async Task<string> ObtenerTituloAnuncio(int? idAnuncio)
+        {
+            return await Task.Run(() =>
+            {
+                using (var _dbContext = new MercampoEntities())
+                {
+                    Startup.OpenDatabaseConnection(_dbContext);
+                    if (_dbContext.Database.Connection.State != ConnectionState.Open)
+                    {
+                        return null;
+                    }
+                    var anuncio = _dbContext.Anuncios.Where(a => a.id == idAnuncio).FirstOrDefault();
+
+                    _dbContext.Database.Connection.Close();
+                    return anuncio.titulo;
+                }
+
             });
         }
 
