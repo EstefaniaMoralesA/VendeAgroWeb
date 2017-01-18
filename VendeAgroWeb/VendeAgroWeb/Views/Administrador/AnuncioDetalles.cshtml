@@ -12,9 +12,9 @@
     <div class="col-sm-6">
         <div class="estatus-container">
             @{
-                if (Model.Status == EstadoAnuncio.Aprobado)
+                if (Model.Anuncio.Status == EstadoAnuncio.Aprobado)
                 {
-                    if (!Model.Activo)
+                    if (!Model.Anuncio.Activo)
                     {
                         <div class="alert alert-info">
                             <strong><span class="glyphicon glyphicon-info-sign"></span></strong> Anuncio finalizado
@@ -28,13 +28,13 @@
                     }
 
                 }
-                else if (Model.Status == EstadoAnuncio.NoAprobado)
+                else if (Model.Anuncio.Status == EstadoAnuncio.NoAprobado)
                 {
                     <div class="alert alert-danger">
                         <strong><span class="glyphicon glyphicon-remove-sign"></span></strong> Anuncio no aprobado
                     </div>
                 }
-                else if (Model.Status == EstadoAnuncio.PendientePorAprobar)
+                else if (Model.Anuncio.Status == EstadoAnuncio.PendientePorAprobar)
                 {
                     <div class="alert alert-warning">
                         <strong><span class="glyphicon glyphicon-question-sign"></span></strong> Anuncio pendiente por aprobar
@@ -130,7 +130,7 @@
             </tbody>
         </table>
         @{
-            if (Model.Status == EstadoAnuncio.PendientePorAprobar)
+            if (Model.Anuncio.Status == EstadoAnuncio.PendientePorAprobar)
             {
                 <div class="contenedor-forma-rechazar">
                     <form class="form-horizontal" action="" method="post" id="forma-rechazar">
@@ -148,7 +148,7 @@
                 </div>
             }
 
-            if (Model.Status == EstadoAnuncio.NoAprobado)
+            if (Model.Anuncio.Status == EstadoAnuncio.NoAprobado)
             {
                 <hr />
                 <h4 style="margin-top:-10px;margin-bottom:-10px;">Razones no aprobado</h4>

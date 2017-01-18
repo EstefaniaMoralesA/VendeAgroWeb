@@ -55,6 +55,17 @@
                             <td class="filtro">@item.Ciudad</td>
                             <td>@item.Clicks</td>
                             <td><a class="btn btn-primary btn-8-caracteres" href="/Administrador/AnuncioDetalles?id=@item.Id">detalles</a></td>
+                            @if (item.Status == EstadoAnuncio.Aprobado)
+                            {
+                                if (item.Activo)
+                                {
+                                    <td><a class="btn btn-danger btn-10-caracteres" href="/Administrador/DesactivarAnuncio?id=@item.Id">desactivar</a></td>
+                                }
+                                @*else
+                                {
+                                    <td><a class="btn btn-success btn-7-caracteres" href="/Administrador/ActivarAnuncio?id=@item.Id">activar</a></td>
+                                }*@
+                            }
                         </tr>
                     }
                 }

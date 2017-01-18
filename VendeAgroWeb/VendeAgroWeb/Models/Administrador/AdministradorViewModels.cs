@@ -350,6 +350,10 @@ namespace VendeAgroWeb.Models.Administrador
         private string _estado;
         private string _ciudad;
         private int? _clicks;
+        
+        public EstadoAnuncio Status { get; set; }
+
+        public bool Activo { get; set; }
 
         public string Titulo
         {
@@ -423,16 +427,18 @@ namespace VendeAgroWeb.Models.Administrador
             }
         }
 
-        public AnuncioViewModel(int id, string titulo, string usuario, double? precio, string categoria, string subcategoria, string estado, string ciudad, int? clicks) {
+        public AnuncioViewModel(int id, string titulo, string usuario, double? precio, string categoria, string subcategoria, string estado, string ciudad, int? clicks, EstadoAnuncio status, bool activo) {
             _id = id;
             _titulo = titulo;
             _usuario = usuario;
-            _precio = precio;
+            _precio = precio ?? 0.0;
             _categoria = categoria;
             _subcategoria = subcategoria;
             _estado = estado;
             _ciudad = ciudad;
             _clicks = clicks ?? 0;
+            Status = status;
+            Activo = activo;
         }
     }
 
@@ -533,8 +539,6 @@ namespace VendeAgroWeb.Models.Administrador
     public class AnuncioDetallesViewModel
     {
         private AnuncioViewModel _anuncio;
-        private EstadoAnuncio _status;
-        private bool _activo;
         private string _descripcion;
         private ICollection<FotoViewModel> _fotos;
         private DateTime? _fechaInicio;
@@ -543,12 +547,11 @@ namespace VendeAgroWeb.Models.Administrador
         private ICollection<BeneficioViewModel> _beneficios;
         private string _video;
 
-        public AnuncioDetallesViewModel(AnuncioViewModel anuncio, int status, bool activo,
-            string descripcion, List<FotoViewModel> fotos, DateTime? fechaInicio, DateTime? fechaFin, AnuncioPaqueteViewModel paquete, ICollection<BeneficioViewModel> beneficios, string video)
+        public AnuncioDetallesViewModel(AnuncioViewModel anuncio,
+            string descripcion, List<FotoViewModel> fotos, DateTime? fechaInicio, 
+            DateTime? fechaFin, AnuncioPaqueteViewModel paquete, ICollection<BeneficioViewModel> beneficios, string video)
         {
             _anuncio = anuncio;
-            _status = (EstadoAnuncio)status;
-            _activo = activo;
             _descripcion = descripcion;
             _fotos = fotos;
             _paquete = paquete;
@@ -587,22 +590,6 @@ namespace VendeAgroWeb.Models.Administrador
             get
             {
                 return _fotos;
-            }
-        }
-
-        public EstadoAnuncio Status
-        {
-            get
-            {
-                return _status;
-            }
-        }
-
-        public bool Activo
-        {
-            get
-            {
-                return _activo;
             }
         }
 
