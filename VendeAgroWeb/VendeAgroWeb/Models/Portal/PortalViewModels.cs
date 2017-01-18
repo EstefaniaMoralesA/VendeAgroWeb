@@ -117,6 +117,69 @@ namespace VendeAgroWeb.Models.Portal
         }
     }
 
+    public class MisPagosViewModel {
+        private ICollection<PagoViewModel> _pagos;
+
+        public ICollection<PagoViewModel> Pagos
+        {
+            get
+            {
+                return _pagos;
+            }
+        }
+
+        public MisPagosViewModel(ICollection<PagoViewModel> pagos) {
+            _pagos = pagos;
+        }
+    }
+
+    public class PagoViewModel
+    {
+        private int _id;
+        private double _total;
+        private DateTime _fecha;
+        private int _digitosTarjeta;
+
+        public int Id
+        {
+            get
+            {
+                return _id;
+            }
+        }
+
+        public double Total
+        {
+            get
+            {
+                return _total;
+            }
+        }
+
+        public DateTime Fecha
+        {
+            get
+            {
+                return _fecha;
+            }
+        }
+
+        public int DigitosTarjeta
+        {
+            get
+            {
+                return _digitosTarjeta;
+            }
+        }
+
+        public PagoViewModel(int id, double total, DateTime fecha, int digitosTarjeta) {
+            _id = id;
+            _total = total;
+            _fecha = fecha;
+            _digitosTarjeta = digitosTarjeta;
+        }
+    }
+
     public class NuevaTarjetaViewModel
     {
         private int _id;

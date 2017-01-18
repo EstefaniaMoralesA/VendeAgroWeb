@@ -19,11 +19,10 @@
 </div>
 
 <div class="col-sm-10 col-sm-offset-1">
-    <div class="row" style="margin-top: 30px;">
+    <div style="margin-top: 30px;">
         <ul class="nav nav-pills nav-justified">
             <li><a id="activos-pill" href="#activos" data-toggle="pill">Activos</a></li>
             <li><a id="vencidos-pill" href="#vencidos" data-toggle="pill">Vencidos</a></li>
-            <li><a id="pendientes-pill" href="#pendientes" data-toggle="pill">Pendientes</a></li>
         </ul>
     </div>
 </div>
@@ -35,10 +34,7 @@
                 <img class="loader-anuncios" src="~/img/loader.gif" />
             </div>
             <div class="tab-pane" id="vencidos">
-                <p>Vencidos</p>
-            </div>
-            <div class="tab-pane" id="pendientes">
-                <p>Pendientes</p>
+                <img class="loader-anuncios" src="~/img/loader.gif" />
             </div>
         </div>
     </div>
@@ -81,9 +77,11 @@
             data: {},
             url: '/Portal/AnunciosActivosPartial',
             success: function (result) {
+                alert(result);
                 $("#activos").html(result);
             },
             error: function (msg) {
+                $("#activos").html("<p class=\"error-mis-anuncios\">Error al cargar anuncios. Intentar de nuevo más tarde.</p>");
                 console.log(msg);
             }
         });
@@ -92,11 +90,24 @@
 
     $("#vencidos-pill").click(function () {
         activaPill('vencidos');
+        getVencidos();
     });
 
-    $("#pendientes-pill").click(function () {
-        activaPill('pendientes');
-    });
+    function getVencidos() {
+        var id = $("#id").val();
+        $.ajax({
+            type: "POST",
+            data: {},
+            url: '/Portal/AnunciosVencidosPartial',
+            success: function (result) {
+                $("#vencidos").html(result);
+            },
+            error: function (msg) {
+                $("#vencidos").html("<p class=\"error-mis-anuncios\">Error al cargar anuncios. Intentar de nuevo más tarde.</p>");
+                console.log(msg);
+            }
+        });
+    }
 
     function activaPill(pill) {
         $('.nav-pills a[href="#' + pill + '"]').tab('show');

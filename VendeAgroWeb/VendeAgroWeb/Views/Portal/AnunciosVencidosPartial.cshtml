@@ -1,1 +1,42 @@
-﻿
+﻿@model VendeAgroWeb.Models.Portal.MisAnunciosViewModel
+@{
+    if (Model.Anuncios.Count <= 0)
+    {
+        <div class="col-sm-6 col-sm-offset-3">
+            <h2>No hay anuncios en esta modalidad.</h2>
+        </div>
+    }
+    else
+    {
+        foreach (var item in Model.Anuncios)
+        {
+            <div style="padding-right:35px;" class="col-sm-4 col-md-3">
+                <div class="row">
+                    <a class="btn btn-default menu-grad btn-renovar">
+                        <p>Renovar</p>
+                    </a>
+                </div>
+                <div class="row">
+                    <div class="mis-anuncios-paquete-container">
+                        <div class="mis-anuncios-anuncio">
+                            <a class="mi-anuncio-link">
+                                <div class="mis-anuncios-wrapper">
+                                    <p class="wrapper-texto">Ver detalles</p>
+                                    <div class="mis-anuncios-imagen-container">
+                                        <img class="foto-anuncio" src="" />
+                                    </div>
+                                    <div class="movil-anuncio-titulo ofertas-anuncio-titulo">
+                                        <div class="row mis-anuncios-anuncio-titulo anuncio-aprobado">
+                                            <p class="titulo">@item.Titulo</p>
+                                            <p class="estado"><strong><span class="glyphicon glyphicon-check"></span></strong>Aprobado</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    }
+
