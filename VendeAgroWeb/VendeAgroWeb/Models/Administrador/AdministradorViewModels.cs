@@ -348,7 +348,6 @@ namespace VendeAgroWeb.Models.Administrador
         private string _categoria;
         private string _subcategoria;
         private string _estado;
-        private string _ciudad;
         private int? _clicks;
         
         public EstadoAnuncio Status { get; set; }
@@ -395,14 +394,6 @@ namespace VendeAgroWeb.Models.Administrador
             }
         }
 
-        public string Ciudad
-        {
-            get
-            {
-                return _ciudad;
-            }
-        }
-
         public int? Clicks
         {
             get
@@ -427,7 +418,7 @@ namespace VendeAgroWeb.Models.Administrador
             }
         }
 
-        public AnuncioViewModel(int id, string titulo, string usuario, double? precio, string categoria, string subcategoria, string estado, string ciudad, int? clicks, EstadoAnuncio status, bool activo) {
+        public AnuncioViewModel(int id, string titulo, string usuario, double? precio, string categoria, string subcategoria, string estado, int? clicks, EstadoAnuncio status, bool activo) {
             _id = id;
             _titulo = titulo;
             _usuario = usuario;
@@ -435,7 +426,6 @@ namespace VendeAgroWeb.Models.Administrador
             _categoria = categoria;
             _subcategoria = subcategoria;
             _estado = estado;
-            _ciudad = ciudad;
             _clicks = clicks ?? 0;
             Status = status;
             Activo = activo;
@@ -983,53 +973,6 @@ namespace VendeAgroWeb.Models.Administrador
         }
 
         public PaisViewModel(int id, string nombre)
-        {
-            _id = id;
-            _nombre = nombre;
-        }
-    }
-
-    public class CiudadesViewModel
-    {
-        private ICollection<CiudadViewModel> _ciudades;
-
-        public ICollection<CiudadViewModel> Ciudades
-        {
-            get
-            {
-                return _ciudades;
-            }
-        }
-
-        public CiudadesViewModel(ICollection<CiudadViewModel> ciudades)
-        {
-            _ciudades = ciudades;
-        }
-
-    }
-
-    public class CiudadViewModel
-    {
-        private int _id;
-        private string _nombre;
-
-        public int Id
-        {
-            get
-            {
-                return _id;
-            }
-        }
-
-        public string Nombre
-        {
-            get
-            {
-                return _nombre;
-            }
-        }
-
-        public CiudadViewModel(int id, string nombre)
         {
             _id = id;
             _nombre = nombre;

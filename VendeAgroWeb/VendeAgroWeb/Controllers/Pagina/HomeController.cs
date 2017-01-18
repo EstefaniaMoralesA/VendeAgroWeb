@@ -234,15 +234,15 @@ namespace VendeAgroWeb.Controllers.Home
         }
 
         [HttpPost]
-        public async Task<ActionResult> DestacadosFiltradosPartial(int? idCategoria, int? idSubcategoria, int? idPais, int? idEstado, int? idCiudad, double? precioBajo, double? precioAlto) {
-            PortalAnunciosViewModel model = new PortalAnunciosViewModel(await ObtenerDestacadosFiltrados(idCategoria, idSubcategoria, idPais, idEstado, idCiudad, precioBajo, precioAlto), "", "", "");
+        public async Task<ActionResult> DestacadosFiltradosPartial(int? idCategoria, int? idSubcategoria, int? idPais, int? idEstado, double? precioBajo, double? precioAlto) {
+            PortalAnunciosViewModel model = new PortalAnunciosViewModel(await ObtenerDestacadosFiltrados(idCategoria, idSubcategoria, idPais, idEstado, precioBajo, precioAlto), "", "", "");
             return PartialView("_AnunciosPartial", model);
         }
 
         [HttpPost]
-        public async Task<ActionResult> DestacadosFiltradosMovilPartial(int? idCategoria, int? idSubcategoria, int? idPais, int? idEstado, int? idCiudad, double? precioBajo, double? precioAlto)
+        public async Task<ActionResult> DestacadosFiltradosMovilPartial(int? idCategoria, int? idSubcategoria, int? idPais, int? idEstado, double? precioBajo, double? precioAlto)
         {
-            PortalAnunciosViewModel model = new PortalAnunciosViewModel(await ObtenerDestacadosFiltrados(idCategoria, idSubcategoria, idPais, idEstado, idCiudad, precioBajo, precioAlto), "", "", "");
+            PortalAnunciosViewModel model = new PortalAnunciosViewModel(await ObtenerDestacadosFiltrados(idCategoria, idSubcategoria, idPais, idEstado, precioBajo, precioAlto), "", "", "");
             return PartialView("_AnunciosMovil", model);
         }
 
@@ -271,8 +271,8 @@ namespace VendeAgroWeb.Controllers.Home
                     }
 
                     anuncios = _dbContext.Anuncios.Where(a => a.activo == true && a.estado == (int)EstadoAnuncio.Aprobado && (
-                    a.Subcategoria.nombre == query || a.Subcategoria.Categoria.nombre == query || a.Ciudad.nombre == query || a.Ciudad.Estado.nombre == query
-                    || a.Ciudad.Estado.Pai.nombre == query || a.titulo.Contains(query) == true)).Take(20);
+                    a.Subcategoria.nombre == query || a.Subcategoria.Categoria.nombre == query || a.Estado1.nombre == query || a.Estado1.nombre == query
+                    || a.Estado1.Pai.nombre == query || a.titulo.Contains(query) == true)).Take(20);
 
                     _dbContext.Database.Connection.Close();
                     PortalAnunciosBusquedaViewModel model = new PortalAnunciosBusquedaViewModel(CreaAnuncios(anuncios.ToList(), _dbContext), query);
@@ -283,7 +283,7 @@ namespace VendeAgroWeb.Controllers.Home
         }
 
 
-        public async Task<ICollection<PortalAnuncioViewModel>> ObtenerDestacadosFiltrados(int? idCategoria, int? idSubcategoria, int? idPais, int? idEstado, int? idCiudad, double? precioBajo, double? precioAlto) {
+        public async Task<ICollection<PortalAnuncioViewModel>> ObtenerDestacadosFiltrados(int? idCategoria, int? idSubcategoria, int? idPais, int? idEstado, double? precioBajo, double? precioAlto) {
             return await Task.Run(() =>
             {
                 using (var _dbContext = new MercampoEntities())
@@ -296,7 +296,7 @@ namespace VendeAgroWeb.Controllers.Home
 
                     IQueryable<Anuncio> anuncios = null;
 
-                    if (idCategoria == -1 && idSubcategoria == -1 && idPais == -1 && idCiudad == -1 && idEstado == -1) {
+                    if (idCategoria == -1 && idSubcategoria == -1 && idPais == -1 && idEstado == -1) {
                         anuncios = _dbContext.Anuncios.Where(a => a.activo == true && a.estado == (int)EstadoAnuncio.Aprobado && a.precio <= precioAlto && a.precio >= precioBajo).OrderByDescending(a => a.clicks).Take(20);
                         _dbContext.Database.Connection.Close();
                         return CreaAnuncios(anuncios.ToList(), _dbContext);
@@ -310,22 +310,13 @@ namespace VendeAgroWeb.Controllers.Home
                             {
                                 if (idEstado != -1)
                                 {
-                                    if (idCiudad != -1)
-                                    {
-                                        anuncios = _dbContext.Anuncios.Where(a => a.activo == true && a.estado == (int)EstadoAnuncio.Aprobado && a.idSubcategoria == idSubcategoria && a.idCiudad == idCiudad && a.precio <= precioAlto && a.precio >= precioBajo).OrderByDescending(a => a.clicks).Take(20);
-                                        _dbContext.Database.Connection.Close();
-                                        return CreaAnuncios(anuncios.ToList(), _dbContext);
-                                    }
-                                    else
-                                    {
-                                        anuncios = _dbContext.Anuncios.Where(a => a.activo == true && a.estado == (int)EstadoAnuncio.Aprobado && a.idSubcategoria == idSubcategoria && a.Ciudad.idEstado == idEstado && a.precio <= precioAlto && a.precio >= precioBajo).OrderByDescending(a => a.clicks).Take(20);
-                                        _dbContext.Database.Connection.Close();
-                                        return CreaAnuncios(anuncios.ToList(), _dbContext);
-                                    }
+                                    anuncios = _dbContext.Anuncios.Where(a => a.activo == true && a.estado == (int)EstadoAnuncio.Aprobado && a.idSubcategoria == idSubcategoria && a.idEstado == idEstado && a.precio <= precioAlto && a.precio >= precioBajo).OrderByDescending(a => a.clicks).Take(20);
+                                    _dbContext.Database.Connection.Close();
+                                    return CreaAnuncios(anuncios.ToList(), _dbContext);
                                 }
                                 else
                                 {
-                                    anuncios = _dbContext.Anuncios.Where(a => a.activo == true && a.estado == (int)EstadoAnuncio.Aprobado && a.idSubcategoria == idSubcategoria && a.Ciudad.Estado.idPais == idPais && a.precio <= precioAlto && a.precio >= precioBajo).OrderByDescending(a => a.clicks).Take(20);
+                                    anuncios = _dbContext.Anuncios.Where(a => a.activo == true && a.estado == (int)EstadoAnuncio.Aprobado && a.idSubcategoria == idSubcategoria && a.Estado1.idPais == idPais && a.precio <= precioAlto && a.precio >= precioBajo).OrderByDescending(a => a.clicks).Take(20);
                                     _dbContext.Database.Connection.Close();
                                     return CreaAnuncios(anuncios.ToList(), _dbContext);
                                 }
@@ -350,22 +341,13 @@ namespace VendeAgroWeb.Controllers.Home
                         {
                             if (idEstado != -1)
                             {
-                                if (idCiudad != -1)
-                                {
-                                    anuncios = _dbContext.Anuncios.Where(a => a.activo == true && a.estado == (int)EstadoAnuncio.Aprobado && a.idCiudad == idCiudad && a.precio <= precioAlto && a.precio >= precioBajo).OrderByDescending(a => a.clicks).Take(20);
-                                    _dbContext.Database.Connection.Close();
-                                    return CreaAnuncios(anuncios.ToList(), _dbContext);
-                                }
-                                else
-                                {
-                                    anuncios = _dbContext.Anuncios.Where(a => a.activo == true && a.estado == (int)EstadoAnuncio.Aprobado && a.Ciudad.idEstado == idEstado && a.precio <= precioAlto && a.precio >= precioBajo).OrderByDescending(a => a.clicks).Take(20);
-                                    _dbContext.Database.Connection.Close();
-                                    return CreaAnuncios(anuncios.ToList(), _dbContext);
-                                }
+                                anuncios = _dbContext.Anuncios.Where(a => a.activo == true && a.estado == (int)EstadoAnuncio.Aprobado && a.idEstado == idEstado && a.precio <= precioAlto && a.precio >= precioBajo).OrderByDescending(a => a.clicks).Take(20);
+                                _dbContext.Database.Connection.Close();
+                                return CreaAnuncios(anuncios.ToList(), _dbContext);
                             }
                             else
                             {
-                                anuncios = _dbContext.Anuncios.Where(a => a.activo == true && a.estado == (int)EstadoAnuncio.Aprobado && a.Ciudad.Estado.idPais == idPais).OrderByDescending(a => a.clicks).Take(20);
+                                anuncios = _dbContext.Anuncios.Where(a => a.activo == true && a.estado == (int)EstadoAnuncio.Aprobado && a.Estado1.idPais == idPais).OrderByDescending(a => a.clicks).Take(20);
                                 _dbContext.Database.Connection.Close();
                                 return CreaAnuncios(anuncios.ToList(), _dbContext);
                             }
@@ -464,40 +446,6 @@ namespace VendeAgroWeb.Controllers.Home
             });
         }
 
-        [HttpPost]
-        public async Task<ActionResult> CiudadesPartial(int? idEstado)
-        {
-            PaginaCiudadesViewModel model = new PaginaCiudadesViewModel(await ObtenerCiudades(idEstado));
-            return PartialView("CiudadesPartial", model);
-        }
-
-        public async Task<ICollection<PaginaCiudadViewModel>> ObtenerCiudades(int? idEstado)
-        {
-            return await Task.Run(() =>
-            {
-                using (var _dbContext = new MercampoEntities())
-                {
-                    Startup.OpenDatabaseConnection(_dbContext);
-                    if (_dbContext.Database.Connection.State != ConnectionState.Open)
-                    {
-                        return null;
-                    }
-                    List<PaginaCiudadViewModel> lista = new List<PaginaCiudadViewModel>();
-                    lista.Add(new PaginaCiudadViewModel("Elige una ciudad"));
-
-                    var ciudades = _dbContext.Ciudads.Where(c => c.idEstado == idEstado);
-                    foreach (var item in ciudades)
-                    {
-                        lista.Add(new PaginaCiudadViewModel(item.id, item.nombre));
-                    }
-
-                    _dbContext.Database.Connection.Close();
-                    return lista;
-                }
-
-            });
-        }
-
         public async Task<ActionResult> GaleriaAnuncio(int? id)
         {
             if (id == null)
@@ -581,7 +529,7 @@ namespace VendeAgroWeb.Controllers.Home
                             anuncio.clicks += 1;
                             _dbContext.SaveChanges();
                             var anuncioViewModel = new PortalAnuncioViewModel(anuncio.id, anuncio.titulo, anuncio.precio, anuncio.Subcategoria.Categoria.nombre, anuncio.Subcategoria.nombre,
-                                anuncio.Ciudad.Estado.nombre, anuncio.Ciudad.nombre, anuncio.Fotos_Anuncio.Where(f => f.principal == true).FirstOrDefault()?.ruta);
+                                anuncio.Estado1.nombre, anuncio.Fotos_Anuncio.Where(f => f.principal == true).FirstOrDefault()?.ruta);
 
                             List<PaginaFotoViewModel> fotos = new List<PaginaFotoViewModel>();
 
@@ -724,7 +672,7 @@ namespace VendeAgroWeb.Controllers.Home
             List<PortalAnuncioViewModel> lista = new List<PortalAnuncioViewModel>();
             foreach (var item in anuncios)
             {
-                lista.Add(new PortalAnuncioViewModel(item.id, item.titulo, item.precio, item.Subcategoria.Categoria.nombre, item.Subcategoria.nombre, item.Ciudad.Estado.nombre, item.Ciudad.nombre, item.Fotos_Anuncio.Where(f => f.principal == true).FirstOrDefault()?.ruta));
+                lista.Add(new PortalAnuncioViewModel(item.id, item.titulo, item.precio, item.Subcategoria.Categoria.nombre, item.Subcategoria.nombre, item.Estado1.nombre, item.Fotos_Anuncio.Where(f => f.principal == true).FirstOrDefault()?.ruta));
             }
 
             return lista;

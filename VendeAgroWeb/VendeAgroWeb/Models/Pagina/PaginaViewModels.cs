@@ -327,7 +327,6 @@ namespace VendeAgroWeb.Models.Pagina
         private string _categoria;
         private string _subcategoria;
         private string _estado;
-        private string _ciudad;
         private string _fotoPrincipal;
 
         public string Titulo
@@ -378,14 +377,6 @@ namespace VendeAgroWeb.Models.Pagina
             }
         }
 
-        public string Ciudad
-        {
-            get
-            {
-                return _ciudad;
-            }
-        }
-
         public int Id
         {
             get
@@ -394,7 +385,7 @@ namespace VendeAgroWeb.Models.Pagina
             }
         }
 
-        public PortalAnuncioViewModel(int id, string titulo, double? precio, string categoria, string subcategoria, string estado, string ciudad, string fotoPrincipal)
+        public PortalAnuncioViewModel(int id, string titulo, double? precio, string categoria, string subcategoria, string estado, string fotoPrincipal)
         {
             _id = id;
             _titulo = titulo;
@@ -402,7 +393,6 @@ namespace VendeAgroWeb.Models.Pagina
             _categoria = categoria;
             _subcategoria = subcategoria;
             _estado = estado;
-            _ciudad = ciudad;
             _fotoPrincipal = fotoPrincipal;
         }
     }
@@ -565,59 +555,6 @@ namespace VendeAgroWeb.Models.Pagina
         }
 
         public PaginaEstadoViewModel(int id, string nombre)
-        {
-            _id = id;
-            _nombre = nombre;
-        }
-    }
-
-    public class PaginaCiudadesViewModel
-    {
-        private ICollection<PaginaCiudadViewModel> _ciudades;
-
-        public ICollection<PaginaCiudadViewModel> Ciudades
-        {
-            get
-            {
-                return _ciudades;
-            }
-        }
-
-        public PaginaCiudadesViewModel(ICollection<PaginaCiudadViewModel> ciudades)
-        {
-            _ciudades = ciudades;
-        }
-
-    }
-
-    public class PaginaCiudadViewModel
-    {
-        private int _id;
-        private string _nombre;
-
-        public int Id
-        {
-            get
-            {
-                return _id;
-            }
-        }
-
-        public string Nombre
-        {
-            get
-            {
-                return _nombre;
-            }
-        }
-
-        public PaginaCiudadViewModel(string nombre)
-        {
-            _id = -1;
-            _nombre = nombre;
-        }
-
-        public PaginaCiudadViewModel(int id, string nombre)
         {
             _id = id;
             _nombre = nombre;

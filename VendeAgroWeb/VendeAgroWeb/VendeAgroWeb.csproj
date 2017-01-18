@@ -248,9 +248,6 @@
     <Compile Include="Models\Categoria.cs">
       <DependentUpon>DatabaseModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\Ciudad.cs">
-      <DependentUpon>DatabaseModel.tt</DependentUpon>
-    </Compile>
     <Compile Include="Models\Conekta_Paquete.cs">
       <DependentUpon>DatabaseModel.tt</DependentUpon>
     </Compile>
@@ -297,9 +294,6 @@
     </Compile>
     <Compile Include="Models\Portal\PortalViewModels.cs" />
     <Compile Include="Models\Subcategoria.cs">
-      <DependentUpon>DatabaseModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\Table.cs">
       <DependentUpon>DatabaseModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\UserModels.cs" />
@@ -471,7 +465,6 @@
     <Content Include="Views\Home\BeneficiosExtra.cshtml" />
     <Content Include="Views\Administrador\PaisesAnuncioPartial.cshtml" />
     <Content Include="Views\Administrador\EstadosAnuncioPartial.cshtml" />
-    <Content Include="Views\Administrador\CiudadesAnuncioPartial.cshtml" />
     <Content Include="Views\Administrador\Beneficios.cshtml" />
     <Content Include="Views\Portal\AnunciosActivosPartial.cshtml" />
     <Content Include="Views\Portal\AnunciosVencidosPartial.cshtml" />
@@ -482,7 +475,6 @@
     <Content Include="Views\Home\SubcategoriasPartial.cshtml" />
     <Content Include="Views\Home\PaisesPartial.cshtml" />
     <Content Include="Views\Home\EstadosPartial.cshtml" />
-    <Content Include="Views\Home\CiudadesPartial.cshtml" />
     <Content Include="Views\Home\AnuncioDetalles.cshtml" />
     <Content Include="Views\Home\ResultadosBusqueda.cshtml" />
     <Content Include="Views\Shared\_BusquedaPartial.cshtml" />

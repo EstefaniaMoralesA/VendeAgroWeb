@@ -52,15 +52,6 @@
                                         <li><a href="#">Elige un país...</a></li>
                                     </ul>
                                 </div>
-                                <div id="ciudad-dropdown" class="dropdown">
-                                    <button id="btn-ciudad" class="btn btn-default dropdown-toggle botones-grad busqueda-dropdown" type="button" data-toggle="dropdown">
-                                        Ciudad
-                                        <span class="caret"></span>
-                                    </button>
-                                    <ul id="ciudades" class="dropdown-menu">
-                                        <li><a href="#">Elige un estado...</a></li>
-                                    </ul>
-                                </div>
                                 <div class="slider-container">
                                     <div class="price-container row">
                                         <p class="precio-izq">$<span id="value-izq">100</span></p>
@@ -105,7 +96,6 @@
     var idSubcategoria = -1;
     var idPais = -1;
     var idEstado = -1;
-    var idCiudad = -1;
     var precioBajo = 0;
     var precioAlto = 1000000;
     var precioBajoActual = -1;
@@ -281,16 +271,11 @@
             $("#btn-estado:first-child").html("Estado" + '<span class="caret"></span>');
             idEstado = -1;
         }
-        if (idCiudad != -1) {
-            $("#btn-ciudad:first-child").html("Ciudad" + '<span class="caret"></span>');
-            idCiudad = -1;
-        }
 
         idPais = elemento.data('id');
         if (idPais == -1) {
             $("#btn-pais:first-child").html("Pa&iacute;s" + '<span class="caret"></span>');
             $("#estados").html('<li><a href="#">Elige un país...</a></li>');
-            $("#ciudades").html('<li><a href="#">Elige un estado...</a></li>');
         }
         else {
             $("#btn-pais:first-child").html(elemento.text() + '<span class="caret"></span>');
@@ -304,30 +289,12 @@
             return;
         }
 
-        if (idCiudad != -1) {
-            $("#btn-ciudad:first-child").html("Ciudad" + '<span class="caret"></span>');
-            idCiudad = -1;
-        }
-
         idEstado = elemento.data('id');
         if (idEstado == -1) {
             $("#btn-estado:first-child").html("Estado" + '<span class="caret"></span>');
-            $("#ciudades").html('<li><a href="#">Elige un estado...</a></li>');
         }
         else {
             $("#btn-estado:first-child").html(elemento.text() + '<span class="caret"></span>');
-            getCiudades(idEstado);
-        }
-        getAnunciosDestacadosFiltrados();
-    }
-
-    function ciudadesClick(elemento) {
-        idCiudad = elemento.data('id');
-        if (idCiudad == -1) {
-            $("#btn-ciudad:first-child").html("Ciudad" + '<span class="caret"></span>');
-        }
-        else {
-            $("#btn-ciudad:first-child").html(elemento.text() + '<span class="caret"></span>');
         }
         getAnunciosDestacadosFiltrados();
     }
@@ -420,21 +387,6 @@
         });
     }
 
-    function getCiudades(id) {
-        $.ajax({
-            type: "POST",
-            data: {},
-            url: '/Home/CiudadesPartial?idEstado=' + id,
-            success: function (result) {
-                $("#ciudades").html(result);
-            },
-            error: function (msg) {
-                console.log(msg);
-                alert("Error en ciudades: " + msg);
-            }
-        });
-    }
-
     function getAnunciosDestacadosFiltrados() {
         $('.anuncios-container').html('<img class="loader-anuncios" src="/img/loader.gif" />');
         $('.anuncios-movil-container').html('<img class="loader-anuncios" src="/img/loader.gif" />');
@@ -442,7 +394,7 @@
         $.ajax({
             type: "POST",
             data: {},
-            url: '/Home/DestacadosFiltradosPartial?idCategoria=' + idCategoria + "&idSubcategoria=" + idSubcategoria + "&idPais=" + idPais + "&idEstado=" + idEstado + "&idCiudad=" + idCiudad + "&precioBajo=" + precioBajo + "&precioAlto=" + precioAlto,
+            url: '/Home/DestacadosFiltradosPartial?idCategoria=' + idCategoria + "&idSubcategoria=" + idSubcategoria + "&idPais=" + idPais + "&idEstado=" + idEstado + "&precioBajo=" + precioBajo + "&precioAlto=" + precioAlto,
             success: function (result) {
                 $(".anuncios-container").html(result);
             },
@@ -455,7 +407,7 @@
         $.ajax({
             type: "POST",
             data: {},
-            url: '/Home/DestacadosFiltradosMovilPartial?idCategoria=' + idCategoria + "&idSubcategoria=" + idSubcategoria + "&idPais=" + idPais + "&idEstado=" + idEstado + "&idCiudad=" + idCiudad + "&precioBajo=" + precioBajo + "&precioAlto=" + precioAlto,
+            url: '/Home/DestacadosFiltradosMovilPartial?idCategoria=' + idCategoria + "&idSubcategoria=" + idSubcategoria + "&idPais=" + idPais + "&idEstado=" + idEstado + "&precioBajo=" + precioBajo + "&precioAlto=" + precioAlto,
             success: function (result) {
                 $(".anuncios-movil-container").html(result);
             },

@@ -87,17 +87,6 @@
                                 </ul>
                             </div>
                         </div>
-                        <div class="col-sm-4" style="padding-right: 0px;">
-                            <div id="ciudades-dropdown" class="dropdown">
-                                <button id="btn-ciudades" class="btn btn-default dropdown-anuncio dropdown-toggle" style="font-size:14px;" type="button" data-toggle="dropdown">
-                                    Ciudad
-                                    <span class="caret nuevo-anuncio-caret ciudad-caret"></span>
-                                </button>
-                                <ul id="ciudades" class="dropdown-menu">
-                                    <li>Seleccione un estado...</li>
-                                </ul>
-                            </div>
-                        </div>
                     </div>
                     <div class="row" style="margin-top: 20px;">
                         <div class="alert alert-danger error-extension" style="display:none;">
@@ -212,7 +201,6 @@
     var idSubcategoria = null;
     var idPais = null;
     var idEstado = null;
-    var idCiudad = null;
     var fotoDisplay = null;
     var fotos = [];
     var video = null;
@@ -223,7 +211,6 @@
     var validoSubcategoria = true;
     var validoPais = true;
     var validoEstado = true;
-    var validoCiudad = true;
     var numeroSubidosEsperado = 1;
     var numeroSubidos = 0;
 
@@ -275,17 +262,6 @@
             $("#btn-estados:first-child").html(elemento.text() + '<span class="caret has-error-caret estado-caret"></span>');
         }
         idEstado = elemento.data('id');
-        getCiudades(elemento.data('id'));
-    }
-
-    function ciudadesClick(elemento) {
-        if (validoCiudad) {
-            $("#btn-ciudades:first-child").html(elemento.text() + '<span class="caret nuevo-anuncio-caret ciudad-caret"></span>');
-        }
-        else {
-            $("#btn-ciudades:first-child").html(elemento.text() + '<span class="caret has-error-caret ciudad-caret"></span>');
-        }
-        idCiudad = elemento.data('id');
     }
 
     function getCategorias() {
@@ -344,21 +320,6 @@
             error: function (msg) {
                 console.log(msg);
                 alert("Error en estados: " + msg);
-            }
-        });
-    }
-
-    function getCiudades(id) {
-        $.ajax({
-            type: "POST",
-            data: {},
-            url: '/Administrador/CiudadesAnuncioPartial?idEstado=' + id,
-            success: function (result) {
-                $("#ciudades").html(result);
-            },
-            error: function (msg) {
-                console.log(msg);
-                alert("Error en ciudades: " + msg);
             }
         });
     }
@@ -454,8 +415,8 @@
             jprecio: precio,
             jdescripcion: descripcion,
             jmeses: meses,
+            jestado: idEstado,
             jidSubcategoria: idSubcategoria,
-            jidCiudad: idCiudad,
             jfotoDisplay: fotoDisplayFinal,
             jfotos: fotosFinal,
             jvideo: videoFinal
@@ -670,20 +631,6 @@
             $('#btn-estados').removeClass('has-error-dropdown');
             $('.estado-caret').removeClass('has-error-caret');
             $('.estado-caret').addClass('nuevo-anuncio-caret');
-        }
-
-        if (idCiudad == null) {
-            valido = false;
-            cadenaError += "    - Introduzca una ciudad v&aacute;lida. </br>";
-            $('#btn-ciudades').addClass('has-error-dropdown');
-            $('.ciudad-caret').removeClass('nuevo-anuncio-caret');
-            $('.ciudad-caret').addClass('has-error-caret');
-            validoCiudad = false;
-        }
-        else {
-            $('#btn-ciudades').removeClass('has-error-dropdown');
-            $('.ciudad-caret').removeClass('has-error-caret');
-            $('.ciudad-caret').addClass('nuevo-anuncio-caret');
         }
 
         if (fotoDisplay == null) {

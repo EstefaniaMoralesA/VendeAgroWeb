@@ -17,7 +17,7 @@ namespace VendeAgroWeb.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Estado()
         {
-            this.Ciudads = new HashSet<Ciudad>();
+            this.Anuncios = new HashSet<Anuncio>();
         }
     
         public int id { get; set; }
@@ -25,7 +25,7 @@ namespace VendeAgroWeb.Models
         public int idPais { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Ciudad> Ciudads { get; set; }
+        public virtual ICollection<Anuncio> Anuncios { get; set; }
         public virtual Pai Pai { get; set; }
     }
 }

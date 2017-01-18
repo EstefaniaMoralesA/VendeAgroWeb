@@ -16,7 +16,7 @@
           <Property Name="activo" Type="bit" Nullable="false" />
           <Property Name="idUsuario" Type="int" />
           <Property Name="idSubcategoria" Type="int" />
-          <Property Name="idCiudad" Type="int" />
+          <Property Name="idEstado" Type="int" />
           <Property Name="clicks" Type="int" />
           <Property Name="vistas" Type="int" />
           <Property Name="estado" Type="int" Nullable="false" />
@@ -60,14 +60,6 @@
           <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="nombre" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="activo" Type="bit" Nullable="false" />
-        </EntityType>
-        <EntityType Name="Ciudad">
-          <Key>
-            <PropertyRef Name="id" />
-          </Key>
-          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="nombre" Type="varchar" MaxLength="30" Nullable="false" />
-          <Property Name="idEstado" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="Conekta_Paquete">
           <Key>
@@ -158,16 +150,6 @@
           <Property Name="activo" Type="bit" Nullable="false" />
           <Property Name="idCategoria" Type="int" />
         </EntityType>
-        <EntityType Name="Table">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="int" Nullable="false" />
-          <Property Name="ruta" Type="varchar" MaxLength="200" />
-          <Property Name="link" Type="varchar" MaxLength="200" />
-          <Property Name="activo" Type="bit" Nullable="false" />
-          <Property Name="tipo" Type="int" Nullable="false" />
-        </EntityType>
         <EntityType Name="Usuario">
           <Key>
             <PropertyRef Name="id" />
@@ -215,15 +197,15 @@
           <Property Name="ruta" Type="varchar" MaxLength="100" Nullable="false" />
           <Property Name="idAnuncio" Type="int" Nullable="false" />
         </EntityType>
-        <Association Name="FK__Anuncio__idCiuda__5AEE82B9">
-          <End Role="Ciudad" Type="Self.Ciudad" Multiplicity="0..1" />
+        <Association Name="FK__Anuncio__idEstad__18EBB532">
+          <End Role="Estado" Type="Self.Estado" Multiplicity="0..1" />
           <End Role="Anuncio" Type="Self.Anuncio" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="Ciudad">
+            <Principal Role="Estado">
               <PropertyRef Name="id" />
             </Principal>
             <Dependent Role="Anuncio">
-              <PropertyRef Name="idCiudad" />
+              <PropertyRef Name="idEstado" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -286,20 +268,6 @@
             </Principal>
             <Dependent Role="Anuncio_Beneficio">
               <PropertyRef Name="idBeneficio" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK__Ciudad__idEstado__5FB337D6">
-          <End Role="Estado" Type="Self.Estado" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Role="Ciudad" Type="Self.Ciudad" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Estado">
-              <PropertyRef Name="id" />
-            </Principal>
-            <Dependent Role="Ciudad">
-              <PropertyRef Name="idEstado" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -457,7 +425,6 @@
           <EntitySet Name="Banner" EntityType="Self.Banner" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Beneficio" EntityType="Self.Beneficio" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Categoria" EntityType="Self.Categoria" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="Ciudad" EntityType="Self.Ciudad" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Conekta_Paquete" EntityType="Self.Conekta_Paquete" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Estado" EntityType="Self.Estado" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Fotos_Anuncio" EntityType="Self.Fotos_Anuncio" Schema="dbo" store:Type="Tables" />
@@ -467,13 +434,12 @@
           <EntitySet Name="Pais" EntityType="Self.Pais" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Paquete" EntityType="Self.Paquete" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Subcategoria" EntityType="Self.Subcategoria" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="Table" EntityType="Self.Table" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Usuario" EntityType="Self.Usuario" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Usuario_Administrador" EntityType="Self.Usuario_Administrador" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Usuario_Tarjeta" EntityType="Self.Usuario_Tarjeta" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Videos_Anuncio" EntityType="Self.Videos_Anuncio" Schema="dbo" store:Type="Tables" />
-          <AssociationSet Name="FK__Anuncio__idCiuda__5AEE82B9" Association="Self.FK__Anuncio__idCiuda__5AEE82B9">
-            <End Role="Ciudad" EntitySet="Ciudad" />
+          <AssociationSet Name="FK__Anuncio__idEstad__18EBB532" Association="Self.FK__Anuncio__idEstad__18EBB532">
+            <End Role="Estado" EntitySet="Estado" />
             <End Role="Anuncio" EntitySet="Anuncio" />
           </AssociationSet>
           <AssociationSet Name="FK__Anuncio__idPaque__14270015" Association="Self.FK__Anuncio__idPaque__14270015">
@@ -495,10 +461,6 @@
           <AssociationSet Name="FK__Anuncio_B__idBen__5CD6CB2B" Association="Self.FK__Anuncio_B__idBen__5CD6CB2B">
             <End Role="Beneficio" EntitySet="Beneficio" />
             <End Role="Anuncio_Beneficio" EntitySet="Anuncio_Beneficio" />
-          </AssociationSet>
-          <AssociationSet Name="FK__Ciudad__idEstado__5FB337D6" Association="Self.FK__Ciudad__idEstado__5FB337D6">
-            <End Role="Estado" EntitySet="Estado" />
-            <End Role="Ciudad" EntitySet="Ciudad" />
           </AssociationSet>
           <AssociationSet Name="FK__Conekta_P__idPaq__60A75C0F" Association="Self.FK__Conekta_P__idPaq__60A75C0F">
             <End Role="Paquete" EntitySet="Paquete" />
@@ -561,7 +523,7 @@
           <Property Name="activo" Type="Boolean" Nullable="false" />
           <Property Name="idUsuario" Type="Int32" />
           <Property Name="idSubcategoria" Type="Int32" />
-          <Property Name="idCiudad" Type="Int32" />
+          <Property Name="idEstado" Type="Int32" />
           <Property Name="clicks" Type="Int32" />
           <Property Name="vistas" Type="Int32" />
           <Property Name="estado" Type="Int32" Nullable="false" />
@@ -569,7 +531,7 @@
           <Property Name="fecha_inicio" Type="DateTime" Precision="0" />
           <Property Name="fecha_fin" Type="DateTime" Precision="0" />
           <Property Name="idPaquete" Type="Int32" />
-          <NavigationProperty Name="Ciudad" Relationship="Self.FK__Anuncio__idCiuda__5AEE82B9" FromRole="Anuncio" ToRole="Ciudad" />
+          <NavigationProperty Name="Estado1" Relationship="Self.FK__Anuncio__idEstad__18EBB532" FromRole="Anuncio" ToRole="Estado" />
           <NavigationProperty Name="Paquete" Relationship="Self.FK__Anuncio__idPaque__14270015" FromRole="Anuncio" ToRole="Paquete" />
           <NavigationProperty Name="Subcategoria" Relationship="Self.FK__Anuncio__idSubca__59FA5E80" FromRole="Anuncio" ToRole="Subcategoria" />
           <NavigationProperty Name="Usuario" Relationship="Self.FK__Anuncio__idUsuar__59063A47" FromRole="Anuncio" ToRole="Usuario" />
@@ -618,16 +580,6 @@
           <Property Name="activo" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="Subcategorias" Relationship="Self.FK__Subcatego__idCat__6754599E" FromRole="Categoria" ToRole="Subcategoria" />
         </EntityType>
-        <EntityType Name="Ciudad">
-          <Key>
-            <PropertyRef Name="id" />
-          </Key>
-          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="nombre" Type="String" MaxLength="30" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="idEstado" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="Anuncios" Relationship="Self.FK__Anuncio__idCiuda__5AEE82B9" FromRole="Ciudad" ToRole="Anuncio" />
-          <NavigationProperty Name="Estado" Relationship="Self.FK__Ciudad__idEstado__5FB337D6" FromRole="Ciudad" ToRole="Estado" />
-        </EntityType>
         <EntityType Name="Conekta_Paquete">
           <Key>
             <PropertyRef Name="id" />
@@ -648,7 +600,7 @@
           <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="nombre" Type="String" MaxLength="30" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="idPais" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="Ciudads" Relationship="Self.FK__Ciudad__idEstado__5FB337D6" FromRole="Estado" ToRole="Ciudad" />
+          <NavigationProperty Name="Anuncios" Relationship="Self.FK__Anuncio__idEstad__18EBB532" FromRole="Estado" ToRole="Anuncio" />
           <NavigationProperty Name="Pai" Relationship="Self.FK__Estado__idPais__6FE99F9F" FromRole="Estado" ToRole="Pais" />
         </EntityType>
         <EntityType Name="Fotos_Anuncio">
@@ -733,16 +685,6 @@
           <NavigationProperty Name="Anuncios" Relationship="Self.FK__Anuncio__idSubca__59FA5E80" FromRole="Subcategoria" ToRole="Anuncio" />
           <NavigationProperty Name="Categoria" Relationship="Self.FK__Subcatego__idCat__6754599E" FromRole="Subcategoria" ToRole="Categoria" />
         </EntityType>
-        <EntityType Name="Table">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" />
-          <Property Name="ruta" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
-          <Property Name="link" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
-          <Property Name="activo" Type="Boolean" Nullable="false" />
-          <Property Name="tipo" Type="Int32" Nullable="false" />
-        </EntityType>
         <EntityType Name="Usuario">
           <Key>
             <PropertyRef Name="id" />
@@ -796,15 +738,15 @@
           <Property Name="idAnuncio" Type="Int32" Nullable="false" />
           <NavigationProperty Name="Anuncio" Relationship="Self.FK__Videos_An__idAnu__693CA210" FromRole="Videos_Anuncio" ToRole="Anuncio" />
         </EntityType>
-        <Association Name="FK__Anuncio__idCiuda__5AEE82B9">
-          <End Role="Ciudad" Type="Self.Ciudad" Multiplicity="0..1" />
+        <Association Name="FK__Anuncio__idEstad__18EBB532">
+          <End Role="Estado" Type="Self.Estado" Multiplicity="0..1" />
           <End Role="Anuncio" Type="Self.Anuncio" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="Ciudad">
+            <Principal Role="Estado">
               <PropertyRef Name="id" />
             </Principal>
             <Dependent Role="Anuncio">
-              <PropertyRef Name="idCiudad" />
+              <PropertyRef Name="idEstado" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -924,20 +866,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Ciudad__idEstado__5FB337D6">
-          <End Role="Estado" Type="Self.Estado" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Role="Ciudad" Type="Self.Ciudad" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Estado">
-              <PropertyRef Name="id" />
-            </Principal>
-            <Dependent Role="Ciudad">
-              <PropertyRef Name="idEstado" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK__Conekta_P__idPaq__60A75C0F">
           <End Role="Paquete" Type="Self.Paquete" Multiplicity="1">
             <OnDelete Action="Cascade" />
@@ -1038,7 +966,6 @@
           <EntitySet Name="Banners" EntityType="Self.Banner" />
           <EntitySet Name="Beneficios" EntityType="Self.Beneficio" />
           <EntitySet Name="Categorias" EntityType="Self.Categoria" />
-          <EntitySet Name="Ciudads" EntityType="Self.Ciudad" />
           <EntitySet Name="Conekta_Paquete" EntityType="Self.Conekta_Paquete" />
           <EntitySet Name="Estadoes" EntityType="Self.Estado" />
           <EntitySet Name="Fotos_Anuncio" EntityType="Self.Fotos_Anuncio" />
@@ -1048,13 +975,12 @@
           <EntitySet Name="Pais" EntityType="Self.Pai" />
           <EntitySet Name="Paquetes" EntityType="Self.Paquete" />
           <EntitySet Name="Subcategorias" EntityType="Self.Subcategoria" />
-          <EntitySet Name="Tables" EntityType="Self.Table" />
           <EntitySet Name="Usuarios" EntityType="Self.Usuario" />
           <EntitySet Name="Usuario_Administrador" EntityType="Self.Usuario_Administrador" />
           <EntitySet Name="Usuario_Tarjeta" EntityType="Self.Usuario_Tarjeta" />
           <EntitySet Name="Videos_Anuncio" EntityType="Self.Videos_Anuncio" />
-          <AssociationSet Name="FK__Anuncio__idCiuda__5AEE82B9" Association="Self.FK__Anuncio__idCiuda__5AEE82B9">
-            <End Role="Ciudad" EntitySet="Ciudads" />
+          <AssociationSet Name="FK__Anuncio__idEstad__18EBB532" Association="Self.FK__Anuncio__idEstad__18EBB532">
+            <End Role="Estado" EntitySet="Estadoes" />
             <End Role="Anuncio" EntitySet="Anuncios" />
           </AssociationSet>
           <AssociationSet Name="FK__Anuncio__idPaque__14270015" Association="Self.FK__Anuncio__idPaque__14270015">
@@ -1092,10 +1018,6 @@
           <AssociationSet Name="FK__Subcatego__idCat__6754599E" Association="Self.FK__Subcatego__idCat__6754599E">
             <End Role="Categoria" EntitySet="Categorias" />
             <End Role="Subcategoria" EntitySet="Subcategorias" />
-          </AssociationSet>
-          <AssociationSet Name="FK__Ciudad__idEstado__5FB337D6" Association="Self.FK__Ciudad__idEstado__5FB337D6">
-            <End Role="Estado" EntitySet="Estadoes" />
-            <End Role="Ciudad" EntitySet="Ciudads" />
           </AssociationSet>
           <AssociationSet Name="FK__Conekta_P__idPaq__60A75C0F" Association="Self.FK__Conekta_P__idPaq__60A75C0F">
             <End Role="Paquete" EntitySet="Paquetes" />
@@ -1142,7 +1064,7 @@
                 <ScalarProperty Name="activo" ColumnName="activo" />
                 <ScalarProperty Name="idUsuario" ColumnName="idUsuario" />
                 <ScalarProperty Name="idSubcategoria" ColumnName="idSubcategoria" />
-                <ScalarProperty Name="idCiudad" ColumnName="idCiudad" />
+                <ScalarProperty Name="idEstado" ColumnName="idEstado" />
                 <ScalarProperty Name="clicks" ColumnName="clicks" />
                 <ScalarProperty Name="vistas" ColumnName="vistas" />
                 <ScalarProperty Name="estado" ColumnName="estado" />
@@ -1190,15 +1112,6 @@
                 <ScalarProperty Name="id" ColumnName="id" />
                 <ScalarProperty Name="nombre" ColumnName="nombre" />
                 <ScalarProperty Name="activo" ColumnName="activo" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Ciudads">
-            <EntityTypeMapping TypeName="VendeAgroModel.Ciudad">
-              <MappingFragment StoreEntitySet="Ciudad">
-                <ScalarProperty Name="id" ColumnName="id" />
-                <ScalarProperty Name="nombre" ColumnName="nombre" />
-                <ScalarProperty Name="idEstado" ColumnName="idEstado" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -1297,17 +1210,6 @@
                 <ScalarProperty Name="nombre" ColumnName="nombre" />
                 <ScalarProperty Name="activo" ColumnName="activo" />
                 <ScalarProperty Name="idCategoria" ColumnName="idCategoria" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Tables">
-            <EntityTypeMapping TypeName="VendeAgroModel.Table">
-              <MappingFragment StoreEntitySet="Table">
-                <ScalarProperty Name="Id" ColumnName="Id" />
-                <ScalarProperty Name="ruta" ColumnName="ruta" />
-                <ScalarProperty Name="link" ColumnName="link" />
-                <ScalarProperty Name="activo" ColumnName="activo" />
-                <ScalarProperty Name="tipo" ColumnName="tipo" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

@@ -1042,11 +1042,7 @@ namespace VendeAgroWeb.Controllers.Administrador
             List<AnuncioViewModel> lista = new List<AnuncioViewModel>();
             foreach (var item in anuncios)
             {
-                var categoria = _dbContext.Categorias.Where(c => c.id == item.Subcategoria.idCategoria).FirstOrDefault()?.nombre;
-
-                var estado = _dbContext.Estadoes.Where(e => e.id == item.Ciudad.idEstado).FirstOrDefault()?.nombre;
-
-                lista.Add(new AnuncioViewModel(item.id, item.titulo, item.Usuario.nombre, item.precio, categoria, item.Subcategoria.nombre, estado, item.Ciudad.nombre, item.clicks, (EstadoAnuncio)item.estado, item.activo));
+                lista.Add(new AnuncioViewModel(item.id, item.titulo, item.Usuario.nombre, item.precio, item.Subcategoria.Categoria.nombre, item.Subcategoria.nombre, item.Estado1.nombre, item.clicks, (EstadoAnuncio)item.estado, item.activo));
             }
 
             return lista;
@@ -1167,8 +1163,8 @@ namespace VendeAgroWeb.Controllers.Administrador
                         else
                         {
                             var anuncioViewModel = new AnuncioViewModel(anuncio.id, anuncio.titulo, anuncio.Usuario.nombre, anuncio.precio,
-                                anuncio.Subcategoria.Categoria.nombre, anuncio.Subcategoria.nombre, anuncio.Ciudad.Estado.nombre,
-                                anuncio.Ciudad.nombre, anuncio.clicks, (EstadoAnuncio)anuncio.estado, anuncio.activo);
+                                anuncio.Subcategoria.Categoria.nombre, anuncio.Subcategoria.nombre, anuncio.Estado1.nombre,
+                                anuncio.clicks, (EstadoAnuncio)anuncio.estado, anuncio.activo);
                             List<FotoViewModel> fotos = new List<FotoViewModel>();
                             var paquete = _dbContext.Paquetes.Where(p => p.id == anuncio.idPaquete).FirstOrDefault();
 
@@ -1828,7 +1824,7 @@ namespace VendeAgroWeb.Controllers.Administrador
             var precio = (double)anuncio["jprecio"];
             var idUsuario = (int)anuncio["jidUsuario"];
             var idSubcategoria = (int)anuncio["jidSubcategoria"];
-            var idCiudad = (int)anuncio["jidCiudad"];
+            var idEstado = (int)anuncio["jestado"];
             var meses = (int)anuncio["jmeses"];
             var fotoDisplay = (string)anuncio["jfotoDisplay"];
             var fotos = (JArray)anuncio["jfotos"];
@@ -1864,15 +1860,13 @@ namespace VendeAgroWeb.Controllers.Administrador
                                 activo = true,
                                 idUsuario = idUsuario,
                                 idSubcategoria = idSubcategoria,
-                                idCiudad = idCiudad,
+                                idEstado = idEstado,
                                 estado = (int)EstadoAnuncio.Aprobado,
                                 clicks = 0,
                                 vistas = 0,
                                 fecha_inicio = DateTime.Now,
                                 fecha_fin = DateTime.Now.AddMonths(meses),
                             });
-
-                            List<Fotos_Anuncio> fotosAnuncio = new List<Fotos_Anuncio>();
 
                             _dbContext.Fotos_Anuncio.Add(new Fotos_Anuncio
                             {
@@ -2008,13 +2002,6 @@ namespace VendeAgroWeb.Controllers.Administrador
             return PartialView("EstadosAnuncioPartial", model);
         }
 
-        [HttpPost]
-        public async Task<ActionResult> CiudadesAnuncioPartial(int? idEstado)
-        {
-            CiudadesViewModel model = new CiudadesViewModel(await ObtenerCiudadesAnuncio(idEstado));
-            return PartialView("CiudadesAnuncioPartial", model);
-        }
-
         public async Task<ICollection<CategoriaViewModel>> ObtenerCategoriasAnuncio()
         {
             return await Task.Run(() =>
@@ -2081,31 +2068,6 @@ namespace VendeAgroWeb.Controllers.Administrador
                     foreach (var item in estados)
                     {
                         lista.Add(new EstadoViewModel(item.id, item.nombre));
-                    }
-
-                    _dbContext.Database.Connection.Close();
-                    return lista;
-                }
-
-            });
-        }
-
-        public async Task<ICollection<CiudadViewModel>> ObtenerCiudadesAnuncio(int? idEstado)
-        {
-            return await Task.Run(() =>
-            {
-                using (var _dbContext = new MercampoEntities())
-                {
-                    Startup.OpenDatabaseConnection(_dbContext);
-                    if (_dbContext.Database.Connection.State != ConnectionState.Open)
-                    {
-                        return null;
-                    }
-                    List<CiudadViewModel> lista = new List<CiudadViewModel>();
-                    var ciudades = _dbContext.Ciudads.Where(c => c.idEstado == idEstado);
-                    foreach (var item in ciudades)
-                    {
-                        lista.Add(new CiudadViewModel(item.id, item.nombre));
                     }
 
                     _dbContext.Database.Connection.Close();

@@ -30,7 +30,6 @@
                 <th>Categoría</th>
                 <th>Subcategoría</th>
                 <th>Estado</th>
-                <th>Ciudad</th>
                 <th>Clicks</th>
                 <th></th>
             </tr>
@@ -52,7 +51,6 @@
                             <td>@item.Categoria</td>
                             <td>@item.Subcategoria</td>
                             <td class="filtro">@item.Estado</td>
-                            <td class="filtro">@item.Ciudad</td>
                             <td>@item.Clicks</td>
                             <td><a class="btn btn-primary btn-8-caracteres" href="/Administrador/AnuncioDetalles?id=@item.Id">detalles</a></td>
                             @if (item.Status == EstadoAnuncio.Aprobado)

@@ -30,7 +30,6 @@ namespace VendeAgroWeb.Models
         public virtual DbSet<Banner> Banners { get; set; }
         public virtual DbSet<Beneficio> Beneficios { get; set; }
         public virtual DbSet<Categoria> Categorias { get; set; }
-        public virtual DbSet<Ciudad> Ciudads { get; set; }
         public virtual DbSet<Conekta_Paquete> Conekta_Paquete { get; set; }
         public virtual DbSet<Estado> Estadoes { get; set; }
         public virtual DbSet<Fotos_Anuncio> Fotos_Anuncio { get; set; }
@@ -40,7 +39,6 @@ namespace VendeAgroWeb.Models
         public virtual DbSet<Pai> Pais { get; set; }
         public virtual DbSet<Paquete> Paquetes { get; set; }
         public virtual DbSet<Subcategoria> Subcategorias { get; set; }
-        public virtual DbSet<Table> Tables { get; set; }
         public virtual DbSet<Usuario> Usuarios { get; set; }
         public virtual DbSet<Usuario_Administrador> Usuario_Administrador { get; set; }
         public virtual DbSet<Usuario_Tarjeta> Usuario_Tarjeta { get; set; }
