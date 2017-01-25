@@ -193,22 +193,19 @@ a {
 }
 
     .login-menu-container ul {
-        position: absolute;
-        top: 42%;
-        left: 40%;
-        transform: translate(0, -50%);
-        -webkit-transform: translate(0, -50%);
-        -moz-transform: translate(0, -50%);
-        -o-transform: translate(0, -50%);
-        -ms-transform: translate(0, -50%);
+        width: 100%;
     }
 
         .login-menu-container ul li a {
-            padding: 2px 10px 2px 10px;
             line-height: 20px;
-            font-size: 16px;
+            font-size: 13px;
             color: white;
         }
+
+.login-list {
+    width: 50%;
+    text-align: center;
+}
 
 .menu-movil-container {
     display: none;
@@ -1191,6 +1188,14 @@ div.social-wrap button {
     min-height: 174px;
 }
 
+.mis-anuncios-wrapper:hover .mis-anuncios-imagen-container {
+    opacity: 0;
+}
+
+.mis-anuncios-wrapper:hover > p {
+    opacity: 1;
+}
+
 .anuncios-container {
     width: 100%;
     display: inline-block;
@@ -1768,6 +1773,18 @@ div.social-wrap button {
     margin-top: 30px;
 }
 
+.degradado-verde-activos {
+    margin-top: -1px !important;
+}
+
+.mis-anuncios-titulo {
+    padding-top: 0px !important;
+}
+
+.movil-mis-anuncios {
+    bottom: 0 !important;
+}
+
 .mis-anuncios-atras {
     padding-right: 23px;
     color: white !important;
@@ -1879,7 +1896,7 @@ div.social-wrap button {
 
     .mis-anuncios-anuncio-titulo p {
         margin-bottom: 0;
-        font-size: 14px;
+        font-size: 12px;
         font-family: BoldFont;
         margin-left: 5px;
     }
@@ -2668,10 +2685,6 @@ iframe {
         font-size: 22px;
     }
 
-    .login-menu-container ul {
-        left: 32%;
-    }
-
     .titulo-mision-anunciate {
         font-size: 27px;
     }
@@ -2741,11 +2754,11 @@ iframe {
     }
 
     .mis-anuncios-anuncio-titulo .estado {
-        font-size: 13px;
+        font-size: 10px;
     }
 
     .login-menu-container ul li a {
-        font-size: 15px;
+        font-size: 12px;
     }
 }
 
@@ -2795,16 +2808,9 @@ iframe {
     .botones-portal-container {
         width: 220px;
     }
-
-    .login-menu-container ul {
-        left: 23%;
-    }
 }
 
 @media (max-width: 833px) {
-    .login-menu-container ul li a {
-        font-size: 13px;
-    }
 
     .texto-anunciate {
         font-size: 15px;
@@ -2855,9 +2861,6 @@ iframe {
 }
 
 @media (max-width:768px) {
-    .login-menu-container ul li a {
-        font-size: 14px !important;
-    }
 
     .logo-container a img {
         width: 80%;

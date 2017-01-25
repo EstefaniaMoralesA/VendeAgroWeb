@@ -4,8 +4,8 @@
 }
 
 <div class="row mis-anuncios-global">
-    <div class="col-sm-12 boton-atras-container">
-        <div class="col-sm-3" style="display: inline-block">
+    <div class="col-sm-10 col-sm-offset-1 boton-atras-container">
+        <div class="col-sm-3" style="display: inline-block; text-align: left;">
             <a class="btn btn-default menu-grad mis-anuncios-atras" href="/Portal/Index">
                 <p>atrás</p>
                 <span class="glyphicon glyphicon-chevron-left" />
@@ -54,17 +54,6 @@
         getActivos();
     });
 
-    $(".mi-anuncio-link").hover(function () {
-        $(".wrapper-texto").css("opacity", "1");
-        $(".mis-anuncios-imagen-container").css("opacity", "0.2");
-    }, function () {
-        $(".wrapper-texto").css("opacity", "0");
-        $(".mis-anuncios-imagen-container").css("opacity", "1");
-    });
-
-    $(".movil-anuncio-titulo").hover(function () {
-    });
-
     $("#activos-pill").click(function () {
         activaPill('activos');
         getActivos();
@@ -77,7 +66,6 @@
             data: {},
             url: '/Portal/AnunciosActivosPartial',
             success: function (result) {
-                alert(result);
                 $("#activos").html(result);
             },
             error: function (msg) {

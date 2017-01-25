@@ -117,6 +117,211 @@ namespace VendeAgroWeb.Models.Portal
         }
     }
 
+    public class FotoViewModel
+    {
+        private bool _principal;
+        private string _ruta;
+
+        public FotoViewModel(bool principal, string ruta)
+        {
+            _principal = principal;
+            _ruta = ruta;
+        }
+
+        public bool Principal
+        {
+            get
+            {
+                return _principal;
+            }
+        }
+
+        public string Ruta
+        {
+            get
+            {
+                return _ruta;
+            }
+        }
+    }
+
+    public class AnuncioPaqueteViewModel
+    {
+        private string _nombre;
+        private bool _activo;
+
+        public AnuncioPaqueteViewModel(string nombre, bool activo)
+        {
+            _nombre = nombre;
+            _activo = activo;
+        }
+
+        public string Nombre
+        {
+            get
+            {
+                return _nombre;
+            }
+
+        }
+
+        public bool Activo
+        {
+            get
+            {
+                return _activo;
+            }
+
+        }
+
+    }
+
+    public class BeneficioViewModel
+    {
+        private int _id;
+        private string _descripcion;
+        private double _precio;
+
+        public int Id
+        {
+            get
+            {
+                return _id;
+            }
+        }
+
+        public string Descripcion
+        {
+            get
+            {
+                return _descripcion;
+            }
+        }
+
+        public double Precio
+        {
+            get
+            {
+                return _precio;
+            }
+        }
+
+        public BeneficioViewModel(int id, string descripcion, double precio)
+        {
+            _id = id;
+            _descripcion = descripcion;
+            _precio = precio;
+        }
+    }
+
+    public class AnuncioDetallesViewModel
+    {
+        private AnuncioViewModel _anuncio;
+        private double? _precio;
+        private string _descripcion;
+        private ICollection<FotoViewModel> _fotos;
+        private DateTime? _fechaInicio;
+        private DateTime? _fechaFin;
+        private AnuncioPaqueteViewModel _paquete;
+        private ICollection<BeneficioViewModel> _beneficios;
+        private string _video;
+
+        public AnuncioDetallesViewModel(AnuncioViewModel anuncio, double? precio,
+            string descripcion, List<FotoViewModel> fotos, DateTime? fechaInicio,
+            DateTime? fechaFin, AnuncioPaqueteViewModel paquete, ICollection<BeneficioViewModel> beneficios, string video)
+        {
+            _anuncio = anuncio;
+            _precio = precio;
+            _descripcion = descripcion;
+            _fotos = fotos;
+            _paquete = paquete;
+            _fechaInicio = fechaInicio;
+            _fechaFin = fechaFin;
+            _beneficios = beneficios;
+            _video = video;
+        }
+
+        public bool TieneVideo
+        {
+            get
+            {
+                return _video != null;
+            }
+        }
+
+        public string Video
+        {
+            get
+            {
+                return _video;
+            }
+        }
+
+        public AnuncioViewModel Anuncio
+        {
+            get
+            {
+                return _anuncio;
+            }
+        }
+
+        public ICollection<FotoViewModel> Fotos
+        {
+            get
+            {
+                return _fotos;
+            }
+        }
+
+        public string Descripcion
+        {
+            get
+            {
+                return _descripcion;
+            }
+        }
+
+        public DateTime? FechaInicio
+        {
+            get
+            {
+                return _fechaInicio;
+            }
+        }
+
+        public DateTime? FechaFin
+        {
+            get
+            {
+                return _fechaFin;
+            }
+        }
+
+        public AnuncioPaqueteViewModel Paquete
+        {
+            get
+            {
+                return _paquete;
+            }
+        }
+
+        public ICollection<BeneficioViewModel> Beneficios
+        {
+            get
+            {
+                return _beneficios;
+            }
+        }
+
+        public double? Precio
+        {
+            get
+            {
+                return _precio;
+            }
+        }
+    }
+
     public class MisPagosViewModel {
         private ICollection<PagoViewModel> _pagos;
 

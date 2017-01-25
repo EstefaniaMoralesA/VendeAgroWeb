@@ -1184,7 +1184,7 @@ namespace VendeAgroWeb.Controllers.Administrador
 
                             var rutaVideo = _dbContext.Videos_Anuncio.Where(v => v.idAnuncio == id).FirstOrDefault()?.ruta;
 
-                            
+
                             foreach (var foto in anuncio.Fotos_Anuncio)
                             {
                                 fotos.Add(new FotoViewModel(foto.principal, foto.ruta));
@@ -1707,7 +1707,8 @@ namespace VendeAgroWeb.Controllers.Administrador
                         else
                         {
                             var fechaNueva = new DateTime();
-                            if (DateTime.Compare(anuncio.fecha_fin.Value, DateTime.Now) >= 0) {
+                            if (DateTime.Compare(anuncio.fecha_fin.Value, DateTime.Now) >= 0)
+                            {
                                 fechaNueva = anuncio.fecha_fin.Value.AddMonths(model.Meses);
                             }
                         }
@@ -1842,71 +1843,60 @@ namespace VendeAgroWeb.Controllers.Administrador
                     }
                     else
                     {
-                        var anuncioBD = _dbContext.Anuncios.Where(a => (a.titulo.ToLower() == titulo.ToLower())).FirstOrDefault();
-
-                        if (anuncioBD != null)
+                        var nuevoAnuncio = _dbContext.Anuncios.Add(new Anuncio
                         {
+                            titulo = titulo,
+                            descripcion = descripcion,
+                            precio = precio,
+                            activo = true,
+                            idUsuario = idUsuario,
+                            idSubcategoria = idSubcategoria,
+                            idEstado = idEstado,
+                            estado = (int)EstadoAnuncio.Aprobado,
+                            clicks = 0,
+                            vistas = 0,
+                            fecha_inicio = DateTime.Now,
+                            fecha_fin = DateTime.Now.AddMonths(meses),
+                        });
 
-                            ModelState.AddModelError("", "Error ya existe un anuncio con ese título.");
-                            return false;
-                        }
-                        else
+                        _dbContext.Fotos_Anuncio.Add(new Fotos_Anuncio
                         {
-                            var nuevoAnuncio = _dbContext.Anuncios.Add(new Anuncio
-                            {
-                                titulo = titulo,
-                                descripcion = descripcion,
-                                precio = precio,
-                                activo = true,
-                                idUsuario = idUsuario,
-                                idSubcategoria = idSubcategoria,
-                                idEstado = idEstado,
-                                estado = (int)EstadoAnuncio.Aprobado,
-                                clicks = 0,
-                                vistas = 0,
-                                fecha_inicio = DateTime.Now,
-                                fecha_fin = DateTime.Now.AddMonths(meses),
-                            });
+                            ruta = fotoDisplay,
+                            idAnuncio = nuevoAnuncio.id,
+                            principal = true
+                        });
 
+                        _dbContext.Anuncio_Beneficio.Add(new Anuncio_Beneficio
+                        {
+                            idAnuncio = nuevoAnuncio.id,
+                            idBeneficio = 4
+                        });
+
+                        foreach (var item in fotos)
+                        {
+                            var url = (string)item;
                             _dbContext.Fotos_Anuncio.Add(new Fotos_Anuncio
                             {
-                                ruta = fotoDisplay,
+                                ruta = url,
                                 idAnuncio = nuevoAnuncio.id,
-                                principal = true
+                                principal = false
                             });
-
-                            _dbContext.Anuncio_Beneficio.Add(new Anuncio_Beneficio
-                            {
-                                idAnuncio = nuevoAnuncio.id,
-                                idBeneficio = 4
-                            });
-
-                            foreach (var item in fotos)
-                            {
-                                var url = (string)item;
-                                _dbContext.Fotos_Anuncio.Add(new Fotos_Anuncio
-                                {
-                                    ruta = url,
-                                    idAnuncio = nuevoAnuncio.id,
-                                    principal = false
-                                });
-                            }
-
-                            if (!string.IsNullOrEmpty(video))
-                            {
-                                _dbContext.Videos_Anuncio.Add(new Videos_Anuncio
-                                {
-                                    ruta = video,
-                                    idAnuncio = nuevoAnuncio.id
-                                });
-                            }
-
-                            _dbContext.SaveChanges();
                         }
 
-                        _dbContext.Database.Connection.Close();
-                        return true;
+                        if (!string.IsNullOrEmpty(video))
+                        {
+                            _dbContext.Videos_Anuncio.Add(new Videos_Anuncio
+                            {
+                                ruta = video,
+                                idAnuncio = nuevoAnuncio.id
+                            });
+                        }
+
+                        _dbContext.SaveChanges();
                     }
+
+                    _dbContext.Database.Connection.Close();
+                    return true;
                 }
             });
         }

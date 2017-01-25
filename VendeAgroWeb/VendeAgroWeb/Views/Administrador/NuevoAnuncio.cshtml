@@ -431,7 +431,6 @@
             },
             error: function (msg) {
                 console.log(msg);
-                alert("Error al agregar nuevo anuncio: " + msg);
             }
         });
     }
@@ -541,7 +540,14 @@
             cadenaError += "    - Introduzca un t&iacutetulo v&aacute;lido. </br>";
         }
         else {
-            $('.form-titulo').removeClass('has-error');
+            if (titulo.length > 30) {
+                valido = false;
+                $('.form-titulo').addClass('has-error');
+                cadenaError += "    - La longitud del t&iacute;tulo no puede ser mayor a 30 caracteres. </br>";
+            }
+            else {
+                $('.form-titulo').removeClass('has-error');
+            }
         }
 
         precio = $("#anuncio-precio").val();
@@ -563,7 +569,14 @@
             cadenaError += "    - Introduzca una descripci&oacute;n v&aacute;lida. </br>";
         }
         else {
-            $('.form-descripcion').removeClass('has-error');
+            if (descripcion.length > 500) {
+                valido = false;
+                $('.form-descripcion').addClass('has-error');
+                cadenaError += "    - La longitud de la descripci&oacute;n no puede ser mayor a 500 caracteres. </br>";
+            }
+            else {
+                $('.form-descripcion').removeClass('has-error');
+            }
         }
 
         meses = $("#anuncio-meses").val();

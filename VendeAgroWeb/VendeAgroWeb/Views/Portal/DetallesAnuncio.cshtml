@@ -1,0 +1,204 @@
+﻿@model VendeAgroWeb.Models.Portal.AnuncioDetallesViewModel
+
+@{
+    ViewBag.Title = "Mis Anuncios Anuncio Detalles";
+    Layout = "Shared/_PortalLayout.cshtml";
+}
+
+@Styles.Render("~/owl/css")
+
+
+<div class="row">
+    <div class="col-sm-12 boton-atras-container">
+        <div class="col-sm-3" style="display: inline-block">
+            <a class="btn btn-default menu-grad mis-anuncios-atras" href="/Portal/MisAnuncios">
+                <p>atrás</p>
+                <span class="glyphicon glyphicon-chevron-left" />
+            </a>
+        </div>
+
+        <div class="col-sm-6 mis-anuncios-titulo-container" style="display: inline-block; text-align: center;">
+            <h2 class="mis-anuncios-titulo" style="margin-bottom: 30px;">Detalles del Anuncio</h2>
+        </div>
+    </div>
+    <div class="col-sm-6">
+        <div class="estatus-container">
+            @{
+                if (Model.Anuncio.Estado == EstadoAnuncio.Aprobado)
+                {
+                    <div class="alert alert-success">
+                        <strong><span class="glyphicon glyphicon-check"></span></strong> Anuncio aprobado
+                    </div>
+                }
+                else if (Model.Anuncio.Estado == EstadoAnuncio.PendientePorAprobar)
+                {
+                    <div class="alert alert-warning">
+                        <strong><span class="glyphicon glyphicon-question-sign"></span></strong> Anuncio pendiente por aprobar
+                    </div>
+                }
+            }
+
+        </div>
+
+        <div class="img-grande-container">
+            @{
+                var fotoPrincipal = Model.Fotos.Where(f => f.Principal == true).FirstOrDefault();
+                if (fotoPrincipal != null)
+                {
+                    <img src="@fotoPrincipal.Ruta" class="imagen-grande" />
+                }
+            }
+        </div>
+
+        <div class="video-container">
+            @{
+                if (Model.TieneVideo)
+                {
+                    <video style="width: 100%; height: 100%;" controls>
+                        <source src="@Model.Video" type="video/mp4">
+                    </video>
+                }
+            }
+        </div>
+
+        <div id="owl-demo" class="itemsScaleUp-false owl-carousel owl-theme">
+            @{
+                foreach (var foto in Model.Fotos)
+                {
+                    var clase = "";
+                    if (foto.Principal)
+                    {
+                        clase = "activo";
+                    }
+                    <div class="item @clase">
+                        <img src="@foto.Ruta" />
+                    </div>
+                }
+
+                if (Model.TieneVideo)
+                {
+                    <div class="item video">
+                        <div class="video-link"><p>Video</p></div>
+                    </div>
+                }
+            }
+        </div>
+    </div>
+
+    <div class="col-sm-6">
+        <h2 style="margin-top:7px;">Informaci&oacute;n general</h2>
+        <hr />
+        <h3><span>T&iacute;tulo: </span>@Model.Anuncio.Titulo</h3>
+        <h4><span>Precio: </span>$@Model.Precio</h4>
+        <p><span>Descripci&oacute;n: </span>@Model.Descripcion</p>
+        <p><span><strong>Fecha de inicio: </strong></span>@Model.FechaInicio.Value.ToString("dd-MM-yyyy")</p>
+        <p><span><strong>Fecha de fin: </strong></span>@Model.FechaFin.Value.ToString("dd-MM-yyyy")</p>
+        <hr />
+        <h2 style="margin-top:15px;">Detalles de compra</h2>
+        <hr />
+        <table class="table table-bordered">
+            <tbody>
+                @{
+                    if (Model.Paquete != null)
+                    {
+                        <tr>
+                            <td><strong>Paquete</strong></td>
+                            <td>@Model.Paquete.Nombre</td>
+                        </tr>
+                    }
+                }
+
+                <tr>
+                    <td><strong>Beneficios</strong></td>
+                    <td>
+                        @{
+                            foreach (var item in Model.Beneficios)
+                            {
+                                <p><span class="glyphicon glyphicon-check"></span>@item.Descripcion</p>
+                            }
+                        }
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/carousel/js")
+}
+
+<style>
+    .item.video {
+        width: 100%;
+        height: 95%;
+        background: black;
+    }
+
+        .item.video.activo {
+            border: solid 2px red;
+        }
+
+    .video-link {
+        top: 50%;
+        position: relative;
+        transform: translate(0,-50%);
+    }
+
+        .video-link p {
+            color: white;
+            text-align: center;
+        }
+</style>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#owl-demo").owlCarousel({
+            itemsScaleUp: false,
+            items: 5,
+            navigation: true
+        });
+
+        //var content = $(".owl-wrapper").html();
+        //var d = document.createElement('div');
+        //$(d).addClass("contenedor-carousel").html(content);
+        //$(".owl-wrapper").html('').append(d);
+        //if ($(d).width() > $("#owl-demo").width())
+        //    $(".owl-wrapper").html(content);
+
+        //recalcularTamanos();
+
+        $(".item").click(function () {
+            var src = $(this).children('img').attr('src');
+            $(".activo").removeClass("activo");
+            $(this).addClass("activo");
+            if ($(this).hasClass("video")) {
+                $(".img-grande-container").hide()
+                $(".video-container").show();
+                return;
+            }
+            $(".img-grande-container").show();
+            $(".video-container").hide();
+            $(".imagen-grande").attr("src", src);
+        });
+    });
+
+    $(window).ready(function () {
+        recalcularTamanos();
+    });
+
+    $(window).resize(function () {
+        recalcularTamanos();
+    });
+
+    function recalcularTamanos() {
+        var height = $(".item").height();
+        $(".owl-item").each(function () {
+            $(this).css("height", height + "px");
+        });
+
+        $(".video-container").css("height", $(".img-grande-container").first().innerHeight() + "px");
+    }
+
+
+</script>

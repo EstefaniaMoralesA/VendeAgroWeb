@@ -18,30 +18,44 @@
             }
             else
             {
-                <div style="padding-right:35px;" class="col-sm-4 col-md-3">
-                    <div class="row">
-                        <a class="btn btn-default menu-grad btn-renovar">
-                            <p>Renovar</p>
-                        </a>
-                    </div>
-                    <div class="row">
-                        <div class="mis-anuncios-paquete-container">
-                            <div style="width:@item.TiempoRestante%" class="degradado-verde"></div>
-                            <div class="mis-anuncios-anuncio">
-                                <a class="mi-anuncio-link">
-                                    <div class="mis-anuncios-wrapper">
-                                        <p class="wrapper-texto">Ver detalles</p>
-                                        <div class="mis-anuncios-imagen-container">
-                                            <img class="foto-anuncio" src="" />
-                                        </div>
-                                        <div class="movil-anuncio-titulo ofertas-anuncio-titulo">
-                                            <div class="row mis-anuncios-anuncio-titulo anuncio-aprobado">
-                                                <p class="titulo">@item.Titulo</p>
-                                                <p class="estado"><strong><span class="glyphicon glyphicon-check"></span></strong>Aprobado</p>
+                <div class="col-sm-4 col-md-3">
+                    <div class="col-xs-12">
+                        <div class="row" style="margin-top:25px;">
+                            <a class="btn btn-default menu-grad btn-renovar">
+                                <p>Renovar</p>
+                            </a>
+                        </div>
+                        <div class="row">
+                            <div class="mis-anuncios-paquete-container">
+                                <div style="width:@item.TiempoRestante%" class="degradado-verde degradado-verde-activos"></div>
+                                <div class="mis-anuncios-anuncio" style="min-height: 215px;">
+                                    <a class="mi-anuncio-link" href="/Portal/DetallesAnuncio?id=@item.Id">
+                                        <div class="mis-anuncios-wrapper" style="max-height:174px;">
+                                            <p class="wrapper-texto">Ver detalles</p>
+                                            <div class="mis-anuncios-imagen-container">
+                                                <img class="foto-anuncio" src="@item.ImagenPrincipal" />
+                                            </div>
+                                            <div class="movil-anuncio-titulo movil-mis-anuncios ofertas-anuncio-titulo">
+                                                <div class="row mis-anuncios-anuncio-titulo mis-anuncios-titulo anuncio-aprobado">
+                                                    <p class="titulo">@item.Titulo</p>
+                                                    @{
+                                                        if (@item.Estado == EstadoAnuncio.Aprobado)
+                                                        {
+                                                            <p class="estado"><strong><span class="glyphicon glyphicon-check"></span></strong>Aprobado</p>
+                                                        }
+                                                        else
+                                                        {
+                                                            if (@item.Estado == EstadoAnuncio.NoAprobado)
+                                                            {
+                                                                <p class="estado"><strong><span class="glyphicon glyphicon-check"></span></strong>Aprobado</p>
+                                                            }
+                                                        }
+                                                    }
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
-                                </a>
+                                    </a>
+                                </div>
                             </div>
                         </div>
                     </div>

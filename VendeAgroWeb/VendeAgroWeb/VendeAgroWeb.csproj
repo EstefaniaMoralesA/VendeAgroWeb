@@ -483,6 +483,7 @@
     <Content Include="Views\Portal\NuevaTarjeta.cshtml" />
     <Content Include="Views\Home\GaleriaAnuncio.cshtml" />
     <Content Include="Views\Administrador\RenovarAnuncio.cshtml" />
+    <Content Include="Views\Portal\DetallesAnuncio.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
