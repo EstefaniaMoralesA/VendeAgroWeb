@@ -36,7 +36,8 @@
                             <input class="form-control" data-openpay-card="expiration_month" id="mes" placeholder="Mes" />
                         </div>
                         <div class="col-sm-2">
-                            <input class="form-control" data-openpay-card="expiration_year" id="anio" placeholder="A&ntilde;o" />
+                            <input class="form-control" id="anio_vista" placeholder="A&ntilde;o" />
+                            <input class="form-control" style="display:none;" data-openpay-card="expiration_year" id="anio" placeholder="A&ntilde;o" />
                         </div>
                     </div>
                 </form>
@@ -71,7 +72,7 @@
         var numero = $("#numero").val();
         var codigo = $("#codigo").val();
         var mes = $("#mes").val();
-        var anio = $("#anio").val();
+        var anio = $("#anio_vista").val();
         var valido = true;
         var cadenaError = "<strong>Error:</strong> </br>";
 
@@ -102,9 +103,9 @@
             $("#codigo").removeClass("has-error");
         }
 
-        if (!(OpenPay.card.validateExpiry(mes, normalizeYear(anio)))) {
+        if (!(OpenPay.card.validateExpiry(mes, anio))) {
             valido = false;
-            cadenaError += "    - Introduce una fecha de vencimiento v&aacute;lida. </br>";
+            cadenaError += "    - Introduce una fecha de vencimiento v&aacute;lida. (año 4 digitos)</br>";
             $("#mes").addClass("has-error");
             $("#anio").addClass("has-error");
         }
@@ -117,7 +118,7 @@
             $(".error-tarjeta").html(cadenaError).show('');
             return;
         }
-
+        $("#anio").val(anio.substr(2,2));
         $(".error-tarjeta").hide('');
         $(".procesando-pago").show('');
         var deviceSessionId = OpenPay.deviceData.setup("forma-pago", "deviceIdHiddenFieldName");
@@ -162,17 +163,4 @@
         $(".error-tarjeta").html(desc).show('');
         return;
     };
-
-    function normalizeYear(anio)
-    {
-        if (anio.length === 4) return anio;
-
-        if (anio.length != 2) return anio;
-
-        var d = new Date();
-        var n = d.getFullYear().toString();
-        var dig = n.substr(0, 2);
-        console.log(dig);
-        return dig + anio;
-    }
 </script>

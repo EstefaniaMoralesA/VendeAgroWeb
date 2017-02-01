@@ -7,31 +7,38 @@
 <div class="contacto-container">
     <div class="forma-contacto-container">
         <div class="contacto-form" style="margin-top: 40px">
-            @using (Html.BeginForm())
+            @if(Model != null && string.IsNullOrEmpty(Model.Email))
             {
-                @Html.AntiForgeryToken()
+                <p style="text-align:center;font-size:20px;" class="loader-anuncios">Gracias por contactarnos, en breve nos ponemos en contacto contigo.</p>
+            }
+            else
+            {
+                using (Html.BeginForm())
+                {
+                    @Html.AntiForgeryToken()
 
-                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-                <div class="form-group">
-                    @Html.EditorFor(model => model.Nombre, new { htmlAttributes = new { @class = "form-control", placeholder = "Introduce tu nombre", id = "contacto-nombre", style = "width: 60%; height: 40px; font-size: 16px; margin-bottom: 25px !important;"} })
-                    @Html.ValidationMessageFor(model => model.Nombre, "", new { @class = "text-danger" })
-                    <label class="contacto-nombre-field-icon glyphicon glyphicon-user" for="contacto-nombre"></label>
-                </div>
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                    <div class="form-group">
+                        @Html.EditorFor(model => model.Nombre, new { htmlAttributes = new { @class = "form-control", placeholder = "Introduce tu nombre", id = "contacto-nombre", style = "width: 60%; height: 40px; font-size: 16px; margin-bottom: 25px !important;" } })
+                        @Html.ValidationMessageFor(model => model.Nombre, "", new { @class = "text-danger" })
+                        <label class="contacto-nombre-field-icon glyphicon glyphicon-user" for="contacto-nombre"></label>
+                    </div>
 
-                <div class="form-group">
-                    @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control", placeholder = "Introduce tu email", id = "contacto-email", style = "width: 60%; height: 40px; font-size: 16px; margin-bottom: 25px !important;" } })
-                    @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
-                    <label class="contacto-email-field-icon glyphicon glyphicon-envelope" for="contacto-email"></label>
-                </div>
+                    <div class="form-group">
+                        @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control", placeholder = "Introduce tu email", id = "contacto-email", style = "width: 60%; height: 40px; font-size: 16px; margin-bottom: 25px !important;" } })
+                        @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
+                        <label class="contacto-email-field-icon glyphicon glyphicon-envelope" for="contacto-email"></label>
+                    </div>
 
-                <div class="form-group">
-                    @Html.TextAreaFor(model => model.Mensaje, new { htmlAttributes = new { @class = "form-control", placeholder = "Introduce el mensaje" }, id = "contacto-mensaje", style = "margin-bottom: 17px !important;" })
-                    @Html.ValidationMessageFor(model => model.Mensaje, "", new { @class = "text-danger" })
-                </div>
+                    <div class="form-group">
+                        @Html.TextAreaFor(model => model.Mensaje, new { htmlAttributes = new { @class = "form-control", placeholder = "Introduce el mensaje" }, id = "contacto-mensaje", style = "margin-bottom: 17px !important;" })
+                        @Html.ValidationMessageFor(model => model.Mensaje, "", new { @class = "text-danger" })
+                    </div>
 
-                <div class="form-group" style="display: table; width: 100%;">
-                    <input type="submit" id="boton-contacto" value="Enviar" class="btn btn-default menu-grad btn-contacto" />
-                </div>
+                    <div class="form-group" style="display: table; width: 100%;">
+                        <input type="submit" id="boton-contacto" value="Enviar" class="btn btn-default menu-grad btn-contacto" />
+                    </div>
+                }
             }
         </div>
     </div>

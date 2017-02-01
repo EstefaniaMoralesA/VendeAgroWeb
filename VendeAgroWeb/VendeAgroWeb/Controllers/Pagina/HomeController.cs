@@ -158,7 +158,7 @@ namespace VendeAgroWeb.Controllers.Home
 
             var mensaje = $"<p>Recibio un mensaje a trav&eacute;s de la p&aacute;gina de contacto</p><p>Nombre: {model.Nombre}</p><p>Mail: {model.Email}</p><p>Mensaje: {model.Mensaje}</p>";
             await Startup.GetServicioEmail().SendAsync(mensaje, "Forma de contacto Mercampo", Startup.GetServicioEmail().MailContacto);
-            return View(model);
+            return View(new ContactoViewModel());
         }
 
         public ActionResult EliminaPaqueteDeCarrito(int index) {
