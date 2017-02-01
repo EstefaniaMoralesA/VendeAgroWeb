@@ -559,6 +559,54 @@ namespace VendeAgroWeb.Models.Administrador
         }
     }
 
+    public class ModificarAnuncioViewModel
+    {
+        private AnuncioViewModel _anuncio;
+        private string _descripcion;
+        private ICollection<FotoViewModel> _fotos;
+        private string _video;
+
+        public AnuncioViewModel Anuncio
+        {
+            get
+            {
+                return _anuncio;
+            }
+        }
+
+        public string Descripcion
+        {
+            get
+            {
+                return _descripcion;
+            }
+        }
+
+        public ICollection<FotoViewModel> Fotos
+        {
+            get
+            {
+                return _fotos;
+            }
+        }
+
+        public string Video
+        {
+            get
+            {
+                return _video;
+            }
+        }
+
+        public ModificarAnuncioViewModel(AnuncioViewModel anuncio, string descripcion, List<FotoViewModel> fotos, string video)
+        {
+            _anuncio = anuncio;
+            _descripcion = descripcion;
+            _fotos = fotos;
+            _video = video;
+        }
+    }
+
     public class AnuncioDetallesViewModel
     {
         private AnuncioViewModel _anuncio;

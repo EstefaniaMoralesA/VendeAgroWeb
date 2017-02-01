@@ -1667,6 +1667,54 @@ namespace VendeAgroWeb.Controllers.Administrador
             return View(model);
         }
 
+        public async Task<ActionResult> ModificarAnuncio(int? id)
+        {
+            if (id == null)
+            {
+                return RedirectToAction("Anuncios", "Administrador");
+            }
+
+            bool estado = true;
+            ModificarAnuncioViewModel model = null;
+
+            await Task.Run(() =>
+            {
+                using (var _dbContext = new MercampoEntities())
+                {
+                    Startup.OpenDatabaseConnection(_dbContext);
+                    if (_dbContext.Database.Connection.State != ConnectionState.Open)
+                    {
+                        estado = false;
+                    }
+                    else
+                    {
+
+                        var anuncio = _dbContext.Anuncios.Where(a => a.id == id).FirstOrDefault();
+
+                        List<FotoViewModel> fotos = new List<FotoViewModel>();
+
+                        foreach (var foto in anuncio.Fotos_Anuncio)
+                        {
+                            fotos.Add(new FotoViewModel(foto.principal, foto.ruta));
+                        }
+
+                        var anuncioModel = new AnuncioViewModel(anuncio.id, anuncio.titulo, anuncio.Usuario.nombre + " " + anuncio.Usuario.apellidos, anuncio.precio, anuncio.Subcategoria.Categoria.nombre, anuncio.Subcategoria.nombre, anuncio.Estado1.nombre, anuncio.clicks, (EstadoAnuncio)anuncio.estado, anuncio.activo);
+
+                        model = new ModificarAnuncioViewModel(anuncioModel, anuncio.descripcion, fotos, anuncio.Videos_Anuncio.Where(v => v.idAnuncio == id).FirstOrDefault()?.ruta);
+
+
+                        _dbContext.Database.Connection.Close();
+                    }
+                }
+
+            });
+            if (!estado)
+            {
+                return RedirectToAction("Anuncios", "Administrador");
+            }
+            return View(model);
+        }
+
         public async Task<ActionResult> RenovarAnuncio(int? id)
         {
             RenovarAnuncioViewModel model = new RenovarAnuncioViewModel(id.Value, await ObtenerTituloAnuncio(id));
@@ -1722,8 +1770,6 @@ namespace VendeAgroWeb.Controllers.Administrador
             {
                 return RedirectToAction("Paquetes", "Administrador");
             }
-            return View(model);
-
             return View(model);
         }
 

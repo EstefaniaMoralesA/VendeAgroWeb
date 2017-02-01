@@ -68,8 +68,9 @@
                                 if (Model.EstadoAnuncios == EstadoAnuncio.Aprobado || Model.EstadoAnuncios == EstadoAnuncio.Vencido)
                                 {
                                     <td><a class="btn btn-success btn-8-caracteres" href="/Administrador/RenovarAnuncio?id=@item.Id">renovar</a></td>
-
                                 }
+                                <td><a class="btn btn-default btn-8-caracteres" href="/Administrador/ModificarAnuncio?id=@item.Id">modificar</a></td>
+
                             }
                         </tr>
                     }
