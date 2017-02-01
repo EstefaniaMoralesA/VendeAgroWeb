@@ -881,6 +881,26 @@ namespace VendeAgroWeb.Models.Pagina
         }
     }
 
+    public class PagoCarritoTarjetasViewModel
+    {
+        private PortalUsuario _usuario;
+
+
+        public PagoCarritoTarjetasViewModel(PortalUsuario usuario)
+        {
+            _usuario = usuario;
+        }
+
+        public PortalUsuario Usuario
+        {
+            get
+            {
+                return _usuario;
+            }
+        }
+    }
+
+
     public enum BeneficiosExtraTipo
     {
         Fotos = 1,

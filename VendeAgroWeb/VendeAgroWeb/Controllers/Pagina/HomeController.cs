@@ -67,6 +67,14 @@ namespace VendeAgroWeb.Controllers.Home
             return true;
         }
 
+        public async Task<ActionResult> PagoCarritoTarjetas()
+        {
+            var usuario = Startup.GetAplicacionUsuariosManager().getUsuarioPortalActual(Request);
+            PagoCarritoTarjetasViewModel model = new PagoCarritoTarjetasViewModel(usuario);
+            return View(model);
+        }
+
+
         public async Task<BeneficioCarrito> ObtenerBeneficio(int id)
         {
             return await Task.Run(() =>

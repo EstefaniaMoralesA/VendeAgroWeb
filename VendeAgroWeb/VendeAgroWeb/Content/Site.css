@@ -2677,6 +2677,20 @@ iframe {
     display: block;
 }
 
+.pago-carrito-tarjetas-texto {
+    margin-top: 30px;
+    font-size: 25px;
+    text-align: center;
+}
+
+.agregar-tarjeta-pago {
+    width: 50% !important;
+}
+
+.radio {
+    margin-top: 2px !important;
+}
+
 @media (max-width: 1200px) {
     .base {
         height: 270px !important;
