@@ -493,7 +493,7 @@ namespace VendeAgroWeb
             }
 
             Customer request = new Customer();
-            request.ExternalId = getToken();
+            request.ExternalId = Hash(getToken());
             request.Name = nombre;
             request.LastName = apellidos;
             request.Email = email;

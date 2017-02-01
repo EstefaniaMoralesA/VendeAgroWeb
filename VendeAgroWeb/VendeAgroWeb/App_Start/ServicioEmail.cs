@@ -17,8 +17,8 @@ namespace VendeAgroWeb
             _mailSalida = "buzon@mercampo.mx";
             _credenciales = new NetworkCredential
             {
-                UserName = "santiatlas11@hotmail.com",
-                Password = "FDEZm2306$%"
+                UserName = "mercampomx@gmail.com",
+                Password = "Mercampomx2306"
             };
         }
 
@@ -27,9 +27,11 @@ namespace VendeAgroWeb
         public async Task<bool> SendAsync(string mensaje, string asunto, string destinatario)
         {
             // Plug in your email service here to send an email.
-            var message = new MailMessage();
-            message.To.Add(new MailAddress(destinatario));  // replace with valid value 
-            message.From = new MailAddress(_mailSalida);  // replace with valid value
+            MailMessage message = new MailMessage();
+            message.To.Add(new MailAddress(destinatario));  // replace with valid value
+            message.Sender = new MailAddress(_mailSalida, "mercampo.mx");
+            message.From = new MailAddress(_mailSalida, "mercampo.mx");  // replace with valid value
+            message.ReplyToList.Add(new MailAddress(_mailSalida, "mercampo.mx"));
             message.Subject = asunto;
             message.Body = mensaje;
             message.IsBodyHtml = true;
@@ -37,10 +39,16 @@ namespace VendeAgroWeb
             using (var smtp = new SmtpClient())
             {
                 smtp.Credentials = _credenciales;
-                smtp.Host = "smtp-mail.outlook.com";
-                smtp.Port = 587;
+                smtp.Host = "smtp.gmail.com";
                 smtp.EnableSsl = true;
-                await smtp.SendMailAsync(message);
+                try
+                {
+                    await smtp.SendMailAsync(message);
+                }
+                catch(SmtpException e)
+                {
+                    Console.WriteLine(e.Message);
+                }
             }
             return true;
         }
