@@ -4,8 +4,8 @@
     ViewBag.Title = "Carrito de Compra";
 }
 
-<div class="procesando-pago col-sm-11">
-    <div class="proceso-pago-contenido">
+<div class="procesando-pago-carrito col-sm-11">
+    <div class="procesando-pago-contenido proceso-pago-contenido-carrito">
         <h3>Estamos procesando tu pago, favor de no recargar la p&aacute;gina.</h3>
         <img class="loader-anuncios" src="~/img/loader.gif" />
     </div>
@@ -140,8 +140,17 @@
     </div>
 </div>
 
-<script type="text/javascript" src="https://conektaapi.s3.amazonaws.com/v0.3.2/js/conekta.js"></script>
+<script type="text/javascript"
+        src="https://openpay.s3.amazonaws.com/openpay.v1.min.js"></script>
+<script type='text/javascript'
+        src="https://openpay.s3.amazonaws.com/openpay-data.v1.min.js"></script>
 <script>
+    $(document).ready(function () {
+        OpenPay.setId('m4tpnfpemahz4tgdvadb');
+        OpenPay.setApiKey('pk_69eeee9e23b947a5b5dd565cfd810e3a');
+        OpenPay.setSandboxMode(true);
+    });
+
     $(window).ready(function () {
         $("#paso1").show();
         $('.primer-paso-contenedor').css("background-color", "#0275d8");
@@ -186,7 +195,7 @@
             $("#nombre-tarjeta").removeClass("has-error");
         }
 
-        if (!(Conekta.card.validateNumber(numero))) {
+        if (!(OpenPay.card.validateCardNumber(numero))) {
             valido = false;
             cadenaError += "    - Introduce un n&uacute;mero de tarjeta v&aacute;lido. </br>";
             $("#numero").addClass("has-error");
@@ -195,7 +204,7 @@
             $("#numero").removeClass("has-error");
         }
 
-        if (!(Conekta.card.validateCVC(codigo))) {
+        if (!(OpenPay.card.validateCVC(codigo, numero))) {
             valido = false;
             cadenaError += "    - Introduce un c&oacute;digo de seguridad v&aacute;lido. </br>";
             $("#codigo").addClass("has-error");
@@ -204,7 +213,7 @@
             $("#codigo").removeClass("has-error");
         }
 
-        if (!(Conekta.card.validateExpirationDate(mes, anio))) {
+        if (!(OpenPay.card.validateExpiry(mes, normalizeYear(anio)))) {
             valido = false;
             cadenaError += "    - Introduce una fecha de vencimiento v&aacute;lida. </br>";
             $("#mes").addClass("has-error");
@@ -222,33 +231,34 @@
 
         $(".error-tarjeta").hide('');
         $(".procesando-pago").show('');
-
-        Conekta.setPublishableKey('key_G4trRCLgCH4zYs5bEDDyWAQ');
-
-        var errorResponseHandler, successResponseHandler, tokenParams;
-        tokenParams = {
-            "card": {
-                "number": numero,
-                "name": nombre,
-                "exp_year": anio,
-                "exp_month": mes,
-                "cvc": codigo
-            }
-        };
-
-        successResponseHandler = function (token) {
-            $(".procesando-pago").hide('');
-            console.log(token);
-            return alert("Exitoso");
-        };
-
-        errorResponseHandler = function (error) {
-            $(".procesando-pago").hide('');
-            return alert(error.message);
-        };
-
-        window.setTimeout(function () {
-            Conekta.token.create(tokenParams, successResponseHandler, errorResponseHandler);
-        }, 1500);
+        var deviceSessionId = OpenPay.deviceData.setup("forma-pago", "deviceIdHiddenFieldName");
+        console.log("device id: " + deviceSessionId);
+        OpenPay.token.extractFormAndCreate('forma-pago', success_callback, error_callback);
     });
+
+    var success_callback = function (token) {
+        var sessionId = $("#deviceIdHiddenFieldName").val();
+        var idUsuario = $('#id-usuario').val();
+        alert('entro');
+        return;
+    };
+
+
+
+    var error_callback = function (response) {
+        alert('entro error');
+        return;
+    };
+
+    function normalizeYear(anio) {
+        if (anio.length === 4) return anio;
+
+        if (anio.length != 2) return anio;
+
+        var d = new Date();
+        var n = d.getFullYear().toString();
+        var dig = n.substr(0, 2);
+        console.log(dig);
+        return dig + anio;
+    }
 </script>
