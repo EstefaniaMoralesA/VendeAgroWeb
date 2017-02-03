@@ -23,7 +23,7 @@
 <div class="row">
     <div class="col-sm-offset-3 col-sm-6">
         <div class="row">
-            <p class="nuevo-anuncio-cliente"><span>Cliente: </span>@Model.Anuncio.Usuario</p>
+            <p class="nuevo-anuncio-cliente"><span>Cliente: </span>@Model.UsuarioNombre</p>
             @using (Html.BeginForm())
             {
                 @Html.AntiForgeryToken()
@@ -32,30 +32,23 @@
                 <div class="alert alert-danger error-nuevo-anuncio" style="display:none;">
 
                 </div>
+                <input class="form-control" id="id-anuncio" value="@Model.Id" type="hidden" />
                 <div class="form-group form-nuevo-anuncio form-titulo">
-                    <input class="form-control" placeholder="Título del anuncio" id="anuncio-titulo" value="@Model.Anuncio.Titulo" />
+                    <input class="form-control" placeholder="Título del anuncio" id="anuncio-titulo" value="@Model.Titulo" />
                 </div>
                 <div class="form-group form-nuevo-anuncio form-precio">
-                    <input class="form-control" type="text" onkeypress='return (event.charCode >= 48 && event.charCode <= 57) || event.charCode == 46' placeholder="Precio del producto" id="anuncio-precio" value="@Model.Anuncio.Precio" />
+                    <input class="form-control" type="text" onkeypress='return (event.charCode >= 48 && event.charCode <= 57) || event.charCode == 46' placeholder="Precio del producto" id="anuncio-precio" value="@Model.Precio" />
                 </div>
                 <div class="form-group form-nuevo-anuncio form-descripcion">
                     <textarea cols="20" data-val="true" class="form-control" placeholder="Descripción del producto" id="anuncio-descripcion" name="Descripcion" rows="2">@Model.Descripcion</textarea>
                 </div>
 
-                <div class="row" style="margin-left:0px; margin-right: 0px;">
-                    <div class="form-group boton-guardar-container">
-                        <div class="row" style="text-align: center; margin-top: 20px;">
-                            <input id="guardar-nuevo-anuncio" type="submit" value="Guardar" class="btn btn-primary btn-lg btn-login" />
-                            <a class="btn btn-default btn-lg btn-cancelar-nuevo-anuncio" href="/Administrador/Anuncios" style="margin-top:10px">Cancelar</a>
-                        </div>
-                    </div>
-                </div>
                 <div class="col-sm-12">
                     <div class="row">
                         <div class="col-sm-6" style="padding-left: 0px;">
                             <div id="categoria-dropdown" class="dropdown">
                                 <button id="btn-categoria" class="btn btn-default dropdown-anuncio dropdown-toggle" style="font-size:14px;" type="button" data-toggle="dropdown">
-                                    @Model.Anuncio.Categoria
+                                    @Model.Categoria.Nombre
                                     <span class="caret nuevo-anuncio-caret categoria-caret"></span>
                                 </button>
                                 <ul id="categorias" class="dropdown-menu"></ul>
@@ -64,7 +57,7 @@
                         <div class="col-sm-6" style="padding-right: 0px;">
                             <div id="subcategoria-dropdown" class="dropdown">
                                 <button id="btn-subcategoria" class="btn btn-default dropdown-anuncio dropdown-toggle" style="font-size:14px;" type="button" data-toggle="dropdown">
-                                    @Model.Anuncio.Subcategoria
+                                    @Model.Subcategoria.Nombre
                                     <span class="caret nuevo-anuncio-caret subcategoria-caret"></span>
                                 </button>
                                 <ul id="subcategorias" class="dropdown-menu"></ul>
@@ -75,19 +68,131 @@
                         <div class="col-sm-6" style="padding-left: 0px;">
                             <div id="paises-dropdown" class="dropdown">
                                 <button id="btn-pais" class="btn btn-default dropdown-anuncio dropdown-toggle" style="font-size:14px;" type="button" data-toggle="dropdown">
+                                    @Model.Pais.Nombre
                                     <span class="caret nuevo-anuncio-caret pais-caret"></span>
                                 </button>
                                 <ul id="paises" class="dropdown-menu"></ul>
                             </div>
                         </div>
-                        <div class="col-sm-6" style="padding-left: 0px; padding-right: 0px;">
+                        <div class="col-sm-6" style="padding-right: 0px;">
                             <div id="estados-dropdown" class="dropdown">
                                 <button id="btn-estados" class="btn btn-default dropdown-anuncio dropdown-toggle" style="font-size:14px;" type="button" data-toggle="dropdown">
-                                    @Model.Anuncio.Estado
+                                    @Model.Estado.Nombre
                                     <span class="caret nuevo-anuncio-caret estado-caret"></span>
                                 </button>
                                 <ul id="estados" class="dropdown-menu"></ul>
                             </div>
+                        </div>
+                    </div>
+                    <div class="row" style="margin-top: 20px;">
+                        <div class="alert alert-danger error-extension" style="display:none;">
+
+                        </div>
+                        <div class="table-responsive">
+                            <table id="tabla-fotos" class="table table-responsive">
+                                <tbody>
+                                    <tr class="row-tabla-foto">
+                                        <td class="foto-tabla-titulo">Foto de display</td>
+                                        <td><img id="img-0" style="width: 225px; height: 177px;" src="@Model.FotoPrincipal.Ruta" /></td>
+                                        <td>
+                                            <div class="form-group">
+                                                <div class="btn btn-success image-preview-input" id="img-inp-btn">
+                                                    <span class="glyphicon glyphicon-folder-open"></span>
+                                                    <span style="padding-left: 3px;" class="image-preview-input-title">Modificar</span>
+                                                    @{
+                                                        var cont = 0;
+                                                        <input class="input-absoluto" type="file" onchange="loadFile(event, @cont)">
+
+                                                    }
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td></td>
+                                    </tr>
+                                    @{
+                                        cont = 1;
+                                        foreach (var foto in Model.Fotos)
+                                        {
+                                            <tr style="text-align: center; vertical-align: middle;">
+                                                <td class="foto-tabla-titulo">Foto</td>
+                                                <td><img id="img-@cont" class="foto" style="width: 225px; height: 177px;" src="@foto.Ruta" /></td>
+                                                <td><input type="button" value="Eliminar" onclick="deleteRow(this, @foto.Id)" class="btn btn-danger btn-banner-desactivar btn-10-caracteres btn-categorias-desactivar" style="margin-bottom: 15px;"></td>
+                                            </tr>
+                                            cont++;
+                                        }
+                                    }
+                                    <tr style="border-top: 2px white solid;border-bottom: lightgrey 1px solid;" class="row-tabla-foto">
+                                        <td colspan="4">
+                                            <div style="margin-top:5px !important;" class="progress">
+                                                <div class="progress-bar" id="progress-principal" role="progressbar" aria-valuenow="0"
+                                                     aria-valuemin="0" aria-valuemax="100" style="width:0%">
+                                                    <span class="sr-only">0%</span>
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <div class="row" style="margin-top: 20px;">
+                        <div class="alert alert-danger error-extensiones" style="display:none;">
+
+                        </div>
+
+                        <div class="alert alert-danger error-extension-video" style="display:none;">
+
+                        </div>
+
+                        <div class="panel panel-default">
+                            <div class="panel-heading"><strong>Fotos y video del anuncio</strong></div>
+                            <div class="panel-body">
+                                <form action="" method="post" enctype="multipart/form-data" id="js-upload-form">
+                                    <div class="form-inline">
+                                        <h4>Agregar más fotos desde tu computadora</h4>
+                                        <div class="form-group">
+                                            <div class="btn btn-default image-preview-input" style="position: relative;">
+                                                <span class="glyphicon glyphicon-folder-open"></span>
+                                                <span style="padding-left: 3px;" class="image-preview-input-title">Elegir fotos</span>
+                                                <input class="input-absoluto" type="file" name="files[]" id="js-upload-files" onchange="actualizaFotos(event)" multiple>
+                                            </div>
+                                            <label><span id="num-fotos">0</span> foto(s) seleccionada(s)</label>
+                                        </div>
+                                        <div class="progress">
+                                            <div class="progress-bar" id="progress-fotos" role="progressbar" aria-valuenow="0"
+                                                 aria-valuemin="0" aria-valuemax="100" style="width:0%">
+                                                <span class="sr-only">0%</span>
+                                            </div>
+                                        </div>
+                                        <h4>Selecciona el video desde tu computadora</h4>
+                                        <div class="form-group">
+                                            <div class="btn btn-default image-preview-input" style="position: relative;">
+                                                <span class="glyphicon glyphicon-folder-open"></span>
+                                                <span style="padding-left: 3px;" class="image-preview-input-title">Elegir video</span>
+                                                <input class="input-absoluto" type="file" onchange="actualizaVideo(event)">
+                                            </div>
+                                            <label id="video-no-seleccionado">No se ha seleccionado el video</label>
+                                            <label id="video-seleccionado" style="display:none;">1 video seleccionado</label>
+                                        </div>
+                                        <div class="progress">
+                                            <div class="progress-bar" id="progress-video" role="progressbar" aria-valuenow="0"
+                                                 aria-valuemin="0" aria-valuemax="100" style="width:0%">
+                                                <span class="sr-only">0%</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row" style="margin-left:0px; margin-right: 0px;">
+                    <div class="form-group boton-guardar-container">
+                        <div class="row" style="text-align: center; margin-top: 20px;">
+                            <input id="guardar-nuevo-anuncio" type="submit" value="Guardar" class="btn btn-primary btn-lg btn-login" />
+                            <a class="btn btn-default btn-lg btn-cancelar-nuevo-anuncio" href="/Administrador/Anuncios" style="margin-top:10px">Cancelar</a>
                         </div>
                     </div>
                 </div>
@@ -101,20 +206,23 @@
 }
 
 <script>
-    var idUsuario;
+    var idAnuncio;
     var titulo;
     var precio;
     var descripcion;
     var meses;
-    var idCategoria = null;
-    var idSubcategoria = null;
-    var idPais = null;
-    var idEstado = null;
+    var idCategoria = @Model.Categoria.Id;
+    var idSubcategoria = @Model.Subcategoria.Id;
+    var idPais = @Model.Pais.Id;
+    var idEstado = @Model.Estado.Id;
+    var fotoDisplayId = @Model.FotoPrincipal.Id;
     var fotoDisplay = null;
     var fotos = [];
+    var fotosEliminadas = [];
+    var fotosEliminadasRutas = [];
     var video = null;
     var fotosFinal = [];
-    var fotoDisplayFinal = '';
+    var fotoDisplayFinal = null;
     var videoFinal = '';
     var validoCategoria = true;
     var validoSubcategoria = true;
@@ -122,14 +230,37 @@
     var validoEstado = true;
     var numeroSubidosEsperado = 1;
     var numeroSubidos = 0;
+    var cambioFotoDeDisplay = false;
+
+    $(document).ready(function () {
+        fotoDisplay = $('#img-0').attr('src');
+        fotoDisplayFinal = $('#img-0').attr('src');
+    });
 
     $("#btn-categoria").click(function () {
         getCategorias();
     });
 
+    $("#btn-subcategoria").click(function () {
+        getSubcategorias();
+    });
+
     $("#btn-pais").click(function () {
         getPaises();
     });
+
+    $("#btn-estados").click(function () {
+        getEstados();
+    });
+
+    function deleteRow(r, id)
+    {
+        var ruta = $('.foto').attr('src');
+        fotosEliminadasRutas.push(ruta);
+        fotosEliminadas.push(id);
+        var i = r.parentNode.parentNode.rowIndex;
+        document.getElementById("tabla-fotos").deleteRow(i);
+    }
 
     function categoriasClick(elemento) {
         if (validoCategoria) {
@@ -139,7 +270,6 @@
             $("#btn-categoria:first-child").html(elemento.text() + '<span class="caret has-error-caret categoria-caret"></span>');
         }
         idCategoria = elemento.data('id');
-        getSubcategorias(elemento.data('id'));
     }
 
     function subcategoriasClick(elemento) {
@@ -160,7 +290,6 @@
             $("#btn-pais:first-child").html(elemento.text() + '<span class="caret has-error-caret pais-caret"></span>');
         }
         idPais = elemento.data('id');
-        getEstados(elemento.data('id'));
     }
 
     function estadosClick(elemento) {
@@ -188,11 +317,11 @@
         });
     }
 
-    function getSubcategorias(id) {
+    function getSubcategorias() {
         $.ajax({
             type: "POST",
             data: {},
-            url: '/Administrador/SubcategoriasAnuncioPartial?idCategoria=' + id,
+            url: '/Administrador/SubcategoriasAnuncioPartial?idCategoria=' + idCategoria,
             success: function (result) {
                 $("#subcategorias").html(result);
             },
@@ -218,11 +347,11 @@
         });
     }
 
-    function getEstados(id) {
+    function getEstados() {
         $.ajax({
             type: "POST",
             data: {},
-            url: '/Administrador/EstadosAnuncioPartial?idPais=' + id,
+            url: '/Administrador/EstadosAnuncioPartial?idPais=' + idPais,
             success: function (result) {
                 $("#estados").html(result);
             },
@@ -319,22 +448,25 @@
     function agregarAnuncio() {
 
         var nuevoAnuncio = {
-            jidUsuario: idUsuario,
+            jid: idAnuncio,
             jtitulo: titulo,
             jprecio: precio,
             jdescripcion: descripcion,
             jmeses: meses,
             jestado: idEstado,
             jidSubcategoria: idSubcategoria,
+            jfotoDisplayId: fotoDisplayId,
             jfotoDisplay: fotoDisplayFinal,
             jfotos: fotosFinal,
-            jvideo: videoFinal
+            jvideo: videoFinal,
+            jfotosEliminadas: fotosEliminadas, 
+            jfotosEliminadasRutas: fotosEliminadasRutas
         };
 
         $.ajax({
             type: "POST",
             data: { "json": JSON.stringify(nuevoAnuncio) },
-            url: "/Administrador/NuevoAnuncio",
+            url: "/Administrador/ModificarAnuncio",
             success: function (result) {
                 window.location = "Anuncios";
             },
@@ -344,22 +476,23 @@
         });
     }
 
-    function loadFile(event) {
+    function loadFile(event, num) {
         $(".error-extension").html('').hide('');
         if (!validExtension(event.target.files[0])) {
-            $("#imagen").val("");
+            $("#img-" + num).val("");
             mostrarErrorExtension("La extensión de la imagen no es válida");
-            $(".img-selected").attr("src", "/img/foto-vacia.png");
+            $("#img-" + num).attr("src", "/img/foto-vacia.png");
             return;
         }
 
         if (event.target.files.length == 0) {
-            $(".img-selected").attr("src", "/img/foto-vacia.png");
+            $("#img-" + num).attr("src", "/img/foto-vacia.png");
             return;
         }
         var foto = URL.createObjectURL(event.target.files[0]);
         fotoDisplay = event.target.files[0];
-        $(".img-selected").attr("src", foto);
+        cambioFotoDeDisplay = true;
+        $("#img-" + num).attr("src", foto);
     };
 
     function validExtension(imagen) {
@@ -437,7 +570,7 @@
     }
 
     $("#guardar-nuevo-anuncio").click(function () {
-        idUsuario = $("#id-usuario").val();
+        idAnuncio = $("#id-anuncio").val();
         var cadenaError = "<strong>Error:</strong> </br>";
         var valido = true;
 
@@ -486,17 +619,6 @@
             else {
                 $('.form-descripcion').removeClass('has-error');
             }
-        }
-
-        meses = $("#anuncio-meses").val();
-
-        if (meses == '') {
-            valido = false;
-            $('.form-meses').addClass('has-error');
-            cadenaError += "    - Introduzca meses v&aacute;lidos. </br>";
-        }
-        else {
-            $('.form-meses').removeClass('has-error');
         }
 
         if (idCategoria == null) {
@@ -555,15 +677,6 @@
             $('.estado-caret').addClass('nuevo-anuncio-caret');
         }
 
-        if (fotoDisplay == null) {
-            valido = false;
-            cadenaError += "    - Introduzca una foto de display v&aacute;lida. </br>";
-            $('.row-tabla-foto > td').addClass('td-error');
-        }
-        else {
-            $('.row-tabla-foto > td').removeClass('td-error');
-        }
-
         if (!valido) {
             $(".error-nuevo-anuncio").html(cadenaError).show('');
             return;
@@ -573,14 +686,17 @@
             numeroSubidosEsperado++;
         }
 
+
         if (fotos.length > 0) {
             numeroSubidosEsperado++;
         }
 
         $(".error-nuevo-anuncio").hide('');
         var arreglo = [];
-        arreglo.push(fotoDisplay);
-        subirFotos(arreglo, 0);
+        if(cambioFotoDeDisplay == true){
+            arreglo.push(fotoDisplay);
+            subirFotos(arreglo, 0);
+        }
         subirFotos(fotos, 1);
         subirVideo(video);
         checarDone();

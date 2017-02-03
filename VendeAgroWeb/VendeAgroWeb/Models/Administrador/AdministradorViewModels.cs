@@ -349,7 +349,7 @@ namespace VendeAgroWeb.Models.Administrador
         private string _subcategoria;
         private string _estado;
         private int? _clicks;
-        
+
         public EstadoAnuncio Status { get; set; }
 
         public bool Activo { get; set; }
@@ -468,6 +468,7 @@ namespace VendeAgroWeb.Models.Administrador
 
     public class FotoViewModel
     {
+        private int _id;
         private bool _principal;
         private string _ruta;
 
@@ -475,6 +476,21 @@ namespace VendeAgroWeb.Models.Administrador
         {
             _principal = principal;
             _ruta = ruta;
+        }
+
+        public FotoViewModel(int id, bool principal, string ruta)
+        {
+            _id = id;
+            _principal = principal;
+            _ruta = ruta;
+        }
+
+        public int Id
+        {
+            get
+            {
+                return _id;
+            }
         }
 
         public bool Principal
@@ -559,18 +575,195 @@ namespace VendeAgroWeb.Models.Administrador
         }
     }
 
-    public class ModificarAnuncioViewModel
+    public class CategoriaModificarAnuncioViewModel
     {
-        private AnuncioViewModel _anuncio;
-        private string _descripcion;
-        private ICollection<FotoViewModel> _fotos;
-        private string _video;
+        private int? _id;
+        private string _nombre;
 
-        public AnuncioViewModel Anuncio
+        public int? Id
         {
             get
             {
-                return _anuncio;
+                return _id;
+            }
+        }
+
+        public string Nombre
+        {
+            get
+            {
+                return _nombre;
+            }
+        }
+
+        public CategoriaModificarAnuncioViewModel(int? id, string nombre)
+        {
+            _id = id;
+            _nombre = nombre;
+        }
+    }
+
+    public class SubcategoriaModificarAnuncioViewModel
+    {
+        private int? _id;
+        private string _nombre;
+
+        public int? Id
+        {
+            get
+            {
+                return _id;
+            }
+        }
+
+        public string Nombre
+        {
+            get
+            {
+                return _nombre;
+            }
+        }
+
+        public SubcategoriaModificarAnuncioViewModel(int? id, string nombre)
+        {
+            _id = id;
+            _nombre = nombre;
+        }
+    }
+
+    public class PaisModificarAnuncioViewModel
+    {
+        private int _id;
+        private string _nombre;
+
+        public int Id
+        {
+            get
+            {
+                return _id;
+            }
+        }
+
+        public string Nombre
+        {
+            get
+            {
+                return _nombre;
+            }
+        }
+
+        public PaisModificarAnuncioViewModel(int id, string nombre)
+        {
+            _id = id;
+            _nombre = nombre;
+        }
+    }
+
+    public class EstadoModificarAnuncioViewModel
+    {
+        private int? _id;
+        private string _nombre;
+
+        public int? Id
+        {
+            get
+            {
+                return _id;
+            }
+        }
+
+        public string Nombre
+        {
+            get
+            {
+                return _nombre;
+            }
+        }
+
+        public EstadoModificarAnuncioViewModel(int? id, string nombre)
+        {
+            _id = id;
+            _nombre = nombre;
+        }
+    }
+
+    public class ModificarAnuncioViewModel
+    {
+        private int _id;
+        private string _titulo;
+        private string _usuarioNombre;
+        private double? _precio;
+        private CategoriaModificarAnuncioViewModel _categoria;
+        private SubcategoriaModificarAnuncioViewModel _subcategoria;
+        private PaisModificarAnuncioViewModel _pais;
+        private EstadoModificarAnuncioViewModel _estado;
+        private string _descripcion;
+        private FotoViewModel _fotoPrincipal;
+        private List<FotoViewModel> _fotos;
+        private string _video;
+
+
+        public int Id
+        {
+            get
+            {
+                return _id;
+            }
+        }
+
+        public string Titulo
+        {
+            get
+            {
+                return _titulo;
+            }
+        }
+
+        public string UsuarioNombre
+        {
+            get
+            {
+                return _usuarioNombre;
+            }
+        }
+
+        public double? Precio
+        {
+            get
+            {
+                return _precio;
+            }
+        }
+
+        public CategoriaModificarAnuncioViewModel Categoria
+        {
+            get
+            {
+                return _categoria;
+            }
+        }
+
+        public PaisModificarAnuncioViewModel Pais
+        {
+            get
+            {
+                return _pais;
+            }
+        }
+
+        public SubcategoriaModificarAnuncioViewModel Subcategoria
+        {
+            get
+            {
+                return _subcategoria;
+            }
+        }
+
+        public EstadoModificarAnuncioViewModel Estado
+        {
+            get
+            {
+                return _estado;
             }
         }
 
@@ -582,7 +775,7 @@ namespace VendeAgroWeb.Models.Administrador
             }
         }
 
-        public ICollection<FotoViewModel> Fotos
+        public List<FotoViewModel> Fotos
         {
             get
             {
@@ -598,10 +791,27 @@ namespace VendeAgroWeb.Models.Administrador
             }
         }
 
-        public ModificarAnuncioViewModel(AnuncioViewModel anuncio, string descripcion, List<FotoViewModel> fotos, string video)
+        public FotoViewModel FotoPrincipal
         {
-            _anuncio = anuncio;
+            get
+            {
+                return _fotoPrincipal;
+            }
+        }
+
+        public ModificarAnuncioViewModel(int id, string titulo, string usuarioNombre, double? precio, CategoriaModificarAnuncioViewModel categoria, SubcategoriaModificarAnuncioViewModel subcategoria, 
+            PaisModificarAnuncioViewModel pais, EstadoModificarAnuncioViewModel estado, string descripcion, FotoViewModel fotoPrincipal, List<FotoViewModel> fotos, string video)
+        {
+            _id = id;
+            _titulo = titulo;
+            _usuarioNombre = usuarioNombre;
+            _precio = precio;
+            _categoria = categoria;
+            _subcategoria = subcategoria;
+            _pais = pais;
+            _estado = estado;
             _descripcion = descripcion;
+            _fotoPrincipal = fotoPrincipal;
             _fotos = fotos;
             _video = video;
         }

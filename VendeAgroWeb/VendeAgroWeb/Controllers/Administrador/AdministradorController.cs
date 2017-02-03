@@ -804,6 +804,7 @@ namespace VendeAgroWeb.Controllers.Administrador
                     if (categoria == null)
                     {
                         _dbContext.Database.Connection.Close();
+
                         return ModificarNombreCategoriaEstatus.Error;
                     }
 
@@ -1690,15 +1691,21 @@ namespace VendeAgroWeb.Controllers.Administrador
                         var anuncio = _dbContext.Anuncios.Where(a => a.id == id).FirstOrDefault();
 
                         List<FotoViewModel> fotos = new List<FotoViewModel>();
+                        FotoViewModel fotoPrincipal = null;
 
                         foreach (var foto in anuncio.Fotos_Anuncio)
                         {
-                            fotos.Add(new FotoViewModel(foto.principal, foto.ruta));
+                            if (foto.principal == true)
+                            {
+                                fotoPrincipal = new FotoViewModel(foto.id, true, foto.ruta);
+                                continue;
+                            }
+                            fotos.Add(new FotoViewModel(foto.id, false, foto.ruta));
                         }
 
-                        var anuncioModel = new AnuncioViewModel(anuncio.id, anuncio.titulo, anuncio.Usuario.nombre + " " + anuncio.Usuario.apellidos, anuncio.precio, anuncio.Subcategoria.Categoria.nombre, anuncio.Subcategoria.nombre, anuncio.Estado1.nombre, anuncio.clicks, (EstadoAnuncio)anuncio.estado, anuncio.activo);
-
-                        model = new ModificarAnuncioViewModel(anuncioModel, anuncio.descripcion, fotos, anuncio.Videos_Anuncio.Where(v => v.idAnuncio == id).FirstOrDefault()?.ruta);
+                        model = new ModificarAnuncioViewModel(anuncio.id, anuncio.titulo, anuncio.Usuario.nombre + " " + anuncio.Usuario.apellidos, anuncio.precio, new CategoriaModificarAnuncioViewModel(anuncio.Subcategoria.idCategoria, anuncio.Subcategoria.Categoria.nombre), 
+                            new SubcategoriaModificarAnuncioViewModel(anuncio.idSubcategoria, anuncio.Subcategoria.nombre), new PaisModificarAnuncioViewModel(anuncio.Estado1.idPais, anuncio.Estado1.Pai.nombre), new EstadoModificarAnuncioViewModel(anuncio.idEstado, anuncio.Estado1.nombre), 
+                            anuncio.descripcion, fotoPrincipal, fotos, anuncio.Videos_Anuncio.Where(v => v.idAnuncio == id).FirstOrDefault()?.ruta);
 
 
                         _dbContext.Database.Connection.Close();
@@ -1934,6 +1941,101 @@ namespace VendeAgroWeb.Controllers.Administrador
                                 ruta = video,
                                 idAnuncio = nuevoAnuncio.id
                             });
+                        }
+
+                        _dbContext.SaveChanges();
+                    }
+
+                    _dbContext.Database.Connection.Close();
+                    return true;
+                }
+            });
+        }
+
+        [HttpPost]
+        public async Task<bool> ModificarAnuncio(string json)
+        {
+            var anuncio = JObject.Parse(json);
+            var id = (int)anuncio["jid"];
+            var titulo = (string)anuncio["jtitulo"];
+            var descripcion = (string)anuncio["jdescripcion"];
+            var precio = (double)anuncio["jprecio"];
+            var idSubcategoria = (int)anuncio["jidSubcategoria"];
+            var idEstado = (int)anuncio["jestado"];
+            var fotoDisplayId = (int)anuncio["jfotoDisplayId"];
+            var fotoDisplay = (string)anuncio["jfotoDisplay"];
+            var fotos = (JArray)anuncio["jfotos"];
+            var fotosEliminadas = (JArray)anuncio["jfotos"];
+            var fotosEliminadasRutas = (JArray)anuncio["jfotos"];
+            var video = (string)anuncio["jvideo"];
+            bool estado = true;
+
+            return await Task.Run(() =>
+            {
+                using (var _dbContext = new MercampoEntities())
+                {
+                    Startup.OpenDatabaseConnection(_dbContext);
+                    if (_dbContext.Database.Connection.State != ConnectionState.Open)
+                    {
+                        ModelState.AddModelError("", "Error en la base de datos, vuelva a intentarlo");
+                        return false;
+                    }
+                    else
+                    {
+                        var anuncioDb = _dbContext.Anuncios.FirstOrDefault(a => a.id == id);
+
+                        if (anuncioDb == null)
+                        {
+                            ModelState.AddModelError("", "Error anuncio no encontrado, vuelva a intentarlo");
+                            estado = false;
+                        }
+                        else
+                        {
+                            anuncioDb.titulo = titulo;
+                            anuncioDb.descripcion = descripcion;
+                            anuncioDb.precio = precio;
+                            anuncioDb.idSubcategoria = idSubcategoria;
+                            anuncioDb.idEstado = idEstado;
+
+                            foreach (var foto in fotosEliminadas)
+                            {
+                                var idFoto = (int)foto;
+                                var fotoActual = _dbContext.Fotos_Anuncio.FirstOrDefault(f => f.id == idFoto);
+                                _dbContext.Fotos_Anuncio.Remove(fotoActual);
+                            }
+                            
+                            //borrarFotos(fotosEliminadasRutas);
+
+                            var fotoDb = _dbContext.Fotos_Anuncio.FirstOrDefault(f => f.id == fotoDisplayId);
+
+                            if (fotoDb == null) {
+                                ModelState.AddModelError("", "Error anuncio no encontrado, vuelva a intentarlo");
+                                estado = false;
+                            }
+
+                            fotoDb.ruta = fotoDisplay;
+
+                            foreach (var item in fotos)
+                            {
+                                var url = (string)item;
+                                _dbContext.Fotos_Anuncio.Add(new Fotos_Anuncio
+                                {
+                                    ruta = url,
+                                    idAnuncio = anuncioDb.id,
+                                    principal = false
+                                });
+                            }
+
+                            if (!string.IsNullOrEmpty(video))
+                            {
+                                _dbContext.Videos_Anuncio.Add(new Videos_Anuncio
+                                {
+                                    ruta = video,
+                                    idAnuncio = anuncioDb.id
+                                });
+                            }
+
+                            _dbContext.SaveChanges();
                         }
 
                         _dbContext.SaveChanges();
