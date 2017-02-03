@@ -52,12 +52,15 @@ namespace VendeAgroWeb.Controllers.Home
             var beneficios = new JavaScriptSerializer().Deserialize<List<int>>(json);
             var carrito = Startup.GetCarritoDeCompra(Request.Cookies);
             var paquete = carrito.Paquetes.ElementAt(index);
-            foreach (var item in beneficios) {
-                if (item == -1) {
+            foreach (var item in beneficios)
+            {
+                if (item == -1)
+                {
                     continue;
                 }
                 var beneficio = await ObtenerBeneficio(item);
-                if (beneficio == null) {
+                if (beneficio == null)
+                {
                     continue;
                 }
                 paquete.agregaBeneficioAPaquete(beneficio);
@@ -161,7 +164,8 @@ namespace VendeAgroWeb.Controllers.Home
             return View(new ContactoViewModel());
         }
 
-        public ActionResult EliminaPaqueteDeCarrito(int index) {
+        public ActionResult EliminaPaqueteDeCarrito(int index)
+        {
             var carrito = Startup.GetCarritoDeCompra(Request.Cookies);
             carrito.borraPaqueteDeCarrito(index);
             UpdateCarritoCookie(carrito, Response);
@@ -194,21 +198,13 @@ namespace VendeAgroWeb.Controllers.Home
             {
                 index = 0;
             }
-            PortalAnunciosViewModel model = new PortalAnunciosViewModel(await ObtenerAnunciosDestacados(index.Value), "", "", "", getTotalAnunciosActivos(), index.Value);
-            return PartialView("_AnunciosPartial", model);
-        }
-
-        private int getTotalAnunciosActivos()
-        {
             using (var _dbContext = new MercampoEntities())
             {
-                Startup.OpenDatabaseConnection(_dbContext);
-                if (_dbContext.Database.Connection.State != ConnectionState.Open)
-                {
-                    return 0;
-                }
-                return _dbContext.Anuncios.Where(a => a.activo == true && a.estado == (int)EstadoAnuncio.Aprobado).Count();
+                var anuncios = await ObtenerAnunciosDestacados(_dbContext);
+                PortalAnunciosViewModel model = new PortalAnunciosViewModel(ObtenerSiguientesAnuncios(index.Value, anuncios), "", "", "", anuncios.Count, index.Value);
+                return PartialView("_AnunciosPartial", model);
             }
+
         }
 
         public async Task<ActionResult> AnunciosDestacadosMovilPartial(int? index)
@@ -217,13 +213,16 @@ namespace VendeAgroWeb.Controllers.Home
             {
                 index = 0;
             }
-            PortalAnunciosViewModel model = new PortalAnunciosViewModel(await ObtenerAnunciosDestacados(index.Value), "", "", "",getTotalAnunciosActivos() ,index.Value);
-            return PartialView("_AnunciosMovil", model);
+            using (var _dbContext = new MercampoEntities())
+            {
+                var anuncios = await ObtenerAnunciosDestacados(_dbContext);
+                PortalAnunciosViewModel model = new PortalAnunciosViewModel(ObtenerSiguientesAnuncios(index.Value, anuncios), "", "", "", anuncios.Count, index.Value);
+                return PartialView("_AnunciosMovil", model);
+            }
         }
 
         public async Task<ActionResult> OfertasDelDiaPartial()
         {
-            //TODO: Ofertas del dia
             PortalAnunciosViewModel model = new PortalAnunciosViewModel(await ObtenerOfertasDelDia(), "", "", "");
             return PartialView("_OfertasPartial", model);
         }
@@ -241,37 +240,38 @@ namespace VendeAgroWeb.Controllers.Home
             });
         }
 
-        public async Task<ICollection<PortalAnuncioViewModel>> ObtenerAnunciosDestacados(int index)
+        public ICollection<PortalAnuncioViewModel> ObtenerSiguientesAnuncios(int index, List<Anuncio> anuncios)
+        {
+            int num = 20;
+            int count = anuncios.Count;
+            if (index + num > count)
+            {
+                num = count - index;
+            }
+
+            var result = CreaAnuncios(anuncios.GetRange(index, num));
+            return result;
+        }
+
+        public async Task<List<Anuncio>> ObtenerAnunciosDestacados(MercampoEntities _dbContext)
         {
             return await Task.Run(() =>
             {
-                using (var _dbContext = new MercampoEntities())
+                Startup.OpenDatabaseConnection(_dbContext);
+                if (_dbContext.Database.Connection.State != ConnectionState.Open)
                 {
-                    Startup.OpenDatabaseConnection(_dbContext);
-                    if (_dbContext.Database.Connection.State != ConnectionState.Open)
-                    {
-                        return null;
-                    }
-
-                    var anunciosTemp = _dbContext.Anuncios.Where(a => a.activo == true && a.estado == (int)EstadoAnuncio.Aprobado).OrderByDescending(a => a.clicks).ToList();
-                    int num = 20;
-                    int count = anunciosTemp.Count;
-                    if (index + num > count)
-                    {
-                        num = count - index;
-                    }
-
-                    var result = CreaAnuncios(anunciosTemp.GetRange(index, num), _dbContext);
-                    _dbContext.Database.Connection.Close();
-                    return result;
+                    return null;
                 }
+
+                return _dbContext.Anuncios.Where(a => a.activo == true && a.estado == (int)EstadoAnuncio.Aprobado).OrderByDescending(a => a.clicks).ToList();
+
             });
         }
 
         public List<Anuncio> TempAnuncios()
         {
             List<Anuncio> lista = new List<Anuncio>();
-            for(int i = 0; i < 342; i++)
+            for (int i = 0; i < 342; i++)
             {
                 Anuncio a = new Anuncio();
                 a.titulo = i.ToString();
@@ -279,14 +279,15 @@ namespace VendeAgroWeb.Controllers.Home
                 List<Fotos_Anuncio> listaF = new List<Fotos_Anuncio>();
                 listaF.Add(new Fotos_Anuncio() { principal = true, ruta = "img" });
                 a.Fotos_Anuncio = listaF;
-                a.Estado1 = new Estado() { nombre = "Estado", Pai = new Pai() { nombre = "Pais"} };
+                a.Estado1 = new Estado() { nombre = "Estado", Pai = new Pai() { nombre = "Pais" } };
                 lista.Add(a);
             }
             return lista;
         }
 
         [HttpPost]
-        public async Task<ActionResult> DestacadosFiltradosPartial(int? idCategoria, int? idSubcategoria, int? idPais, int? idEstado, double? precioBajo, double? precioAlto) {
+        public async Task<ActionResult> DestacadosFiltradosPartial(int? idCategoria, int? idSubcategoria, int? idPais, int? idEstado, double? precioBajo, double? precioAlto)
+        {
             PortalAnunciosViewModel model = new PortalAnunciosViewModel(await ObtenerDestacadosFiltrados(idCategoria, idSubcategoria, idPais, idEstado, precioBajo, precioAlto), "", "", "");
             return PartialView("_AnunciosPartial", model);
         }
@@ -303,7 +304,8 @@ namespace VendeAgroWeb.Controllers.Home
             return View(new QueryViewModel(query));
         }
 
-        public async Task<ActionResult> ObtenerDestacadosFiltradosTexto(string query) {
+        public async Task<ActionResult> ObtenerDestacadosFiltradosTexto(string query)
+        {
 
             return await Task.Run(() =>
             {
@@ -327,7 +329,7 @@ namespace VendeAgroWeb.Controllers.Home
                     || a.Estado1.Pai.nombre == query || a.titulo.Contains(query) == true)).Take(20);
 
                     _dbContext.Database.Connection.Close();
-                    PortalAnunciosBusquedaViewModel model = new PortalAnunciosBusquedaViewModel(CreaAnuncios(anuncios.ToList(), _dbContext), query);
+                    PortalAnunciosBusquedaViewModel model = new PortalAnunciosBusquedaViewModel(CreaAnuncios(anuncios.ToList()), query);
                     return PartialView("_BusquedaPartial", model);
                 }
             });
@@ -335,7 +337,8 @@ namespace VendeAgroWeb.Controllers.Home
         }
 
 
-        public async Task<ICollection<PortalAnuncioViewModel>> ObtenerDestacadosFiltrados(int? idCategoria, int? idSubcategoria, int? idPais, int? idEstado, double? precioBajo, double? precioAlto) {
+        public async Task<ICollection<PortalAnuncioViewModel>> ObtenerDestacadosFiltrados(int? idCategoria, int? idSubcategoria, int? idPais, int? idEstado, double? precioBajo, double? precioAlto)
+        {
             return await Task.Run(() =>
             {
                 using (var _dbContext = new MercampoEntities())
@@ -348,10 +351,11 @@ namespace VendeAgroWeb.Controllers.Home
 
                     IQueryable<Anuncio> anuncios = null;
 
-                    if (idCategoria == -1 && idSubcategoria == -1 && idPais == -1 && idEstado == -1) {
+                    if (idCategoria == -1 && idSubcategoria == -1 && idPais == -1 && idEstado == -1)
+                    {
                         anuncios = _dbContext.Anuncios.Where(a => a.activo == true && a.estado == (int)EstadoAnuncio.Aprobado && a.precio <= precioAlto && a.precio >= precioBajo).OrderByDescending(a => a.clicks).Take(20);
                         _dbContext.Database.Connection.Close();
-                        return CreaAnuncios(anuncios.ToList(), _dbContext);
+                        return CreaAnuncios(anuncios.ToList());
                     }
 
                     if (idCategoria != -1)
@@ -364,27 +368,27 @@ namespace VendeAgroWeb.Controllers.Home
                                 {
                                     anuncios = _dbContext.Anuncios.Where(a => a.activo == true && a.estado == (int)EstadoAnuncio.Aprobado && a.idSubcategoria == idSubcategoria && a.idEstado == idEstado && a.precio <= precioAlto && a.precio >= precioBajo).OrderByDescending(a => a.clicks).Take(20);
                                     _dbContext.Database.Connection.Close();
-                                    return CreaAnuncios(anuncios.ToList(), _dbContext);
+                                    return CreaAnuncios(anuncios.ToList());
                                 }
                                 else
                                 {
                                     anuncios = _dbContext.Anuncios.Where(a => a.activo == true && a.estado == (int)EstadoAnuncio.Aprobado && a.idSubcategoria == idSubcategoria && a.Estado1.idPais == idPais && a.precio <= precioAlto && a.precio >= precioBajo).OrderByDescending(a => a.clicks).Take(20);
                                     _dbContext.Database.Connection.Close();
-                                    return CreaAnuncios(anuncios.ToList(), _dbContext);
+                                    return CreaAnuncios(anuncios.ToList());
                                 }
                             }
                             else
                             {
                                 anuncios = _dbContext.Anuncios.Where(a => a.activo == true && a.estado == (int)EstadoAnuncio.Aprobado && a.idSubcategoria == idSubcategoria && a.precio <= precioAlto && a.precio >= precioBajo).OrderByDescending(a => a.clicks).Take(20);
                                 _dbContext.Database.Connection.Close();
-                                return CreaAnuncios(anuncios.ToList(), _dbContext);
+                                return CreaAnuncios(anuncios.ToList());
                             }
                         }
                         else
                         {
                             anuncios = _dbContext.Anuncios.Where(a => a.activo == true && a.estado == (int)EstadoAnuncio.Aprobado && a.Subcategoria.idCategoria == idCategoria && a.precio <= precioAlto && a.precio >= precioBajo).OrderByDescending(a => a.clicks).Take(20);
                             _dbContext.Database.Connection.Close();
-                            return CreaAnuncios(anuncios.ToList(), _dbContext);
+                            return CreaAnuncios(anuncios.ToList());
                         }
                     }
                     else
@@ -395,18 +399,18 @@ namespace VendeAgroWeb.Controllers.Home
                             {
                                 anuncios = _dbContext.Anuncios.Where(a => a.activo == true && a.estado == (int)EstadoAnuncio.Aprobado && a.idEstado == idEstado && a.precio <= precioAlto && a.precio >= precioBajo).OrderByDescending(a => a.clicks).Take(20);
                                 _dbContext.Database.Connection.Close();
-                                return CreaAnuncios(anuncios.ToList(), _dbContext);
+                                return CreaAnuncios(anuncios.ToList());
                             }
                             else
                             {
                                 anuncios = _dbContext.Anuncios.Where(a => a.activo == true && a.estado == (int)EstadoAnuncio.Aprobado && a.Estado1.idPais == idPais).OrderByDescending(a => a.clicks).Take(20);
                                 _dbContext.Database.Connection.Close();
-                                return CreaAnuncios(anuncios.ToList(), _dbContext);
+                                return CreaAnuncios(anuncios.ToList());
                             }
                         }
                     }
 
-                    var result = CreaAnuncios(anuncios.ToList(), _dbContext);
+                    var result = CreaAnuncios(anuncios.ToList());
                     _dbContext.Database.Connection.Close();
 
                     return result;
@@ -430,7 +434,7 @@ namespace VendeAgroWeb.Controllers.Home
                     a.estado == (int)EstadoAnuncio.Aprobado && a.Anuncio_Beneficio.Where(ab => ab.idAnuncio == a.id &&
                     ab.Beneficio.tipo == (int)BeneficiosExtraTipo.OfertaDelDia).FirstOrDefault() != null);
 
-                    var result = CreaAnuncios(Shuffle(anuncios.ToList()), _dbContext);
+                    var result = CreaAnuncios(Shuffle(anuncios.ToList()));
                     _dbContext.Database.Connection.Close();
                     return result;
                 }
@@ -719,12 +723,19 @@ namespace VendeAgroWeb.Controllers.Home
             return anuncios;
         }
 
-        private List<PortalAnuncioViewModel> CreaAnuncios(ICollection<Anuncio> anuncios, MercampoEntities _dbContext)
+        private List<PortalAnuncioViewModel> CreaAnuncios(ICollection<Anuncio> anuncios)
         {
             List<PortalAnuncioViewModel> lista = new List<PortalAnuncioViewModel>();
-            foreach (var item in anuncios)
+            try
             {
-                lista.Add(new PortalAnuncioViewModel(item.id, item.titulo, item.precio, item.Subcategoria.Categoria.nombre, item.Subcategoria.nombre, item.Estado1.nombre, item.Fotos_Anuncio.Where(f => f.principal == true).FirstOrDefault()?.ruta));
+                foreach (var item in anuncios)
+                {
+                    lista.Add(new PortalAnuncioViewModel(item.id, item.titulo, item.precio, item.Subcategoria.Categoria.nombre, item.Subcategoria.nombre, item.Estado1.nombre, item.Fotos_Anuncio.Where(f => f.principal == true).FirstOrDefault()?.ruta));
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
             }
 
             return lista;
@@ -766,7 +777,8 @@ namespace VendeAgroWeb.Controllers.Home
 
                     var banner = _dbContext.Banners.Where(b => b.tipo == (int)BannerTipo.Central).FirstOrDefault();
 
-                    if (banner.activo == false) {
+                    if (banner.activo == false)
+                    {
                         return PartialView("BannerCentralPartial", null);
                     }
 
@@ -795,7 +807,8 @@ namespace VendeAgroWeb.Controllers.Home
                     List<PaginaBannerCentralViewModel> lista = new List<PaginaBannerCentralViewModel>();
                     var banners = _dbContext.Banners.Where(b => b.tipo != (int)BannerTipo.Central && b.ruta != null && b.activo == true);
 
-                    foreach (var banner in banners) {
+                    foreach (var banner in banners)
+                    {
                         lista.Add(new PaginaBannerCentralViewModel(banner.Id, banner.ruta, banner.link));
                     }
 
