@@ -776,6 +776,20 @@ namespace VendeAgroWeb.Models.Pagina
             _nombreUsuario = nombreUsuario;
         }
 
+        public PortalAnunciosViewModel(ICollection<PortalAnuncioViewModel> anuncios, string nombreCategoria, string nombreSubcategoria, string nombreUsuario, int total, int index)
+        {
+            _anuncios = anuncios;
+            _nombreCategoria = nombreCategoria;
+            _nombreSubcategoria = nombreSubcategoria;
+            _nombreUsuario = nombreUsuario;
+            Total = total;
+            Index = index;
+        }
+
+        public int Total { get; private set; }
+
+        public int Index { get; private set; }
+
         public ICollection<PortalAnuncioViewModel> Anuncios
         {
             get
