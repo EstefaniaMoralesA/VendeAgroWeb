@@ -21,7 +21,7 @@
                     </div>
 
                     @using (Html.BeginForm())
-            {
+                    {
                         @Html.AntiForgeryToken()
 
                         <div class="form-horizontal">
@@ -67,7 +67,9 @@
                             </div>
                             <div class="col-sm-9 registrate-facebook">
                                 <div class="social-wrap a">
-                                    <button id="facebook">Facebook</button>
+                                    <fb:login-button scope="public_profile,email" size="large" onlogin="checkLoginState();">
+                                        Facebook
+                                    </fb:login-button>
                                 </div>
                             </div>
                         </div>
@@ -84,6 +86,63 @@
 
 
 <script>
+    function statusChangeCallback(response) {
+        if (response.status === 'connected') {
+            testAPI();
+        } else if (response.status === 'not_authorized') {
+        } else {
+        }
+    }
+
+    function checkLoginState() {
+        FB.getLoginStatus(function(response) {
+            statusChangeCallback(response);
+        });
+    }
+
+    window.fbAsyncInit = function() {
+        FB.init({
+            appId      : '595649353960312',
+            cookie     : true,  
+            xfbml      : true, 
+            version    : 'v2.8' 
+        });
+
+        FB.getLoginStatus(function(response) {
+            statusChangeCallback(response);
+        });
+
+    };
+
+    (function(d, s, id) {
+        var js, fjs = d.getElementsByTagName(s)[0];
+        if (d.getElementById(id)) return;
+        js = d.createElement(s); js.id = id;
+        js.src = "//connect.facebook.net/en_US/sdk.js";
+        fjs.parentNode.insertBefore(js, fjs);
+    }(document, 'script', 'facebook-jssdk'));
+
+    function testAPI() {
+        var params = {
+            fields: 'first_name,middle_name,last_name,email'
+        };
+        FB.api('/me', params, function(response) {
+            if(!response.middle_name)
+            {
+                $('#NombreRegistro').val(response.first_name);
+            }
+            else 
+            {
+                $('#NombreRegistro').val(response.first_name + ' ' + response.middle_name);
+            }
+            if(response.last_name)
+            {
+                $('#ApellidosRegistro').val(response.last_name);
+            }
+            $('#EmailRegistro').val(response.email);
+        });
+    }
+
     $(document).ready(function(){
         $.when(mueveRegistro()).done(agregaClick);
     });
@@ -92,7 +151,6 @@
         $('#registro-llena').html($('.registro-campos').html());
         $('.registro-campos').html('');
     }
-
 
     function agregaClick() {
         $(".boton-Registro").click(function () {
