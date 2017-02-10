@@ -1,12 +1,28 @@
 ﻿@model VendeAgroWeb.Models.Pagina.PagoCarritoTarjetasViewModel
 
 @{
-    ViewBag.Title = "Mis Tarjetas";
+    ViewBag.Title = "Pagar";
 }
 
+<div class="procesando-pago-carrito col-sm-11">
+    <div class="procesando-pago-contenido proceso-pago-contenido-carrito">
+        <h3>Estamos procesando tu pago, favor de no recargar la p&aacute;gina.</h3>
+        <img class="loader-anuncios" src="~/img/loader.gif" />
+    </div>
+</div>
 <div class="row" style="margin-top: 50px;">
     <div class="col-sm-12">
         <div class="col-sm-6 col-sm-offset-3" style="margin-top: 30px; text-align: center;">
+            <div class="pasos-pago">
+                <div class="col-sm-12 primer-paso-pago">
+                    <div class="primer-paso-contenedor" style="width:100% !important;">
+                        <div class="pasos-texto">
+                            <span class="numero-pasos-pago">2</span>
+                            <p>Seleccionar Tarjeta</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
             <h2 class="mi-cuenta-titulo">Mis Tarjetas</h2>
             @{
                 if (Model.Usuario.Tarjetas.Count() <= 0)
@@ -16,7 +32,6 @@
                 }
                 else
                 {
-                    <p class="pago-carrito-tarjetas-texto" style="text-align: center;">Selecciona la tarjeta con la que deseas realizar el pago:</p>
                     <div class="row">
                         <div class="col-sm-6 col-sm-offset-3" style="margin-top: 30px;">
 
@@ -29,7 +44,7 @@
                                                 @{
                                                     <td>
                                                         <div class="radio">
-                                                            <input type="radio" id="radio" name="radio" value="@item.Id">
+                                                            <input type="radio" id="radio" name="tarjeta" value="@item.IdConekta">
                                                         </div>
                                                     </td>
                                                     if (item.Tipo == VendeAgroWeb.Models.Pagina.TarjetaTipo.MasterCard)
@@ -47,7 +62,7 @@
                                                             <td class="data-tarjetas"><img style="width: 12%;" src="~/img/amex.png" /></td>
                                                         }
                                                     }
-                                                    <td style="min-width:120px;"><span>************</span>@item.Digitos</td>
+                                                    <td style="min-width:120px;"><span>************</span> @item.Digitos</td>
                                                 }
                                             </tr>
                                                     }
@@ -57,56 +72,58 @@
                         </div>
                         <a id="btn-agregar-tarjeta" class="btn pagar-boton agregar-tarjeta-pago botones-grad" style="width: 100%; margin-top: 20px; margin-bottom: 25px; color: white;">Nueva Tarjeta</a>
                     </div>
-                    }
+                                                    }
             }
-        <div id="forma-tarjeta-nueva" style="display: none; margin-top: 30px;">
-            <div class="row">
-                <div class="col-sm-12">
-                    <h2 class="mi-cuenta-titulo" style="text-align: center;">Nueva Tarjeta</h2>
-                    <div class="row tarjeta" style="margin-left: 0px; margin-right: 0px; margin-top:20px; font-size: 16px;">
-                        <div class="alert alert-danger error-tarjeta">
+            <div id="forma-tarjeta-nueva" style="display: none; margin-top: 30px;">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <h2 class="mi-cuenta-titulo" style="text-align: center;">Nueva Tarjeta</h2>
+                        <div class="row tarjeta" style="margin-left: 0px; margin-right: 0px; margin-top:20px; font-size: 16px;">
+                            <div class="alert alert-danger error-tarjeta">
 
+                            </div>
+                            <form class="form-horizontal" id="forma-pago">
+                                <input class="form-control" id="id-usuario" value="@Model.Usuario.Id" style="display: none;" />
+                                <div class="form-group">
+                                    <div class="col-sm-12">
+                                        <input class="form-control" data-openpay-card="holder_name" id="nombre-tarjeta" placeholder="Nombre en la tarjeta" />
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="col-sm-6">
+                                        <input class="form-control" data-openpay-card="card_number" id="numero" placeholder="N&uacute;mero de la tarjeta" />
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <input class="form-control" data-openpay-card="cvv2" id="codigo" placeholder="C&oacute;digo de seguridad" />
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="col-sm-6">
+                                        <h4>Fecha de vencimiento</h4>
+                                    </div>
+                                    <div class="col-sm-2">
+                                        <input class="form-control" data-openpay-card="expiration_month" id="mes" placeholder="Mes" />
+                                    </div>
+                                    <div class="col-sm-2">
+                                        <input class="form-control" data-openpay-card="expiration_year" id="anio" placeholder="A&ntilde;o" />
+                                    </div>
+                                </div>
+                            </form>
                         </div>
-                        <form class="form-horizontal" id="forma-pago">
-                            <input class="form-control" id="id-usuario" value="@Model.Usuario.Id" style="display: none;" />
-                            <div class="form-group">
-                                <div class="col-sm-12">
-                                    <input class="form-control" data-openpay-card="holder_name" id="nombre-tarjeta" placeholder="Nombre en la tarjeta" />
-                                </div>
+                        <div class="col-sm-6 col-sm-offset-3">
+                            <div class="row">
+                                <a id="btn-nueva-tarjeta" class="btn btn-default botones-grad agregar-tarjeta-boton pagar-boton" style="color:white;">Agregar Tarjeta</a>
                             </div>
-                            <div class="form-group">
-                                <div class="col-sm-6">
-                                    <input class="form-control" data-openpay-card="card_number" id="numero" placeholder="N&uacute;mero de la tarjeta" />
-                                </div>
-                                <div class="col-sm-6">
-                                    <input class="form-control" data-openpay-card="cvv2" id="codigo" placeholder="C&oacute;digo de seguridad" />
-                                </div>
+                            <div class="row">
+                                <a id="cancelar-agregar-tarjeta" class="btn btn-default agregar-tarjeta-boton pagar-boton" style="margin-bottom: 20px;">Cancelar</a>
                             </div>
-                            <div class="form-group">
-                                <div class="col-sm-6">
-                                    <h4>Fecha de vencimiento</h4>
-                                </div>
-                                <div class="col-sm-2">
-                                    <input class="form-control" data-openpay-card="expiration_month" id="mes" placeholder="Mes" />
-                                </div>
-                                <div class="col-sm-2">
-                                    <input class="form-control" data-openpay-card="expiration_year" id="anio" placeholder="A&ntilde;o" />
-                                </div>
-                            </div>
-                        </form>
-                    </div>
-                    <div class="col-sm-6 col-sm-offset-3">
-                        <div class="row">
-                            <a id="btn-nueva-tarjeta" class="btn btn-default botones-grad agregar-tarjeta-boton pagar-boton" style="color:white;">Agregar Tarjeta</a>
-                        </div>
-                        <div class="row">
-                            <a id="cancelar-agregar-tarjeta" class="btn btn-default agregar-tarjeta-boton pagar-boton" style="margin-bottom: 20px;">Cancelar</a>
                         </div>
                     </div>
                 </div>
             </div>
+            <input type="checkbox" class="terminos" name="terminos"> <label style="font-size:20px;" for="terminos">Acepto los <a>T&eacute;rminos y condiciones</a></label>
+            <a id="pagar" class="btn btn-primary agregar-tarjeta-boton pagar-boton">Pagar</a>
         </div>
-        <a id="pagar" class="btn btn-primary agregar-tarjeta-boton pagar-boton">Pagar</a>
     </div>
 </div>
 
@@ -121,16 +138,40 @@
         OpenPay.setId('m4tpnfpemahz4tgdvadb');
         OpenPay.setApiKey('pk_69eeee9e23b947a5b5dd565cfd810e3a');
         OpenPay.setSandboxMode(true);
+        $('.primer-paso-contenedor').css("background-color", "#0275d8");
+        $('.primer-paso-contenedor .pasos-texto').css("color", "white");
     });
 
     $("#btn-agregar-tarjeta").click(function () {
-        $('#forma-tarjeta-nueva').show();
+        $('#forma-tarjeta-nueva').show('');
         $("#btn-agregar-tarjeta").hide();
     });
 
     $("#cancelar-agregar-tarjeta").click(function () {
         $('#forma-tarjeta-nueva').hide();
-        $("#btn-agregar-tarjeta").show();
+        $("#btn-agregar-tarjeta").show('');
+    });
+
+    $("#pagar").click(function () {
+        var valido = true;
+        var tarjeta = $('input[name=tarjeta]:checked').val();
+        if (!$(".terminos").is(':checked')) {
+            alert("terminos");
+            valido = false;
+        }
+        else {
+
+        }
+
+        if (typeof tarjeta == "undefined")
+        {
+            alert("tarjeta");
+            valido = false;
+        }
+        else {
+
+        }
+        
     });
 
     $("#btn-nueva-tarjeta").click(function () {
@@ -202,18 +243,17 @@
             data: { id: idUsuario, tokenTarjeta: token.data.id, sessionId: sessionId },
             url: '/Portal/AgregarTarjeta',
             success: function (response) {
-                alert(response);
                 if (response) {
                     location.reload();
                     return;
                 }
                 else {
-                    $(".error-row").html("Hubo un error al modificar el nombre. Porfavor vuelva a intentarlo.").show('');
+                    $(".error-row").html("Hubo un error al agregar la tarjeta. Porfavor vuelva a intentarlo.").show('');
                     return;
                 }
             },
             error: function (err) {
-                $(".error-row").html("Hubo un error al modificar. Porfavor vuelva a intentarlo.").show('');
+                $(".error-row").html("Hubo un error al agregar la tarjeta. Porfavor vuelva a intentarlo.").show('');
                 return;
             }
         });

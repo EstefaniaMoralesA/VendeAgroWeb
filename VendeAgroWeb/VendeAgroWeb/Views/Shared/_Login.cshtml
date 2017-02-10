@@ -40,7 +40,7 @@
                             </div>
                         </div>
                         <div class="olvidaste-contrasena-cliente" style="margin-top: 30px;">
-                            <p style="display: inline-block;" class="registrate-texto">¿No tienes cuenta?</p><a href="/Portal/Registro" style="margin-left: 10px;">Regístrate aquí</a>
+                            <p style="display: inline-block;" class="registrate-texto">¿No tienes cuenta?</p><a href="/Portal/Registro" id="link-registro" style="margin-left: 10px;">Regístrate aquí</a>
                         </div>
                     </div>
                 </div>
@@ -52,7 +52,22 @@
 
 
 <script>
+
+    $(document).ready(function(){
+        var redirect = getUrlParameter('redirect');
+        if(typeof redirect != 'undefined'){
+            $("#link-registro").attr('href', '/Portal/Registro?redirect=1');
+        }
+    });
+
     $("#boton-iniciarSesion").click(function () {
+        var redirect = getUrlParameter('redirect');
+        if (typeof redirect == 'undefined') {
+            redirect = false;
+        }
+        else{
+            redirect = true;
+        }
         var email = $("input#EmailLogin").val();
         var password = $("#PasswordLogin").val();
         var valido = true;
@@ -96,7 +111,13 @@
                     $("#alerta").html("Confirmacion de email pendiente.").show();
                     return;
                 }
-                window.location = "/Portal";
+                if(redirect){
+                    window.location = "/Home/PagoCarritoTarjetas";
+                }
+                else
+                {
+                    window.location = "/Portal";
+                }
             },
             error: function(err){
 
