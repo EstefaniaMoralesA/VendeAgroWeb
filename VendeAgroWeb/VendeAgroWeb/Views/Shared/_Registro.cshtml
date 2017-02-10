@@ -154,6 +154,14 @@
 
     function agregaClick() {
         $(".boton-Registro").click(function () {
+            var redirect = getUrlParameter('redirect');
+            if (typeof redirect == 'undefined')
+            {
+                redirect = false;
+            }
+            else{
+                redirect = true;
+            }
             var nombre = $("input#NombreRegistro").val();
             var apellidos = $("input#ApellidosRegistro").val();
             var email = $("input#EmailRegistro").val();
@@ -248,7 +256,13 @@
                         $(".error-row").html("El celular ya esta ocupado.").show();
                         return;
                     }
-                    window.location = "/Portal";
+                    if(redirect){
+                        window.location = "/Home/PagoCarritoTarjetas";
+                    }
+                    else
+                    {
+                        window.location = "/Portal";
+                    }
                 },
                 error: function (err) {
 
