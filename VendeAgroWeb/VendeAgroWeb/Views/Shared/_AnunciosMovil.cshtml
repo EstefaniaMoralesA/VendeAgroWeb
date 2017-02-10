@@ -5,20 +5,20 @@
     {
         <div class="no-hay-anuncios">
             <p style="
-               text-align: center;
-               font-size: 20px;
-               margin-top: 50px;
-               margin-left: 20px;
-               margin-right: 20px;
+               text-align center;
+               font-size 20px;
+               margin-top 50px;
+               margin-left 20px;
+               margin-right 20px;
                ">Por el momento no hay anuncios disponibles.</p>
             <a style="
-               text-align: center;
-               font-size: 26px;
-               display: block;
-               margin-left: 20px;
-               margin-right: 20px;
-               margin-top: 10px;
-               color: #abc114;
+               text-align center;
+               font-size 26px;
+               display block;
+               margin-left 20px;
+               margin-right 20px;
+               margin-top 10px;
+               color #abc114;
                ">Se el primero en anunciarte!</a>
         </div>
     }
@@ -42,6 +42,76 @@
                 </div>
             </div>
         }
-    }
+
+
+        <div class="row" style="text-align: center;">
+            <ul class="pagination" id="pagination-movil">
+                @{
+                    var numPaginas = Math.Ceiling(Model.Total / 20.0);
+                    var pagActual = Model.Index / 20 + 1;
+
+                    if (numPaginas >= 3)
+                    {
+                        if (pagActual == 1)
+                        {
+                            <li data-index="0" class="pag-actual"><a class="pag-actual">1</a></li>
+                            <li data-index="20"><a>2</a></li>
+                            <li data-index="@((numPaginas-1)*20)"><a>@numPaginas</a></li>
+                            <li data-index="20"><a>></a></li>
+                        }
+                        else if (pagActual == numPaginas)
+                        {
+
+                            <li data-index="@((numPaginas-2)*20)"><a><</a></li>
+                            <li data-index="0"><a>1</a></li>
+                            <li data-index="@((numPaginas-2)*20)"><a>@(numPaginas - 1)</a></li>
+                            <li data-index="@((numPaginas-1)*20)" class="pag-actual"><a class="pag-actual">@numPaginas</a></li>
+                        }
+                        else
+                        {
+                            <li data-index="@((pagActual-2)*20)"><a><</a></li>
+                            <li data-index="0"><a>1</a></li>
+                            if (pagActual - 1 != 1)
+                            {
+                                <li data-index="@((pagActual-2)*20)"><a>@(pagActual - 1)</a></li>
+                            }
+                            <li data-index="@((pagActual-1)*20)" class="pag-actual"><a class="pag-actual">@pagActual</a></li>
+                            if (pagActual + 1 != numPaginas)
+                            {
+                                <li data-index="@((pagActual)*20)"><a>@(pagActual + 1)</a></li>
+                            }
+                            <li data-index="@((numPaginas-1)*20)"><a>@numPaginas</a></li>
+                            <li data-index="@((pagActual)*20)"><a>></a></li>
+                        }
+                    }
+                    else if (numPaginas == 2)
+                    {
+                        if (pagActual == 1)
+                        {
+                            <li data-index="0" class="pag-actual"><a class="pag-actual">1</a></li>
+                            <li data-index="20"><a>2</a></li>
+                            <li data-index="20"><a>></a></li>
+                        }
+                        else
+                        {
+                            <li data-index="0"><a><</a></li>
+                            <li data-index="0"><a>1</a></li>
+                            <li data-index="20" class="pag-actual"><a class="pag-actual">2</a></li>
+                        }
+                    }
+                    else { }
+                }
+            </ul>
+        </div>
+                    }
 }
+
+<script>
+    $("#pagination-movil > li").click(function () {
+        if ($(this).hasClass("pag-actual")) return;
+        var index = $(this).data('index');
+        getAnunciosDestacados(index);
+        getAnunciosDestacadosMovil(index);
+    });
+</script>
 
