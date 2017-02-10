@@ -486,6 +486,7 @@
     <Content Include="Views\Portal\DetallesAnuncio.cshtml" />
     <Content Include="Views\Home\PagoCarritoTarjetas.cshtml" />
     <Content Include="Views\Administrador\ModificarAnuncio.cshtml" />
+    <Content Include="Views\Portal\RenovarAnuncio.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

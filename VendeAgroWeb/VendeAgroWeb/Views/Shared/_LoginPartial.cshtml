@@ -4,19 +4,28 @@
     {
         @Html.AntiForgeryToken()
 
-        <ul class="nav navbar-nav navbar-right login-container">
-            <li class="login-list">
-                @Html.ActionLink(Startup.GetAplicacionUsuariosManager().getUsuarioPortalActual(Request).Nombre, "Index", "Portal", routeValues: null, htmlAttributes: new { title = "Portal" })
-            </li>
-            <li class="login-list"><a href="javascript:document.getElementById('logoutForm').submit()">Log out</a></li>
-            <li class="login-list" style="float: right;">
-                <span class="carrito-boton">
-                    <a class="btn btn-default carrito botones-grad botones-shadow" href="/Home/CarritoDeCompra">
-                        <span class="glyphicon glyphicon-shopping-cart"></span>
-                    </a>
-                </span>
-            </li>
-        </ul>
+        <div class="botones-menu">
+            <a target="_blank" href="https://www.facebook.com/mercampoventas/?fref=ts" class="fbook-boton fbook-boton-hide"><img src="~/img/fbook.png" /></a>
+     
+            <a class="btn btn-default carrito botones-grad botones-shadow" style="margin-right: 20px;" href="/Home/CarritoDeCompra">
+                <span class="glyphicon glyphicon-shopping-cart"></span>
+            </a>
+            <div class="dropdown" style="margin-bottom: 0px; display: inline-block; width: auto;">
+                <button class="btn btn-primary botones-shadow botones-grad loginLink" style="width: auto; padding-right: 40px;" type="button" data-toggle="dropdown">
+                    <p style="margin: 0px;">@Startup.GetAplicacionUsuariosManager().getUsuarioPortalActual(Request).Nombre</p>
+                    <span class="caret" style="position: absolute; right: 12px; top: 19px; color:white;"></span>
+                </button>
+                <ul class="dropdown-menu" style="min-width: 80px;">
+                    <li><a style="color:black;" href="javascript:document.getElementById('logoutForm').submit()">Log out</a></li>
+                </ul>
+                @{
+                    using (Html.BeginForm("LogOut", "Portal", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
+                    {
+                        @Html.AntiForgeryToken()
+                    }
+                }
+            </div>
+        </div>
     }
 }
 else
@@ -29,9 +38,3 @@ else
         </a>
     </div>
 }
-
-
-
-<script>
-
-</script>

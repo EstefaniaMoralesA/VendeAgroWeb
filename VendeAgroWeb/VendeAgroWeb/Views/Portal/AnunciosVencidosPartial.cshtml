@@ -1,4 +1,5 @@
 ﻿@model VendeAgroWeb.Models.Portal.MisAnunciosViewModel
+
 @{
     if (Model.Anuncios.Count <= 0)
     {
@@ -19,16 +20,28 @@
                 <div class="row">
                     <div class="mis-anuncios-paquete-container">
                         <div class="mis-anuncios-anuncio">
-                            <a class="mi-anuncio-link">
-                                <div class="mis-anuncios-wrapper">
+                            <a class="mi-anuncio-link" href="/Portal/DetallesAnuncio?id=@item.Id">
+                                <div class="mis-anuncios-wrapper" style="height: 210px !important;">
                                     <p class="wrapper-texto">Ver detalles</p>
                                     <div class="mis-anuncios-imagen-container">
-                                        <img class="foto-anuncio" src="" />
+                                        <img class="foto-anuncio" src="@item.ImagenPrincipal" />
                                     </div>
-                                    <div class="movil-anuncio-titulo ofertas-anuncio-titulo">
-                                        <div class="row mis-anuncios-anuncio-titulo anuncio-aprobado">
+                                    <div class="movil-anuncio-titulo movil-mis-anuncios ofertas-anuncio-titulo">
+                                        <div class="row mis-anuncios-anuncio-titulo mis-anuncios-titulo anuncio-aprobado" style="background-color: white;">
                                             <p class="titulo">@item.Titulo</p>
-                                            <p class="estado"><strong><span class="glyphicon glyphicon-check"></span></strong>Aprobado</p>
+                                            @{
+                                                if (@item.Estado == EstadoAnuncio.Aprobado)
+                                                {
+                                                    <p class="estado"><strong><span class="glyphicon glyphicon-check"></span></strong>Aprobado</p>
+                                                }
+                                                else
+                                                {
+                                                    if (@item.Estado == EstadoAnuncio.NoAprobado)
+                                                    {
+                                                        <p class="estado"><strong><span class="glyphicon glyphicon-check"></span></strong>Aprobado</p>
+                                                    }
+                                                }
+                                            }
                                         </div>
                                     </div>
                                 </div>
@@ -39,4 +52,5 @@
             </div>
         }
     }
+}
 

@@ -153,9 +153,11 @@ namespace VendeAgroWeb.Controllers.Administrador
             return PartialView("AnunciosActivosPartial", model);
         }
 
-        public ActionResult AnunciosVencidosPartial()
+        public async Task<ActionResult> AnunciosVencidosPartial()
         {
-            return PartialView("AnunciosVencidosPartial");
+            var id = Startup.GetAplicacionUsuariosManager().getUsuarioPortalActual(Request).Id;
+            MisAnunciosViewModel model = new MisAnunciosViewModel(await ObtenerAnunciosVencidos(id));
+            return PartialView("AnunciosVencidosPartial", model);
         }
 
         public async Task<ICollection<AnuncioViewModel>> ObtenerAnunciosActivos(int id)
@@ -182,6 +184,34 @@ namespace VendeAgroWeb.Controllers.Administrador
                         if (porcentajeDuracion < 0) porcentajeDuracion = 0;
                         var imagenPrincipal = item.Fotos_Anuncio.Where(foto => foto.principal == true).FirstOrDefault()?.ruta ?? string.Empty;
                         lista.Add(new AnuncioViewModel(item.id, item.titulo, item.estado, porcentajeDuracion, imagenPrincipal));
+                    }
+
+                    _dbContext.Database.Connection.Close();
+                    return lista;
+                }
+            });
+        }
+
+        public async Task<ICollection<AnuncioViewModel>> ObtenerAnunciosVencidos(int id)
+        {
+            return await Task.Run(() =>
+            {
+                using (var _dbContext = new MercampoEntities())
+                {
+                    Startup.OpenDatabaseConnection(_dbContext);
+                    if (_dbContext.Database.Connection.State != ConnectionState.Open)
+                    {
+                        return null;
+                    }
+
+                    List<AnuncioViewModel> lista = new List<AnuncioViewModel>();
+
+                    var anuncios = _dbContext.Anuncios.Where(a => a.activo == false && a.idUsuario == id);
+
+                    foreach (var item in anuncios)
+                    {
+                        var imagenPrincipal = item.Fotos_Anuncio.Where(foto => foto.principal == true).FirstOrDefault()?.ruta ?? string.Empty;
+                        lista.Add(new AnuncioViewModel(item.id, item.titulo, item.estado, null, imagenPrincipal));
                     }
 
                     _dbContext.Database.Connection.Close();
@@ -410,6 +440,47 @@ namespace VendeAgroWeb.Controllers.Administrador
                         _dbContext.SaveChanges();
                     }
 
+                    _dbContext.Database.Connection.Close();
+                    return true;
+                }
+            });
+        }
+
+        public async Task<bool> AgregarAnuncios()
+        {
+            var carrito = Startup.GetCarritoDeCompra(Request.Cookies);
+            return await Task.Run(() =>
+            {
+                using (var _dbContext = new MercampoEntities())
+                {
+                    Startup.OpenDatabaseConnection(_dbContext);
+                    if (_dbContext.Database.Connection.State != ConnectionState.Open)
+                    {
+                        return false;
+                    }
+
+                    var paquetes = carrito.Paquetes;
+                    foreach(var paquete in paquetes)
+                    {
+                        var nuevoAnuncio = _dbContext.Anuncios.Add(new Anuncio
+                        {
+                            activo = true,
+                            idUsuario = Startup.GetAplicacionUsuariosManager().getUsuarioPortalActual(Request).Id,
+                            estado = (int)EstadoAnuncio.Vacio,
+                            idPaquete = paquete.Id
+                        });
+                        var beneficios = paquete.Beneficios;
+                        foreach (var beneficio in beneficios)
+                        {
+                            _dbContext.Anuncio_Beneficio.Add(new Anuncio_Beneficio
+                            {
+                                idAnuncio = nuevoAnuncio.id,
+                                idBeneficio = beneficio.Id
+                            });
+                        }
+                    }
+
+                    _dbContext.SaveChanges();
                     _dbContext.Database.Connection.Close();
                     return true;
                 }

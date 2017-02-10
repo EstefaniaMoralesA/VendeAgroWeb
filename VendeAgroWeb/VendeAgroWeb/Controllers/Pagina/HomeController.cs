@@ -279,8 +279,8 @@ namespace VendeAgroWeb.Controllers.Home
                     }
 
                     anuncios = _dbContext.Anuncios.Where(a => a.activo == true && a.estado == (int)EstadoAnuncio.Aprobado && (
-                    a.Subcategoria.nombre == query || a.Subcategoria.Categoria.nombre == query || a.Estado1.nombre == query || a.Estado1.nombre == query
-                    || a.Estado1.Pai.nombre == query || a.titulo.Contains(query) == true)).Take(20);
+                    a.Subcategoria.nombre.Contains(query) == true || a.Subcategoria.Categoria.nombre.Contains(query) == true || a.Estado1.nombre.Contains(query) == true
+                    || a.Estado1.Pai.nombre.Contains(query) == true || a.titulo.Contains(query) == true)).Take(20);
 
                     _dbContext.Database.Connection.Close();
                     PortalAnunciosBusquedaViewModel model = new PortalAnunciosBusquedaViewModel(CreaAnuncios(anuncios.ToList(), _dbContext), query);
