@@ -17,10 +17,16 @@
 <script>window.jQuery || document.write('<script src="/Scripts/jquery-1.10.2.js"><\/script>')</script>
 <script>
     $(document).ready(function () {
+        getOfertasDelDia(0);
+    });
+
+    function getOfertasDelDia(index)
+    {
+        $(".ofertas-anuncios-container").html('<img class="loader-anuncios" src="/img/loader.gif" />');
         $.ajax({
             type: "POST",
             data: {},
-            url: '/Home/OfertasDelDiaPartial',
+            url: '/Home/OfertasDelDiaPartial?index='+index,
             success: function (result) {
                 $(".ofertas-anuncios-container").html(result);
             },
@@ -28,5 +34,5 @@
                 console.log(msg);
             }
         });
-    });
+    }
 </script>

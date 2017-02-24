@@ -70,9 +70,18 @@ namespace VendeAgroWeb.Controllers.Home
             return true;
         }
 
-        public async Task<ActionResult> PagoCarritoTarjetas()
+        public ActionResult CarritoLogin(int? redirect)
+        {
+            return View(Startup.GetCarritoDeCompra(Request.Cookies));
+        }
+
+        public ActionResult PagoCarritoTarjetas()
         {
             var usuario = Startup.GetAplicacionUsuariosManager().getUsuarioPortalActual(Request);
+            if(usuario == null)
+            {
+                return RedirectToAction("CarritoLogin", "Home", new { redirect = 1});
+            }
             PagoCarritoTarjetasViewModel model = new PagoCarritoTarjetasViewModel(usuario);
             return View(model);
         }
@@ -221,10 +230,18 @@ namespace VendeAgroWeb.Controllers.Home
             }
         }
 
-        public async Task<ActionResult> OfertasDelDiaPartial()
+        public async Task<ActionResult> OfertasDelDiaPartial(int? index)
         {
-            PortalAnunciosViewModel model = new PortalAnunciosViewModel(await ObtenerOfertasDelDia(), "", "", "");
-            return PartialView("_OfertasPartial", model);
+            if(!index.HasValue)
+            {
+                index = 0;
+            }
+            using (var _dbContext = new MercampoEntities())
+            {
+                var anuncios = await ObtenerOfertasDelDia(_dbContext);
+                PortalAnunciosViewModel model = new PortalAnunciosViewModel(ObtenerSiguientesAnuncios(index.Value, anuncios), "", "", "", anuncios.Count, index.Value);
+                return PartialView("_OfertasPartial", model);
+            }
         }
 
         public async Task<string> GenerarCargo(string token)
@@ -418,26 +435,19 @@ namespace VendeAgroWeb.Controllers.Home
             });
         }
 
-        public async Task<ICollection<PortalAnuncioViewModel>> ObtenerOfertasDelDia()
+        public async Task<List<Anuncio>> ObtenerOfertasDelDia(MercampoEntities _dbContext)
         {
             return await Task.Run(() =>
             {
-                using (var _dbContext = new MercampoEntities())
+                Startup.OpenDatabaseConnection(_dbContext);
+                if (_dbContext.Database.Connection.State != ConnectionState.Open)
                 {
-                    Startup.OpenDatabaseConnection(_dbContext);
-                    if (_dbContext.Database.Connection.State != ConnectionState.Open)
-                    {
-                        return null;
-                    }
-
-                    var anuncios = _dbContext.Anuncios.Where(a => a.activo == true &&
-                    a.estado == (int)EstadoAnuncio.Aprobado && a.Anuncio_Beneficio.Where(ab => ab.idAnuncio == a.id &&
-                    ab.Beneficio.tipo == (int)BeneficiosExtraTipo.OfertaDelDia).FirstOrDefault() != null);
-
-                    var result = CreaAnuncios(Shuffle(anuncios.ToList()));
-                    _dbContext.Database.Connection.Close();
-                    return result;
+                    return null;
                 }
+                var anuncios = _dbContext.Anuncios.Where(a => a.activo == true &&
+                   a.estado == (int)EstadoAnuncio.Aprobado && a.Anuncio_Beneficio.Where(ab => ab.idAnuncio == a.id &&
+                   ab.Beneficio.tipo == (int)BeneficiosExtraTipo.OfertaDelDia).FirstOrDefault() != null);
+                return Shuffle(anuncios.ToList());
             });
         }
 

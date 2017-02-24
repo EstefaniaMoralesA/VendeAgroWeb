@@ -18,12 +18,6 @@
                 <ul class="dropdown-menu" style="min-width: 80px;">
                     <li><a style="color:black;" href="javascript:document.getElementById('logoutForm').submit()">Log out</a></li>
                 </ul>
-                @{
-                    using (Html.BeginForm("LogOut", "Portal", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
-                    {
-                        @Html.AntiForgeryToken()
-                    }
-                }
             </div>
         </div>
     }
