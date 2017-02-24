@@ -31,10 +31,9 @@
                     </div>
                     <div class="col-sm-12 anuncio-contenido">
                         <div class="row">
-                            <div style="padding-left:0px;">
-                                <div class="imagen-container">
-                                    <a class="btn-fotos" data-id="@anuncio.Id"><img src="@anuncio.FotoPrincipal" /></a>
-                                </div>
+                            <div class="iframe-container imagen-container">
+                                <a class='btn-fotos' data-id=@anuncio.Id style="position: absolute; width: 100%; height: 100%;"></a>
+                                <iframe id="iframe1" frameborder="0" width="225" height="177" class="iframe-foto" scrolling="no" onload="resizeImg(this)" src="@anuncio.FotoPrincipal"></iframe>
                             </div>
                             <div class="col-sm-3" style="margin-left: 13px;">
                                 <div class="row informacion-container">
@@ -90,9 +89,9 @@
                                 <li data-index="@((pagActual-2)*20)"><a>@(pagActual - 1)</a></li>
                             }
                             <li data-index="@((pagActual-1)*20)" class="pag-actual"><a class="pag-actual">@pagActual</a></li>
-                            if(pagActual + 1 != numPaginas)
+                            if (pagActual + 1 != numPaginas)
                             {
-                                <li data-index="@((pagActual)*20)"><a>@(pagActual+1)</a></li>
+                                <li data-index="@((pagActual)*20)"><a>@(pagActual + 1)</a></li>
                             }
                             <li data-index="@((numPaginas-1)*20)"><a>@numPaginas</a></li>
                             <li data-index="@((pagActual)*20)"><a>></a></li>
@@ -117,17 +116,23 @@
                 }
             </ul>
         </div>
-    }
+                    }
 }
 
 <style>
-    a.pag-actual{
-        background-color:#eeeeee !important;
+    a.pag-actual {
+        background-color: #eeeeee !important;
         cursor: auto !important;
     }
 </style>
 
 <script>
+    function resizeImg(obj) {
+        var doc = obj.contentWindow.document;
+        doc.body.children[0].style.width = '225px';
+        doc.body.children[0].style.height = '177px';
+    }
+
     $('.btn-fotos').click(function () {
         fotosClick($(this).data('id'));
     });
@@ -138,4 +143,5 @@
         getAnunciosDestacados(index);
         getAnunciosDestacadosMovil(index);
     });
+
 </script>

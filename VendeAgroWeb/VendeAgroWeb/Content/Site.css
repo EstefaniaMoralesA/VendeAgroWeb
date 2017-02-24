@@ -8,6 +8,32 @@
     src: url('../fonts/Nexa Bold.otf');
 }
 
+.iframe-foto {
+    width: 225px;
+    height: 177px;
+    cursor: pointer;
+}
+
+.iframe-container {
+    position: relative;
+}
+
+.iframe-foto-movil {
+    width: 100%;
+    height: 177px;
+}
+
+.iframe-foto-detalles {
+    width: 100%;
+    height: 300px;
+}
+
+.iframe-foto-owl {
+    width: 100%;
+    height: auto;
+}
+
+
 .hideMe {
     display: none;
 }
@@ -2608,17 +2634,15 @@ hr {
     height: 100%;
 }
 
-    .fotos img {
-        width: 730px;
-        height: 450px;
-        position: relative;
-        left: 50%;
-        transform: translate(-50%, 0%);
-        -webkit-transform: translate(-50%, 0%);
-        -ms-transform: translate(-50%, 0%);
-        -moz-transform: translate(-50%, 0%);
-        -o-transform: translate(-50%, 0%);
-    }
+.iframe-galeria {
+    position: relative;
+    left: 50%;
+    transform: translate(-50%, 0%);
+    -webkit-transform: translate(-50%, 0%);
+    -ms-transform: translate(-50%, 0%);
+    -moz-transform: translate(-50%, 0%);
+    -o-transform: translate(-50%, 0%);
+}
 
 .btn-ingresar {
     padding-left: 15px;
@@ -2641,10 +2665,6 @@ hr {
     -o-transform: translate(0, -50%);
     -ms-transform: translate(0, -50%);
     width: 100%;
-}
-
-iframe {
-    position: absolute;
 }
 
 .fbook-boton {

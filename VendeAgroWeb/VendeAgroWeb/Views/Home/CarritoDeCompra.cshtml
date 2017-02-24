@@ -239,14 +239,13 @@
     var success_callback = function (token) {
         var sessionId = $("#deviceIdHiddenFieldName").val();
         var idUsuario = $('#id-usuario').val();
-        alert('entro');
         return;
     };
 
 
 
     var error_callback = function (response) {
-        alert('entro error');
+        console.log(response);
         return;
     };
 

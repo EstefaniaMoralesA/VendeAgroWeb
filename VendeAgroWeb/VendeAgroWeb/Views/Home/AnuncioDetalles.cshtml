@@ -26,7 +26,7 @@
                             clase = "activo";
                         }
                         <div class="item @clase">
-                            <img src="@foto.Ruta" />
+                            <iframe frameborder="0" class="iframe-foto-owl" scrolling="no" src="@foto.Ruta" onload=resizeImgOwl(this)></iframe>
                         </div>
                     }
 
@@ -46,7 +46,7 @@
                     var fotoPrincipal = Model.Anuncio.FotoPrincipal;
                     if (fotoPrincipal != null)
                     {
-                        <img src="@fotoPrincipal" class="imagen-grande" />
+                        <iframe frameborder="0" class="iframe-foto-detalles" scrolling="no" src="@fotoPrincipal" onload="resizeImg(this)"></iframe>
                     }
                 }
             </div>
@@ -153,5 +153,15 @@
         $(".video-container").css("height", $(".img-grande-container").first().innerHeight() + "px");
     }
 
+    function resizeImg(obj) {
+        var doc = obj.contentWindow.document;
+        doc.body.children[0].style.width = '100%';
+        doc.body.children[0].style.height = '300px';
+    }
 
+    function resizeImgOwl(obj) {
+        var doc = obj.contentWindow.document;
+        doc.body.children[0].style.width = '100%';
+        doc.body.children[0].style.height = 'auto';
+    }
 </script>

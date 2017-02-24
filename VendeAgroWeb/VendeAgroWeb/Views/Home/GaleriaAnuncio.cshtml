@@ -18,7 +18,7 @@
                                 clase = "activo";
                             }
                             <div class="item @clase">
-                                <img src="@foto.Ruta" />
+                                <iframe id="iframe1" frameborder="0" width="730" height="450" class="iframe-galeria" scrolling="no" onload="resizeImg(this)" src="@foto.Ruta"></iframe>
                             </div>
                         }
                     }
@@ -53,4 +53,9 @@
         $(".gallery").html('<img class="galleryLoader" src="~/img/loader.gif">');
     });
 
+    function resizeImg(obj) {
+        var doc = obj.contentWindow.document;
+        doc.body.children[0].style.width = '730px';
+        doc.body.children[0].style.height = '450px';
+    }
 </script>
