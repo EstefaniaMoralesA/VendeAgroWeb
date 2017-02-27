@@ -446,47 +446,6 @@ namespace VendeAgroWeb.Controllers.Administrador
             });
         }
 
-        public async Task<bool> AgregarAnuncios()
-        {
-            var carrito = Startup.GetCarritoDeCompra(Request.Cookies);
-            return await Task.Run(() =>
-            {
-                using (var _dbContext = new MercampoEntities())
-                {
-                    Startup.OpenDatabaseConnection(_dbContext);
-                    if (_dbContext.Database.Connection.State != ConnectionState.Open)
-                    {
-                        return false;
-                    }
-
-                    var paquetes = carrito.Paquetes;
-                    foreach(var paquete in paquetes)
-                    {
-                        var nuevoAnuncio = _dbContext.Anuncios.Add(new Anuncio
-                        {
-                            activo = true,
-                            idUsuario = Startup.GetAplicacionUsuariosManager().getUsuarioPortalActual(Request).Id,
-                            estado = (int)EstadoAnuncio.Vacio,
-                            idPaquete = paquete.Id
-                        });
-                        var beneficios = paquete.Beneficios;
-                        foreach (var beneficio in beneficios)
-                        {
-                            _dbContext.Anuncio_Beneficio.Add(new Anuncio_Beneficio
-                            {
-                                idAnuncio = nuevoAnuncio.id,
-                                idBeneficio = beneficio.Id
-                            });
-                        }
-                    }
-
-                    _dbContext.SaveChanges();
-                    _dbContext.Database.Connection.Close();
-                    return true;
-                }
-            });
-        }
-
         [HttpPost]
         public bool AgregarTarjeta(int? id, string tokenTarjeta, string sessionId)
         {

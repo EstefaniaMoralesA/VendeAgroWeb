@@ -39,8 +39,10 @@ namespace VendeAgroWeb.Controllers.Home
         {
             if (!id.HasValue) return RedirectToAction("CarritoDeCompra");
             var paquete = await ObtenerPaquete(id);
+            if(paquete == null)
+                return View(new HttpNotFoundResult());
             var carrito = Startup.GetCarritoDeCompra(Request.Cookies);
-            var paqueteCarrito = carrito.insertarPaqueteEnCarrito(carrito.Paquetes.Count(), paquete.Nombre, paquete.Meses, paquete.Precio);
+            var paqueteCarrito = carrito.insertarPaqueteEnCarrito(paquete.Id, paquete.Nombre, paquete.Meses, paquete.Precio);
             UpdateCarritoCookie(carrito, Response);
             BeneficiosExtraViewModel model = new BeneficiosExtraViewModel(paqueteCarrito, await ObtenerBeneficios(), carrito.TotalCarrito);
             return View(model);
@@ -251,19 +253,6 @@ namespace VendeAgroWeb.Controllers.Home
                 PortalAnunciosViewModel model = new PortalAnunciosViewModel(ObtenerSiguientesAnuncios(index.Value, anuncios), "", "", "", anuncios.Count, index.Value);
                 return PartialView("_OfertasPartial", model);
             }
-        }
-
-        public async Task<string> GenerarCargo(string token)
-        {
-            if (token == null)
-            {
-                return "token invalido";
-            }
-
-            return await Task.Run(() =>
-            {
-                return "exitoso";
-            });
         }
 
         public ICollection<PortalAnuncioViewModel> ObtenerSiguientesAnuncios(int index, List<Anuncio> anuncios)

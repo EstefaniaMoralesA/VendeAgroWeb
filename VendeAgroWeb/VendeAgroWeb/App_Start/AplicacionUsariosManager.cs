@@ -3,6 +3,8 @@ using Openpay.Entities;
 using Openpay.Entities.Request;
 using System;
 using System.Collections.Generic;
+using System.Data;
+using System.Data.Entity.Core.Objects;
 using System.Linq;
 using System.Runtime.Serialization;
 using System.Security.Cryptography;
@@ -490,7 +492,7 @@ namespace VendeAgroWeb
 
         public string RealizarCargoTarjeta(int id, string tarjetaToken, string sessionId, CarritoDeCompra carrito)
         {
-            if (carrito != null && carrito.TotalCarrito <= 0.0)
+            if (carrito == null || carrito.TotalCarrito <= 0.0)
             {
                 return ResultadoCargo.IncorrectoAsJson;
             }
@@ -530,12 +532,13 @@ namespace VendeAgroWeb
                         return ResultadoCargo.IncorrectoAsJson;
                     }
                     ResultadoCargo resultado = new ResultadoCargo(ResultadoCargoTarjeta.Aprobado, cargo.OrderId, cargo.Authorization);
+                    AgregarAnuncios(carrito, usuario.Id);
                     return Startup.SerializeResultadoCargo(resultado);
                 }
                 catch (OpenpayException e)
                 {
                     ResultadoCargoTarjeta res = ResultadoCargoTarjeta.ErrorInterno;
-                    if((int)ResultadoCargoTarjeta.Rechazado == e.ErrorCode)
+                    if ((int)ResultadoCargoTarjeta.Rechazado == e.ErrorCode)
                     {
                         res = ResultadoCargoTarjeta.Rechazado;
                     }
@@ -545,6 +548,43 @@ namespace VendeAgroWeb
 
             }
 
+        }
+
+        private bool AgregarAnuncios(CarritoDeCompra carrito, int idUsuario)
+        {
+            using (var _dbContext = new MercampoEntities())
+            {
+                Startup.OpenDatabaseConnection(_dbContext);
+                if (_dbContext.Database.Connection.State != ConnectionState.Open)
+                {
+                    return false;
+                }
+
+                var paquetes = carrito.Paquetes;
+                foreach (var paquete in paquetes)
+                {
+                    var nuevoAnuncio = _dbContext.Anuncios.Add(new Anuncio
+                    {
+                        activo = false,
+                        idUsuario = idUsuario,
+                        estado = (int)EstadoAnuncio.Vacio,
+                        idPaquete = paquete.Id
+                    });
+                    _dbContext.SaveChanges();
+                    var beneficios = paquete.Beneficios;
+                    foreach (var beneficio in beneficios)
+                    {
+                        _dbContext.Anuncio_Beneficio.Add(new Anuncio_Beneficio
+                        {
+                            idAnuncio = nuevoAnuncio.id,
+                            idBeneficio = beneficio.Id
+                        });
+                        _dbContext.SaveChanges();
+                    }
+                }
+                _dbContext.Database.Connection.Close();
+                return true;
+            }
         }
 
         private string CrearClienteConektaId(string nombre, string apellidos, string email, string telefono)
