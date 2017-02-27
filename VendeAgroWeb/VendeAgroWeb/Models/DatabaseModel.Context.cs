@@ -25,6 +25,7 @@ namespace VendeAgroWeb.Models
             throw new UnintentionalCodeFirstException();
         }
     
+        public virtual DbSet<Acceso> Accesos { get; set; }
         public virtual DbSet<Anuncio> Anuncios { get; set; }
         public virtual DbSet<Anuncio_Beneficio> Anuncio_Beneficio { get; set; }
         public virtual DbSet<Banner> Banners { get; set; }

@@ -5,6 +5,14 @@
     <!-- SSDL content -->
     <edmx:StorageModels>
       <Schema Namespace="VendeAgroModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012.Azure" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Accesos">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Fecha" Type="date" Nullable="false" />
+          <Property Name="activo" Type="bit" Nullable="false" />
+        </EntityType>
         <EntityType Name="Anuncio">
           <Key>
             <PropertyRef Name="id" />
@@ -420,6 +428,7 @@
           </ReferentialConstraint>
         </Association>
         <EntityContainer Name="VendeAgroModelStoreContainer">
+          <EntitySet Name="Accesos" EntityType="Self.Accesos" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Anuncio" EntityType="Self.Anuncio" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Anuncio_Beneficio" EntityType="Self.Anuncio_Beneficio" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Banner" EntityType="Self.Banner" Schema="dbo" store:Type="Tables" />
@@ -512,6 +521,14 @@
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="VendeAgroModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Acceso">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Fecha" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="activo" Type="Boolean" Nullable="false" />
+        </EntityType>
         <EntityType Name="Anuncio">
           <Key>
             <PropertyRef Name="id" />
@@ -961,6 +978,7 @@
           </ReferentialConstraint>
         </Association>
         <EntityContainer Name="MercampoEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Accesos" EntityType="Self.Acceso" />
           <EntitySet Name="Anuncios" EntityType="Self.Anuncio" />
           <EntitySet Name="Anuncio_Beneficio" EntityType="Self.Anuncio_Beneficio" />
           <EntitySet Name="Banners" EntityType="Self.Banner" />
@@ -1054,6 +1072,15 @@
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
         <EntityContainerMapping StorageEntityContainer="VendeAgroModelStoreContainer" CdmEntityContainer="MercampoEntities">
+          <EntitySetMapping Name="Accesos">
+            <EntityTypeMapping TypeName="VendeAgroModel.Acceso">
+              <MappingFragment StoreEntitySet="Accesos">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Fecha" ColumnName="Fecha" />
+                <ScalarProperty Name="activo" ColumnName="activo" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="Anuncios">
             <EntityTypeMapping TypeName="VendeAgroModel.Anuncio">
               <MappingFragment StoreEntitySet="Anuncio">

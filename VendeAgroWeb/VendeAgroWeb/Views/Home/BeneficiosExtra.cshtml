@@ -39,13 +39,13 @@
         }
     </div>
     <div class="row total-beneficios-extra">
-        <a class="btn beneficios-boton ir-al-carrito continuar-pedido" data-id="@Model.Paquete.Id">Ir al carrito</a>
+        <a class="btn beneficios-boton ir-al-carrito continuar-pedido" data-id="@Model.Paquete.Index">Ir al carrito</a>
         <h2 id="total-con-beneficios"><span>$</span><span id="total-span">@Model.TotalCarrito</span></h2>
         <h2 class="total-del-pedido">Total del pedido</h2>
     </div>
     <div style="margin-top: 30px;">
-        <a  data-id="@Model.Paquete.Id" class="btn btn-default botones-grad beneficios-boton continuar-pedido">Terminar Pedido</a>
-        <a id="seguir-comprando"  data-id="@Model.Paquete.Id" class="btn seguir-comprando-boton beneficios-boton">Seguir Comprando</a>
+        <a  data-id="@Model.Paquete.Index" class="btn btn-default botones-grad beneficios-boton continuar-pedido">Terminar Pedido</a>
+        <a id="seguir-comprando"  data-id="@Model.Paquete.Index" class="btn seguir-comprando-boton beneficios-boton">Seguir Comprando</a>
     </div>
 </div>
 

@@ -39,7 +39,7 @@ namespace VendeAgroWeb
         }
 
         public PaqueteCarrito insertarPaqueteEnCarrito(int id, string nombre, int meses, double precio) {
-            var paquete = new PaqueteCarrito(id, nombre, meses, precio);
+            var paquete = new PaqueteCarrito(id, nombre, meses, precio, Paquetes.Count());
             Paquetes.Add(paquete);
             return paquete;
         }
@@ -50,10 +50,20 @@ namespace VendeAgroWeb
             {
                 return false;
             }
-            else {
-                Paquetes.Remove(paquete);
-            }
+            Paquetes.RemoveAt(index);
+            UpdateIndexes();
             return true;
+        }
+
+        private void UpdateIndexes()
+        {
+            var i = 0;
+            foreach (var paquete in Paquetes)
+            {
+                paquete.Index = i;
+                Paquetes[i] = paquete;
+                i++;
+            }
         }
 
     }
@@ -99,12 +109,15 @@ namespace VendeAgroWeb
             return true;
         }
 
-        public PaqueteCarrito(int id, string nombre, int meses, double precio) {
+        public int Index { get; set; }
+
+        public PaqueteCarrito(int id, string nombre, int meses, double precio, int index) {
             Id = id;
             Nombre = nombre;
             Meses = meses;
             Precio = precio;
             Beneficios = new List<BeneficioCarrito>();
+            Index = index;
 
         }
     }
