@@ -1,8 +1,10 @@
 ﻿using Openpay;
 using Openpay.Entities;
+using Openpay.Entities.Request;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Serialization;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
@@ -421,7 +423,7 @@ namespace VendeAgroWeb
             return null;
         }
 
-        public async Task<bool> AgregarTarjetaAsync(int id, string tokenTarjeta, string sessionId)
+        public bool AgregarTarjetaAsync(int id, string tokenTarjeta, string sessionId)
         {
             using (var _dbContext = new MercampoEntities())
             {
@@ -454,7 +456,7 @@ namespace VendeAgroWeb
                     return false;
                 }
 
-                string last4 = request.CardNumber.Substring(request.CardNumber.Length-4, 4);
+                string last4 = request.CardNumber.Substring(request.CardNumber.Length - 4, 4);
 
                 _dbContext.Usuario_Tarjeta.Add(new Usuario_Tarjeta
                 {
@@ -483,6 +485,66 @@ namespace VendeAgroWeb
                     return 0;
 
             }
+        }
+
+
+        public string RealizarCargoTarjeta(int id, string tarjetaToken, string sessionId, CarritoDeCompra carrito)
+        {
+            if (carrito != null && carrito.TotalCarrito <= 0.0)
+            {
+                return ResultadoCargo.IncorrectoAsJson;
+            }
+
+            HttpRequest request = HttpContext.Current.Request;
+            var usuario = getUsuarioPortalActual(request);
+            if (usuario.Id != id) return ResultadoCargo.IncorrectoAsJson;
+            using (var _dbContext = new MercampoEntities())
+            {
+                Startup.OpenDatabaseConnection(_dbContext);
+                if (_dbContext.Database.Connection.State != System.Data.ConnectionState.Open)
+                {
+                    return ResultadoCargo.IncorrectoAsJson;
+                }
+
+                try
+                {
+                    Customer cliente = Startup.OpenPayLib.CustomerService.Get(usuario.IdConekta);
+                    if (cliente == null)
+                    {
+                        return ResultadoCargo.IncorrectoAsJson;
+                    }
+
+                    ChargeRequest chargeRequest = new ChargeRequest();
+                    chargeRequest.Method = "card";
+                    chargeRequest.SourceId = tarjetaToken;
+                    chargeRequest.Amount = new decimal(carrito.TotalCarrito);
+                    chargeRequest.Currency = "MXN";
+                    chargeRequest.Description = "Servicio de anuncios Mercampo.mx";
+                    chargeRequest.OrderId = getToken();
+                    chargeRequest.DeviceSessionId = sessionId;
+                    chargeRequest.SendEmail = true;
+
+                    Charge cargo = Startup.OpenPayLib.ChargeService.Create(usuario.IdConekta, chargeRequest);
+                    if (cargo.ErrorMessage != null)
+                    {
+                        return ResultadoCargo.IncorrectoAsJson;
+                    }
+                    ResultadoCargo resultado = new ResultadoCargo(ResultadoCargoTarjeta.Aprobado, cargo.OrderId, cargo.Authorization);
+                    return Startup.SerializeResultadoCargo(resultado);
+                }
+                catch (OpenpayException e)
+                {
+                    ResultadoCargoTarjeta res = ResultadoCargoTarjeta.ErrorInterno;
+                    if((int)ResultadoCargoTarjeta.Rechazado == e.ErrorCode)
+                    {
+                        res = ResultadoCargoTarjeta.Rechazado;
+                    }
+
+                    return Startup.SerializeResultadoCargo(new ResultadoCargo((res)));
+                }
+
+            }
+
         }
 
         private string CrearClienteConektaId(string nombre, string apellidos, string email, string telefono)
@@ -591,5 +653,34 @@ namespace VendeAgroWeb
         TokenInvalido,
         Error,
         MailConfirmado
+    }
+
+    public enum ResultadoCargoTarjeta
+    {
+        Aprobado = 0,
+        Rechazado = 1007,
+        ErrorInterno = 2000
+    }
+
+    [DataContract]
+    public class ResultadoCargo
+    {
+        [DataMember]
+        public ResultadoCargoTarjeta Resultado { get; private set; }
+
+        [DataMember]
+        public string NoPedido { get; private set; }
+
+        [DataMember]
+        public string Autorizacion { get; private set; }
+
+        public ResultadoCargo(ResultadoCargoTarjeta resultado, string pedido = "", string autorizacion = "")
+        {
+            Resultado = resultado;
+            NoPedido = pedido;
+            Autorizacion = autorizacion;
+        }
+
+        public static string IncorrectoAsJson => Startup.SerializeResultadoCargo(new ResultadoCargo(ResultadoCargoTarjeta.ErrorInterno));
     }
 }

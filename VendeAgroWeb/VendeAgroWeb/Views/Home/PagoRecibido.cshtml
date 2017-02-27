@@ -1,0 +1,22 @@
+﻿@model ResultadoCargo
+
+@{
+    ViewBag.Title = "Gracias por tu compra";
+}
+
+<div class="row">
+    <div class="col-sm-12">
+        @{ 
+            if(Model.Resultado != ResultadoCargoTarjeta.Aprobado)
+            {
+                <h2>Error</h2>
+            }
+            else
+            {
+                <h3>No. Pedido: @Model.NoPedido</h3>
+                <h3>Autorizaci&oacute;n: @Model.Autorizacion</h3>
+                <h3>Monto: $@Startup.GetCarritoDeCompra(Request.Cookies).TotalCarrito MXN</h3>
+            }
+        }
+    </div>
+</div>

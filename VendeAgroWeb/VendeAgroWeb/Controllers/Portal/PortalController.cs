@@ -488,9 +488,15 @@ namespace VendeAgroWeb.Controllers.Administrador
         }
 
         [HttpPost]
-        public async Task<bool> AgregarTarjeta(int? id, string tokenTarjeta, string sessionId)
+        public bool AgregarTarjeta(int? id, string tokenTarjeta, string sessionId)
         {
-            return await Startup.GetAplicacionUsuariosManager().AgregarTarjetaAsync(id.Value, tokenTarjeta, sessionId);
+            return Startup.GetAplicacionUsuariosManager().AgregarTarjetaAsync(id.Value, tokenTarjeta, sessionId);
+        }
+
+        [HttpPost]
+        public string RealizarCargo(int? id, string tokenTarjeta, string sessionId)
+        {
+            return Startup.GetAplicacionUsuariosManager().RealizarCargoTarjeta(id.Value, tokenTarjeta, sessionId, Startup.GetCarritoDeCompra(Request.Cookies));
         }
 
         public ActionResult CrearAnuncio()

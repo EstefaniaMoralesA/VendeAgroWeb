@@ -75,6 +75,15 @@ namespace VendeAgroWeb.Controllers.Home
             return View(Startup.GetCarritoDeCompra(Request.Cookies));
         }
 
+        public ActionResult PagoRecibido(int? resultado, string numero, string autorizacion)
+        {
+            if(resultado == null || numero == null || autorizacion == null || !(Enum.IsDefined(typeof(ResultadoCargoTarjeta), resultado.Value)))
+            {
+                return View(new ResultadoCargo(ResultadoCargoTarjeta.ErrorInterno));
+            }
+            return View(new ResultadoCargo((ResultadoCargoTarjeta)resultado.Value, numero, autorizacion));
+        }
+
         public ActionResult PagoCarritoTarjetas()
         {
             var usuario = Startup.GetAplicacionUsuariosManager().getUsuarioPortalActual(Request);
@@ -82,7 +91,7 @@ namespace VendeAgroWeb.Controllers.Home
             {
                 return RedirectToAction("CarritoLogin", "Home", new { redirect = 1});
             }
-            PagoCarritoTarjetasViewModel model = new PagoCarritoTarjetasViewModel(usuario);
+            PagoCarritoTarjetasViewModel model = new PagoCarritoTarjetasViewModel(usuario, Startup.GetCarritoDeCompra(Request.Cookies).TotalCarrito);
             return View(model);
         }
 

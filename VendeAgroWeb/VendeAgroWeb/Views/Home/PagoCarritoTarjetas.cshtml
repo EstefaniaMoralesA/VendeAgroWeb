@@ -4,10 +4,39 @@
     ViewBag.Title = "Pagar";
 }
 
+<div id="myModal" class="modal fade" role="dialog" style="z-index:2000;
+top:50% !important;
+transform:translate(0, -50%);
+-moz-transform:translate(0, -50%);
+-webkit-transform:translate(0, -50%);
+-o-transform:translate(0, -50%);
+-ms-transform:translate(0, -50%);
+overflow-y:hidden !important;">
+    <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">&iquest;Esta seguro?</h4>
+            </div>
+            <div class="modal-body">
+                <p>Se le realizar&aacute; un cargo por:  </br><span style="font-size:20px;font-weight:bolder;">$@Model.Total MXN</span></p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-success" id="aceptar-pago">Aceptar</button>
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Cancelar</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+
 <div class="procesando-pago-carrito col-sm-11">
     <div class="procesando-pago-contenido proceso-pago-contenido-carrito">
-        <h3>Estamos procesando tu pago, favor de no recargar la p&aacute;gina.</h3>
+        <h3 style="text-align:center;">Estamos procesando tu pago, favor de no recargar la p&aacute;gina.</h3>
         <img class="loader-anuncios" src="~/img/loader.gif" />
+        <input type="hidden" id="valid" value="100" />
     </div>
 </div>
 <div class="row" style="margin-top: 50px;">
@@ -25,10 +54,16 @@
             </div>
             <h2 class="mi-cuenta-titulo">Mis Tarjetas</h2>
             @{
+                <div class="row">
+                    <div class="alert alert-danger" id="error-pago" style="display:none;">
+                    </div>
+                </div>
                 if (Model.Usuario.Tarjetas.Count() <= 0)
                 {
-                    <p class="pago-carrito-tarjetas-texto" style="text-align: center;">No tienes registrada ninguna tarjeta para realizar el pago.</p>
-                    <a id="btn-agregar-tarjeta" class="btn pagar-boton agregar-tarjeta-pago botones-grad" style="width: 100%; margin-top: 20px; margin-bottom: 25px; color: white;">Agregar Tarjeta</a>
+                    <div class="row">
+                        <p class="pago-carrito-tarjetas-texto" style="text-align: center;">No tienes registrada ninguna tarjeta para realizar el pago.</p>
+                        <a id="btn-agregar-tarjeta" class="btn pagar-boton agregar-tarjeta-pago botones-grad" style="width: 100%; margin-top: 20px; margin-bottom: 25px; color: white;">Agregar Tarjeta</a>
+                    </div>
                 }
                 else
                 {
@@ -127,8 +162,6 @@
     </div>
 </div>
 
-@Scripts.Render("~/bundles/jquery")
-
 <script type="text/javascript"
         src="https://openpay.s3.amazonaws.com/openpay.v1.min.js"></script>
 <script type='text/javascript'
@@ -138,6 +171,7 @@
         OpenPay.setId('m4tpnfpemahz4tgdvadb');
         OpenPay.setApiKey('pk_69eeee9e23b947a5b5dd565cfd810e3a');
         OpenPay.setSandboxMode(true);
+        var deviceSessionId = OpenPay.deviceData.setup("forma-pago", "deviceIdHiddenFieldName");
         $('.primer-paso-contenedor').css("background-color", "#0275d8");
         $('.primer-paso-contenedor .pasos-texto').css("color", "white");
     });
@@ -155,24 +189,28 @@
     $("#pagar").click(function () {
         var valido = true;
         var tarjeta = $('input[name=tarjeta]:checked').val();
+        var error = '';
+
         if (!$(".terminos").is(':checked')) {
-            alert("terminos");
             valido = false;
-        }
-        else {
-
+            error += ' -Debes aceptar los t&eacute;rminos y condiciones </br>';
         }
 
-        if (typeof tarjeta == "undefined")
-        {
-            alert("tarjeta");
+        if (typeof tarjeta == "undefined") {
             valido = false;
+            error += ' -Debes seleccionar una tarjeta. </br>';
         }
-        else {
 
+        if (!valido) {
+            $("#error-pago").append('<strong>Error:</strong> </br>');
+            $("#error-pago").append(error);
+            $("#error-pago").show('');
+            return;
         }
-        
-    });
+
+        $("#valid").val('200');
+        abrirModalPago(1);
+      });
 
     $("#btn-nueva-tarjeta").click(function () {
         var nombre = $("#nombre-tarjeta").val();
@@ -228,7 +266,6 @@
 
         $(".error-tarjeta").hide('');
         $(".procesando-pago").show('');
-        var deviceSessionId = OpenPay.deviceData.setup("forma-pago", "deviceIdHiddenFieldName");
         console.log("device id: " + deviceSessionId);
         OpenPay.token.extractFormAndCreate('forma-pago', success_callback, error_callback);
     });
@@ -259,6 +296,42 @@
         });
         return token;
     };
+
+    $('#myModal').on('hidden.bs.modal', function () {
+        $("#valid").val('500');
+    })
+
+    $("#aceptar-pago").click(function () {
+        var val = $("#valid").val();
+        if (val != 200) return;
+        $(".procesando-pago-carrito").show();
+        abrirModalPago(1);
+        var sessionId = $("#deviceIdHiddenFieldName").val();
+        var idUsuario = $('#id-usuario').val();
+
+        $.ajax({
+            type: 'POST',
+            data: { id: idUsuario, tokenTarjeta: $('input[name=tarjeta]:checked').val(), sessionId: sessionId },
+            url: '/Portal/RealizarCargo',
+            success: function (response) {
+                console.log(response);
+                response = JSON.parse(response);
+                if (response.Resultado == 0) {
+                    window.location = "/Home/PagoRecibido?resultado=" + response.Resultado + "&numero=" + response.NoPedido + "&autorizacion=" + response.Autorizacion;
+                    return;
+                }
+                else {
+                    alert("error en el cargo");
+                    $(".error-row").html("Hubo un error al agregar la tarjeta. Porfavor vuelva a intentarlo.").show('');
+                    return;
+                }
+            },
+            error: function (err) {
+                $(".error-row").html("Hubo un error al agregar la tarjeta. Porfavor vuelva a intentarlo.").show('');
+                return;
+            }
+        });
+    });
 
     var error_callback = function (response) {
         var desc = response.data.description != undefined ?

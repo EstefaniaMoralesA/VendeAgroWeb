@@ -55,6 +55,14 @@
         $('#login').modal('show');
     }
 
+    function abrirModalPago(a) {
+        if ($('#myModal').hasClass('in')) {
+            $('#myModal').modal('hide');
+            return;
+        }
+        $('#myModal').modal('show');
+    }
+
     document.getElementById("olvidaste-contrasena-cliente").click(function () {
         $("#login-cliente").hide();
         $("#olvidaste-cliente").show();

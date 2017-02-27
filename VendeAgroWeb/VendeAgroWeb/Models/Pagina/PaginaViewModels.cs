@@ -900,9 +900,10 @@ namespace VendeAgroWeb.Models.Pagina
         private PortalUsuario _usuario;
 
 
-        public PagoCarritoTarjetasViewModel(PortalUsuario usuario)
+        public PagoCarritoTarjetasViewModel(PortalUsuario usuario, double total)
         {
             _usuario = usuario;
+            Total = total;
         }
 
         public PortalUsuario Usuario
@@ -912,6 +913,8 @@ namespace VendeAgroWeb.Models.Pagina
                 return _usuario;
             }
         }
+
+        public double Total { get; private set; }
     }
 
 
