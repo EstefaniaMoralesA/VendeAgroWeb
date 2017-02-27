@@ -174,10 +174,15 @@ namespace VendeAgroWeb.Controllers.Administrador
 
                     List<AnuncioViewModel> lista = new List<AnuncioViewModel>();
 
-                    var anuncios = _dbContext.Anuncios.Where(a => a.activo == true && a.idUsuario == id);
+                    var anuncios = _dbContext.Anuncios.Where(a => (a.activo == true && a.idUsuario == id));
 
                     foreach (var item in anuncios)
                     {
+                        if ((EstadoAnuncio)item.estado == EstadoAnuncio.Vacio)
+                        {
+                            lista.Add(new AnuncioViewModel(item.id, (EstadoAnuncio)item.estado));
+                            continue;
+                        }
                         var tiempoRestante = (item.fecha_fin.Value - DateTime.Now).Days;
                         var duracion = (item.fecha_fin.Value - item.fecha_inicio.Value).Days;
                         var porcentajeDuracion = (int)((tiempoRestante * 100.0) / duracion);

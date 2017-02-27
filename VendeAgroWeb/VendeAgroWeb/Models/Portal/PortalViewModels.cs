@@ -107,6 +107,12 @@ namespace VendeAgroWeb.Models.Portal
         public int? TiempoRestante { get; set; }
         public string ImagenPrincipal { get; set; }
 
+        public AnuncioViewModel(int id, EstadoAnuncio estado)
+        {
+            Id = id;
+            Estado = estado;
+        }
+
         public AnuncioViewModel(int id, string titulo, int estado, int? tiempoRestante, string imagenPrincipal)
         {
             Id = id;

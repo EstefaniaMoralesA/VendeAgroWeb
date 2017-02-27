@@ -322,6 +322,7 @@ namespace VendeAgroWeb.Models.Pagina
     public class PortalAnuncioViewModel
     {
         private int _id;
+        private EstadoAnuncio _estadoAnuncio;
         private string _titulo;
         private double? _precio;
         private string _categoria;
@@ -382,6 +383,14 @@ namespace VendeAgroWeb.Models.Pagina
             get
             {
                 return _id;
+            }
+        }
+
+        public EstadoAnuncio EstadoAnuncio
+        {
+            get
+            {
+                return _estadoAnuncio;
             }
         }
 
