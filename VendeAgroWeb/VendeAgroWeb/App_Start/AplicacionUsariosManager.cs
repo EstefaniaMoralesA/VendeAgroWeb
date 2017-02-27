@@ -2,17 +2,13 @@
 using Openpay.Entities;
 using Openpay.Entities.Request;
 using System;
-using System.Collections.Generic;
 using System.Data;
-using System.Data.Entity.Core.Objects;
 using System.Linq;
 using System.Runtime.Serialization;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web;
-using System.Web.Mvc;
-using System.Web.Script.Serialization;
 using VendeAgroWeb.Models;
 using VendeAgroWeb.Models.Pagina;
 

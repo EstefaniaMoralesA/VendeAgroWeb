@@ -39,7 +39,7 @@ namespace VendeAgroWeb.Controllers.Home
         {
             if (!id.HasValue) return RedirectToAction("CarritoDeCompra");
             var paquete = await ObtenerPaquete(id);
-            if(paquete == null)
+            if (paquete == null)
                 return View(new HttpNotFoundResult());
             var carrito = Startup.GetCarritoDeCompra(Request.Cookies);
             var paqueteCarrito = carrito.insertarPaqueteEnCarrito(paquete.Id, paquete.Nombre, paquete.Meses, paquete.Precio);
@@ -79,7 +79,7 @@ namespace VendeAgroWeb.Controllers.Home
 
         public ActionResult PagoRecibido(int? resultado, string numero, string autorizacion)
         {
-            if(resultado == null || numero == null || autorizacion == null || !(Enum.IsDefined(typeof(ResultadoCargoTarjeta), resultado.Value)))
+            if (resultado == null || numero == null || autorizacion == null || !(Enum.IsDefined(typeof(ResultadoCargoTarjeta), resultado.Value)))
             {
                 return View(new ResultadoCargo(ResultadoCargoTarjeta.ErrorInterno));
             }
@@ -89,9 +89,9 @@ namespace VendeAgroWeb.Controllers.Home
         public ActionResult PagoCarritoTarjetas()
         {
             var usuario = Startup.GetAplicacionUsuariosManager().getUsuarioPortalActual(Request);
-            if(usuario == null)
+            if (usuario == null)
             {
-                return RedirectToAction("CarritoLogin", "Home", new { redirect = 1});
+                return RedirectToAction("CarritoLogin", "Home", new { redirect = 1 });
             }
             PagoCarritoTarjetasViewModel model = new PagoCarritoTarjetasViewModel(usuario, Startup.GetCarritoDeCompra(Request.Cookies).TotalCarrito);
             return View(model);
@@ -220,7 +220,8 @@ namespace VendeAgroWeb.Controllers.Home
             }
             using (var _dbContext = new MercampoEntities())
             {
-                var anuncios = await ObtenerAnunciosDestacados(_dbContext);
+
+                var anuncios = await ObtenerAnunciosDestacados(_dbContext, false);
                 PortalAnunciosViewModel model = new PortalAnunciosViewModel(ObtenerSiguientesAnuncios(index.Value, anuncios), "", "", "", anuncios.Count, index.Value);
                 return PartialView("_AnunciosPartial", model);
             }
@@ -235,7 +236,7 @@ namespace VendeAgroWeb.Controllers.Home
             }
             using (var _dbContext = new MercampoEntities())
             {
-                var anuncios = await ObtenerAnunciosDestacados(_dbContext);
+                var anuncios = await ObtenerAnunciosDestacados(_dbContext, true);
                 PortalAnunciosViewModel model = new PortalAnunciosViewModel(ObtenerSiguientesAnuncios(index.Value, anuncios), "", "", "", anuncios.Count, index.Value);
                 return PartialView("_AnunciosMovil", model);
             }
@@ -243,7 +244,7 @@ namespace VendeAgroWeb.Controllers.Home
 
         public async Task<ActionResult> OfertasDelDiaPartial(int? index)
         {
-            if(!index.HasValue)
+            if (!index.HasValue)
             {
                 index = 0;
             }
@@ -268,14 +269,57 @@ namespace VendeAgroWeb.Controllers.Home
             return result;
         }
 
-        public async Task<List<Anuncio>> ObtenerAnunciosDestacados(MercampoEntities _dbContext)
+        public async Task<List<Anuncio>> ObtenerAnunciosDestacados(MercampoEntities _dbContext, bool movil)
         {
             return await Task.Run(() =>
             {
+
                 Startup.OpenDatabaseConnection(_dbContext);
                 if (_dbContext.Database.Connection.State != ConnectionState.Open)
                 {
                     return null;
+                }
+
+                if (!movil)
+                {
+                    var ultimo = _dbContext.Accesos.Where(a => a.activo == true).FirstOrDefault();
+                    var necesitaActualizarAnuncios = false;
+                    if (ultimo == null)
+                    {
+                        necesitaActualizarAnuncios = true;
+                    }
+                    else
+                    {
+                        var result = ultimo.Fecha.Subtract(DateTime.UtcNow);
+
+                        if (result.Days != 0)
+                        {
+                            necesitaActualizarAnuncios = true;
+                            ultimo.activo = false;
+                        }
+                    }
+
+                    if (necesitaActualizarAnuncios)
+                    {
+                        _dbContext.Accesos.Add(new Acceso
+                        {
+                            Fecha = DateTime.UtcNow,
+                            activo = true
+                        });
+                        _dbContext.SaveChanges();
+
+                        var anunciosQueDebeDesactivar = _dbContext.Anuncios.Where(a => a.fecha_fin != null && a.activo == true);
+                        foreach (var anuncio in anunciosQueDebeDesactivar)
+                        {
+                            if (anuncio.fecha_fin.Value.Subtract(DateTime.UtcNow).Days < 0 && anuncio.idPaquete.HasValue)
+                            {
+                                var a = _dbContext.Anuncios.Where(an => an.id == anuncio.id).FirstOrDefault();
+                                a.activo = false;
+                                a.estado = (int)EstadoAnuncio.Vencido;
+                            }
+                        }
+                        _dbContext.SaveChanges();
+                    }
                 }
 
                 return _dbContext.Anuncios.Where(a => a.activo == true && a.estado == (int)EstadoAnuncio.Aprobado).OrderByDescending(a => a.clicks).ToList();
