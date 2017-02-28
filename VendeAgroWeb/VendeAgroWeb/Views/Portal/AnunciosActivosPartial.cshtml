@@ -2,7 +2,7 @@
 @{
     if (Model.Anuncios.Count <= 0)
     {
-        <div class="col-sm-6 col-sm-offset-3">
+        <div class="col-sm-6 col-sm-offset-3" style="text-align: center;">
             <h2>Aún no tienes anuncios disponibles.</h2>
         </div>
     }
@@ -33,7 +33,7 @@
                                         <div class="mis-anuncios-wrapper" style="max-height:174px;">
                                             <p class="wrapper-texto">Ver detalles</p>
                                             <div class="mis-anuncios-imagen-container">
-                                                <img class="foto-anuncio" src="@item.ImagenPrincipal" />
+                                                <iframe frameborder="0" class="iframe-foto-portal" scrolling="no" src="@item.ImagenPrincipal" onload=resizeImg(this)></iframe>
                                             </div>
                                             <div class="movil-anuncio-titulo movil-mis-anuncios ofertas-anuncio-titulo">
                                                 <div class="row mis-anuncios-anuncio-titulo mis-anuncios-titulo anuncio-aprobado">
@@ -64,3 +64,11 @@
         }
     }
 }
+
+<script>
+    function resizeImg(obj) {
+        var doc = obj.contentWindow.document;
+        doc.body.children[0].style.width = '100%';
+        doc.body.children[0].style.height = '218px';
+    }
+</script>

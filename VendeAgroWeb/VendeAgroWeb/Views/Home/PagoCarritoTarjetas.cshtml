@@ -285,12 +285,12 @@ overflow-y:hidden !important;">
                     return;
                 }
                 else {
-                    $(".error-row").html("Hubo un error al agregar la tarjeta. Porfavor vuelva a intentarlo.").show('');
+                    $("#error-pago").html("Hubo un error al agregar la tarjeta. Porfavor vuelva a intentarlo.").show('');
                     return;
                 }
             },
             error: function (err) {
-                $(".error-row").html("Hubo un error al agregar la tarjeta. Porfavor vuelva a intentarlo.").show('');
+                $("#error-pago").html("Hubo un error al agregar la tarjeta. Porfavor vuelva a intentarlo.").show('');
                 return;
             }
         });
@@ -321,13 +321,14 @@ overflow-y:hidden !important;">
                     return;
                 }
                 else {
-                    alert("error en el cargo");
-                    $(".error-row").html("Hubo un error al agregar la tarjeta. Porfavor vuelva a intentarlo.").show('');
+                    $(".procesando-pago-carrito").hide('');
+                    $("#error-pago").html("Hubo un error procesar el pago. Porfavor vuelva a intentarlo.").show('');
                     return;
                 }
             },
             error: function (err) {
-                $(".error-row").html("Hubo un error al agregar la tarjeta. Porfavor vuelva a intentarlo.").show('');
+                $(".procesando-pago-carrito").hide('');
+                $("#error-pago").html("Hubo un error al procesar el pago. Porfavor vuelva a intentarlo.").show('');
                 return;
             }
         });

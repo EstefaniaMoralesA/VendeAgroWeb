@@ -13,9 +13,44 @@
             }
             else
             {
-                <h3>No. Pedido: @Model.NoPedido</h3>
-                <h3>Autorizaci&oacute;n: @Model.Autorizacion</h3>
-                <h3>Monto: $@Startup.GetCarritoDeCompra(Request.Cookies).TotalCarrito MXN</h3>
+                <h1 style="margin-top: 50px;" class="titulo-pago">Tu pago ha sido procesado exitosamente</h1>
+                <div class="col-sm-6 col-sm-offset-3">
+                    <h3 style="margin-top: 30px;">No. Pedido: @Model.NoPedido</h3>
+                    <h3>Autorizaci&oacute;n: @Model.Autorizacion</h3>
+                    <h3>Monto: $@Startup.GetCarritoDeCompra(Request.Cookies).TotalCarrito MXN</h3>
+                    <h1 class="titulo-pago" style="margin-top: 50px; margin-bottom: 30px;">Pasos siguientes:</h1>
+                </div>
+                <div class="col-lg-offset-2 col-lg-8">
+                    <div class="pasos-pago" style="min-height: 180px;">
+                        <div class="col-sm-4 primer-paso-pago" style="min-height: 180px;">
+                            <div class="primer-paso-contenedor" style="width:100% !important; padding-right: 10px; height: 180px;">
+                                <div class="pasos-texto">
+                                    <span class="numero-pasos-pago">1</span>
+                                    <p>Para subir tu anuncio</p>
+                                    <a href="/Portal/MisAnuncios">Haz Click aquí</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-4 primer-paso-pago" style="min-height: 180px;">
+                            <div class="primer-paso-contenedor" style="height: 180px; width:100% !important;">
+                                <div class="pasos-texto">
+                                    <span class="numero-pasos-pago">2</span>
+                                    <p>Tu anuncio será aprobado por nosotros.</p>
+                                    <a href="#">¿Por qué se debe aprobar?</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-4 primer-paso-pago" style="min-height: 180px;">
+                            <div class="primer-paso-contenedor" style="width:100% !important; height: 180px;">
+                                <div class="pasos-texto">
+                                    <span class="numero-pasos-pago">3</span>
+                                    <p>Tu anuncio se subirá a</p>
+                                    <a href="http://www.mercampo.mx">Mercampo</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             }
         }
     </div>

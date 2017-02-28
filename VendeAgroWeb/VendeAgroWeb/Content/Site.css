@@ -33,6 +33,11 @@
     height: auto;
 }
 
+.iframe-foto-portal {
+    width: 100%;
+    height: 218px;
+}
+
 
 .hideMe {
     display: none;
@@ -2709,6 +2714,12 @@ hr {
 
 .radio {
     margin-top: 2px !important;
+}
+
+.titulo-pago {
+    text-align: center; 
+    font-family: generalFont;
+    font-weight: bolder;
 }
 
 @media (max-width: 1200px) {
