@@ -329,23 +329,9 @@ namespace VendeAgroWeb
 
         public static string getToken()
         {
-            StringBuilder sb = new StringBuilder();
-            Random random = new Random((int)DateTime.Now.Ticks & (0x0000FFFF + new Random().Next(0, 100)));
-
-            for (int i = 0; i < 20; i++)
-            {
-                int opcion = random.Next(0, 9);
-                if (opcion < 5)
-                {
-                    sb.Append(random.Next(0, 9));
-                }
-                else
-                {
-                    sb.Append(Convert.ToChar(Convert.ToInt32(Math.Floor(26 * random.NextDouble() + 65))));
-                }
-            }
-
-            return sb.ToString();
+            byte[] time = BitConverter.GetBytes(DateTime.UtcNow.ToBinary());
+            byte[] key = Guid.NewGuid().ToByteArray();
+            return Convert.ToBase64String(time.Concat(key).ToArray());
         }
 
         public static void setCookie(string name, string value, HttpResponseBase response)
@@ -539,7 +525,7 @@ namespace VendeAgroWeb
                         res = ResultadoCargoTarjeta.Rechazado;
                     }
 
-                    return Startup.SerializeResultadoCargo(new ResultadoCargo((res)));
+                    return Startup.SerializeResultadoCargo(new ResultadoCargo(res, mensaje: e.Message));
                 }
 
             }
@@ -710,11 +696,14 @@ namespace VendeAgroWeb
         [DataMember]
         public string Autorizacion { get; private set; }
 
-        public ResultadoCargo(ResultadoCargoTarjeta resultado, string pedido = "", string autorizacion = "")
+        public string Mensaje { get; private set; }
+
+        public ResultadoCargo(ResultadoCargoTarjeta resultado, string pedido = "", string autorizacion = "", string mensaje = "")
         {
             Resultado = resultado;
             NoPedido = pedido;
             Autorizacion = autorizacion;
+            Mensaje = mensaje;
         }
 
         public static string IncorrectoAsJson => Startup.SerializeResultadoCargo(new ResultadoCargo(ResultadoCargoTarjeta.ErrorInterno));

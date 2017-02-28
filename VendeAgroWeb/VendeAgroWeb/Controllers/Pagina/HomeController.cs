@@ -320,7 +320,7 @@ namespace VendeAgroWeb.Controllers.Home
                         }
                         _dbContext.SaveChanges();
                     }
-                }
+               } 
 
                 return _dbContext.Anuncios.Where(a => a.activo == true && a.estado == (int)EstadoAnuncio.Aprobado).OrderByDescending(a => a.clicks).ToList();
 

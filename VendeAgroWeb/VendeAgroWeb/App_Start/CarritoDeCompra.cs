@@ -58,12 +58,14 @@ namespace VendeAgroWeb
         private void UpdateIndexes()
         {
             var i = 0;
+            List<PaqueteCarrito> nuevaLista = new List<PaqueteCarrito>();
             foreach (var paquete in Paquetes)
             {
                 paquete.Index = i;
-                Paquetes[i] = paquete;
+                nuevaLista.Add(paquete);
                 i++;
             }
+            Paquetes = nuevaLista;
         }
 
     }
