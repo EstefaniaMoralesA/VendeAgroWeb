@@ -1,5 +1,4 @@
-﻿
-@model VendeAgroWeb.Models.Portal.CrearAnuncioViewModel
+﻿@model VendeAgroWeb.Models.Portal.CrearAnuncioViewModel
 
 @{
     ViewBag.Title = "Crear Anuncio";
@@ -9,7 +8,7 @@
 <div class="row mis-anuncios-global">
     <div class="col-sm-12 boton-atras-container">
         <div class="col-sm-3" style="display: inline-block">
-            <a class="btn btn-default menu-grad mis-anuncios-atras" href="/Portal/Index">
+            <a class="btn btn-default menu-grad mis-anuncios-atras" href="/Portal/MisAnuncios">
                 <p>atrás</p>
                 <span class="glyphicon glyphicon-chevron-left" />
             </a>
@@ -45,13 +44,72 @@
                         <label class="login-field-icon glyphicon glyphicon-tag" for="categoria-nombre"></label>
                     </div>
 
-                    <div class="form-group boton-guardar-container">
-                        <div class="col-sm-offset-3 col-sm-6" style="text-align: center;">
-                            <input type="submit" value="Guardar" class="btn btn-primary btn-lg btn-login" />
+                    <div class="panel panel-default">
+                        <div class="panel-heading"><strong>Fotos del anuncio</strong></div>
+                        <div class="panel-body">
+                            <table class="table table-responsive" style="margin-top: 30px;">
+                                <tbody>
+                                    <tr class="row-tabla-foto">
+                                        <td class="foto-tabla-titulo">Foto de display</td>
+                                        <td><img class="img-selected foto-vacia" src="~/img/foto-vacia.png" /></td>
+                                        <td>
+                                            <div class="form-group">
+                                                <div class="btn btn-success image-preview-input" id="img-inp-btn">
+                                                    <span class="glyphicon glyphicon-folder-open"></span>
+                                                    <span style="padding-left: 3px;" class="image-preview-input-title">Modificar</span>
+                                                    <input class="input-absoluto" type="file" id="imagen" onchange="loadFile(event)">
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    @for (int i = 1; i < Model._numFotos; i++)
+                                    {
+                                        <tr class="row-tabla-foto">
+                                            <td class="foto-tabla-titulo">Foto</td>
+                                            <td><img class="img-selected foto-vacia" src="~/img/foto-vacia.png" /></td>
+                                            <td>
+                                                <div class="form-group">
+                                                    <div class="btn btn-success image-preview-input" id="img-inp-btn">
+                                                        <span class="glyphicon glyphicon-folder-open"></span>
+                                                        <span style="padding-left: 3px;" class="image-preview-input-title">Modificar</span>
+                                                        <input class="input-absoluto" type="file" id="imagen" onchange="loadFile(event)">
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
                         </div>
                     </div>
+
+                    if (Model._video)
+                    {
+                        <div class="panel panel-default">
+                            <div class="panel-heading"><strong>Video del anuncio</strong></div>
+                            <div class="panel-body">
+                                <table class="table table-responsive" style="margin-top: 30px;">
+                                    <tbody>
+                                        <tr class="row-tabla-foto">
+                                            <td class="foto-tabla-titulo">Video del anuncio</td>
+                                            <td><img class="img-selected foto-vacia" src="~/img/foto-vacia.png" /></td>
+                                            <td>
+                                                <div class="form-group">
+                                                    <div class="btn btn-success image-preview-input" id="img-inp-btn">
+                                                        <span class="glyphicon glyphicon-folder-open"></span>
+                                                        <span style="padding-left: 3px;" class="image-preview-input-title">Modificar</span>
+                                                        <input class="input-absoluto" type="file" id="imagen" onchange="loadFile(event)">
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    }
                 }
+                </div>
             </div>
         </div>
     </div>
-</div>

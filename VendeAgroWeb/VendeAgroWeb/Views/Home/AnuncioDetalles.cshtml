@@ -16,28 +16,23 @@
     </div>
     <div class="col-sm-7" style="margin-top: 30px;">
         <div class="col-sm-4">
-            <div id="owl-demo" class="itemsScaleUp-false owl-carousel owl-theme">
+            <ul id="vertical">
                 @{
                     foreach (var foto in Model.Fotos)
                     {
-                        var clase = "";
-                        if (foto.Principal)
-                        {
-                            clase = "activo";
-                        }
-                        <div class="item @clase">
+                        <li>
                             <iframe frameborder="0" class="iframe-foto-owl" scrolling="no" src="@foto.Ruta" onload=resizeImgOwl(this)></iframe>
-                        </div>
+                        </li>
                     }
 
                     if (Model.TieneVideo)
                     {
-                        <div class="item video">
+                        <li>
                             <div class="video-link"><p>Video</p></div>
-                        </div>
+                        </li>
                     }
                 }
-            </div>
+            </ul>
         </div>
 
         <div class="col-sm-8">
@@ -77,85 +72,42 @@
         <p style="color:#04612d; margin-top: 20px;">@Model.Descripcion</p>
         <p class="contacto" style="margin-top:20px;">Contacto:</p>
         <p class="contacto" style="margin-top:20px; margin-bottom: 0px;">@Model.Owner.NombreUsuario</p>
-        <p class="contacto" style="margin-bottom: 0px;"><img class="icono-contacto" src="~/img/icono-telefono.png"/>@Model.Owner.TelefonoContacto</p>
+        <p class="contacto" style="margin-bottom: 0px;"><img class="icono-contacto" src="~/img/icono-telefono.png" />@Model.Owner.TelefonoContacto</p>
         <p class="contacto"><img class="icono-contacto" src="~/img/icono-correo.png" />@Model.Owner.EmailContacto</p>
     </div>
     <div class="col-sm-7">
-        <a class="btn" href= @( @Model.Consulta == ConsultarDetalles.Index ? "/Home/Index" : (@Model.Consulta == ConsultarDetalles.OfertasDelDia ? "/Home/OfertasDelDia" : "/Home/ResultadosBusqueda?query=" + Model.Query))>
+        <a class="btn" href=@( @Model.Consulta == ConsultarDetalles.Index ? "/Home/Index" : (@Model.Consulta == ConsultarDetalles.OfertasDelDia ? "/Home/OfertasDelDia" : "/Home/ResultadosBusqueda?query=" + Model.Query))>
             <p class="btn-regresar-detalles"><span class="glyphicon glyphicon-chevron-left"></span>Regresar</p>
         </a>
     </div>
 </div>
 
-@section Scripts {
-    @Scripts.Render("~/bundles/carousel/js")
-}
-
-<style>
-    .owl-wrapper {
-        width: 100% !important;
-    }
-
-    .owl-item {
-        width: 90% !important;
-        height: auto !important;
-        max-width: 180px !important;
-        margin-bottom: 15px;
-    }
-</style>
+@Scripts.Render("~/bundles/lightGallery/js")
+@Styles.Render("~/Content/lightGallery.css")
 
 <script type="text/javascript">
     $(document).ready(function () {
-        $("#owl-demo").owlCarousel({
-            itemsScaleUp: false,
-            items: 5,
-            navigation: true
-        });
-
-        //var content = $(".owl-wrapper").html();
-        //var d = document.createElement('div');
-        //$(d).addClass("contenedor-carousel").html(content);
-        //$(".owl-wrapper").html('').append(d);
-        //if ($(d).width() > $("#owl-demo").width())
-        //    $(".owl-wrapper").html(content);
-
-        //recalcularTamanos();
-
-        $(".item").click(function () {
-            var src = $(this).children('img').attr('src');
-            $(".activo").removeClass("activo");
-            $(this).addClass("activo");
-            if ($(this).hasClass("video")) {
-                $(".img-grande-container").hide()
-                $(".video-container").show();
-                return;
-            }
-            $(".img-grande-container").show();
-            $(".video-container").hide();
-            $(".imagen-grande").attr("src", src);
+        $('#vertical').lightSlider({
+            gallery: true,
+            item: 1,
+            vertical: true,
+            verticalHeight: 295,
+            vThumbWidth: 50,
+            thumbItem: 8,
+            thumbMargin: 4,
+            slideMargin: 0
         });
     });
-
-    $(window).ready(function () {
-        recalcularTamanos();
-    });
-
-    $(window).resize(function () {
-        recalcularTamanos();
-    });
-
-    function recalcularTamanos() {
-        var height = $(".item").height();
-        $(".owl-item").each(function () {
-            $(this).css("height", height + "px");
-        });
-
-        $(".video-container").css("height", $(".img-grande-container").first().innerHeight() + "px");
-    }
 
     function resizeImg(obj) {
         var doc = obj.contentWindow.document;
         doc.body.children[0].style.width = '100%';
-        doc.body.children[0].style.height = '218px';
+        doc.body.children[0].style.height = '325px';
+    }
+
+    function resizeImgOwl(obj) {
+        var doc = obj.contentWindow.document;
+        doc.body.children[0].style.width = '100%';
+        doc.body.children[0].style.height = '100%';
     }
 </script>

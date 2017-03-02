@@ -64,6 +64,13 @@ namespace VendeAgroWeb.Models.Portal
 
     public class CrearAnuncioViewModel
     {
+        public CrearAnuncioViewModel() { }
+
+        public int _numFotos { get; set; }
+
+        public bool _video { get; set; }
+
+
         [Required(ErrorMessage = "Campo requerido")]
         [Display(Name = "Titulo")]
         public string Titulo { get; set; }

@@ -174,7 +174,7 @@ namespace VendeAgroWeb.Controllers.Administrador
 
                     List<AnuncioViewModel> lista = new List<AnuncioViewModel>();
 
-                    var anuncios = _dbContext.Anuncios.Where(a => (a.activo == true && a.idUsuario == id));
+                    var anuncios = _dbContext.Anuncios.Where(a => (a.activo == true && a.idUsuario == id) || ((EstadoAnuncio)a.estado == EstadoAnuncio.Vacio && a.idUsuario == id));
 
                     foreach (var item in anuncios)
                     {
@@ -211,7 +211,7 @@ namespace VendeAgroWeb.Controllers.Administrador
 
                     List<AnuncioViewModel> lista = new List<AnuncioViewModel>();
 
-                    var anuncios = _dbContext.Anuncios.Where(a => a.activo == false && a.idUsuario == id);
+                    var anuncios = _dbContext.Anuncios.Where(a => a.activo == false && a.idUsuario == id && (EstadoAnuncio)a.estado == EstadoAnuncio.Vencido);
 
                     foreach (var item in anuncios)
                     {
@@ -463,9 +463,42 @@ namespace VendeAgroWeb.Controllers.Administrador
             return Startup.GetAplicacionUsuariosManager().RealizarCargoTarjeta(id.Value, tokenTarjeta, sessionId, Startup.GetCarritoDeCompra(Request.Cookies));
         }
 
-        public ActionResult CrearAnuncio()
+        public async Task<ActionResult> CrearAnuncio(int? id)
         {
-            return View();
+            CrearAnuncioViewModel model = new CrearAnuncioViewModel();
+            return await Task.Run(() =>
+            {
+                using (var _dbContext = new MercampoEntities())
+                {
+                    Startup.OpenDatabaseConnection(_dbContext);
+                    if (_dbContext.Database.Connection.State != ConnectionState.Open)
+                    {
+                        return View(model);
+                    }
+
+                    int numFotos = 3;
+                    bool video = false;
+
+                    var beneficios = _dbContext.Anuncio_Beneficio.Where(a => a.idAnuncio == id);
+
+                    foreach (var beneficio in beneficios) {
+                        if (beneficio.idBeneficio == 2)
+                        {
+                            numFotos += 5;
+                            continue;
+                        }
+                        if (beneficio.idBeneficio == 3)
+                        {
+                            video = true;
+                        }
+                    }
+
+                    _dbContext.Database.Connection.Close();
+                    model._numFotos = numFotos;
+                    model._video = video;
+                    return View(model);
+                }
+            });
         }
 
         protected override void Dispose(bool disposing)

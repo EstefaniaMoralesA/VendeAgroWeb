@@ -26,6 +26,9 @@ namespace VendeAgroWeb
             bundles.Add(new ScriptBundle("~/bundles/bootstrap.min").Include(
                         "~/Scripts/bootstrap.min.js"));
 
+            bundles.Add(new ScriptBundle("~/bundles/lightGallery/js").Include(
+                        "~/Scripts/lightGallery.js"));
+
             // Use the development version of Modernizr to develop with and learn from. Then, when you're
             // ready for production, use the build tool at http://modernizr.com to pick only the tests you need.
             bundles.Add(new ScriptBundle("~/bundles/modernizr").Include(
@@ -42,6 +45,10 @@ namespace VendeAgroWeb
 
             bundles.Add(new StyleBundle("~/Content/nouislider").Include(
                       "~/Content/nouislider.min.css"
+               ));
+
+            bundles.Add(new StyleBundle("~/Content/lightGallery.css").Include(
+                      "~/Content/lightGallery.css"
                ));
 
             bundles.Add(new StyleBundle("~/owl/css").Include(

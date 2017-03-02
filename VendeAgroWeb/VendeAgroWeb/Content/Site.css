@@ -25,7 +25,7 @@
 
 .iframe-foto-detalles {
     width: 100%;
-    height: 300px;
+    height: 325px;
 }
 
 .iframe-foto-owl {
@@ -1905,6 +1905,22 @@ div.social-wrap button {
     text-align: center;
     opacity: 0;
     text-transform: capitalize;
+}
+
+.wrapper-texto-vacio {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    color: white;
+    transform: translate(-50%, -50%);
+    font-size: 27px;
+    font-weight: bold;
+    text-align: center;
+    text-transform: capitalize;
+}
+
+.mis-anuncios-paquete-container :hover {
+    background-color: black;
 }
 
 .texto-nuevo-anuncio {
