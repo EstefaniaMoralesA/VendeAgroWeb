@@ -319,6 +319,7 @@
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\lightGallery.css" />
+    <Content Include="Content\lightslider.css" />
     <Content Include="Content\nouislider.min.css" />
     <Content Include="Content\owl.carousel.css" />
     <Content Include="Content\owl.theme.css" />
@@ -328,6 +329,7 @@
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
     <Content Include="img\amex.png" />
+    <Content Include="img\controls.png" />
     <Content Include="img\fbook.png" />
     <Content Include="img\foto-vacia.png" />
     <Content Include="img\icono-correo.png" />
@@ -385,6 +387,7 @@
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
     <Content Include="Scripts\lightGallery.js" />
+    <Content Include="Scripts\lightslider.js" />
     <Content Include="Scripts\modernizr-2.6.2.js" />
     <Content Include="Scripts\nouislider.min.js" />
     <Content Include="Scripts\owl.carousel.js" />
