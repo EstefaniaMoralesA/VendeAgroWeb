@@ -544,34 +544,16 @@ namespace VendeAgroWeb.Models.Administrador
 
     public class RenovarAnuncioViewModel
     {
-        private int _idAnuncio;
-        private string _tituloAnuncio;
+        public int IdAnuncio { get; set; }
+        public string TituloAnuncio { get; set; }
 
         [Required(ErrorMessage = "Campo requerido")]
         [Display(Name = "Meses")]
         [Range(0, int.MaxValue, ErrorMessage = "Introduzca un valor numérico")]
         public int Meses { get; set; }
 
-        public RenovarAnuncioViewModel(int id, string tituloAnuncio)
+        public RenovarAnuncioViewModel()
         {
-            _idAnuncio = id;
-            _tituloAnuncio = tituloAnuncio;
-        }
-
-        public string TituloAnuncio
-        {
-            get
-            {
-                return _tituloAnuncio;
-            }
-        }
-
-        public int IdAnuncio
-        {
-            get
-            {
-                return _idAnuncio;
-            }
         }
     }
 

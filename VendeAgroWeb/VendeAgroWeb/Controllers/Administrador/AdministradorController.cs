@@ -1722,7 +1722,9 @@ namespace VendeAgroWeb.Controllers.Administrador
 
         public async Task<ActionResult> RenovarAnuncio(int? id)
         {
-            RenovarAnuncioViewModel model = new RenovarAnuncioViewModel(id.Value, await ObtenerTituloAnuncio(id));
+            RenovarAnuncioViewModel model = new RenovarAnuncioViewModel();
+            model.TituloAnuncio = await ObtenerTituloAnuncio(id);
+            model.IdAnuncio = id.Value;
             return View(model);
         }
 
@@ -1759,11 +1761,11 @@ namespace VendeAgroWeb.Controllers.Administrador
                         }
                         else
                         {
-                            var fechaNueva = new DateTime();
-                            if (DateTime.Compare(anuncio.fecha_fin.Value, DateTime.Now) >= 0)
-                            {
-                                fechaNueva = anuncio.fecha_fin.Value.AddMonths(model.Meses);
-                            }
+                            anuncio.fecha_inicio = DateTime.Now;
+                            anuncio.fecha_fin = DateTime.Now.AddMonths(model.Meses);
+                            anuncio.estado = (int)EstadoAnuncio.Aprobado;
+                            anuncio.activo = true;
+                            _dbContext.SaveChanges();
                         }
 
                         _dbContext.Database.Connection.Close();
@@ -1773,7 +1775,7 @@ namespace VendeAgroWeb.Controllers.Administrador
             });
             if (estado)
             {
-                return RedirectToAction("Paquetes", "Administrador");
+                return RedirectToAction("Anuncios", "Administrador");
             }
             return View(model);
         }

@@ -53,7 +53,7 @@
                 var fotoPrincipal = Model.Fotos.Where(f => f.Principal == true).FirstOrDefault();
                 if (fotoPrincipal != null)
                 {
-                    <img src="@fotoPrincipal.Ruta" class="imagen-grande" />
+                    <iframe frameborder="0" class="iframe-foto-detalles" scrolling="no" src="@fotoPrincipal.Ruta" onload="resizeImg(this)"></iframe>
                 }
             }
         </div>
@@ -79,7 +79,7 @@
                         clase = "activo";
                     }
                     <div class="item @clase">
-                        <img src="@foto.Ruta" />
+                        <iframe frameborder="0" class="iframe-foto-detalles" scrolling="no" src="@foto.Ruta" onload="resizeImg(this)"></iframe>
                     </div>
                 }
 
@@ -193,15 +193,6 @@
             navigation: true
         });
 
-        //var content = $(".owl-wrapper").html();
-        //var d = document.createElement('div');
-        //$(d).addClass("contenedor-carousel").html(content);
-        //$(".owl-wrapper").html('').append(d);
-        //if ($(d).width() > $("#owl-demo").width())
-        //    $(".owl-wrapper").html(content);
-
-        //recalcularTamanos();
-
         $(".item").click(function () {
             var src = $(this).children('img').attr('src');
             $(".activo").removeClass("activo");
@@ -236,6 +227,12 @@
 
         })
     });
+
+    function resizeImg(obj) {
+        var doc = obj.contentWindow.document;
+        doc.body.children[0].style.width = '100%';
+        doc.body.children[0].style.height = '325px';
+    }
 
     $(window).ready(function () {
         recalcularTamanos();

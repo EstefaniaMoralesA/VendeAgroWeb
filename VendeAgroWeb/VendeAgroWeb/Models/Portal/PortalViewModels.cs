@@ -69,20 +69,6 @@ namespace VendeAgroWeb.Models.Portal
         public int _numFotos { get; set; }
 
         public bool _video { get; set; }
-
-
-        [Required(ErrorMessage = "Campo requerido")]
-        [Display(Name = "Titulo")]
-        public string Titulo { get; set; }
-
-        [Required(ErrorMessage = "Campo requerido")]
-        [StringLength(250, MinimumLength = 3, ErrorMessage = "La descripción no puede ser mayor de 250 caracteres.")]
-        [Display(Name = "Descripcion")]
-        public string Descripcion { get; set; }
-
-        [Required(ErrorMessage = "Campo requerido")]
-        [Display(Name = "Precio")]
-        public double Precio { get; set; }
     }
 
     public class MisAnunciosViewModel

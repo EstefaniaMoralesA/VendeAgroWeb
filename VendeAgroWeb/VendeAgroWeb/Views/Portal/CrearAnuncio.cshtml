@@ -20,96 +20,709 @@
     </div>
 
     <div class="col-sm-12">
-        <div class="col-lg-6 col-lg-offset-3">
+        <div class="col-lg-6 col-lg-offset-3 col-md-8 col-md-offset-2 col-sm-10 col-sm-offset-1">
             <div class="login-form">
                 @using (Html.BeginForm())
                 {
                     @Html.AntiForgeryToken()
 
                     @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-                    <div class="form-group">
-                        @Html.EditorFor(model => model.Titulo, new { htmlAttributes = new { @class = "form-control", placeholder = "Título del anuncio", id = "anuncio-titulo" } })
-                        @Html.ValidationMessageFor(model => model.Titulo, "", new { @class = "text-danger" })
+                    <div class="alert alert-danger error-nuevo-anuncio" style="display:none;">
+
+                    </div>
+
+                    <div class="form-group form-nuevo-anuncio form-titulo">
+                        <input class="form-control" placeholder="Título del anuncio" id="anuncio-titulo" />
                         <label class="login-field-icon glyphicon glyphicon-pencil" for="anuncio-titulo"></label>
                     </div>
-                    <div class="form-group">
-                        @Html.EditorFor(model => model.Precio, new { htmlAttributes = new { @class = "form-control", placeholder = "Precio del producto", id = "anuncio-precio" } })
-                        @Html.ValidationMessageFor(model => model.Precio, "", new { @class = "text-danger" })
+
+                    <div class="form-group form-nuevo-anuncio form-precio">
+                        <input class="form-control" type="text" onkeypress='return (event.charCode >= 48 && event.charCode <= 57) || event.charCode == 46' placeholder="Precio del producto" id="anuncio-precio" />
                         <label class="login-field-icon glyphicon glyphicon-usd" for="anuncio-precio"></label>
                     </div>
 
-                    <div class="form-group">
-                        @Html.TextAreaFor(model => model.Descripcion, new { htmlAttributes = new { @class = "form-control", placeholder = "Descripción del producto", id = "categoria-nombre" } })
-                        @Html.ValidationMessageFor(model => model.Descripcion, "", new { @class = "text-danger" })
+                    <div class="form-group form-nuevo-anuncio form-descripcion">
+                        <textarea cols="20" data-val="true" class="form-control" placeholder="Descripción del producto" id="anuncio-descripcion" name="Descripcion" rows="2"></textarea>
                         <label class="login-field-icon glyphicon glyphicon-tag" for="categoria-nombre"></label>
                     </div>
 
-                    <div class="panel panel-default">
-                        <div class="panel-heading"><strong>Fotos del anuncio</strong></div>
-                        <div class="panel-body">
-                            <table class="table table-responsive" style="margin-top: 30px;">
-                                <tbody>
-                                    <tr class="row-tabla-foto">
-                                        <td class="foto-tabla-titulo">Foto de display</td>
-                                        <td><img class="img-selected foto-vacia" src="~/img/foto-vacia.png" /></td>
-                                        <td>
-                                            <div class="form-group">
-                                                <div class="btn btn-success image-preview-input" id="img-inp-btn">
-                                                    <span class="glyphicon glyphicon-folder-open"></span>
-                                                    <span style="padding-left: 3px;" class="image-preview-input-title">Modificar</span>
-                                                    <input class="input-absoluto" type="file" id="imagen" onchange="loadFile(event)">
-                                                </div>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    @for (int i = 1; i < Model._numFotos; i++)
-                                    {
-                                        <tr class="row-tabla-foto">
-                                            <td class="foto-tabla-titulo">Foto</td>
-                                            <td><img class="img-selected foto-vacia" src="~/img/foto-vacia.png" /></td>
-                                            <td>
-                                                <div class="form-group">
-                                                    <div class="btn btn-success image-preview-input" id="img-inp-btn">
-                                                        <span class="glyphicon glyphicon-folder-open"></span>
-                                                        <span style="padding-left: 3px;" class="image-preview-input-title">Modificar</span>
-                                                        <input class="input-absoluto" type="file" id="imagen" onchange="loadFile(event)">
-                                                    </div>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                    }
-                                </tbody>
-                            </table>
+                    <div class="row" style="margin-top: 25px;">
+                        <div class="col-sm-12">
+                            <div class="col-sm-6">
+                                <div id="categoria-dropdown" class="dropdown">
+                                    <button id="btn-categoria" class="btn btn-default dropdown-toggle botones-grad busqueda-dropdown" style="font-size:14px;" type="button" data-toggle="dropdown">
+                                        Categoría
+                                        <span class="caret categoria-caret"></span>
+                                    </button>
+                                    <ul id="categorias" class="dropdown-menu"></ul>
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div id="subcategoria-dropdown" class="dropdown">
+                                    <button id="btn-subcategoria" class="btn btn-default dropdown-toggle botones-grad busqueda-dropdown" style="font-size:14px;" type="button" data-toggle="dropdown">
+                                        Subcategoría
+                                        <span class="caret subcategoria-caret"></span>
+                                    </button>
+                                    <ul id="subcategorias" class="dropdown-menu">
+                                        <li>Seleccione una categoría...</li>
+                                    </ul>
+                                </div>
+                            </div>
                         </div>
                     </div>
 
-                    if (Model._video)
-                    {
-                        <div class="panel panel-default">
-                            <div class="panel-heading"><strong>Video del anuncio</strong></div>
-                            <div class="panel-body">
-                                <table class="table table-responsive" style="margin-top: 30px;">
-                                    <tbody>
-                                        <tr class="row-tabla-foto">
-                                            <td class="foto-tabla-titulo">Video del anuncio</td>
-                                            <td><img class="img-selected foto-vacia" src="~/img/foto-vacia.png" /></td>
-                                            <td>
-                                                <div class="form-group">
-                                                    <div class="btn btn-success image-preview-input" id="img-inp-btn">
-                                                        <span class="glyphicon glyphicon-folder-open"></span>
-                                                        <span style="padding-left: 3px;" class="image-preview-input-title">Modificar</span>
-                                                        <input class="input-absoluto" type="file" id="imagen" onchange="loadFile(event)">
-                                                    </div>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="col-sm-6">
+                                <div id="paises-dropdown" class="dropdown">
+                                    <button id="btn-pais" class="btn btn-default dropdown-toggle botones-grad busqueda-dropdown" style="font-size:14px;" type="button" data-toggle="dropdown">
+                                        Pais
+                                        <span class="caret pais-caret"></span>
+                                    </button>
+                                    <ul id="paises" class="dropdown-menu"></ul>
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div id="estados-dropdown" class="dropdown">
+                                    <button id="btn-estados" class="btn btn-default dropdown-toggle botones-grad busqueda-dropdown" style="font-size:14px;" type="button" data-toggle="dropdown">
+                                        Estado
+                                        <span class="caret estado-caret"></span>
+                                    </button>
+                                    <ul id="estados" class="dropdown-menu">
+                                        <li>Seleccione un país...</li>
+                                    </ul>
+                                </div>
                             </div>
                         </div>
-                    }
+                    </div>
+
+                    <div class="row" style="margin-top: 25px;">
+                        <div class="col-sm-12">
+                            <div class="alert alert-danger error-extension" style="display:none;">
+
+                            </div>
+
+                            <div class="alert alert-danger error-extension-video" style="display:none;">
+
+                            </div>
+                            <div class="panel panel-default">
+                                <div class="panel-heading"><strong>Fotos del anuncio</strong></div>
+                                <div class="panel-body">
+                                    <table class="table table-responsive" style="margin-top: 30px;">
+                                        <tbody>
+                                            <tr class="row-tabla-foto">
+                                                <td class="foto-tabla-titulo">Foto de display</td>
+                                                <td><img class="img-selected-0 foto-vacia" src="~/img/foto-vacia.png" /></td>
+                                                <td>
+                                                    <div class="form-group">
+                                                        <div class="btn btn-success image-preview-input" id="img-inp-btn">
+                                                            <span class="glyphicon glyphicon-folder-open"></span>
+                                                            <span style="padding-left: 3px;" class="image-preview-input-title">Modificar</span>
+                                                            <input class="input-absoluto" type="file" id="imagen" onchange="loadFile(event, 0)">
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            @for (int i = 1; i < Model._numFotos; i++)
+                                            {
+                                                <tr class="row-tabla-foto">
+                                                    <td class="foto-tabla-titulo">Foto</td>
+                                                    <td><img class="img-selected-@i foto-vacia" src="~/img/foto-vacia.png" /></td>
+                                                    <td>
+                                                        <div class="form-group">
+                                                            <div class="btn btn-success image-preview-input" id="img-inp-btn">
+                                                                <span class="glyphicon glyphicon-folder-open"></span>
+                                                                <span style="padding-left: 3px;" class="image-preview-input-title">Modificar</span>
+                                                                <input class="input-absoluto" type="file" id="imagen" onchange="loadFile(event, @i)">
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            }
+                                            <tr style="border-top: 2px white solid;border-bottom: lightgrey 1px solid;" class="row-tabla-foto">
+                                                <td colspan="4">
+                                                    <div style="margin-top:5px !important;" class="progress">
+                                                        <div class="progress-bar" id="progress-principal" role="progressbar" aria-valuenow="0"
+                                                             aria-valuemin="0" aria-valuemax="100" style="width:0%">
+                                                            <span class="sr-only">0%</span>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+
+                            @if (Model._video)
+                            {
+                                <div class="panel panel-default">
+                                    <div class="panel-heading"><strong>Video del anuncio</strong></div>
+                                    <div class="panel-body">
+                                        <table class="table table-responsive" style="margin-top: 30px;">
+                                            <tbody>
+                                                <tr class="row-tabla-foto">
+                                                    <td class="foto-tabla-titulo">Video del anuncio</td>
+                                                    <td>
+                                                        <div class="form-group">
+                                                            <div class="btn btn-success image-preview-input" id="img-inp-btn">
+                                                                <span class="glyphicon glyphicon-folder-open"></span>
+                                                                <span style="padding-left: 3px;" class="image-preview-input-title">Modificar</span>
+                                                                <input class="input-absoluto" type="file" id="imagen" onchange="loadFile(event)">
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                    </div>
                 }
+                <div style="margin-left:0px; margin-right: 0px;">
+                    <div class="form-group boton-guardar-container">
+                        <div style="text-align: center; margin-top: 20px;">
+                            <input id="guardar-nuevo-anuncio" type="submit" value="Guardar" class="btn btn-primary btn-lg btn-login" />
+                            <a class="btn btn-default btn-lg btn-login btn-cancelar-nuevo-anuncio" href="/Portal/Index" style="margin-top:10px !important; margin-bottom:25px;">Cancelar</a>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
+</div>
+
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
+
+<script>
+    var idUsuario;
+    var titulo;
+    var precio;
+    var descripcion;
+    var meses;
+    var idCategoria = null;
+    var idSubcategoria = null;
+    var idPais = null;
+    var idEstado = null;
+    var fotoDisplay = null;
+    var fotos = [];
+    var video = null;
+    var fotosFinal = [];
+    var fotoDisplayFinal = '';
+    var videoFinal = '';
+    var validoCategoria = true;
+    var validoSubcategoria = true;
+    var validoPais = true;
+    var validoEstado = true;
+    var numeroSubidosEsperado = 1;
+    var numeroSubidos = 0;
+
+    $("#btn-categoria").click(function () {
+        getCategorias();
+    });
+
+    $("#btn-pais").click(function () {
+        getPaises();
+    });
+
+    function categoriasClick(elemento) {
+        if (validoCategoria) {
+            $("#btn-categoria:first-child").html(elemento.text() + '<span class="caret nuevo-anuncio-caret categoria-caret"></span>');
+        }
+        else {
+            $("#btn-categoria:first-child").html(elemento.text() + '<span class="caret has-error-caret categoria-caret"></span>');
+        }
+        idCategoria = elemento.data('id');
+        getSubcategorias(elemento.data('id'));
+    }
+
+    function subcategoriasClick(elemento) {
+        if (validoSubcategoria) {
+            $("#btn-subcategoria:first-child").html(elemento.text() + '<span class="caret nuevo-anuncio-caret subcategoria-caret"></span>');
+        }
+        else {
+            $("#btn-subcategoria:first-child").html(elemento.text() + '<span class="caret has-error-caret subcategoria-caret"></span>');
+        }
+        idSubcategoria = elemento.data('id');
+    }
+
+    function paisesClick(elemento) {
+        if (validoPais) {
+            $("#btn-pais:first-child").html(elemento.text() + '<span class="caret nuevo-anuncio-caret pais-caret"></span>');
+        }
+        else {
+            $("#btn-pais:first-child").html(elemento.text() + '<span class="caret has-error-caret pais-caret"></span>');
+        }
+        idPais = elemento.data('id');
+        getEstados(elemento.data('id'));
+    }
+
+    function estadosClick(elemento) {
+        if (validoEstado) {
+            $("#btn-estados:first-child").html(elemento.text() + '<span class="caret nuevo-anuncio-caret estado-caret"></span>');
+        }
+        else {
+            $("#btn-estados:first-child").html(elemento.text() + '<span class="caret has-error-caret estado-caret"></span>');
+        }
+        idEstado = elemento.data('id');
+    }
+
+    function getCategorias() {
+        $.ajax({
+            type: "POST",
+            data: {},
+            url: '/Administrador/CategoriasAnuncioPartial',
+            success: function (result) {
+                $("#categorias").html(result);
+            },
+            error: function (msg) {
+                console.log(msg);
+                alert("Error en categorias: " + msg);
+            }
+        });
+    }
+
+    function getSubcategorias(id) {
+        $.ajax({
+            type: "POST",
+            data: {},
+            url: '/Administrador/SubcategoriasAnuncioPartial?idCategoria=' + id,
+            success: function (result) {
+                $("#subcategorias").html(result);
+            },
+            error: function (msg) {
+                console.log(msg);
+                alert("Error en subcategorias: " + msg);
+            }
+        });
+    }
+
+    function getPaises() {
+        $.ajax({
+            type: "POST",
+            data: {},
+            url: '/Administrador/PaisesAnuncioPartial',
+            success: function (result) {
+                $("#paises").html(result);
+            },
+            error: function (msg) {
+                console.log(msg);
+                alert("Error en paises: " + msg);
+            }
+        });
+    }
+
+    function getEstados(id) {
+        $.ajax({
+            type: "POST",
+            data: {},
+            url: '/Administrador/EstadosAnuncioPartial?idPais=' + id,
+            success: function (result) {
+                $("#estados").html(result);
+            },
+            error: function (msg) {
+                console.log(msg);
+                alert("Error en estados: " + msg);
+            }
+        });
+    }
+
+    function subirVideo(videoInt) {
+        if (videoInt == null || videoInt == undefined) return;
+        if (window.FormData !== undefined) {
+            var data = new FormData();
+            data.append("video", videoInt);
+
+            $.ajax({
+                type: "POST",
+                url: '/Administrador/SubirVideo',
+                data: data,
+                xhr: function () {  // Custom XMLHttpRequest
+                    var myXhr = $.ajaxSettings.xhr();
+                    if (myXhr.upload) { // Check if upload property exists
+                        myXhr.upload.addEventListener('progress', progressVideo, false); // For handling the progress of the upload
+                    }
+                    return myXhr;
+                },
+                cache: false,
+                contentType: false,
+                processData: false,
+                success: function (result) {
+                    videoFinal = JSON.parse(result);
+                    numeroSubidos++;
+                },
+                error: function (xhr, status, p3, p4) {
+                    var err = "Error " + " " + status + " " + p3 + " " + p4;
+                    if (xhr.responseText && xhr.responseText[0] == "{")
+                        err = JSON.parse(xhr.responseText).Message;
+                    console.log(err);
+                }
+            });
+        } else {
+            alert("This browser doesn't support HTML5 file uploads!");
+        }
+    }
+
+    function subirFotos(fotosInt, tipo) {
+        if (fotosInt.length <= 0) return;
+        if (window.FormData !== undefined) {
+            var data = new FormData();
+            for (var x = 0; x < fotosInt.length; x++) {
+                data.append("file" + tipo + x, fotosInt[x]);
+            }
+
+            $.ajax({
+                type: "POST",
+                url: '/Administrador/SubirFotos',
+                data: data,
+                xhr: function () {  // Custom XMLHttpRequest
+                    var myXhr = $.ajaxSettings.xhr();
+                    if (myXhr.upload) { // Check if upload property exists
+                        if (tipo == 0)
+                            myXhr.upload.addEventListener('progress', progressPrincipal, false); // For handling the progress of the upload
+                        else
+                            myXhr.upload.addEventListener('progress', progressFotos, false); // For handling the progress of the upload
+                    }
+                    return myXhr;
+                },
+                cache: false,
+                contentType: false,
+                processData: false,
+                success: function (result) {
+                    if (tipo == 0) {
+                        fotoDisplayFinal = JSON.parse(result)[0];
+                    }
+                    else {
+                        fotosFinal = JSON.parse(result);
+                    }
+
+                    numeroSubidos++;
+                },
+                error: function (xhr, status, p3, p4) {
+                    var err = "Error " + " " + status + " " + p3 + " " + p4;
+                    if (xhr.responseText && xhr.responseText[0] == "{")
+                        err = JSON.parse(xhr.responseText).Message;
+                    console.log(err);
+                }
+            });
+        } else {
+            alert("This browser doesn't support HTML5 file uploads!");
+        }
+    }
+
+    function agregarAnuncio() {
+
+        var nuevoAnuncio = {
+            jidUsuario: idUsuario,
+            jtitulo: titulo,
+            jprecio: precio,
+            jdescripcion: descripcion,
+            jmeses: meses,
+            jestado: idEstado,
+            jidSubcategoria: idSubcategoria,
+            jfotoDisplay: fotoDisplayFinal,
+            jfotos: fotosFinal,
+            jvideo: videoFinal
+        };
+
+        $.ajax({
+            type: "POST",
+            data: { "json": JSON.stringify(nuevoAnuncio) },
+            url: "/Administrador/NuevoAnuncio",
+            success: function (result) {
+                window.location = "Anuncios";
+            },
+            error: function (msg) {
+                console.log(msg);
+            }
+        });
+    }
+
+    function loadFile(event, i) {
+        $(".error-extension").html('').hide('');
+        if (!validExtension(event.target.files[0])) {
+            $("#imagen").val("");
+            mostrarErrorExtension("La extensión de la imagen no es válida");
+            $(".img-selected-" + i).attr("src", "/img/foto-vacia.png");
+            return;
+        }
+
+        if (event.target.files.length == 0) {
+            $(".img-selected-" + i).attr("src", "/img/foto-vacia.png");
+            return;
+        }
+        var foto = URL.createObjectURL(event.target.files[0]);
+        fotoDisplay = event.target.files[0];
+        $(".img-selected-" + i).attr("src", foto);
+    };
+
+    function validExtension(imagen) {
+        var ext = imagen.name.split('.').pop().toLowerCase();
+        if ($.inArray(ext, ['gif', 'png', 'jpg', 'jpeg']) == -1) {
+            return false;
+        }
+        return true;
+    }
+
+    function validExtensionVideo(video) {
+        var ext = video.name.split('.').pop().toLowerCase();
+        if ($.inArray(ext, ['mp4', 'mpeg4']) == -1) {
+            return false;
+        }
+        return true;
+    }
+
+    function validaTamanoVideo(video) {
+        if (video.fileSize > 20800) {
+            return false;
+        }
+        return true;
+    }
+
+
+    function actualizaFotos(event) {
+        $(".error-extensiones").html('').hide('');
+        if (event.target.files.length <= 0) {
+            return;
+        }
+
+        fotos = [];
+        var uploadFiles = event.target.files;
+
+        for (var i = 0; i < uploadFiles.length; i++) {
+            if (!validExtension(uploadFiles[i])) {
+                mostrarErrorExtensiones("La extensión de una o más de las imágenes seleccionadas no es válida");
+                return;
+            }
+            fotos.push(uploadFiles[i]);
+        }
+        $("#num-fotos").html(fotos.length);
+    }
+
+    function actualizaVideo(event) {
+        $(".error-extension-video").html('').hide('');
+        var videoExt = event.target.files[0];
+        if (videoExt === undefined) {
+            return;
+        }
+        if (!validExtensionVideo(videoExt)) {
+            mostrarErrorExtensionVideo("La extensión del video no es válida");
+            return;
+        }
+        if (!validaTamanoVideo(videoExt)) {
+            mostrarErrorExtensionVideo("El tamaño del video debe ser menor a 20 MB");
+            return;
+        }
+        $("#video-no-seleccionado").hide();
+        $("#video-seleccionado").show();
+        video = videoExt;
+    }
+
+    function mostrarErrorExtension(cadenaErrorExtension) {
+        $(".error-extension").html(cadenaErrorExtension).show('');
+    }
+
+    function mostrarErrorExtensiones(cadenaErrorExtension) {
+        $(".error-extensiones").html(cadenaErrorExtension).show('');
+    }
+
+    function mostrarErrorExtensionVideo(cadenaErrorExtension) {
+        $(".error-extension-video").html(cadenaErrorExtension).show('');
+    }
+
+    $("#guardar-nuevo-anuncio").click(function () {
+        idUsuario = $("#id-usuario").val();
+        var cadenaError = "<strong>Error:</strong> </br>";
+        var valido = true;
+
+        titulo = $("#anuncio-titulo").val();
+
+        if (titulo == '') {
+            valido = false;
+            $('.form-titulo').addClass('has-error');
+            cadenaError += "    - Introduzca un t&iacutetulo v&aacute;lido. </br>";
+        }
+        else {
+            if (titulo.length > 30) {
+                valido = false;
+                $('.form-titulo').addClass('has-error');
+                cadenaError += "    - La longitud del t&iacute;tulo no puede ser mayor a 30 caracteres. </br>";
+            }
+            else {
+                $('.form-titulo').removeClass('has-error');
+            }
+        }
+
+        precio = $("#anuncio-precio").val();
+
+        if (precio == '') {
+            valido = false;
+            $('.form-precio').addClass('has-error');
+            cadenaError += "    - Introduzca un precio v&aacute;lido. </br>";
+        }
+        else {
+            $('.form-precio').removeClass('has-error');
+        }
+
+        descripcion = $("#anuncio-descripcion").val();
+
+        if (descripcion == '') {
+            valido = false;
+            $('.form-descripcion').addClass('has-error');
+            cadenaError += "    - Introduzca una descripci&oacute;n v&aacute;lida. </br>";
+        }
+        else {
+            if (descripcion.length > 500) {
+                valido = false;
+                $('.form-descripcion').addClass('has-error');
+                cadenaError += "    - La longitud de la descripci&oacute;n no puede ser mayor a 500 caracteres. </br>";
+            }
+            else {
+                $('.form-descripcion').removeClass('has-error');
+            }
+        }
+
+        meses = $("#anuncio-meses").val();
+
+        if (meses == '') {
+            valido = false;
+            $('.form-meses').addClass('has-error');
+            cadenaError += "    - Introduzca meses v&aacute;lidos. </br>";
+        }
+        else {
+            $('.form-meses').removeClass('has-error');
+        }
+
+        if (idCategoria == null) {
+            valido = false;
+            cadenaError += "    - Introduzca una categor&iacute;a v&aacute;lida. </br>";
+            $('#btn-categoria').addClass('has-error-dropdown');
+            $('.categoria-caret').removeClass('nuevo-anuncio-caret');
+            $('.categoria-caret').addClass('has-error-caret');
+            validoCategoria = false;
+        }
+        else {
+            $('#btn-categoria').removeClass('has-error-dropdown');
+            $('.categoria-caret').removeClass('has-error-caret');
+            $('.categoria-caret').addClass('nuevo-anuncio-caret');
+        }
+
+        if (idSubcategoria == null) {
+            valido = false;
+            cadenaError += "    - Introduzca una subcategor&iacute;a v&aacute;lida. </br>";
+            $('#btn-subcategoria').addClass('has-error-dropdown');
+            $('.subcategoria-caret').removeClass('nuevo-anuncio-caret');
+            $('.subcategoria-caret').addClass('has-error-caret');
+            validoSubcategoria = false;
+        }
+        else {
+            $('#btn-subcategoria').removeClass('has-error-dropdown');
+            $('.subcategoria-caret').removeClass('has-error-caret');
+            $('.subcategoria-caret').addClass('nuevo-anuncio-caret');
+        }
+
+        if (idPais == null) {
+            valido = false;
+            cadenaError += "    - Introduzca un pa&iacute;s v&aacute;lido. </br>";
+            $('#btn-pais').addClass('has-error-dropdown');
+            $('.pais-caret').removeClass('nuevo-anuncio-caret');
+            $('.pais-caret').addClass('has-error-caret');
+            validoPais = false;
+        }
+        else {
+            $('#btn-pais').removeClass('has-error-dropdown');
+            $('.pais-caret').removeClass('has-error-caret');
+            $('.pais-caret').addClass('nuevo-anuncio-caret');
+        }
+
+        if (idEstado == null) {
+            valido = false;
+            cadenaError += "    - Introduzca un estado v&aacute;lido. </br>";
+            $('#btn-estados').addClass('has-error-dropdown');
+            $('.estado-caret').removeClass('nuevo-anuncio-caret');
+            $('.estado-caret').addClass('has-error-caret');
+            validoEstado = false;
+        }
+        else {
+            $('#btn-estados').removeClass('has-error-dropdown');
+            $('.estado-caret').removeClass('has-error-caret');
+            $('.estado-caret').addClass('nuevo-anuncio-caret');
+        }
+
+        if (fotoDisplay == null) {
+            valido = false;
+            cadenaError += "    - Introduzca una foto de display v&aacute;lida. </br>";
+            $('.row-tabla-foto > td').addClass('td-error');
+        }
+        else {
+            $('.row-tabla-foto > td').removeClass('td-error');
+        }
+
+        if (!valido) {
+            $(".error-nuevo-anuncio").html(cadenaError).show('');
+            return;
+        }
+
+        if (video != null) {
+            numeroSubidosEsperado++;
+        }
+
+        if (fotos.length > 0) {
+            numeroSubidosEsperado++;
+        }
+
+        $(".error-nuevo-anuncio").hide('');
+        var arreglo = [];
+        arreglo.push(fotoDisplay);
+        subirFotos(arreglo, 0);
+        subirFotos(fotos, 1);
+        subirVideo(video);
+        checarDone();
+    });
+
+    function checarDone() {
+        if (numeroSubidosEsperado === numeroSubidos) {
+            agregarAnuncio();
+            return;
+        }
+        var t = setTimeout(checarDone, 500);
+    }
+
+    function progressPrincipal(e) {
+        var val = Math.floor(e.loaded / e.total * 100);
+        $('#progress-principal').css('width', val + '%').attr('aria-valuenow', val);
+        $('#progress-principal').html(val + "%");
+    }
+
+    function progressFotos(e) {
+        if (e.lengthComputable) {
+            //$('.progress-bar').attr('aria-valuenow',''+e.loaded.toString());
+            var val = Math.floor(e.loaded / e.total * 100);
+            $('#progress-fotos').css('width', val + '%').attr('aria-valuenow', val);
+            $('#progress-fotos').html(val + "%");
+            // console.log(e.loaded/e.total*100);
+        }
+    }
+
+    function progressVideo(e) {
+        if (e.lengthComputable) {
+            //$('.progress-bar').attr('aria-valuenow',''+e.loaded.toString());
+            var val = Math.floor(e.loaded / e.total * 100);
+            $('#progress-video').css('width', val + '%').attr('aria-valuenow', val);
+            $('#progress-video').html(val + "%");
+            // console.log(e.loaded/e.total*100);
+        }
+    }
+
+</script>
+<style>
+    .progress {
+        margin-bottom: 15px !important;
+        margin-top: 15px !important;
+    }
+</style>
