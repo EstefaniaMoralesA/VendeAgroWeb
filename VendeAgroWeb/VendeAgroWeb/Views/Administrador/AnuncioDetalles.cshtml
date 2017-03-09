@@ -5,8 +5,6 @@
     Layout = "Shared/_AdministradorLayout.cshtml";
 }
 
-@Styles.Render("~/owl/css")
-
 
 <div class="row">
     <div class="col-sm-6">
@@ -48,48 +46,46 @@
 
         </div>
 
-        <div class="img-grande-container">
-            @{
-                var fotoPrincipal = Model.Fotos.Where(f => f.Principal == true).FirstOrDefault();
-                if (fotoPrincipal != null)
-                {
-                    <iframe frameborder="0" class="iframe-foto-detalles" scrolling="no" src="@fotoPrincipal.Ruta" onload="resizeImg(this)"></iframe>
-                }
-            }
-        </div>
-
-        <div class="video-container">
-            @{
-                if (Model.TieneVideo)
-                {
-                    <video style="width: 100%; height: 100%;" controls>
-                        <source src="@Model.Video" type="video/mp4">
-                    </video>
-                }
-            }
-        </div>
-
-        <div id="owl-demo" class="itemsScaleUp-false owl-carousel owl-theme">
-            @{
-                foreach (var foto in Model.Fotos)
-                {
-                    var clase = "";
-                    if (foto.Principal)
+        <div class="col-sm-4">
+            <ul id="vertical" style="list-style: none;">
+                @{
+                    foreach (var foto in Model.Fotos)
                     {
-                        clase = "activo";
+                        <li>
+                            <iframe frameborder="0" class="iframe-foto-owl" scrolling="no" src="@foto.Ruta" onload=resizeImgOwl(this)></iframe>
+                        </li>
                     }
-                    <div class="item @clase">
-                        <iframe frameborder="0" class="iframe-foto-detalles" scrolling="no" src="@foto.Ruta" onload="resizeImg(this)"></iframe>
-                    </div>
-                }
 
-                if (Model.TieneVideo)
-                {
-                    <div class="item video">
-                        <div class="video-link"><p>Video</p></div>
-                    </div>
+                    if (Model.TieneVideo)
+                    {
+                        <li>
+                            <div class="video-link"><p>Video</p></div>
+                        </li>
+                    }
                 }
-            }
+            </ul>
+        </div>
+
+        <div class="col-sm-8">
+            <div class="img-grande-container">
+                @{
+                    var fotoPrincipal = Model.Fotos.Where(f => f.Principal == true).FirstOrDefault();
+                    if (fotoPrincipal != null)
+                    {
+                        <iframe frameborder="0" class="iframe-foto-detalles" scrolling="no" src="@fotoPrincipal.Ruta" onload="resizeImg(this)"></iframe>
+                    }
+                }
+            </div>
+            <div class="video-container" style="display:none;">
+                @{
+                    if (Model.TieneVideo)
+                    {
+                        <video style="width: 100%; height: 100%;" controls>
+                            <source src="@Model.Video" type="video/mp4">
+                        </video>
+                    }
+                }
+            </div>
         </div>
     </div>
 
@@ -158,9 +154,8 @@
     </div>
 </div>
 
-@section Scripts {
-    @Scripts.Render("~/bundles/carousel/js")
-}
+@Scripts.Render("~/bundles/lightslider/js")
+@Styles.Render("~/Content/lightslider.css")
 
 <style>
     .item.video {
@@ -186,28 +181,6 @@
 </style>
 
 <script type="text/javascript">
-    $(document).ready(function () {
-        $("#owl-demo").owlCarousel({
-            itemsScaleUp: false,
-            items: 5,
-            navigation: true
-        });
-
-        $(".item").click(function () {
-            var src = $(this).children('img').attr('src');
-            $(".activo").removeClass("activo");
-            $(this).addClass("activo");
-            if ($(this).hasClass("video")) {
-                $(".img-grande-container").hide()
-                $(".video-container").show();
-                return;
-            }
-            $(".img-grande-container").show();
-            $(".video-container").hide();
-            $(".imagen-grande").attr("src", src);
-        });
-    });
-
     $(".boton-aprobar").click(function () {
         var id = $(this).data("id");
         $.ajax({
@@ -228,29 +201,40 @@
         })
     });
 
+    $(document).ready(function () {
+        $('#vertical').lightSlider({
+            item: 2,
+            vertical: true,
+            verticalHeight: $(".iframe-foto-detalles").height(),
+            vThumbWidth: 50,
+            thumbItem: 8,
+            thumbMargin: 4,
+            slideMargin: 0
+        });
+    });
+
+    var imagenGrande;
+
     function resizeImg(obj) {
         var doc = obj.contentWindow.document;
         doc.body.children[0].style.width = '100%';
         doc.body.children[0].style.height = '325px';
+        $(doc.body.children[0]).addClass("imagen-grande");
+        imagenGrande = doc.body.children[0];
     }
 
-    $(window).ready(function () {
-        recalcularTamanos();
-    });
-
-    $(window).resize(function () {
-        recalcularTamanos();
-    });
-
-    function recalcularTamanos() {
-        var height = $(".item").height();
-        $(".owl-item").each(function () {
-            $(this).css("height", height + "px");
+    function resizeImgOwl(obj) {
+        var doc = obj.contentWindow.document;
+        doc.body.children[0].style.width = '100%';
+        doc.body.children[0].style.height = '100%';
+        $(doc.body.children[0]).css("cursor", "pointer");
+        var img = doc.body.children[0];
+        $(doc.body.children[0]).on("click", function (e) {
+            e.preventDefault();
+            $('.iframe-foto-detalles').attr("src", $(img).attr("src"));
+            console.log($(imagenGrande).attr("src"));
         });
-
-        $(".video-container").css("height", $(".img-grande-container").first().innerHeight() + "px");
     }
-
 
 </script>
 <style>

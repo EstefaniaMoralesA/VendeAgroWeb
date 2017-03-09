@@ -93,7 +93,9 @@
                                 <tbody>
                                     <tr class="row-tabla-foto">
                                         <td class="foto-tabla-titulo">Foto de display</td>
-                                        <td><img id="img-0" style="width: 225px; height: 177px;" src="@Model.FotoPrincipal.Ruta" /></td>
+                                        <td>
+                                            <iframe id="img-0" frameborder="0" width="225" height="177" class="iframe-foto" scrolling="no" onload="resizeImg(this)" src="@Model.FotoPrincipal.Ruta"></iframe>
+                                        </td>
                                         <td>
                                             <div class="form-group">
                                                 <div class="btn btn-success image-preview-input" id="img-inp-btn">
@@ -114,9 +116,11 @@
                                         foreach (var foto in Model.Fotos)
                                         {
                                             <tr style="text-align: center; vertical-align: middle;">
-                                                <td class="foto-tabla-titulo">Foto</td>
-                                                <td><img id="img-@cont" class="foto" style="width: 225px; height: 177px;" src="@foto.Ruta" /></td>
-                                                <td><input type="button" value="Eliminar" onclick="deleteRow(this, @foto.Id)" class="btn btn-danger btn-banner-desactivar btn-10-caracteres btn-categorias-desactivar" style="margin-bottom: 15px;"></td>
+                                                <td style="vertical-align: middle;" class="foto-tabla-titulo">Foto</td>
+                                                <td>
+                                                    <iframe id="img-@cont" frameborder="0" width="225" height="177" class="iframe-foto" scrolling="no" onload="resizeImg(this)" src="@foto.Ruta"></iframe>
+                                                </td>
+                                                <td style="vertical-align: middle;"><input type="button" value="Eliminar" onclick="deleteRow(this, @foto.Id)" class="btn btn-danger btn-banner-desactivar btn-10-caracteres btn-categorias-desactivar" style="margin-bottom: 15px;"></td>
                                             </tr>
                                             cont++;
                                         }
@@ -236,6 +240,12 @@
         fotoDisplay = $('#img-0').attr('src');
         fotoDisplayFinal = $('#img-0').attr('src');
     });
+
+    function resizeImg(obj) {
+        var doc = obj.contentWindow.document;
+        doc.body.children[0].style.width = '100%';
+        doc.body.children[0].style.height = '177px';
+    }
 
     $("#btn-categoria").click(function () {
         getCategorias();

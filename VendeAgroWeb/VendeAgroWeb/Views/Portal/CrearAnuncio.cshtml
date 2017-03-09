@@ -457,7 +457,10 @@
             return;
         }
         var foto = URL.createObjectURL(event.target.files[0]);
-        fotoDisplay = event.target.files[0];
+        if(i == 0)
+        {
+            fotoDisplay = event.target.files[0];
+        }
         $(".img-selected-" + i).attr("src", foto);
     };
 
@@ -482,26 +485,6 @@
             return false;
         }
         return true;
-    }
-
-
-    function actualizaFotos(event) {
-        $(".error-extensiones").html('').hide('');
-        if (event.target.files.length <= 0) {
-            return;
-        }
-
-        fotos = [];
-        var uploadFiles = event.target.files;
-
-        for (var i = 0; i < uploadFiles.length; i++) {
-            if (!validExtension(uploadFiles[i])) {
-                mostrarErrorExtensiones("La extensión de una o más de las imágenes seleccionadas no es válida");
-                return;
-            }
-            fotos.push(uploadFiles[i]);
-        }
-        $("#num-fotos").html(fotos.length);
     }
 
     function actualizaVideo(event) {
