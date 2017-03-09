@@ -82,16 +82,15 @@
     </div>
 </div>
 
-@Scripts.Render("~/bundles/lightGallery/js")
-@Styles.Render("~/Content/lightGallery.css")
+@Scripts.Render("~/bundles/lightslider/js")
+@Styles.Render("~/Content/lightslider.css")
 
 <script type="text/javascript">
     $(document).ready(function () {
         $('#vertical').lightSlider({
-            gallery: true,
-            item: 1,
+            item: 2,
             vertical: true,
-            verticalHeight: 295,
+            verticalHeight: $(".iframe-foto-detalles").height(),
             vThumbWidth: 50,
             thumbItem: 8,
             thumbMargin: 4,
@@ -99,15 +98,26 @@
         });
     });
 
+    var imagenGrande;
+
     function resizeImg(obj) {
         var doc = obj.contentWindow.document;
         doc.body.children[0].style.width = '100%';
         doc.body.children[0].style.height = '325px';
+        $(doc.body.children[0]).addClass("imagen-grande");
+        imagenGrande = doc.body.children[0];
     }
 
     function resizeImgOwl(obj) {
         var doc = obj.contentWindow.document;
         doc.body.children[0].style.width = '100%';
         doc.body.children[0].style.height = '100%';
+        $(doc.body.children[0]).css("cursor", "pointer");
+        var img = doc.body.children[0];
+        $(doc.body.children[0]).on("click", function (e) {
+            e.preventDefault();
+            $('.iframe-foto-detalles').attr("src", $(img).attr("src"));
+            console.log($(imagenGrande).attr("src"));
+        });
     }
 </script>
