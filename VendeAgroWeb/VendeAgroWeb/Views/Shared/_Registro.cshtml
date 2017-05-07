@@ -27,20 +27,19 @@
                         <div class="form-horizontal">
                             @Html.ValidationSummary(true, "", new { @class = "text-danger" })
                             <div class="form-group registro-campo">
-                                <input id="NombreRegistro" class="form-control campos-registro text-box single-line" data-val="true" data-val-required="*Campo requerido." id="Nombre" name="Nombre" placeholder="Nombre" type="text">
+                                <input id="NombreRegistro" class="form-control campos-registro text-box single-line" data-val="true" data-val-required="*Campo requerido." data-val-length="*El nombre solo puede contener caracteres alfabéticos" id="Nombre" data-val-length-max="El nombre debe ser menor a 51 caracteres." data-val-length-min="El nombre debe ser mayor a 2 caracteres." name="Nombre" placeholder="Nombre" type="text">
                                 @Html.ValidationMessageFor(m => Model.Nombre, "", new { @class = "text-danger" })
                             </div>
 
                             <div class="form-group registro-campo">
-                                <input id="ApellidosRegistro" class="form-control campos-registro text-box single-line" data-val="true" data-val-required="*Campo requerido." id="Apellidos" name="Apellidos" placeholder="Apellidos" type="text">
+                                <input id="ApellidosRegistro" class="form-control campos-registro text-box single-line" data-val="true" data-val-required="*Campo requerido." id="Apellidos" data-val-length="*Los apellidos solo pueden contener caracteres alfabéticos" data-val-length-max="Los apellidos deben ser menores a 81 caracteres." data-val-length-min="Los apellidos deben ser mayores a 2 caracteres." name="Apellidos" placeholder="Apellidos" type="text">
                                 @Html.ValidationMessageFor(m => Model.Apellidos, "", new { @class = "text-danger" })
                             </div>
 
                             <div class="form-group registro-campo">
-                                <input id="CelularRegistro" class="form-control campos-registro text-box single-line" data-val="true" data-val-length="El celular no es válido." data-val-length-max="14" data-val-length-min="10" data-val-required="*Campo requerido." id="Celular" name="Celular" placeholder="Teléfono" type="text">
+                                <input id="CelularRegistro" class="form-control campos-registro text-box single-line" data-val="true" data-val-length="*El teléfono solo puede contener dígitos." data-val-length-max="El teléfono debe tener menos de 15 dígitos" data-val-length-min="*El téléfono debe tener al menos 10 dígitos" data-val-required="*Campo requerido." id="Celular" name="Celular" placeholder="Teléfono" type="tel">
                                 @Html.ValidationMessageFor(m => Model.Celular, "", new { @class = "text-danger" })
                             </div>
-
                             <div class="form-group registro-campo">
                                 <input id="EmailRegistro" class="form-control campos-registro text-box single-line" data-val="true" data-val-email="El email introducido no es válido." data-val-required="*Campo requerido." id="Email" name="Email" placeholder="Email" type="email">
                                 @Html.ValidationMessageFor(m => Model.Email, "", new { @class = "text-danger" })
@@ -84,6 +83,7 @@
     </div>
 </div>
 
+@Scripts.Render("~/bundles/telephone/js")
 
 <script>
     function statusChangeCallback(response) {
@@ -152,6 +152,110 @@
         $('.registro-campos').html('');
     }
 
+    function validaNombre(nombre) {
+        if (nombre == "") {
+            $(".field-validation-valid[data-valmsg-for='Nombre']").html($("#NombreRegistro").data("val-required")).show();
+            return false;
+        }
+
+        if (nombre.length < 3) {
+            $(".field-validation-valid[data-valmsg-for='Nombre']").html($("#NombreRegistro").data("val-length-min")).show();
+            return false;
+        }
+
+        if (nombre.length > 50) {
+            $(".field-validation-valid[data-valmsg-for='Nombre']").html($("#NombreRegistro").data("val-length-max")).show();
+            return false;
+        }
+
+        var letters = /^[A-Za-zÑñáéíóúÁÉÍÓÚ][a-zÑñáéíóúÁÉÍÓÚA-Z ]+$/; 
+        if(!letters.test(nombre))
+        {
+            $(".field-validation-valid[data-valmsg-for='Nombre']").html($("#NombreRegistro").data("val-length")).show();
+            return false;
+
+        }
+        $(".field-validation-valid[data-valmsg-for='Nombre']").html('').hide();
+        return true;
+    }
+
+    function validaApellidos(apellidos) {
+        if (apellidos == "") {
+            $(".field-validation-valid[data-valmsg-for='Apellidos']").html($("#ApellidosRegistro").data("val-required")).show();
+            return false;
+        }
+
+        if (apellidos.length < 3) {
+            $(".field-validation-valid[data-valmsg-for='Apellidos']").html($("#ApellidosRegistro").data("val-length-min")).show();
+            return false;
+        }
+
+        if (apellidos.length > 80) {
+            $(".field-validation-valid[data-valmsg-for='Apellidos']").html($("#ApellidosRegistro").data("val-length-max")).show();
+            return false;
+        }
+
+        var letters = /^[A-Za-zÑñáéíóúÁÉÍÓÚ][a-zÑñáéíóúÁÉÍÓÚA-Z ]+$/;  
+        if(!letters.test(apellidos))
+        {
+            $(".field-validation-valid[data-valmsg-for='Apellidos']").html($("#ApellidosRegistro").data("val-length")).show();
+            return false;
+
+        }
+        $(".field-validation-valid[data-valmsg-for='Apellidos']").html('').hide();
+        return true;
+    }
+
+    function validaCelular(celular) {
+        if (celular == "") {
+            $(".field-validation-valid[data-valmsg-for='Celular']").html($("#CelularRegistro").data("val-required")).show();
+            return false;
+        }
+        if (!$.isNumeric(celular) && celular.charAt(0) != '+') {
+            $(".field-validation-valid[data-valmsg-for='Celular']").html($("#CelularRegistro").data("val-length")).show();
+            return false;
+        }
+        if (celular.length < 10) {
+            $(".field-validation-valid[data-valmsg-for='Celular']").html($("#CelularRegistro").data("val-length-min")).show();
+            return false;
+        }
+        if(celular.length > 14){
+            $(".field-validation-valid[data-valmsg-for='Celular']").html($("#CelularRegistro").data("val-length-max")).show();
+            return false;
+        }
+        $(".field-validation-valid[data-valmsg-for='Celular']").html('').hide();
+        return true;
+    }
+
+
+    function validaEmail(email) {
+        if (email.length <= 0)
+        {
+            $(".field-validation-valid[data-valmsg-for='Email']").html($("#EmailRegistro").data("val-required")).show();
+            console.log("entro1");
+            return false;
+        }
+        if (!validateEmail(email))
+        {
+            $(".field-validation-valid[data-valmsg-for='Email']").html($("#EmailRegistro").data("val-email")).show();
+            console.log("entro2");
+
+            return false;
+        }
+        console.log("entro3");
+        $(".field-validation-valid[data-valmsg-for='Email']").hide();
+        return true;
+    }
+
+    function validaPassword(password) {
+        if (password.length < 6) {
+            $(".field-validation-valid[data-valmsg-for='Password']").html($("#PasswordRegistro").data("val-length")).show();
+            return false;
+        }
+        $(".field-validation-valid[data-valmsg-for='Password']").html('').hide();
+        return true;
+    }
+
     function agregaClick() {
         $(".boton-Registro").click(function () {
             var redirect = getUrlParameter('redirect');
@@ -169,72 +273,23 @@
             var passwordConfirm = $("#ConfirmarPassRegistro").val();
             var celular = $("#CelularRegistro").val();
             var valido = true;
-            if (password.length < 6) {
-                $(".field-validation-valid[data-valmsg-for='Password']").html($("#PasswordRegistro").data("val-length")).show();
-                valido = false;
+            
+            if (!validaNombre(nombre) || !validaApellidos(apellidos) || !validaCelular(celular) || !validaEmail(email) || !validaPassword(password)) {
+                return;
             }
-            else {
-                $(".field-validation-valid[data-valmsg-for='Password']").html('').hide();
 
-            }
             if (password !== passwordConfirm) {
                 $(".field-validation-valid[data-valmsg-for='ConfirmPassword']").html($("#ConfirmarPassRegistro").data("val-equalto")).show();
                 valido = false;
             }
             else {
                 $(".field-validation-valid[data-valmsg-for='ConfirmPassword']").html('').hide();
-
-            }
-
-            if (celular == "") {
-                $(".field-validation-valid[data-valmsg-for='Celular']").html($("#CelularRegistro").data("val-required")).show();
-                valido = false;
-            }
-            else {
-                if(celular.length < 10 || celular.length > 14){
-                    $(".field-validation-valid[data-valmsg-for='Celular']").html($("#CelularRegistro").data("val-length")).show();
-                    return;
-                }
-                if(!$.isNumeric(celular) && celular.charAt(0) != '+'){
-                    $(".field-validation-valid[data-valmsg-for='Celular']").html($("#CelularRegistro").data("val-length")).show();
-                    return;
-                }
-                $(".field-validation-valid[data-valmsg-for='Celular']").html('').hide();
-
-            }
-
-            if (nombre == "") {
-                $(".field-validation-valid[data-valmsg-for='Nombre']").html($("#NombreRegistro").data("val-required")).show();
-                valido = false;
-            }
-            else {
-                $(".field-validation-valid[data-valmsg-for='Nombre']").html('').hide();
-
-            }
-
-            if (apellidos == "") {
-                $(".field-validation-valid[data-valmsg-for='Apellidos']").html($("#ApellidosRegistro").data("val-required")).show();
-                valido = false;
-            }
-            else {
-                $(".field-validation-valid[data-valmsg-for='Apellidos']").html('').hide();
-
-            }
-            if (email.length <= 0) {
-                $(".field-validation-valid[data-valmsg-for='Email']").html($("#EmailRegistro").data("val-required")).show();
-                valido = false;
-            }
-            else if (!validateEmail(email)) {
-                $(".field-validation-valid[data-valmsg-for='Email']").html($("#EmailRegistro").data("val-email")).show();
-                valido = false;
-            }
-            else {
-                $(".field-validation-valid[data-valmsg-for='Email']").hide();
             }
 
             if (!valido) {
                 return;
             }
+
 
             $('#registro-llena').css('opacity', '0');
             $('.proceso-registro-contenido').show();

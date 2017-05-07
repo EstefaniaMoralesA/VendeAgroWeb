@@ -42,14 +42,14 @@
                                 <div class="row row-no-margen">
                                     <p>Nombre</p>
                                     <div class="form-group forma">
-                                        <input id="in-nombre" class="form-control text-box single-line" data-val="true" data-val-required="*Campo requerido." name="Nombre" type="text">
+                                        <input id="in-nombre" class="form-control text-box single-line" data-val="true" data-val-required="*Campo requerido." name="Nombre" value="@Model.Usuario.Nombre" type="text">
                                     </div>
                                     @Html.ValidationMessage("Nombre", new { @class = "text-danger" })
                                 </div>
                                 <div class="row row-no-margen">
                                     <p>Apellidos</p>
                                     <div class="form-group forma">
-                                        <input id="in-apellidos" class="form-control text-box single-line" data-val="true" data-val-required="*Campo requerido." name="Apellidos" type="text">
+                                        <input id="in-apellidos" class="form-control text-box single-line" data-val="true" data-val-required="*Campo requerido." name="Apellidos" value="@Model.Usuario.Apellidos" type="text">
                                     </div>
                                     @Html.ValidationMessage("Apellidos", new { @class = "text-danger" })
                                 </div>
@@ -75,7 +75,7 @@
                                 <div class="row row-no-margen">
                                     <p>Número</p>
                                     <div class="form-group forma">
-                                        <input id="in-telefono" class="form-control text-box single-line" data-val="true" data-val-required="*Campo requerido." data-val-length="El teléfono no es válido." data-val-length-max="14" data-val-length-min="10" name="Telefono" type="text">
+                                        <input id="in-telefono" class="form-control text-box single-line" data-val="true" data-val-required="*Campo requerido." data-val-length="El teléfono no es válido." data-val-length-max="14" data-val-length-min="10" name="Telefono" value="@Model.Usuario.Telefono" type="text">
                                     </div>
                                     @Html.ValidationMessage("Telefono", new { @class = "text-danger" })
                                 </div>
@@ -101,7 +101,7 @@
                                 <div class="row row-no-margen">
                                     <p>Email</p>
                                     <div class="form-group forma">
-                                        <input id="in-email" class="form-control text-box single-line" data-val="true" data-val-required="*Campo requerido." data-val-email="El email introducido no es válido." name="Email" type="email">
+                                        <input id="in-email" class="form-control text-box single-line" value="@Model.Usuario.Email" data-val="true" data-val-required="*Campo requerido." data-val-email="El email introducido no es válido." name="Email" type="email">
                                     </div>
                                     @Html.ValidationMessage("Email", new { @class = "text-danger" })
                                 </div>
