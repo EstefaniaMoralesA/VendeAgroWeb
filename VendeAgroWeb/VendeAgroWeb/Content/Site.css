@@ -486,8 +486,6 @@ a {
     -moz-transform: translate(-50%, 0);
 }
 
-@import url(http://fonts.googleapis.com/css?family=Merriweather+Sans);
-
 div.social-wrap button {
     padding-right: 26px;
     height: 35px;

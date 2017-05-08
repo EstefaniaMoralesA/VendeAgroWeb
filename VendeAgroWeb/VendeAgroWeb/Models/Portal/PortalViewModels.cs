@@ -103,17 +103,19 @@ namespace VendeAgroWeb.Models.Portal
 
         public int? TiempoRestante { get; set; }
         public string ImagenPrincipal { get; set; }
-        public AnuncioPaqueteViewModel Paquete { get; set; }
+        public PaqueteViewModel Paquete { get; set; }
 
         public ICollection<BeneficioViewModel> Beneficios { get; set; }
 
-        public AnuncioViewModel(int id, EstadoAnuncio estado)
+        public AnuncioViewModel(int id, EstadoAnuncio estado, PaqueteViewModel paquete, ICollection<BeneficioViewModel> beneficios)
         {
             Id = id;
             Estado = estado;
+            Paquete = paquete;
+            Beneficios = beneficios;
         }
 
-        public AnuncioViewModel(int id, string titulo, int estado, int? tiempoRestante, string imagenPrincipal, AnuncioPaqueteViewModel paquete, ICollection<BeneficioViewModel> beneficios)
+        public AnuncioViewModel(int id, string titulo, int estado, int? tiempoRestante, string imagenPrincipal, PaqueteViewModel paquete, ICollection<BeneficioViewModel> beneficios)
         {
             Id = id;
             Titulo = titulo;

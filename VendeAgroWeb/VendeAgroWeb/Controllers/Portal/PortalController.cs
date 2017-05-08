@@ -174,10 +174,10 @@ namespace VendeAgroWeb.Controllers.Administrador
 
                             var paquete = _dbContext.Paquetes.Where(p => p.id == anuncio.idPaquete).FirstOrDefault();
 
-                            AnuncioPaqueteViewModel paqueteViewModel = null;
+                            PaqueteViewModel paqueteViewModel = null;
                             if (paquete != null)
                             {
-                                paqueteViewModel = new AnuncioPaqueteViewModel(paquete.nombre, paquete.activo);
+                                paqueteViewModel = new PaqueteViewModel(paquete.id, paquete.nombre, paquete.meses);
                             }
 
                             var beneficios = _dbContext.Anuncio_Beneficio.Where(b => b.idAnuncio == anuncio.id);
@@ -241,26 +241,14 @@ namespace VendeAgroWeb.Controllers.Administrador
                     List<AnuncioViewModel> lista = new List<AnuncioViewModel>();
 
                     var anuncios = _dbContext.Anuncios.Where(a => (a.activo == true && a.idUsuario == id) || ((EstadoAnuncio)a.estado == EstadoAnuncio.Vacio && a.idUsuario == id));
-                    var tiempoRestante;
                     foreach (var item in anuncios)
                     {
-                        if ((EstadoAnuncio)item.estado == EstadoAnuncio.Vacio)
-                        {
-                            tiempoRestante = (item.fecha_fin.Value - DateTime.Now).Days;
-                            lista.Add(new AnuncioViewModel(item.id, (EstadoAnuncio)item.estado));
-                            continue;
-                        }
-                        tiempoRestante = (item.fecha_fin.Value - DateTime.Now).Days;
-                        var duracion = (item.fecha_fin.Value - item.fecha_inicio.Value).Days;
-                        var porcentajeDuracion = (int)((tiempoRestante * 100.0) / duracion);
-                        if (porcentajeDuracion < 0) porcentajeDuracion = 0;
-                        var imagenPrincipal = item.Fotos_Anuncio.Where(foto => foto.principal == true).FirstOrDefault()?.ruta ?? string.Empty;
                         var paquete = _dbContext.Paquetes.Where(p => p.id == item.idPaquete).FirstOrDefault();
 
-                        AnuncioPaqueteViewModel paqueteViewModel = null;
+                        PaqueteViewModel paqueteViewModel = null;
                         if (paquete != null)
                         {
-                            paqueteViewModel = new AnuncioPaqueteViewModel(paquete.nombre, paquete.activo);
+                            paqueteViewModel = new PaqueteViewModel(paquete.id, paquete.nombre, paquete.meses);
                         }
 
                         var beneficios = _dbContext.Anuncio_Beneficio.Where(b => b.idAnuncio == item.id);
@@ -270,6 +258,17 @@ namespace VendeAgroWeb.Controllers.Administrador
                         {
                             listaBeneficios.Add(new BeneficioViewModel(beneficio.idBeneficio, beneficio.Beneficio.descripcion, beneficio.Beneficio.precio));
                         }
+
+                        if ((EstadoAnuncio)item.estado == EstadoAnuncio.Vacio)
+                        {
+                            lista.Add(new AnuncioViewModel(item.id, (EstadoAnuncio)item.estado, paqueteViewModel, listaBeneficios));
+                            continue;
+                        }
+                        int tiempoRestante = (item.fecha_fin.Value - DateTime.Now).Days;
+                        var duracion = (item.fecha_fin.Value - item.fecha_inicio.Value).Days;
+                        var porcentajeDuracion = (int)((tiempoRestante * 100.0) / duracion);
+                        if (porcentajeDuracion < 0) porcentajeDuracion = 0;
+                        var imagenPrincipal = item.Fotos_Anuncio.Where(foto => foto.principal == true).FirstOrDefault()?.ruta ?? string.Empty;
 
                         lista.Add(new AnuncioViewModel(item.id, item.titulo, item.estado, porcentajeDuracion, imagenPrincipal, paqueteViewModel, listaBeneficios));
                     }
@@ -302,10 +301,10 @@ namespace VendeAgroWeb.Controllers.Administrador
                         var imagenPrincipal = item.Fotos_Anuncio.Where(foto => foto.principal == true).FirstOrDefault()?.ruta ?? string.Empty;
                         var paquete = _dbContext.Paquetes.Where(p => p.id == item.idPaquete).FirstOrDefault();
 
-                        AnuncioPaqueteViewModel paqueteViewModel = null;
+                        PaqueteViewModel paqueteViewModel = null;
                         if (paquete != null)
                         {
-                            paqueteViewModel = new AnuncioPaqueteViewModel(paquete.nombre, paquete.activo);
+                            paqueteViewModel = new PaqueteViewModel(paquete.id, paquete.nombre, paquete.meses);
                         }
 
                         var beneficios = _dbContext.Anuncio_Beneficio.Where(b => b.idAnuncio == item.id);
