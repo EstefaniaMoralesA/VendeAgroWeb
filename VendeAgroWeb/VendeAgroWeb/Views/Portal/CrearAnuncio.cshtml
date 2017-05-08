@@ -31,6 +31,9 @@
 
                     </div>
 
+                    <span id="usuario-id-contenedor" data-value="@Model.IdUsuario" style="display:none;"></span>
+                    <span id="anuncio-id-contenedor" data-value="@Model.IdAnuncio" style="display:none;"></span>
+
                     <div class="form-group form-nuevo-anuncio form-titulo">
                         <input class="form-control" placeholder="Título del anuncio" id="anuncio-titulo" />
                         <label class="login-field-icon glyphicon glyphicon-pencil" for="anuncio-titulo"></label>
@@ -201,6 +204,7 @@
 
 <script>
     var idUsuario;
+    var idAnuncio = 0;
     var titulo;
     var precio;
     var descripcion;
@@ -416,26 +420,27 @@
     }
 
     function agregarAnuncio() {
-
+        idUsuario = $("#usuario-id-contenedor").data("value");
+        idAnuncio = $("#anuncio-id-contenedor").data("value");
         var nuevoAnuncio = {
             jidUsuario: idUsuario,
             jtitulo: titulo,
             jprecio: precio,
             jdescripcion: descripcion,
-            jmeses: meses,
             jestado: idEstado,
             jidSubcategoria: idSubcategoria,
             jfotoDisplay: fotoDisplayFinal,
             jfotos: fotosFinal,
-            jvideo: videoFinal
+            jvideo: videoFinal,
+            idAnuncio : idAnuncio
         };
 
         $.ajax({
             type: "POST",
             data: { "json": JSON.stringify(nuevoAnuncio) },
-            url: "/Administrador/NuevoAnuncio",
+            url: "/Portal/CrearAnuncio",
             success: function (result) {
-                window.location = "Anuncios";
+                window.location = "MisAnuncios";
             },
             error: function (msg) {
                 console.log(msg);
@@ -460,6 +465,10 @@
         if(i == 0)
         {
             fotoDisplay = event.target.files[0];
+        }
+        else
+        {
+            fotos.push(event.target.files[0]);
         }
         $(".img-selected-" + i).attr("src", foto);
     };
@@ -519,7 +528,6 @@
     }
 
     $("#guardar-nuevo-anuncio").click(function () {
-        idUsuario = $("#id-usuario").val();
         var cadenaError = "<strong>Error:</strong> </br>";
         var valido = true;
 
@@ -570,16 +578,16 @@
             }
         }
 
-        meses = $("#anuncio-meses").val();
+        //meses = $("#anuncio-meses").val();
 
-        if (meses == '') {
-            valido = false;
-            $('.form-meses').addClass('has-error');
-            cadenaError += "    - Introduzca meses v&aacute;lidos. </br>";
-        }
-        else {
-            $('.form-meses').removeClass('has-error');
-        }
+        //if (meses == '') {
+        //    valido = false;
+        //    $('.form-meses').addClass('has-error');
+        //    cadenaError += "    - Introduzca meses v&aacute;lidos. </br>";
+        //}
+        //else {
+        //    $('.form-meses').removeClass('has-error');
+        //}
 
         if (idCategoria == null) {
             valido = false;

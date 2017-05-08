@@ -10,6 +10,7 @@ using System.Web.Mvc;
 using VendeAgroWeb.Models;
 using VendeAgroWeb.Models.Portal;
 using Openpay;
+using Newtonsoft.Json.Linq;
 
 namespace VendeAgroWeb.Controllers.Administrador
 {
@@ -474,7 +475,85 @@ namespace VendeAgroWeb.Controllers.Administrador
 
         public async Task<ActionResult> CrearAnuncio(int? id)
         {
+            var usuario = Startup.GetAplicacionUsuariosManager().getUsuarioPortalActual(Request);
+            if(usuario == null)
+            {
+                return RedirectToAction("Index", "Home");
+            }
+            if(!id.HasValue)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest,"Url invalido, debe de contener id del anuncio.");
+            }
             CrearAnuncioViewModel model = new CrearAnuncioViewModel();
+            int result = 0;
+            int idAnuncio = id.Value;
+            await Task.Run(() =>
+            {
+                using (var _dbContext = new MercampoEntities())
+                {
+                    Startup.OpenDatabaseConnection(_dbContext);
+                    if (_dbContext.Database.Connection.State != ConnectionState.Open)
+                    {
+                        result = 0;
+                    }
+                    else
+                    {
+                        Anuncio anuncio = _dbContext.Anuncios.Where(a => a.id == id).FirstOrDefault();
+                        if (anuncio == null || anuncio.idUsuario != usuario.Id)
+                        {
+                            result = 1;
+                        }
+                        else
+                        {
+                            int numFotos = 3;
+                            bool video = false;
+
+                            var beneficios = _dbContext.Anuncio_Beneficio.Where(a => a.idAnuncio == id);
+
+                            foreach (var beneficio in beneficios)
+                            {
+                                if (beneficio.idBeneficio == 2)
+                                {
+                                    numFotos += 5;
+                                    continue;
+                                }
+                                if (beneficio.idBeneficio == 3)
+                                {
+                                    video = true;
+                                }
+                            }
+
+                            _dbContext.Database.Connection.Close();
+                            model._numFotos = numFotos;
+                            model._video = video;
+                            model.IdUsuario = usuario.Id;
+                            model.IdAnuncio = idAnuncio;
+                        }
+                    }
+                }
+            });
+            if (result != 0)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest, "Usuario no tiene un anuncio con el id recibido");
+            }
+            return View(model);
+        }
+
+        [HttpPost]
+        public async Task<bool> CrearAnuncio(string json)
+        {
+            var anuncio = JObject.Parse(json);
+            var titulo = (string)anuncio["jtitulo"];
+            var descripcion = (string)anuncio["jdescripcion"];
+            var precio = (double)anuncio["jprecio"];
+            var idUsuario = (int)anuncio["jidUsuario"];
+            var idSubcategoria = (int)anuncio["jidSubcategoria"];
+            var idEstado = (int)anuncio["jestado"];
+            var fotoDisplay = (string)anuncio["jfotoDisplay"];
+            var fotos = (JArray)anuncio["jfotos"];
+            var video = (string)anuncio["jvideo"];
+            var idAnuncio = (int)anuncio["idAnuncio"];
+
             return await Task.Run(() =>
             {
                 using (var _dbContext = new MercampoEntities())
@@ -482,30 +561,61 @@ namespace VendeAgroWeb.Controllers.Administrador
                     Startup.OpenDatabaseConnection(_dbContext);
                     if (_dbContext.Database.Connection.State != ConnectionState.Open)
                     {
-                        return View(model);
+                        ModelState.AddModelError("", "Error en la base de datos, vuelva a intentarlo");
+                        return false;
                     }
-
-                    int numFotos = 3;
-                    bool video = false;
-
-                    var beneficios = _dbContext.Anuncio_Beneficio.Where(a => a.idAnuncio == id);
-
-                    foreach (var beneficio in beneficios) {
-                        if (beneficio.idBeneficio == 2)
+                    else
+                    {
+                        Anuncio anuncioACrear = _dbContext.Anuncios.Where(a => a.id == idAnuncio).FirstOrDefault();
+                        if(anuncioACrear == null || anuncioACrear.estado != (int)EstadoAnuncio.Vacio)
                         {
-                            numFotos += 5;
-                            continue;
+                            ModelState.AddModelError("", "Error el id del anuncio a crear es incorrecto, vuelva a intentarlo");
+                            return false;
                         }
-                        if (beneficio.idBeneficio == 3)
+                        
+                        anuncioACrear.titulo = titulo;
+                        anuncioACrear.descripcion = descripcion;
+                        anuncioACrear.precio = precio;
+                        anuncioACrear.activo = false;
+                        anuncioACrear.idUsuario = idUsuario;
+                        anuncioACrear.idSubcategoria = idSubcategoria;
+                        anuncioACrear.idEstado = idEstado;
+                        anuncioACrear.estado = (int)EstadoAnuncio.PendientePorAprobar;
+                        anuncioACrear.clicks = 0;
+                        anuncioACrear.vistas = 0;
+
+                        _dbContext.Fotos_Anuncio.Add(new Fotos_Anuncio
                         {
-                            video = true;
+                            ruta = fotoDisplay,
+                            idAnuncio = anuncioACrear.id,
+                            principal = true
+                        });
+
+                        foreach (var item in fotos)
+                        {
+                            var url = (string)item;
+                            _dbContext.Fotos_Anuncio.Add(new Fotos_Anuncio
+                            {
+                                ruta = url,
+                                idAnuncio = anuncioACrear.id,
+                                principal = false
+                            });
                         }
+
+                        if (!string.IsNullOrEmpty(video))
+                        {
+                            _dbContext.Videos_Anuncio.Add(new Videos_Anuncio
+                            {
+                                ruta = video,
+                                idAnuncio = anuncioACrear.id
+                            });
+                        }
+
+                        _dbContext.SaveChanges();
                     }
 
                     _dbContext.Database.Connection.Close();
-                    model._numFotos = numFotos;
-                    model._video = video;
-                    return View(model);
+                    return true;
                 }
             });
         }

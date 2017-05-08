@@ -66,6 +66,10 @@ namespace VendeAgroWeb.Models.Portal
     {
         public CrearAnuncioViewModel() { }
 
+        public int IdAnuncio { get; set; }
+
+        public int IdUsuario { get; set; }
+
         public int _numFotos { get; set; }
 
         public bool _video { get; set; }
