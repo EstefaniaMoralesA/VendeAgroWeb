@@ -103,6 +103,9 @@ namespace VendeAgroWeb.Models.Portal
 
         public int? TiempoRestante { get; set; }
         public string ImagenPrincipal { get; set; }
+        public AnuncioPaqueteViewModel Paquete { get; set; }
+
+        public ICollection<BeneficioViewModel> Beneficios { get; set; }
 
         public AnuncioViewModel(int id, EstadoAnuncio estado)
         {
@@ -110,13 +113,15 @@ namespace VendeAgroWeb.Models.Portal
             Estado = estado;
         }
 
-        public AnuncioViewModel(int id, string titulo, int estado, int? tiempoRestante, string imagenPrincipal)
+        public AnuncioViewModel(int id, string titulo, int estado, int? tiempoRestante, string imagenPrincipal, AnuncioPaqueteViewModel paquete, ICollection<BeneficioViewModel> beneficios)
         {
             Id = id;
             Titulo = titulo;
             Estado = (EstadoAnuncio)estado;
             TiempoRestante = tiempoRestante;
             ImagenPrincipal = imagenPrincipal;
+            Paquete = paquete;
+            Beneficios = beneficios;
         }
     }
 
@@ -225,22 +230,18 @@ namespace VendeAgroWeb.Models.Portal
         private ICollection<FotoViewModel> _fotos;
         private DateTime? _fechaInicio;
         private DateTime? _fechaFin;
-        private AnuncioPaqueteViewModel _paquete;
-        private ICollection<BeneficioViewModel> _beneficios;
         private string _video;
 
         public AnuncioDetallesViewModel(AnuncioViewModel anuncio, double? precio,
             string descripcion, List<FotoViewModel> fotos, DateTime? fechaInicio,
-            DateTime? fechaFin, AnuncioPaqueteViewModel paquete, ICollection<BeneficioViewModel> beneficios, string video)
+            DateTime? fechaFin, string video)
         {
             _anuncio = anuncio;
             _precio = precio;
             _descripcion = descripcion;
             _fotos = fotos;
-            _paquete = paquete;
             _fechaInicio = fechaInicio;
             _fechaFin = fechaFin;
-            _beneficios = beneficios;
             _video = video;
         }
 
@@ -297,22 +298,6 @@ namespace VendeAgroWeb.Models.Portal
             get
             {
                 return _fechaFin;
-            }
-        }
-
-        public AnuncioPaqueteViewModel Paquete
-        {
-            get
-            {
-                return _paquete;
-            }
-        }
-
-        public ICollection<BeneficioViewModel> Beneficios
-        {
-            get
-            {
-                return _beneficios;
             }
         }
 

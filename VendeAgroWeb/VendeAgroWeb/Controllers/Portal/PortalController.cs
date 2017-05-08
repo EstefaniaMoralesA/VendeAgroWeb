@@ -107,8 +107,6 @@ namespace VendeAgroWeb.Controllers.Administrador
                             var tiempoRestante = (anuncio.fecha_fin.Value - DateTime.Now).Days;
                             var imagenPrincipal = anuncio.Fotos_Anuncio.Where(foto => foto.principal == true).FirstOrDefault()?.ruta ?? string.Empty;
 
-                            var anuncioModel = new AnuncioViewModel(anuncio.id, anuncio.titulo, anuncio.estado, tiempoRestante, imagenPrincipal);
-
                             var paquete = _dbContext.Paquetes.Where(p => p.id == anuncio.idPaquete).FirstOrDefault();
 
                             AnuncioPaqueteViewModel paqueteViewModel = null;
@@ -118,12 +116,14 @@ namespace VendeAgroWeb.Controllers.Administrador
                             }
 
                             var beneficios = _dbContext.Anuncio_Beneficio.Where(b => b.idAnuncio == anuncio.id);
-                            List<BeneficioViewModel> listaBeneficios = new List<BeneficioViewModel>();
 
+                            List<BeneficioViewModel> listaBeneficios = new List<BeneficioViewModel>();
                             foreach (var beneficio in beneficios)
                             {
                                 listaBeneficios.Add(new BeneficioViewModel(beneficio.idBeneficio, beneficio.Beneficio.descripcion, beneficio.Beneficio.precio));
                             }
+
+                            var anuncioModel = new AnuncioViewModel(anuncio.id, anuncio.titulo, anuncio.estado, tiempoRestante, imagenPrincipal, paqueteViewModel, listaBeneficios);
 
                             var rutaVideo = _dbContext.Videos_Anuncio.Where(v => v.idAnuncio == id).FirstOrDefault()?.ruta;
 
@@ -133,7 +133,7 @@ namespace VendeAgroWeb.Controllers.Administrador
                             {
                                 fotos.Add(new FotoViewModel(foto.principal, foto.ruta));
                             }
-                            model = new AnuncioDetallesViewModel(anuncioModel, anuncio.precio, anuncio.descripcion, fotos, anuncio.fecha_inicio, anuncio.fecha_fin, paqueteViewModel, listaBeneficios, rutaVideo);
+                            model = new AnuncioDetallesViewModel(anuncioModel, anuncio.precio, anuncio.descripcion, fotos, anuncio.fecha_inicio, anuncio.fecha_fin, rutaVideo);
                         }
                     }
                 }
@@ -176,23 +176,41 @@ namespace VendeAgroWeb.Controllers.Administrador
                     List<AnuncioViewModel> lista = new List<AnuncioViewModel>();
 
                     var anuncios = _dbContext.Anuncios.Where(a => (a.activo == true && a.idUsuario == id) || ((EstadoAnuncio)a.estado == EstadoAnuncio.Vacio && a.idUsuario == id));
-
+                    var tiempoRestante;
                     foreach (var item in anuncios)
                     {
                         if ((EstadoAnuncio)item.estado == EstadoAnuncio.Vacio)
                         {
+                            tiempoRestante = (item.fecha_fin.Value - DateTime.Now).Days;
                             lista.Add(new AnuncioViewModel(item.id, (EstadoAnuncio)item.estado));
                             continue;
                         }
-                        var tiempoRestante = (item.fecha_fin.Value - DateTime.Now).Days;
+                        tiempoRestante = (item.fecha_fin.Value - DateTime.Now).Days;
                         var duracion = (item.fecha_fin.Value - item.fecha_inicio.Value).Days;
                         var porcentajeDuracion = (int)((tiempoRestante * 100.0) / duracion);
                         if (porcentajeDuracion < 0) porcentajeDuracion = 0;
                         var imagenPrincipal = item.Fotos_Anuncio.Where(foto => foto.principal == true).FirstOrDefault()?.ruta ?? string.Empty;
-                        lista.Add(new AnuncioViewModel(item.id, item.titulo, item.estado, porcentajeDuracion, imagenPrincipal));
+                        var paquete = _dbContext.Paquetes.Where(p => p.id == item.idPaquete).FirstOrDefault();
+
+                        AnuncioPaqueteViewModel paqueteViewModel = null;
+                        if (paquete != null)
+                        {
+                            paqueteViewModel = new AnuncioPaqueteViewModel(paquete.nombre, paquete.activo);
+                        }
+
+                        var beneficios = _dbContext.Anuncio_Beneficio.Where(b => b.idAnuncio == item.id);
+
+                        List<BeneficioViewModel> listaBeneficios = new List<BeneficioViewModel>();
+                        foreach (var beneficio in beneficios)
+                        {
+                            listaBeneficios.Add(new BeneficioViewModel(beneficio.idBeneficio, beneficio.Beneficio.descripcion, beneficio.Beneficio.precio));
+                        }
+
+                        lista.Add(new AnuncioViewModel(item.id, item.titulo, item.estado, porcentajeDuracion, imagenPrincipal, paqueteViewModel, listaBeneficios));
                     }
 
                     _dbContext.Database.Connection.Close();
+
                     return lista;
                 }
             });
@@ -217,7 +235,23 @@ namespace VendeAgroWeb.Controllers.Administrador
                     foreach (var item in anuncios)
                     {
                         var imagenPrincipal = item.Fotos_Anuncio.Where(foto => foto.principal == true).FirstOrDefault()?.ruta ?? string.Empty;
-                        lista.Add(new AnuncioViewModel(item.id, item.titulo, item.estado, null, imagenPrincipal));
+                        var paquete = _dbContext.Paquetes.Where(p => p.id == item.idPaquete).FirstOrDefault();
+
+                        AnuncioPaqueteViewModel paqueteViewModel = null;
+                        if (paquete != null)
+                        {
+                            paqueteViewModel = new AnuncioPaqueteViewModel(paquete.nombre, paquete.activo);
+                        }
+
+                        var beneficios = _dbContext.Anuncio_Beneficio.Where(b => b.idAnuncio == item.id);
+
+                        List<BeneficioViewModel> listaBeneficios = new List<BeneficioViewModel>();
+                        foreach (var beneficio in beneficios)
+                        {
+                            listaBeneficios.Add(new BeneficioViewModel(beneficio.idBeneficio, beneficio.Beneficio.descripcion, beneficio.Beneficio.precio));
+                        }
+
+                        lista.Add(new AnuncioViewModel(item.id, item.titulo, item.estado, null, imagenPrincipal, paqueteViewModel, listaBeneficios));
                     }
 
                     _dbContext.Database.Connection.Close();
