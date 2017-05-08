@@ -583,6 +583,8 @@ namespace VendeAgroWeb.Controllers.Administrador
                         anuncioACrear.estado = (int)EstadoAnuncio.PendientePorAprobar;
                         anuncioACrear.clicks = 0;
                         anuncioACrear.vistas = 0;
+                        anuncioACrear.fecha_inicio = DateTime.Now;
+                        anuncioACrear.fecha_fin = DateTime.Now.AddMonths(anuncioACrear.Paquete.meses);
 
                         _dbContext.Fotos_Anuncio.Add(new Fotos_Anuncio
                         {
