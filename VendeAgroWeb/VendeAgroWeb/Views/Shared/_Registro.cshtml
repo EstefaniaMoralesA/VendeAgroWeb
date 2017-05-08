@@ -46,7 +46,7 @@
                             </div>
 
                             <div class="form-group registro-campo">
-                                <input id="PasswordRegistro" class="form-control campos-registro text-box single-line password" data-val="true" data-val-length="La contraseña debe de ser mínimo de 6 caracteres." data-val-length-max="100" data-val-length-min="6" data-val-required="*Campo requerido." id="Password" name="Password" placeholder="Contraseña" type="password">
+                                <input id="PasswordRegistro" class="form-control campos-registro text-box single-line password" data-val="true" data-val-length-max="La contraseña debe tener un máximo de 40 caracteres." data-val-length="La contraseña debe de ser mínimo de 6 caracteres." data-val-required="*Campo requerido." id="Password" name="Password" placeholder="Contraseña" type="password">
                                 @Html.ValidationMessageFor(m => Model.Password, "", new { @class = "text-danger" })
                             </div>
 
@@ -83,7 +83,7 @@
     </div>
 </div>
 
-@Scripts.Render("~/bundles/telephone/js")
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.10/jquery.mask.js"></script>
 
 <script>
     function statusChangeCallback(response) {
@@ -252,9 +252,17 @@
             $(".field-validation-valid[data-valmsg-for='Password']").html($("#PasswordRegistro").data("val-length")).show();
             return false;
         }
+        if (password.length > 40) {
+            $(".field-validation-valid[data-valmsg-for='Password']").html($("#PasswordRegistro").data("val-length-max")).show();
+            return false;
+        }
         $(".field-validation-valid[data-valmsg-for='Password']").html('').hide();
         return true;
     }
+
+    jQuery(function($){
+        $("#CelularRegistro").mask("(999) 999-9999");
+    });
 
     function agregaClick() {
         $(".boton-Registro").click(function () {
@@ -271,10 +279,11 @@
             var email = $("input#EmailRegistro").val();
             var password = $("#PasswordRegistro").val();
             var passwordConfirm = $("#ConfirmarPassRegistro").val();
-            var celular = $("#CelularRegistro").val();
+            var celular = $("#CelularRegistro").unmask();
             var valido = true;
             
-            if (!validaNombre(nombre) || !validaApellidos(apellidos) || !validaCelular(celular) || !validaEmail(email) || !validaPassword(password)) {
+            if (!validaNombre(nombre) || !validaApellidos(apellidos) || !validaCelular(celular.val())|| !validaEmail(email) || !validaPassword(password)) {
+                $("#CelularRegistro").mask("(999) 999-9999");
                 return;
             }
 
@@ -296,7 +305,7 @@
 
             $.ajax({
                 type: 'POST',
-                data: { email: email, password: password, nombre: nombre, apellidos: apellidos, telefono: celular },
+                data: { email: email, password: password, nombre: nombre, apellidos: apellidos, telefono: celular.val() },
                 url: '/Portal/Registro',
                 success: function (response) {
                     if (response == "MailOcupado") {

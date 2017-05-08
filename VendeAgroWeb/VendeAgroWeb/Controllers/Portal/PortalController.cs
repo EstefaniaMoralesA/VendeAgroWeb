@@ -295,11 +295,20 @@ namespace VendeAgroWeb.Controllers.Administrador
             return View("_Registro", model);
         }
 
-        [HttpPost]
         public async Task<ActionResult> OlvidasteContrasenaPartial()
         {
             OlvidasteContrasenaViewModel model = new OlvidasteContrasenaViewModel();
             return PartialView("_OlvidasteContrasena", model);
+        }
+
+        [HttpPost]
+        [AllowAnonymous]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> OlvidasteContrasena(string email)
+        {
+            var resultado = await Startup.GetAplicacionUsuariosManager().OlvidoContrasenaPortalAsync(email);
+            ViewData["ResultadoMail"] = resultado.ToString();
+            return PartialView("_OlvidasteContrasena");
         }
 
         public ActionResult MisPagos()

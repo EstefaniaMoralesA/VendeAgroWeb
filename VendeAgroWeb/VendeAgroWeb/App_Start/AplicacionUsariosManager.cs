@@ -92,6 +92,39 @@ namespace VendeAgroWeb
 
         }
 
+        public async Task<OlvidoContrasenaStatus> OlvidoContrasenaPortalAsync(string email)
+        {
+            return await Task.Run(() =>
+            {
+                using (var _dbContext = new MercampoEntities())
+                {
+                    Startup.OpenDatabaseConnection(_dbContext);
+
+                    if (_dbContext.Database.Connection.State != System.Data.ConnectionState.Open)
+                    {
+                        return OlvidoContrasenaStatus.Error;
+                    }
+
+                    var usuario = _dbContext.Usuarios.Where(u => u.email == email).FirstOrDefault();
+                    if (usuario == null)
+                    {
+                        _dbContext.Database.Connection.Close();
+                        return OlvidoContrasenaStatus.MailInexistente;
+                    }
+
+                    string mailMensaje = "<p>Estimado {0},</p>" +
+                    "<p>Para cambiar tu contraseña da click <a href=\'" + Startup.getBaseUrl() + "/Portal/CambiarContrasena?token=" + "{1}\'>AQUÍ</a></p>";
+
+                    var result = Startup.GetServicioEmail().SendAsync(string.Format(mailMensaje, usuario.nombre, usuario.password), "Recuperar Contraseña Mercampo", usuario.email);
+
+                    _dbContext.Database.Connection.Close();
+                    return OlvidoContrasenaStatus.MailEnviado;
+
+                }
+            });
+
+        }
+
         public async Task<CambiarContrasenaStatus> VerificarTokenCambiarContrasenaAdminAsync(string token)
         {
             return await Task.Run(() =>

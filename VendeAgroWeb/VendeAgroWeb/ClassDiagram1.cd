@@ -1,2 +1,120 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<ClassDiagram /> 
+<ClassDiagram MajorVersion="1" MinorVersion="1" MembersFormat="NameAndType">
+  <Class Name="VendeAgroWeb.Models.Portal.RegistroViewModel">
+    <Position X="27.5" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAACAAAAAEAAAAgAAAAAAAAAACAAAAAAgAIAA=</HashCode>
+      <FileName>Models\Portal\PortalViewModels.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="VendeAgroWeb.Models.Portal.LoginViewModel" Collapsed="true">
+    <Position X="11.75" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAACAAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAA=</HashCode>
+      <FileName>Models\Portal\PortalViewModels.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="VendeAgroWeb.Models.Portal.OlvidasteContrasenaViewModel">
+    <Position X="29.75" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Models\Portal\PortalViewModels.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="VendeAgroWeb.Models.Portal.CrearAnuncioViewModel" Collapsed="true">
+    <Position X="0.5" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAIAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAA=</HashCode>
+      <FileName>Models\Portal\PortalViewModels.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="VendeAgroWeb.Models.Portal.MisAnunciosViewModel" Collapsed="true">
+    <Position X="20.75" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAIAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Models\Portal\PortalViewModels.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="VendeAgroWeb.Models.Portal.AnuncioViewModel">
+    <Position X="14" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAJg=</HashCode>
+      <FileName>Models\Portal\PortalViewModels.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="VendeAgroWeb.Models.Portal.FotoViewModel">
+    <Position X="5" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAQAAAAAAQAAAAAAAAAAAAAAAAAAAAQACAAAAAAAAA=</HashCode>
+      <FileName>Models\Portal\PortalViewModels.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="VendeAgroWeb.Models.Portal.AnuncioPaqueteViewModel">
+    <Position X="7.25" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAgAAAAQAIAAAA=</HashCode>
+      <FileName>Models\Portal\PortalViewModels.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="VendeAgroWeb.Models.Portal.BeneficioViewModel">
+    <Position X="23" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAAAAAAEAABAAAARAAAAAAAAAAAAAAAAAEA=</HashCode>
+      <FileName>Models\Portal\PortalViewModels.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="VendeAgroWeb.Models.Portal.AnuncioDetallesViewModel">
+    <Position X="2.75" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AICAAAAAgIAIBAAEAABAAAAxAgBAEBABAAAAAAAgAEg=</HashCode>
+      <FileName>Models\Portal\PortalViewModels.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="VendeAgroWeb.Models.Portal.MisPagosViewModel">
+    <Position X="18.5" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAgAAgAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Models\Portal\PortalViewModels.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="VendeAgroWeb.Models.Portal.PagoViewModel">
+    <Position X="25.25" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAADQAAAAAABAAEAAABAAIAAAAAAQAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Models\Portal\PortalViewModels.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="VendeAgroWeb.Models.Portal.NuevaTarjetaViewModel">
+    <Position X="16.25" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Models\Portal\PortalViewModels.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="VendeAgroWeb.Models.Portal.PaqueteViewModel">
+    <Position X="32" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAQAAAAAAAAAABAgAAAAAAAAAAAAAAAAAIAAAA=</HashCode>
+      <FileName>Models\Portal\PortalViewModels.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="VendeAgroWeb.Models.Portal.PerfilViewModel">
+    <Position X="9.5" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAA=</HashCode>
+      <FileName>Models\Portal\PortalViewModels.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="VendeAgroWeb.Controllers.Administrador.PortalController" Collapsed="true">
+    <Position X="34.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>YAEAABACAKCQAAgAAwAAIAEAAgQQAhBAAC2QAAAAAAA=</HashCode>
+      <FileName>Controllers\Portal\PortalController.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="System.Object" Collapsed="true">
+    <Position X="16.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier />
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>
