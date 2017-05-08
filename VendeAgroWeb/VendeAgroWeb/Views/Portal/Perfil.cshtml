@@ -269,10 +269,12 @@
                 }
                 if (telefono.length < 10 || telefono.length > 14) {
                     $(".field-validation-valid[data-valmsg-for='Telefono']").html($("#in-telefono").data("val-length")).show();
+                    $("#in-telefono").mask("(999) 999-9999");
                     return;
                 }
                 if(!$.isNumeric(telefono) && telefono.charAt(0) != '+'){
                     $(".field-validation-valid[data-valmsg-for='Telefono']").html($("#in-telefono").data("val-length")).show();
+                    $("#in-telefono").mask("(999) 999-9999");
                     return;
                 }
 

@@ -25,7 +25,7 @@
                             <input class="form-control" data-openpay-card="card_number" id="numero" placeholder="N&uacute;mero de la tarjeta" />
                         </div>
                         <div class="col-sm-6">
-                            <input class="form-control" data-openpay-card="cvv2" id="codigo" placeholder="C&oacute;digo de seguridad" />
+                            <input class="form-control" data-openpay-card="cvv2" id="codigo" type="number" placeholder="C&oacute;digo de seguridad" />
                         </div>
                     </div>
                     <div class="form-group">
@@ -33,11 +33,11 @@
                             <h4>Fecha de vencimiento</h4>
                         </div>
                         <div class="col-sm-2">
-                            <input class="form-control" data-openpay-card="expiration_month" id="mes" placeholder="Mes" />
+                            <input class="form-control" data-openpay-card="expiration_month" type="number" id="mes" placeholder="Mes" />
                         </div>
                         <div class="col-sm-2">
                             <input class="form-control" id="anio_vista" placeholder="A&ntilde;o" />
-                            <input class="form-control" style="display:none;" data-openpay-card="expiration_year" id="anio" placeholder="A&ntilde;o" />
+                            <input class="form-control" style="display:none;" data-openpay-card="expiration_year" type="number" id="anio" placeholder="A&ntilde;o" />
                         </div>
                     </div>
                 </form>
@@ -66,14 +66,13 @@
         OpenPay.setId('m4tpnfpemahz4tgdvadb');
         OpenPay.setApiKey('pk_69eeee9e23b947a5b5dd565cfd810e3a');
         OpenPay.setSandboxMode(true);
-        $("#numero").mask("9999-999-9999-9999");
+        $("#numero").mask("9999-9999-9999-9999");
     });
 
     $("#btn-nueva-tarjeta").click(function () {
         var nombre = $("#nombre-tarjeta").val();
         var num = $("#numero").unmask();
         var numero = num.val();
-        console.log(numero);
         var codigo = $("#codigo").val();
         var mes = $("#mes").val();
         var anio = $("#anio_vista").val();
@@ -92,10 +91,12 @@
         if (!(OpenPay.card.validateCardNumber(numero))) {
             valido = false;
             cadenaError += "    - Introduce un n&uacute;mero de tarjeta v&aacute;lido. </br>";
+            $("#numero").mask("9999-9999-9999-9999");
             $("#numero").addClass("has-error");
         }
         else {
             $("#numero").removeClass("has-error");
+            $("#numero").mask("9999-9999-9999-9999");
         }
 
         if (!(OpenPay.card.validateCVC(codigo, numero))) {
@@ -125,6 +126,7 @@
         $("#anio").val(anio.substr(2,2));
         $(".error-tarjeta").hide('');
         $(".procesando-pago").show('');
+        var num = $("#numero").unmask();
         var deviceSessionId = OpenPay.deviceData.setup("forma-pago", "deviceIdHiddenFieldName");
         console.log("device id: " + deviceSessionId);
         OpenPay.token.extractFormAndCreate('forma-pago', success_callback, error_callback);

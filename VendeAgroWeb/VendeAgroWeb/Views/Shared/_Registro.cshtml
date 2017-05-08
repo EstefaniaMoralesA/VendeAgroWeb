@@ -145,6 +145,7 @@
 
     $(document).ready(function(){
         $.when(mueveRegistro()).done(agregaClick);
+        $("#CelularRegistro").mask("(999) 999-9999");
     });
 
     function mueveRegistro(){
@@ -260,10 +261,6 @@
         return true;
     }
 
-    jQuery(function($){
-        $("#CelularRegistro").mask("(999) 999-9999");
-    });
-
     function agregaClick() {
         $(".boton-Registro").click(function () {
             var redirect = getUrlParameter('redirect');
@@ -288,7 +285,6 @@
             }
 
             if (password !== passwordConfirm) {
-                $(".field-validation-valid[data-valmsg-for='ConfirmPassword']").html($("#ConfirmarPassRegistro").data("val-equalto")).show();
                 valido = false;
             }
             else {
@@ -296,12 +292,14 @@
             }
 
             if (!valido) {
+                $("#CelularRegistro").mask("(999) 999-9999");
                 return;
             }
 
 
             $('#registro-llena').css('opacity', '0');
             $('.proceso-registro-contenido').show();
+            var celular = $("#CelularRegistro").unmask();
 
             $.ajax({
                 type: 'POST',
@@ -311,12 +309,14 @@
                     if (response == "MailOcupado") {
                         $('.proceso-registro-contenido').hide();
                         $('#registro-llena').css('opacity', '1');
+                        $("#CelularRegistro").mask("(999) 999-9999");
                         $(".error-row").html("El email introducido ya se encuentra registrado en el sistema.").show('');
                         return;
                     }
                     else if (response == "TelefonoOcupado") {
                         $('.proceso-registro-contenido').hide();
                         $('#registro-llena').css('opacity', '1');
+                        $("#CelularRegistro").mask("(999) 999-9999");
                         $(".error-row").html("El celular ya esta ocupado.").show();
                         return;
                     }
