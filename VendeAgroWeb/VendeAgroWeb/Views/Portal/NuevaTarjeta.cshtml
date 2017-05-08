@@ -55,6 +55,7 @@
 </div>
 
 @Scripts.Render("~/bundles/jquery")
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.10/jquery.mask.js"></script>
 
 <script type="text/javascript"
         src="https://openpay.s3.amazonaws.com/openpay.v1.min.js"></script>
@@ -65,11 +66,14 @@
         OpenPay.setId('m4tpnfpemahz4tgdvadb');
         OpenPay.setApiKey('pk_69eeee9e23b947a5b5dd565cfd810e3a');
         OpenPay.setSandboxMode(true);
+        $("#numero").mask("9999-999-9999-9999");
     });
 
     $("#btn-nueva-tarjeta").click(function () {
         var nombre = $("#nombre-tarjeta").val();
-        var numero = $("#numero").val();
+        var num = $("#numero").unmask();
+        var numero = num.val();
+        console.log(numero);
         var codigo = $("#codigo").val();
         var mes = $("#mes").val();
         var anio = $("#anio_vista").val();
