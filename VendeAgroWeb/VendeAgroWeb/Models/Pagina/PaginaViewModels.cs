@@ -35,6 +35,8 @@ namespace VendeAgroWeb.Models.Pagina
             }
         }
 
+        public int IdAnuncio { get; set; }
+
         public List<int> PaquetesSeleccionados
         {
             get

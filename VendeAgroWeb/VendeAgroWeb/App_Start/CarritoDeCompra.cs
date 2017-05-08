@@ -38,8 +38,8 @@ namespace VendeAgroWeb
             return total;
         }
 
-        public PaqueteCarrito insertarPaqueteEnCarrito(int id, string nombre, int meses, double precio) {
-            var paquete = new PaqueteCarrito(id, nombre, meses, precio, Paquetes.Count());
+        public PaqueteCarrito insertarPaqueteEnCarrito(int id, string nombre, int meses, double precio, int idAnuncio, string nombreAnuncio) {
+            var paquete = new PaqueteCarrito(id, nombre, meses, precio, Paquetes.Count(), idAnuncio, nombreAnuncio);
             Paquetes.Add(paquete);
             return paquete;
         }
@@ -90,6 +90,15 @@ namespace VendeAgroWeb
 
         [DataMember]
         public double TotalBeneficios { get;  private set;}
+        
+        [DataMember]
+        public int IdAnuncio { get; set; }
+
+        [DataMember]
+        public int Index { get; set; }
+
+        [DataMember]
+        public string NombreAnuncio { get; set; }
 
         public void agregaBeneficioAPaquete(BeneficioCarrito beneficio) {
             Beneficios.Add(beneficio);
@@ -111,16 +120,20 @@ namespace VendeAgroWeb
             return true;
         }
 
-        public int Index { get; set; }
+        public bool EsRenovacion()
+        {
+            return IdAnuncio != -1;
+        }
 
-        public PaqueteCarrito(int id, string nombre, int meses, double precio, int index) {
+        public PaqueteCarrito(int id, string nombre, int meses, double precio, int index, int idAnuncio, string nombreAnuncio) {
             Id = id;
             Nombre = nombre;
             Meses = meses;
             Precio = precio;
             Beneficios = new List<BeneficioCarrito>();
             Index = index;
-
+            IdAnuncio = idAnuncio;
+            NombreAnuncio = nombreAnuncio;
         }
     }
 

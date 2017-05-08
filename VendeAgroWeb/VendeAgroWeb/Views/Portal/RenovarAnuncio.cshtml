@@ -1,1 +1,96 @@
-﻿
+﻿@model VendeAgroWeb.Models.Pagina.AnunciateViewModel
+
+@{
+    ViewBag.Title = "Renovar Anuncio";
+}
+
+<div class="anunciate-container">
+    <section class="anunciate-paquetes-container" id="paquetes">
+        <div class="row">
+            <div class="anunciate-wrapper">
+                <div class="anunciate-cont @(Model.Paquetes.Count() <= 4 ? "anunciate-recados-margen-grande" : "anunciate-recados-margen-chico")">
+                    <div class="bases-container">
+                        @{
+                            int cont = 1;
+                        }
+
+                        @{
+                            foreach (var item in Model.Paquetes)
+                            {
+                                <div class="col-sm-4 col-md-3 contenedor-base">
+                                    <div class="base">
+                                        <div class="@(cont == 1 ? "degradado-verde" : (cont == 2 ? "degradado-rojo" : "degradado-naranja"))"></div>
+                                        <div class="anunciate-recados-texto @(cont == 1 ? "anunciate-recados-verde" : (cont == 2 ? "anunciate-recados-rojo" : "anunciate-recados-naranja"))">
+                                            @{
+                                                if (@item.Meses == 1)
+                                                {
+                                                    <h2>@item.Meses<span> MES</span></h2>
+
+                                                }
+                                                else
+                                                {
+                                                    <h2>@item.Meses<span> MESES</span></h2>
+                                                }
+                                            }
+                                            <ul class="texto-anunciate-base" style="margin-top: 15px; margin-bottom: 15px;">
+                                                <li>@item.Nombre</li>
+                                                <li>@item.Descripcion</li>
+                                            </ul>
+                                            @{
+                                                if (@item.Ahorro > 0)
+                                                {
+                                                    <h3>Ahorra <span>@item.Ahorro</span>%</h3>
+
+                                                }
+                                            }
+                                            <h3><span>$</span>@item.Precio</h3>
+                                            <a class="btn btn-default contratar-boton menu-grad" href="/Home/BeneficiosExtra?idPaquete=@item.Id&anuncio=@Model.IdAnuncio" style="margin-top:55px;" type="button">Renovar</a>
+                                        </div>
+                                    </div>
+                                </div>
+                                                    cont++;
+                                                    if (cont == 4)
+                                                    {
+                                                        cont = 1;
+                                                    }
+                                                }
+                        }
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+
+<script>
+
+    $(document).ready(function () {
+        $(window).resize(resize);
+        resize();
+    });
+
+    function resize() {
+        if ($(window).width() >= 992) {
+            $('.anunciate-cont').removeClass('anunciate-recados-margen-chico');
+            $('.anunciate-cont').addClass('anunciate-recados-margen-grande');
+            $('.contenedor-base').css("min-height", "380px");
+        }
+        else {
+            $('.anunciate-cont').removeClass('anunciate-recados-margen-grande');
+            $('.anunciate-cont').addClass('anunciate-recados-margen-chico');
+            $('.contenedor-base').css("min-height", "320px");
+        }
+
+        if ($(window).width() <= 767)
+        {
+            $('.body-content').attr('style', 'padding-left:0px !important; padding-right: 0px !important; padding-bottom: 60px !important; padding-top: 0px !important; margin-left: 0px !important; margin-right: 0px !important; width: 100% !important;');
+            $('#paquetes').attr('style', 'padding-top: 180px;');
+        }
+        else
+        {
+            $('.body-content').attr('style', 'padding-left:0px !important; padding-right: 0px !important; padding-bottom: 80px !important; padding-top: 0px !important; margin-left: 0px !important; margin-right: 0px !important; width: 100% !important;');
+            $('#paquetes').attr('style', 'padding-top: 0px;');
+        }
+    }
+</script>
