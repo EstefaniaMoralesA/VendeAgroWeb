@@ -535,7 +535,14 @@ namespace VendeAgroWeb.Controllers.Administrador
         [HttpPost]
         public string RealizarCargo(int? id, string tokenTarjeta, string sessionId)
         {
-            return Startup.GetAplicacionUsuariosManager().RealizarCargoTarjeta(id.Value, tokenTarjeta, sessionId, Startup.GetCarritoDeCompra(Request.Cookies));
+            CarritoDeCompra carrito = Startup.GetCarritoDeCompra(Request.Cookies);
+            string resultado;
+            if (Startup.GetAplicacionUsuariosManager().RealizarCargoTarjeta(id.Value, tokenTarjeta, sessionId, carrito, out resultado))
+            {
+                carrito.Clear();
+                Startup.UpdateCarritoCookie(carrito, Response);
+            }
+            return resultado;
         }
 
         public async Task<ActionResult> CrearAnuncio(int? id)

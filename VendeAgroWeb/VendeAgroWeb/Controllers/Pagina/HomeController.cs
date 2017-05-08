@@ -49,6 +49,7 @@ namespace VendeAgroWeb.Controllers.Home
             if (paquete == null)
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest, "Id de paquete invalido");
             string nombreAnuncio = string.Empty;
+            var carrito = Startup.GetCarritoDeCompra(Request.Cookies);
             if (anuncio.Value != -1)
             {
                 var usuario = Startup.GetAplicacionUsuariosManager().getUsuarioPortalActual(Request);
@@ -63,11 +64,16 @@ namespace VendeAgroWeb.Controllers.Home
                     return new HttpStatusCodeResult(HttpStatusCode.BadRequest, "El id del anuncio a renovar es invalido");
                 }
                 nombreAnuncio = value;
+                PaqueteCarrito outPaqueteCarrito;
+                if(carrito.ActualizaRenovacionSiExiste(anuncio.Value, nombreAnuncio, paquete, out outPaqueteCarrito))
+                {
+                    Startup.UpdateCarritoCookie(carrito, Response);
+                    return View(new BeneficiosExtraViewModel(outPaqueteCarrito, await ObtenerBeneficios(), carrito.TotalCarrito));
+                }
             }
 
-            var carrito = Startup.GetCarritoDeCompra(Request.Cookies);
             var paqueteCarrito = carrito.insertarPaqueteEnCarrito(paquete.Id, paquete.Nombre, paquete.Meses, paquete.Precio, anuncio.Value, nombreAnuncio);
-            UpdateCarritoCookie(carrito, Response);
+            Startup.UpdateCarritoCookie(carrito, Response);
             BeneficiosExtraViewModel model = new BeneficiosExtraViewModel(paqueteCarrito, await ObtenerBeneficios(), carrito.TotalCarrito);
             return View(model);
         }
@@ -114,7 +120,7 @@ namespace VendeAgroWeb.Controllers.Home
                 paquete.agregaBeneficioAPaquete(beneficio);
             }
             carrito.Paquetes[index] = paquete;
-            UpdateCarritoCookie(carrito, Response);
+            Startup.UpdateCarritoCookie(carrito, Response);
             return true;
         }
 
@@ -234,21 +240,15 @@ namespace VendeAgroWeb.Controllers.Home
         {
             var carrito = Startup.GetCarritoDeCompra(Request.Cookies);
             carrito.borraPaqueteDeCarrito(index);
-            UpdateCarritoCookie(carrito, Response);
+            Startup.UpdateCarritoCookie(carrito, Response);
             return RedirectToAction("CarritoDeCompra");
-        }
-
-        public void UpdateCarritoCookie(CarritoDeCompra carrito, HttpResponseBase response)
-        {
-            var serializedCarrito = Startup.SerializeCarrito(carrito);
-            AplicacionUsuariosManager.setCookie("carritoVendeAgro", serializedCarrito, Response);
         }
 
         public ActionResult EliminaBeneficioDePaquete(int index, int id)
         {
             var carrito = Startup.GetCarritoDeCompra(Request.Cookies);
             carrito.Paquetes.ElementAt(index).borraBeneficioDePaquete(id);
-            UpdateCarritoCookie(carrito, Response);
+            Startup.UpdateCarritoCookie(carrito, Response);
             return RedirectToAction("CarritoDeCompra");
         }
 

@@ -5,6 +5,8 @@ using System.Net;
 using System.Net.Http;
 using System.Runtime.Serialization;
 using System.Web.Http;
+using VendeAgroWeb.Models;
+using VendeAgroWeb.Models.Pagina;
 
 namespace VendeAgroWeb
 {
@@ -12,10 +14,7 @@ namespace VendeAgroWeb
     public class CarritoDeCompra
     {
         public CarritoDeCompra() {
-            if (Paquetes == null)
-            {
-                Paquetes = new List<PaqueteCarrito>();
-            }
+            Paquetes = new List<PaqueteCarrito>();
         }
 
         [DataMember]
@@ -36,6 +35,25 @@ namespace VendeAgroWeb
                 total += item.TotalBeneficios;
             }
             return total;
+        }
+
+        public bool ActualizaRenovacionSiExiste(int idAnuncio, string nombreAnuncio, PaginaPaqueteViewModel paqueteNuevo, out PaqueteCarrito outPaquete)
+        {
+            var paquete = Paquetes.Where(p => p.IdAnuncio == idAnuncio && string.Compare(nombreAnuncio, p.NombreAnuncio, StringComparison.CurrentCulture) == 0).FirstOrDefault();
+            if(paquete == null)
+            {
+                outPaquete = null;
+                return false;
+            }
+
+            paquete.Nombre = paqueteNuevo.Nombre;
+            paquete.Precio = paqueteNuevo.Precio;
+            paquete.Id = paqueteNuevo.Id;
+            paquete.Meses = paqueteNuevo.Meses;
+            paquete.Beneficios.Clear();
+            Paquetes[paquete.Index] = paquete;
+            outPaquete = paquete;
+            return true;
         }
 
         public PaqueteCarrito insertarPaqueteEnCarrito(int id, string nombre, int meses, double precio, int idAnuncio, string nombreAnuncio) {
@@ -68,22 +86,27 @@ namespace VendeAgroWeb
             Paquetes = nuevaLista;
         }
 
+        public void Clear()
+        {
+            Paquetes.Clear();
+        }
+
     }
 
     [DataContract]
     public class PaqueteCarrito
     {
         [DataMember]
-        public int Id { get; private set; }
+        public int Id { get; set; }
 
         [DataMember]
-        public string Nombre { get; private set; }
+        public string Nombre { get; set; }
 
         [DataMember]
-        public int Meses { get; private set; }
+        public int Meses { get; set; }
 
         [DataMember]
-        public double Precio { get; private set; }
+        public double Precio { get; set; }
 
         [DataMember]
         public List<BeneficioCarrito> Beneficios { get; private set; }
