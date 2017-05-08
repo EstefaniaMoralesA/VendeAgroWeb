@@ -11,6 +11,7 @@ using VendeAgroWeb.Models;
 using VendeAgroWeb.Models.Portal;
 using Openpay;
 using Newtonsoft.Json.Linq;
+using VendeAgroWeb.Models.Pagina;
 
 namespace VendeAgroWeb.Controllers.Administrador
 {
@@ -47,6 +48,70 @@ namespace VendeAgroWeb.Controllers.Administrador
         {
             var result = await Startup.GetAplicacionUsuariosManager().ConfirmarMailPortalAsync(token);
             return View();
+        }
+
+        public async Task<ActionResult> RenovarAnuncio(int? id)
+        {
+            var usuario = Startup.GetAplicacionUsuariosManager().getUsuarioPortalActual(Request);
+            if (usuario == null)
+            {
+                return RedirectToAction("Index", "Home");
+            }
+
+            if (!id.HasValue || !ValidateAnuncio(id.Value, usuario.Id))
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest, "Invalid url parameters, please include a valid id.");
+            }
+
+            AnunciateViewModel model = new AnunciateViewModel(await ObtenerPaquetes());
+            model.IdAnuncio = id.Value;
+            return View(model);
+        }
+
+        private bool ValidateAnuncio(int idAnuncio, int idUsuario)
+        {
+            using (MercampoEntities _dbContext = new MercampoEntities())
+            {
+                Startup.OpenDatabaseConnection(_dbContext);
+                if (_dbContext.Database.Connection.State != ConnectionState.Open)
+                {
+                    return false;
+                }
+
+                Anuncio anuncio = _dbContext.Anuncios.Where(a => a.id == idAnuncio).FirstOrDefault();
+
+                if (anuncio == null || anuncio.idUsuario != idUsuario)
+                {
+                    return false;
+                }
+            }
+            return true;
+        }
+
+        public async Task<ICollection<PaginaPaqueteViewModel>> ObtenerPaquetes()
+        {
+            return await Task.Run(() =>
+            {
+                using (var _dbContext = new MercampoEntities())
+                {
+                    Startup.OpenDatabaseConnection(_dbContext);
+                    if (_dbContext.Database.Connection.State != ConnectionState.Open)
+                    {
+                        return null;
+                    }
+
+                    List<PaginaPaqueteViewModel> lista = new List<PaginaPaqueteViewModel>();
+                    var paquetes = _dbContext.Paquetes.Where(p => p.activo == true);
+
+                    foreach (var item in paquetes)
+                    {
+                        lista.Add(new PaginaPaqueteViewModel(item.id, item.nombre, item.meses, item.precio, item.descripcion, item.porcentajeAhorro));
+                    }
+
+                    _dbContext.Database.Connection.Close();
+                    return lista;
+                }
+            });
         }
 
         [HttpPost]
@@ -504,7 +569,14 @@ namespace VendeAgroWeb.Controllers.Administrador
         [HttpPost]
         public string RealizarCargo(int? id, string tokenTarjeta, string sessionId)
         {
-            return Startup.GetAplicacionUsuariosManager().RealizarCargoTarjeta(id.Value, tokenTarjeta, sessionId, Startup.GetCarritoDeCompra(Request.Cookies));
+            CarritoDeCompra carrito = Startup.GetCarritoDeCompra(Request.Cookies);
+            string resultado;
+            if (Startup.GetAplicacionUsuariosManager().RealizarCargoTarjeta(id.Value, tokenTarjeta, sessionId, carrito, out resultado))
+            {
+                carrito.Clear();
+                Startup.UpdateCarritoCookie(carrito, Response);
+            }
+            return resultado;
         }
 
         public async Task<ActionResult> CrearAnuncio(int? id)

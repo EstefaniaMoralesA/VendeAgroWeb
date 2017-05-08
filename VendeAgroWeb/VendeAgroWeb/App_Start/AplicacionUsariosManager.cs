@@ -505,22 +505,28 @@ namespace VendeAgroWeb
         }
 
 
-        public string RealizarCargoTarjeta(int id, string tarjetaToken, string sessionId, CarritoDeCompra carrito)
+        public bool RealizarCargoTarjeta(int id, string tarjetaToken, string sessionId, CarritoDeCompra carrito, out string resultadoJson)
         {
             if (carrito == null || carrito.TotalCarrito <= 0.0)
             {
-                return ResultadoCargo.IncorrectoAsJson;
+                resultadoJson = ResultadoCargo.IncorrectoAsJson;
+                return false;
             }
 
             HttpRequest request = HttpContext.Current.Request;
             var usuario = getUsuarioPortalActual(request);
-            if (usuario.Id != id) return ResultadoCargo.IncorrectoAsJson;
+            if (usuario.Id != id)
+            {
+                resultadoJson = ResultadoCargo.IncorrectoAsJson;
+                return false;
+            }
             using (var _dbContext = new MercampoEntities())
             {
                 Startup.OpenDatabaseConnection(_dbContext);
                 if (_dbContext.Database.Connection.State != System.Data.ConnectionState.Open)
                 {
-                    return ResultadoCargo.IncorrectoAsJson;
+                    resultadoJson = ResultadoCargo.IncorrectoAsJson;
+                    return false;
                 }
 
                 try
@@ -528,7 +534,8 @@ namespace VendeAgroWeb
                     Customer cliente = Startup.OpenPayLib.CustomerService.Get(usuario.IdConekta);
                     if (cliente == null)
                     {
-                        return ResultadoCargo.IncorrectoAsJson;
+                        resultadoJson = ResultadoCargo.IncorrectoAsJson;
+                        return false;
                     }
 
                     ChargeRequest chargeRequest = new ChargeRequest();
@@ -544,11 +551,13 @@ namespace VendeAgroWeb
                     Charge cargo = Startup.OpenPayLib.ChargeService.Create(usuario.IdConekta, chargeRequest);
                     if (cargo.ErrorMessage != null)
                     {
-                        return ResultadoCargo.IncorrectoAsJson;
+                        resultadoJson = ResultadoCargo.IncorrectoAsJson;
+                        return false;
                     }
                     ResultadoCargo resultado = new ResultadoCargo(ResultadoCargoTarjeta.Aprobado, cargo.OrderId, cargo.Authorization);
                     AgregarAnuncios(carrito, usuario.Id);
-                    return Startup.SerializeResultadoCargo(resultado);
+                    resultadoJson = Startup.SerializeResultadoCargo(resultado);
+                    return true;
                 }
                 catch (OpenpayException e)
                 {
@@ -558,7 +567,8 @@ namespace VendeAgroWeb
                         res = ResultadoCargoTarjeta.Rechazado;
                     }
 
-                    return Startup.SerializeResultadoCargo(new ResultadoCargo(res, mensaje: e.Message));
+                    resultadoJson = Startup.SerializeResultadoCargo(new ResultadoCargo(res, mensaje: e.Message));
+                    return false;
                 }
 
             }
@@ -578,23 +588,47 @@ namespace VendeAgroWeb
                 var paquetes = carrito.Paquetes;
                 foreach (var paquete in paquetes)
                 {
-                    var nuevoAnuncio = _dbContext.Anuncios.Add(new Anuncio
+                    if(paquete.EsRenovacion())
                     {
-                        activo = false,
-                        idUsuario = idUsuario,
-                        estado = (int)EstadoAnuncio.Vacio,
-                        idPaquete = paquete.Id
-                    });
-                    _dbContext.SaveChanges();
-                    var beneficios = paquete.Beneficios;
-                    foreach (var beneficio in beneficios)
-                    {
-                        _dbContext.Anuncio_Beneficio.Add(new Anuncio_Beneficio
+                        Anuncio anuncio = _dbContext.Anuncios.Where(a => a.id == paquete.IdAnuncio).FirstOrDefault();
+                        anuncio.fecha_fin = anuncio.fecha_fin.Value.AddMonths(paquete.Meses);
+                        anuncio.idPaquete = paquete.Id;
+                        anuncio.estado = (int)EstadoAnuncio.Aprobado;
+                        anuncio.activo = true;
+                        _dbContext.Anuncio_Beneficio.RemoveRange(_dbContext.Anuncio_Beneficio.Where(b => b.idAnuncio == anuncio.id));
+                        _dbContext.SaveChanges();
+
+                        var beneficios = paquete.Beneficios;
+                        foreach (var beneficio in beneficios)
                         {
-                            idAnuncio = nuevoAnuncio.id,
-                            idBeneficio = beneficio.Id
+                            _dbContext.Anuncio_Beneficio.Add(new Anuncio_Beneficio
+                            {
+                                idAnuncio = anuncio.id,
+                                idBeneficio = beneficio.Id
+                            });
+                            _dbContext.SaveChanges();
+                        }
+                    }
+                    else
+                    {
+                        var nuevoAnuncio = _dbContext.Anuncios.Add(new Anuncio
+                        {
+                            activo = false,
+                            idUsuario = idUsuario,
+                            estado = (int)EstadoAnuncio.Vacio,
+                            idPaquete = paquete.Id
                         });
                         _dbContext.SaveChanges();
+                        var beneficios = paquete.Beneficios;
+                        foreach (var beneficio in beneficios)
+                        {
+                            _dbContext.Anuncio_Beneficio.Add(new Anuncio_Beneficio
+                            {
+                                idAnuncio = nuevoAnuncio.id,
+                                idBeneficio = beneficio.Id
+                            });
+                            _dbContext.SaveChanges();
+                        }
                     }
                 }
                 _dbContext.Database.Connection.Close();

@@ -84,6 +84,12 @@ namespace VendeAgroWeb
             return carrito;
         }
 
+        public static void UpdateCarritoCookie(CarritoDeCompra carrito, HttpResponseBase response)
+        {
+            var serializedCarrito = Startup.SerializeCarrito(carrito);
+            AplicacionUsuariosManager.setCookie("carritoVendeAgro", serializedCarrito, response);
+        }
+
         public static ServicioEmail GetServicioEmail() => _servicioEmail;
 
         public static void OpenDatabaseConnection(MercampoEntities _dbContext)

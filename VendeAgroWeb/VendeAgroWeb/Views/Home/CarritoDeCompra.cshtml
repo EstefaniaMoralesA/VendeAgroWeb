@@ -77,6 +77,12 @@
                                                 <h2>@item.Meses<span> @(item.Meses == 1 ? "MES" : "MESES")</span></h2>
                                                 <ul>
                                                     <li>@item.Nombre</li>
+                                                    @{
+                                                        if (item.EsRenovacion())
+                                                        {
+                                                            <li>Renovacion: @item.NombreAnuncio</li>
+                                                        }
+                                                    }
                                                 </ul>
                                             </td>
                                             <td class="borrar-carrito table-carrito-data">

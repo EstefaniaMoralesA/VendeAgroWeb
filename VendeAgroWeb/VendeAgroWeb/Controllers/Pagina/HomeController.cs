@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
@@ -35,17 +36,68 @@ namespace VendeAgroWeb.Controllers.Home
             return View();
         }
 
-        public async Task<ActionResult> BeneficiosExtra(int? id)
+        public ActionResult BeneficiosRedirect(int? id)
         {
-            if (!id.HasValue) return RedirectToAction("CarritoDeCompra");
-            var paquete = await ObtenerPaquete(id);
+            return RedirectToAction("BeneficiosExtra", new { idPaquete = id, anuncio = -1 });
+        }
+
+        public async Task<ActionResult> BeneficiosExtra(int? idPaquete, int? anuncio)
+        {
+            if (!idPaquete.HasValue) return RedirectToAction("CarritoDeCompra");
+            if (!anuncio.HasValue) return RedirectToAction("CarritoDeCompra");
+            var paquete = await ObtenerPaquete(idPaquete);
             if (paquete == null)
-                return View(new HttpNotFoundResult());
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest, "Id de paquete invalido");
+            string nombreAnuncio = string.Empty;
             var carrito = Startup.GetCarritoDeCompra(Request.Cookies);
-            var paqueteCarrito = carrito.insertarPaqueteEnCarrito(paquete.Id, paquete.Nombre, paquete.Meses, paquete.Precio);
-            UpdateCarritoCookie(carrito, Response);
+            if (anuncio.Value != -1)
+            {
+                var usuario = Startup.GetAplicacionUsuariosManager().getUsuarioPortalActual(Request);
+                if (usuario == null)
+                {
+                    return new HttpStatusCodeResult(HttpStatusCode.BadRequest, "Para renovar un anuncio debe de hacer login");
+                }
+
+                string value;
+                if (!ValidaAnuncio(anuncio.Value, usuario.Id, out value))
+                {
+                    return new HttpStatusCodeResult(HttpStatusCode.BadRequest, "El id del anuncio a renovar es invalido");
+                }
+                nombreAnuncio = value;
+                PaqueteCarrito outPaqueteCarrito;
+                if(carrito.ActualizaRenovacionSiExiste(anuncio.Value, nombreAnuncio, paquete, out outPaqueteCarrito))
+                {
+                    Startup.UpdateCarritoCookie(carrito, Response);
+                    return View(new BeneficiosExtraViewModel(outPaqueteCarrito, await ObtenerBeneficios(), carrito.TotalCarrito));
+                }
+            }
+
+            var paqueteCarrito = carrito.insertarPaqueteEnCarrito(paquete.Id, paquete.Nombre, paquete.Meses, paquete.Precio, anuncio.Value, nombreAnuncio);
+            Startup.UpdateCarritoCookie(carrito, Response);
             BeneficiosExtraViewModel model = new BeneficiosExtraViewModel(paqueteCarrito, await ObtenerBeneficios(), carrito.TotalCarrito);
             return View(model);
+        }
+
+        private bool ValidaAnuncio(int idAnuncio, int idUsuario, out string nombreAnuncio)
+        {
+            nombreAnuncio = string.Empty;
+            using (MercampoEntities _dbContext = new MercampoEntities())
+            {
+                Startup.OpenDatabaseConnection(_dbContext);
+                if (_dbContext.Database.Connection.State != ConnectionState.Open)
+                {
+                    return false;
+                }
+
+                Anuncio anuncio = _dbContext.Anuncios.Where(a => a.id == idAnuncio).FirstOrDefault();
+
+                if (anuncio == null || anuncio.idUsuario != idUsuario)
+                {
+                    return false;
+                }
+                nombreAnuncio = anuncio.titulo;
+            }
+            return true;
         }
 
         [HttpPost]
@@ -68,7 +120,7 @@ namespace VendeAgroWeb.Controllers.Home
                 paquete.agregaBeneficioAPaquete(beneficio);
             }
             carrito.Paquetes[index] = paquete;
-            UpdateCarritoCookie(carrito, Response);
+            Startup.UpdateCarritoCookie(carrito, Response);
             return true;
         }
 
@@ -188,21 +240,15 @@ namespace VendeAgroWeb.Controllers.Home
         {
             var carrito = Startup.GetCarritoDeCompra(Request.Cookies);
             carrito.borraPaqueteDeCarrito(index);
-            UpdateCarritoCookie(carrito, Response);
+            Startup.UpdateCarritoCookie(carrito, Response);
             return RedirectToAction("CarritoDeCompra");
-        }
-
-        public void UpdateCarritoCookie(CarritoDeCompra carrito, HttpResponseBase response)
-        {
-            var serializedCarrito = Startup.SerializeCarrito(carrito);
-            AplicacionUsuariosManager.setCookie("carritoVendeAgro", serializedCarrito, Response);
         }
 
         public ActionResult EliminaBeneficioDePaquete(int index, int id)
         {
             var carrito = Startup.GetCarritoDeCompra(Request.Cookies);
             carrito.Paquetes.ElementAt(index).borraBeneficioDePaquete(id);
-            UpdateCarritoCookie(carrito, Response);
+            Startup.UpdateCarritoCookie(carrito, Response);
             return RedirectToAction("CarritoDeCompra");
         }
 

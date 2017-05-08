@@ -253,7 +253,7 @@ overflow-y:hidden !important;">
             $("#codigo").removeClass("has-error");
         }
 
-        if (!(OpenPay.card.validateExpiry(mes, anio))) {
+        if (!(OpenPay.card.validateExpiry(mes, normalizeYear(anio)))) {
             valido = false;
             cadenaError += "    - Introduce una fecha de vencimiento v&aacute;lida. </br>";
             $("#mes").addClass("has-error");
@@ -349,4 +349,16 @@ overflow-y:hidden !important;">
         $(".error-tarjeta").html(desc).show('');
         return;
     };
+
+    function normalizeYear(anio) {
+        if (anio.length === 4) return anio;
+
+        if (anio.length != 2) return anio;
+
+        var d = new Date();
+        var n = d.getFullYear().toString();
+        var dig = n.substr(0, 2);
+        console.log(dig);
+        return dig + anio;
+    }
 </script>

@@ -5,6 +5,8 @@ using System.Net;
 using System.Net.Http;
 using System.Runtime.Serialization;
 using System.Web.Http;
+using VendeAgroWeb.Models;
+using VendeAgroWeb.Models.Pagina;
 
 namespace VendeAgroWeb
 {
@@ -12,10 +14,7 @@ namespace VendeAgroWeb
     public class CarritoDeCompra
     {
         public CarritoDeCompra() {
-            if (Paquetes == null)
-            {
-                Paquetes = new List<PaqueteCarrito>();
-            }
+            Paquetes = new List<PaqueteCarrito>();
         }
 
         [DataMember]
@@ -38,8 +37,27 @@ namespace VendeAgroWeb
             return total;
         }
 
-        public PaqueteCarrito insertarPaqueteEnCarrito(int id, string nombre, int meses, double precio) {
-            var paquete = new PaqueteCarrito(id, nombre, meses, precio, Paquetes.Count());
+        public bool ActualizaRenovacionSiExiste(int idAnuncio, string nombreAnuncio, PaginaPaqueteViewModel paqueteNuevo, out PaqueteCarrito outPaquete)
+        {
+            var paquete = Paquetes.Where(p => p.IdAnuncio == idAnuncio && string.Compare(nombreAnuncio, p.NombreAnuncio, StringComparison.CurrentCulture) == 0).FirstOrDefault();
+            if(paquete == null)
+            {
+                outPaquete = null;
+                return false;
+            }
+
+            paquete.Nombre = paqueteNuevo.Nombre;
+            paquete.Precio = paqueteNuevo.Precio;
+            paquete.Id = paqueteNuevo.Id;
+            paquete.Meses = paqueteNuevo.Meses;
+            paquete.Beneficios.Clear();
+            Paquetes[paquete.Index] = paquete;
+            outPaquete = paquete;
+            return true;
+        }
+
+        public PaqueteCarrito insertarPaqueteEnCarrito(int id, string nombre, int meses, double precio, int idAnuncio, string nombreAnuncio) {
+            var paquete = new PaqueteCarrito(id, nombre, meses, precio, Paquetes.Count(), idAnuncio, nombreAnuncio);
             Paquetes.Add(paquete);
             return paquete;
         }
@@ -68,28 +86,42 @@ namespace VendeAgroWeb
             Paquetes = nuevaLista;
         }
 
+        public void Clear()
+        {
+            Paquetes.Clear();
+        }
+
     }
 
     [DataContract]
     public class PaqueteCarrito
     {
         [DataMember]
-        public int Id { get; private set; }
+        public int Id { get; set; }
 
         [DataMember]
-        public string Nombre { get; private set; }
+        public string Nombre { get; set; }
 
         [DataMember]
-        public int Meses { get; private set; }
+        public int Meses { get; set; }
 
         [DataMember]
-        public double Precio { get; private set; }
+        public double Precio { get; set; }
 
         [DataMember]
         public List<BeneficioCarrito> Beneficios { get; private set; }
 
         [DataMember]
         public double TotalBeneficios { get;  private set;}
+        
+        [DataMember]
+        public int IdAnuncio { get; set; }
+
+        [DataMember]
+        public int Index { get; set; }
+
+        [DataMember]
+        public string NombreAnuncio { get; set; }
 
         public void agregaBeneficioAPaquete(BeneficioCarrito beneficio) {
             Beneficios.Add(beneficio);
@@ -111,16 +143,20 @@ namespace VendeAgroWeb
             return true;
         }
 
-        public int Index { get; set; }
+        public bool EsRenovacion()
+        {
+            return IdAnuncio != -1;
+        }
 
-        public PaqueteCarrito(int id, string nombre, int meses, double precio, int index) {
+        public PaqueteCarrito(int id, string nombre, int meses, double precio, int index, int idAnuncio, string nombreAnuncio) {
             Id = id;
             Nombre = nombre;
             Meses = meses;
             Precio = precio;
             Beneficios = new List<BeneficioCarrito>();
             Index = index;
-
+            IdAnuncio = idAnuncio;
+            NombreAnuncio = nombreAnuncio;
         }
     }
 

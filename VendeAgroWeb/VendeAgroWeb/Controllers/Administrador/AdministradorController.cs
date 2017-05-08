@@ -1072,21 +1072,8 @@ namespace VendeAgroWeb.Controllers.Administrador
                         return false;
                     }
 
-                    var anuncio_paquete = _dbContext.Paquetes.Where(p => p.id == anuncio.idPaquete).FirstOrDefault();
-
-                    if (anuncio == null)
-                    {
-                        return false;
-                    }
-
-                    var duracion = anuncio_paquete?.meses;
-                    if (duracion == null)
-                    {
-                        return false;
-                    }
-
                     anuncio.fecha_inicio = DateTime.Now;
-                    anuncio.fecha_fin = DateTime.Now.AddMonths(duracion.Value);
+                    anuncio.fecha_fin = DateTime.Now.AddMonths(anuncio.Paquete.meses);
                     anuncio.activo = true;
                     anuncio.estado = (int)EstadoAnuncio.Aprobado;
                     _dbContext.SaveChanges();

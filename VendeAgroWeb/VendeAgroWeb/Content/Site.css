@@ -668,7 +668,7 @@ div.social-wrap button {
     height: 100vh;
     position: relative;
     width: 100%;
-    overflow-x: hidden;
+    overflow: hidden;
 }
 
 .anunciate-cont {
