@@ -401,8 +401,6 @@ namespace VendeAgroWeb.Controllers.Administrador
         }
 
         [HttpPost]
-        [AllowAnonymous]
-        [ValidateAntiForgeryToken]
         public async Task<ActionResult> OlvidasteContrasena(string email)
         {
             var resultado = await Startup.GetAplicacionUsuariosManager().OlvidoContrasenaPortalAsync(email);

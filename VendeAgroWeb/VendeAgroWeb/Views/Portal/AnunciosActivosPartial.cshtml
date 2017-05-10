@@ -28,17 +28,17 @@
 
                                             if (item.Paquete != null)
                                             {
-                                                @item.Paquete.Nombre<span> MESES</span>
+                                                @item.Paquete.Meses<span> MESES</span><br>
                                             }
                                             else
                                             {
-                                                @item.TiempoRestante
+                                                @item.TiempoRestante<br>
                                             }
                                             if (item.Beneficios != null)
                                             {
                                                 foreach (var i in item.Beneficios)
                                                 {
-                                                    <span class="glyphicon glyphicon-check"></span>@i.Descripcion
+                                                    <span class="glyphicon glyphicon-check"></span>@i.Descripcion<br>
                                                 }
                                             }
                                         }
