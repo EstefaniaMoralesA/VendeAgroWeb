@@ -240,7 +240,7 @@ namespace VendeAgroWeb.Controllers.Administrador
 
                     List<AnuncioViewModel> lista = new List<AnuncioViewModel>();
 
-                    var anuncios = _dbContext.Anuncios.Where(a => (a.activo == true && a.idUsuario == id) || ((EstadoAnuncio)a.estado == EstadoAnuncio.Vacio && a.idUsuario == id));
+                    var anuncios = _dbContext.Anuncios.Where(a => ((EstadoAnuncio)a.estado != EstadoAnuncio.Vencido && a.idUsuario == id) || ((EstadoAnuncio)a.estado == EstadoAnuncio.Vacio && a.idUsuario == id));
                     foreach (var item in anuncios)
                     {
                         var paquete = _dbContext.Paquetes.Where(p => p.id == item.idPaquete).FirstOrDefault();

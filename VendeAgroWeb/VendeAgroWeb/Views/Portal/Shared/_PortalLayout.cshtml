@@ -12,7 +12,7 @@
     <div class="container administrador body-content">
         <div class="menu-administrador-container">
             <div class="logo-container" style="position:absolute !important;">
-                <img class="logo-home" src="~/img/logoHorizontal.png">
+                <a href="~/Home/Index"><img class="logo-home logo-portal" src="~/img/logoHorizontal.png"></a>
             </div>
 
             <div class="boton-container boton-bienvenido">
@@ -41,7 +41,7 @@
     @RenderSection("scripts", required: false)
 
     <div class="row">
-        <div class="col-sm-12">
+        <div class="col-sm-12" style="margin-bottom: 30px;">
             @RenderBody()
         </div>
     </div>

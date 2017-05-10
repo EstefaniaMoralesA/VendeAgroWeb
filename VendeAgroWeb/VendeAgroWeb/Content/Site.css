@@ -1927,7 +1927,7 @@ div.social-wrap button {
 }
 
 .mis-anuncios-imagen-container {
-    height: 215px;
+    height: 235px;
     overflow: hidden;
 }
 
@@ -1972,7 +1972,7 @@ div.social-wrap button {
 }
 
 .anuncio-pendiente p {
-    color: #F6AB21;
+    color: #E42B22;
 }
 
 .anuncio-no-aprobado p {
@@ -2097,10 +2097,6 @@ div.social-wrap button {
 #cambiar-password-panel p {
     font-size: 12px;
     width: 150px !important;
-}
-
-#cambiar-password-panel .forma {
-    padding-left: 35px;
 }
 
 .loader-anuncios {
@@ -2547,6 +2543,14 @@ hr {
     -ms-transform: translate(-50%, -50%);
 }
 
+.menu-administrador-container .logo-home {
+    left: 63%;
+}
+
+.menu-administrador-container .logo-portal {
+    left: 30% !important;
+}
+
 .icono-contacto {
     padding-bottom: 3px;
     margin-right: 5px;
@@ -2976,10 +2980,6 @@ hr {
         margin-top: 170px;
     }
 
-    .menu-administrador-container .logo-home {
-        left: 63%;
-    }
-
     .portal-container {
         margin-top: 265px;
     }
@@ -2994,6 +2994,10 @@ hr {
 }
 
 @media (max-width: 767px) {
+    .lista-perfil {
+        display: block !important;
+    }
+
     .menu-redondeado-container {
         display: none;
     }
@@ -3031,6 +3035,10 @@ hr {
     .menu-administrador-container .logo-container .logo-home {
         min-width: 10px !important;
         left: 40%;
+    }
+
+    .menu-administrador-container .logo-container .logo-portal {
+        left: 44%!important;
     }
 
     .menu-administrador-container .logo-container {
