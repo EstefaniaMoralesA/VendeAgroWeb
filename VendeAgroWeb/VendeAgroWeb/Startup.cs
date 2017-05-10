@@ -23,7 +23,7 @@ namespace VendeAgroWeb
             ConfigureAuth(app);
             _usuariosManager = new AplicacionUsuariosManager();
             _servicioEmail = new ServicioEmail();
-            _baseUrl = "http://localhost:50827";
+            _baseUrl = "https://www.mercampo.mx";
             api = new OpenpayAPI("sk_6f55e32ca0b74855b4ec592a56f5c152", "m4tpnfpemahz4tgdvadb");
         }
 
