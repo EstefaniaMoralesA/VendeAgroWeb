@@ -7,6 +7,7 @@ using System.Linq;
 using System.Runtime.Serialization;
 using System.Security.Cryptography;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Web;
 using VendeAgroWeb.Models;
@@ -61,7 +62,7 @@ namespace VendeAgroWeb
 
         public async Task<OlvidoContrasenaStatus> OlvidoContrasenaAdminAsync(string email)
         {
-            return await Task.Run(() =>
+            return await Task.Run(async () =>
             {
                 using (var _dbContext = new MercampoEntities())
                 {
@@ -82,7 +83,7 @@ namespace VendeAgroWeb
                     string mailMensaje = "<p>Estimado {0},</p>" +
                     "<p>Para cambiar tu contraseña da click <a href=\'" + Startup.getBaseUrl() + "/Administrador/CambiarContrasena?token=" + "{1}\'>AQUÍ</a></p>";
 
-                    var result = Startup.GetServicioEmail().SendAsync(string.Format(mailMensaje, usuario.nombre, usuario.password), "Recuperar Contraseña Mercampo", usuario.email);
+                    var result = await Startup.GetServicioEmail().SendAsync(string.Format(mailMensaje, usuario.nombre, usuario.password), "Recuperar Contraseña Mercampo", usuario.email);
 
                     _dbContext.Database.Connection.Close();
                     return OlvidoContrasenaStatus.MailEnviado;
@@ -94,7 +95,7 @@ namespace VendeAgroWeb
 
         public async Task<OlvidoContrasenaStatus> OlvidoContrasenaPortalAsync(string email)
         {
-            return await Task.Run(() =>
+            return await Task.Run(async () =>
             {
                 using (var _dbContext = new MercampoEntities())
                 {
@@ -115,7 +116,7 @@ namespace VendeAgroWeb
                     string mailMensaje = "<p>Estimado {0},</p>" +
                     "<p>Para cambiar tu contraseña da click <a href=\'" + Startup.getBaseUrl() + "/Portal/CambiarContrasena?token=" + "{1}\'>AQUÍ</a></p>";
 
-                    var result = Startup.GetServicioEmail().SendAsync(string.Format(mailMensaje, usuario.nombre, usuario.password), "Recuperar Contraseña Mercampo", usuario.email);
+                    var result = await Startup.GetServicioEmail().SendAsync(string.Format(mailMensaje, usuario.nombre, usuario.password), "Recuperar Contraseña Mercampo", usuario.email);
 
                     _dbContext.Database.Connection.Close();
                     return OlvidoContrasenaStatus.MailEnviado;
@@ -193,7 +194,7 @@ namespace VendeAgroWeb
         public async Task<RegistroStatus> RegistroUsuarioAsync(Models.Portal.RegistroViewModel model)
         {
             HttpResponse response = HttpContext.Current.Response;
-            return await Task.Run(() =>
+            return await Task.Run(async () =>
             {
                 using (var _dbContext = new MercampoEntities())
                 {
@@ -233,7 +234,7 @@ namespace VendeAgroWeb
                     string mailMensaje = "<p>Estimado {0} gracias por registrarte en mercampo.mx</p>" +
                     "<p>Para completar tu registro y poder hacer login da click <a href=\'" + Startup.getBaseUrl() + "/Portal/ConfirmarMail?token=" + "{1}\'>AQUÍ</a></p>";
 
-                    var result = Startup.GetServicioEmail().SendAsync(string.Format(mailMensaje, model.Nombre + " " + model.Apellidos, tokenEmail), "Registro Mercampo", model.Email);
+                    var result = await Startup.GetServicioEmail().SendAsync(string.Format(mailMensaje, model.Nombre + " " + model.Apellidos, tokenEmail), "Registro Mercampo", model.Email);
                     return RegistroStatus.Exitoso;
                 }
 

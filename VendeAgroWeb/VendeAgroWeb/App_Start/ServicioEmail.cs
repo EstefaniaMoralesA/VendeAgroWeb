@@ -48,6 +48,7 @@ namespace VendeAgroWeb
                 catch(SmtpException e)
                 {
                     Console.WriteLine(e.Message);
+                    return false;
                 }
             }
             return true;
