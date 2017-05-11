@@ -242,6 +242,39 @@ namespace VendeAgroWeb
 
         }
 
+        public async Task<AproboAnuncioStatus> AproboAnuncioAdminAsync(string email, int idAnuncio, string tituloAnuncio)
+        {
+            return await Task.Run(async () =>
+            {
+                using (var _dbContext = new MercampoEntities())
+                {
+                    Startup.OpenDatabaseConnection(_dbContext);
+
+                    if (_dbContext.Database.Connection.State != System.Data.ConnectionState.Open)
+                    {
+                        return AproboAnuncioStatus.Error;
+                    }
+
+                    var usuario = _dbContext.Usuarios.Where(u => u.email == email).FirstOrDefault();
+                    if (usuario == null)
+                    {
+                        _dbContext.Database.Connection.Close();
+                        return AproboAnuncioStatus.MailInexistente;
+                    }
+
+                    string mailMensaje = "<p>Estimado {0},</p>" +
+                    "<p>Tu anuncio " + tituloAnuncio + " ha sido aprobado y publicado. Para consultarlo, da click <a href=\'" + Startup.getBaseUrl() + "/Home/AnuncioDetalles?id=" + idAnuncio + "{1}\'>AQUÍ</a></p>";
+
+                    var result = await Startup.GetServicioEmail().SendAsync(string.Format(mailMensaje, usuario.nombre, usuario.password), "Tu Anuncio ha sido Aprobado en Mercampo", usuario.email);
+
+                    _dbContext.Database.Connection.Close();
+                    return AproboAnuncioStatus.MailEnviado;
+
+                }
+            });
+
+        }
+
         public async Task<LoginStatus> VerificarAdminSesionAsync()
         {
 
@@ -724,6 +757,13 @@ namespace VendeAgroWeb
     }
 
     public enum OlvidoContrasenaStatus
+    {
+        MailInexistente,
+        Error,
+        MailEnviado
+    }
+
+    public enum AproboAnuncioStatus
     {
         MailInexistente,
         Error,

@@ -239,7 +239,7 @@ namespace VendeAgroWeb.Controllers.Administrador
                     }
 
                     List<AnuncioViewModel> lista = new List<AnuncioViewModel>();
-
+                    
                     var anuncios = _dbContext.Anuncios.Where(a => ((EstadoAnuncio)a.estado != EstadoAnuncio.Vencido && a.idUsuario == id) || ((EstadoAnuncio)a.estado == EstadoAnuncio.Vacio && a.idUsuario == id));
                     foreach (var item in anuncios)
                     {
@@ -274,8 +274,15 @@ namespace VendeAgroWeb.Controllers.Administrador
                     }
 
                     _dbContext.Database.Connection.Close();
+                    var fixedOrder = new List<EstadoAnuncio>() {
+                            EstadoAnuncio.NoAprobado,
+                            EstadoAnuncio.Vacio,
+                            EstadoAnuncio.PendientePorAprobar,
+                            EstadoAnuncio.Aprobado
+                    };
 
-                    return lista;
+                    List<AnuncioViewModel> listaOrdenada = lista.OrderBy(a => fixedOrder.IndexOf(a.Estado)).ThenBy(a => a.TiempoRestante).ToList();
+                    return listaOrdenada;
                 }
             });
         }

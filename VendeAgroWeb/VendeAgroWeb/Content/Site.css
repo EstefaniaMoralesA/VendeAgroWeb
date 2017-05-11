@@ -35,7 +35,7 @@
 
 .iframe-foto-portal {
     width: 100%;
-    height: 218px;
+    height: 235px;
 }
 
 
@@ -1916,10 +1916,6 @@ div.social-wrap button {
     font-weight: bold;
     text-align: center;
     text-transform: capitalize;
-}
-
-.mis-anuncios-paquete-container :hover {
-    background-color: black;
 }
 
 .texto-nuevo-anuncio {

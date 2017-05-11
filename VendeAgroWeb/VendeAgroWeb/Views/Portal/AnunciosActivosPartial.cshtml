@@ -22,31 +22,33 @@
                         <div class="row">
                             <div class="mis-anuncios-paquete-container" style="min-height: 235px; background-color: #04612d;">
                                 <div style="width: 100%; height: 235px; display: block; position: relative;" class="wrapper-texto-container">
-                                    <p class="wrapper-texto-vacio">
-                                        @{
+                                    <a class="mi-anuncio-link" style="position: absolute; width: 100%; height: 100%;" href="/Portal/CrearAnuncio?id=@item.Id">
+                                        <p class="wrapper-texto-vacio">
+                                            @{
 
-                                            if (item.Paquete != null)
-                                            {
-                                                @item.Paquete.Meses<span> MESES</span><br>
-                                            }
-                                            if (item.Beneficios != null)
-                                            {
-                                                foreach (var i in item.Beneficios)
+                                                if (item.Paquete != null)
                                                 {
-                                                    <span class="glyphicon glyphicon-check"></span>@i.Descripcion<br>
+                                                    @item.Paquete.Meses<span> MESES</span><br>
+                                                }
+                                                if (item.Beneficios != null)
+                                                {
+                                                    foreach (var i in item.Beneficios)
+                                                    {
+                                                        <span class="glyphicon glyphicon-check"></span>@i.Descripcion<br>
+                                                    }
                                                 }
                                             }
-                                        }
-                                    </p>
+                                        </p>
+                                    </a>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-                                                continue;
-                                            }
-                                            if (item.Estado == EstadoAnuncio.PendientePorAprobar)
-                                            {
+                continue;
+                }
+                if (item.Estado == EstadoAnuncio.PendientePorAprobar)
+                {
                 <div class="col-sm-4 col-md-3">
                     <div class="col-xs-12">
                         <div class="row" style="margin-top:76px;">
@@ -63,6 +65,8 @@
                                         </div>
                                         <div class="movil-anuncio-titulo movil-mis-anuncios ofertas-anuncio-titulo">
                                             <div class="row mis-anuncios-anuncio-titulo mis-anuncios-titulo anuncio-pendiente">
+                                                <a class="mi-anuncio-link" style="position: absolute; width: 100%; height: 100%;" href="/Portal/DetallesAnuncio?id=@item.Id">
+                                                </a>
                                                 <p class="titulo">@item.Titulo</p>
                                                 <p class="estado"><strong><span class="glyphicon glyphicon-exclamation-sign"></span></strong> Pendiente por aprobar</p>
                                             </div>
@@ -73,10 +77,10 @@
                         </div>
                     </div>
                 </div>
-                                                continue;
-                                            }
-                                            if (item.Estado == EstadoAnuncio.Aprobado)
-                                            {
+                continue;
+                }
+                if (item.Estado == EstadoAnuncio.Aprobado)
+                {
                     <div class="col-sm-4 col-md-3">
                         <div class="col-xs-12">
                             <div class="row" style="margin-top:25px;">
@@ -87,10 +91,10 @@
                             <div class="row">
                                 <div class="mis-anuncios-paquete-container">
                                     <div style="width:@item.TiempoRestante%" class="degradado-verde degradado-verde-activos"></div>
-                                    <div class="mis-anuncios-anuncio" style="min-height: 235px;">
-                                        <div class="mis-anuncios-wrapper" style="max-height:235px;">
+                                    <div class="mis-anuncios-anuncio" style="min-height: 215px;">
+                                        <div class="mis-anuncios-wrapper" style="max-height:215px;">
                                             <p class="wrapper-texto">Ver detalles</p>
-                                            <div class="mis-anuncios-imagen-container">
+                                            <div class="mis-anuncios-imagen-container" style="max-height:215px;!important;">
                                                 <a class="mi-anuncio-link" style="position: absolute; width: 100%; height: 100%;" href="/Portal/DetallesAnuncio?id=@item.Id">
                                                 </a>
                                                 <iframe frameborder="0" class="iframe-foto-portal" scrolling="no" src="@item.ImagenPrincipal" onload=resizeImg(this)>
@@ -108,10 +112,10 @@
                             </div>
                         </div>
                     </div>
-                                                continue;
-                                            }
-                                            if (item.Estado == EstadoAnuncio.NoAprobado)
-                                            {
+                    continue;
+                    }
+                    if (item.Estado == EstadoAnuncio.NoAprobado)
+                    {
                         <div class="col-sm-4 col-md-3">
                             <div class="col-xs-12">
                                 <div class="row" style="margin-top:25px;">
@@ -150,6 +154,6 @@
     function resizeImg(obj) {
         var doc = obj.contentWindow.document;
         doc.body.children[0].style.width = '100%';
-        doc.body.children[0].style.height = '218px';
+        doc.body.children[0].style.height = '235px';
     }
 </script>
