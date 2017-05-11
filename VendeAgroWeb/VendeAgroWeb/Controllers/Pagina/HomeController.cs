@@ -17,7 +17,54 @@ namespace VendeAgroWeb.Controllers.Home
     {
         public ActionResult Index()
         {
-            return View();
+            using (MercampoEntities _dbContext = new MercampoEntities())
+            {
+                Startup.OpenDatabaseConnection(_dbContext);
+                if (_dbContext.Database.Connection.State != ConnectionState.Open)
+                {
+                    return View();
+                }
+                var ultimo = _dbContext.Accesos.Where(a => a.activo == true).FirstOrDefault();
+                var necesitaActualizarAnuncios = false;
+                if (ultimo == null)
+                {
+                    necesitaActualizarAnuncios = true;
+                }
+                else
+                {
+                    var result = ultimo.Fecha.Subtract(DateTime.UtcNow);
+
+                    if (result.Days != 0)
+                    {
+                        necesitaActualizarAnuncios = true;
+                        ultimo.activo = false;
+                        _dbContext.SaveChanges();
+                    }
+                }
+
+                if (necesitaActualizarAnuncios)
+                {
+                    _dbContext.Accesos.Add(new Acceso
+                    {
+                        Fecha = DateTime.UtcNow,
+                        activo = true
+                    });
+                    _dbContext.SaveChanges();
+
+                    var anunciosQueDebeDesactivar = _dbContext.Anuncios.Where(a => a.fecha_fin != null && a.activo == true && (int)EstadoAnuncio.Aprobado == a.estado);
+                    foreach (var anuncio in anunciosQueDebeDesactivar)
+                    {
+                        if (anuncio.fecha_fin.Value.Subtract(DateTime.UtcNow).Days < 0)
+                        {
+                            var a = _dbContext.Anuncios.Where(an => an.id == anuncio.id).FirstOrDefault();
+                            a.activo = false;
+                            a.estado = (int)EstadoAnuncio.Vencido;
+                        }
+                    }
+                    _dbContext.SaveChanges();
+                }
+                return View();
+            }
         }
 
         public ActionResult OfertasDelDia()
@@ -65,7 +112,7 @@ namespace VendeAgroWeb.Controllers.Home
                 }
                 nombreAnuncio = value;
                 PaqueteCarrito outPaqueteCarrito;
-                if(carrito.ActualizaRenovacionSiExiste(anuncio.Value, nombreAnuncio, paquete, out outPaqueteCarrito))
+                if (carrito.ActualizaRenovacionSiExiste(anuncio.Value, nombreAnuncio, paquete, out outPaqueteCarrito))
                 {
                     Startup.UpdateCarritoCookie(carrito, Response);
                     return View(new BeneficiosExtraViewModel(outPaqueteCarrito, await ObtenerBeneficios(), carrito.TotalCarrito));
@@ -129,13 +176,13 @@ namespace VendeAgroWeb.Controllers.Home
             return View(Startup.GetCarritoDeCompra(Request.Cookies));
         }
 
-        public ActionResult PagoRecibido(int? resultado, string numero, string autorizacion)
+        public ActionResult PagoRecibido(int? resultado, string numero, string autorizacion, double? monto)
         {
-            if (resultado == null || numero == null || autorizacion == null || !(Enum.IsDefined(typeof(ResultadoCargoTarjeta), resultado.Value)))
+            if (resultado == null || numero == null || autorizacion == null || !(Enum.IsDefined(typeof(ResultadoCargoTarjeta), resultado.Value)) || Startup.GetAplicacionUsuariosManager().getUsuarioPortalActual(Request) == null)
             {
-                return View(new ResultadoCargo(ResultadoCargoTarjeta.ErrorInterno));
+                return View(new ResultadoCargo(false, ResultadoCargoTarjeta.ErrorInterno));
             }
-            return View(new ResultadoCargo((ResultadoCargoTarjeta)resultado.Value, numero, autorizacion));
+            return View(new ResultadoCargo(true, (ResultadoCargoTarjeta)resultado.Value, numero, autorizacion, mensaje: "", monto: monto.Value));
         }
 
         public ActionResult PagoCarritoTarjetas()
@@ -145,7 +192,12 @@ namespace VendeAgroWeb.Controllers.Home
             {
                 return RedirectToAction("CarritoLogin", "Home", new { redirect = 1 });
             }
-            PagoCarritoTarjetasViewModel model = new PagoCarritoTarjetasViewModel(usuario, Startup.GetCarritoDeCompra(Request.Cookies).TotalCarrito);
+            var carrito = Startup.GetCarritoDeCompra(Request.Cookies);
+            if (carrito.Paquetes.Count <= 0)
+            {
+                return RedirectToAction("CarritoDeCompra", "Home");
+            }
+            PagoCarritoTarjetasViewModel model = new PagoCarritoTarjetasViewModel(usuario, carrito.TotalCarrito);
             return View(model);
         }
 
@@ -267,7 +319,7 @@ namespace VendeAgroWeb.Controllers.Home
             using (var _dbContext = new MercampoEntities())
             {
 
-                var anuncios = await ObtenerAnunciosDestacados(_dbContext, false);
+                var anuncios = await ObtenerAnunciosDestacados(_dbContext);
                 PortalAnunciosViewModel model = new PortalAnunciosViewModel(ObtenerSiguientesAnuncios(index.Value, anuncios), "", "", "", anuncios.Count, index.Value);
                 return PartialView("_AnunciosPartial", model);
             }
@@ -282,7 +334,7 @@ namespace VendeAgroWeb.Controllers.Home
             }
             using (var _dbContext = new MercampoEntities())
             {
-                var anuncios = await ObtenerAnunciosDestacados(_dbContext, true);
+                var anuncios = await ObtenerAnunciosDestacados(_dbContext);
                 PortalAnunciosViewModel model = new PortalAnunciosViewModel(ObtenerSiguientesAnuncios(index.Value, anuncios), "", "", "", anuncios.Count, index.Value);
                 return PartialView("_AnunciosMovil", model);
             }
@@ -315,7 +367,7 @@ namespace VendeAgroWeb.Controllers.Home
             return result;
         }
 
-        public async Task<List<Anuncio>> ObtenerAnunciosDestacados(MercampoEntities _dbContext, bool movil)
+        public async Task<List<Anuncio>> ObtenerAnunciosDestacados(MercampoEntities _dbContext)
         {
             return await Task.Run(() =>
             {
@@ -325,48 +377,6 @@ namespace VendeAgroWeb.Controllers.Home
                 {
                     return null;
                 }
-
-                if (!movil)
-                {
-                    var ultimo = _dbContext.Accesos.Where(a => a.activo == true).FirstOrDefault();
-                    var necesitaActualizarAnuncios = false;
-                    if (ultimo == null)
-                    {
-                        necesitaActualizarAnuncios = true;
-                    }
-                    else
-                    {
-                        var result = ultimo.Fecha.Subtract(DateTime.UtcNow);
-
-                        if (result.Days != 0)
-                        {
-                            necesitaActualizarAnuncios = true;
-                            ultimo.activo = false;
-                        }
-                    }
-
-                    if (necesitaActualizarAnuncios)
-                    {
-                        _dbContext.Accesos.Add(new Acceso
-                        {
-                            Fecha = DateTime.UtcNow,
-                            activo = true
-                        });
-                        _dbContext.SaveChanges();
-
-                        var anunciosQueDebeDesactivar = _dbContext.Anuncios.Where(a => a.fecha_fin != null && a.activo == true);
-                        foreach (var anuncio in anunciosQueDebeDesactivar)
-                        {
-                            if (anuncio.fecha_fin.Value.Subtract(DateTime.UtcNow).Days < 0 && anuncio.idPaquete.HasValue)
-                            {
-                                var a = _dbContext.Anuncios.Where(an => an.id == anuncio.id).FirstOrDefault();
-                                a.activo = false;
-                                a.estado = (int)EstadoAnuncio.Vencido;
-                            }
-                        }
-                        _dbContext.SaveChanges();
-                    }
-               } 
 
                 return _dbContext.Anuncios.Where(a => a.activo == true && a.estado == (int)EstadoAnuncio.Aprobado).OrderByDescending(a => a.clicks).ToList();
 

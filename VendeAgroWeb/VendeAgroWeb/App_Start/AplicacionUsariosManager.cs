@@ -441,14 +441,14 @@ namespace VendeAgroWeb
             return null;
         }
 
-        public bool AgregarTarjetaAsync(int id, string tokenTarjeta, string sessionId)
+        public string AgregarTarjetaAsync(int id, string tokenTarjeta, string sessionId)
         {
             using (var _dbContext = new MercampoEntities())
             {
                 Startup.OpenDatabaseConnection(_dbContext);
-                if (_dbContext.Database.Connection.State != System.Data.ConnectionState.Open)
+                if (_dbContext.Database.Connection.State != ConnectionState.Open)
                 {
-                    return false;
+                    return new ResultadoAgregarTarjeta(false, "Error en el servidor, vuelva a intentarlo de nuevo en unos minutos").AsJson();
                 }
 
 
@@ -457,7 +457,7 @@ namespace VendeAgroWeb
                 if (usuario == null)
                 {
                     _dbContext.Database.Connection.Close();
-                    return false;
+                    return new ResultadoAgregarTarjeta(false, "Error, el id del usuario al que se le quiere agregar la tarjeta, no existe").AsJson();
                 }
 
                 Card request = new Card();
@@ -471,37 +471,22 @@ namespace VendeAgroWeb
                 catch (OpenpayException e)
                 {
                     _dbContext.Database.Connection.Close();
-                    return false;
+                    return new ResultadoAgregarTarjeta(false, TarjetaResultadoHelpers.ObtenerMensajeError((OpenPayErrorCodes)e.ErrorCode)).AsJson();
+                    
                 }
 
                 string last4 = request.CardNumber.Substring(request.CardNumber.Length - 4, 4);
 
                 _dbContext.Usuario_Tarjeta.Add(new Usuario_Tarjeta
                 {
-                    tipoTarjeta = GetTipoTarjeta(request.Brand),
+                    tipoTarjeta = TarjetaResultadoHelpers.GetTipoTarjeta(request.Brand),
                     digitosTarjeta = last4,
                     tokenTarjeta = request.Id,
                     idUsuario = id,
                     activo = true
                 });
                 _dbContext.SaveChanges();
-                return true;
-            }
-        }
-
-        private int GetTipoTarjeta(string tipo)
-        {
-            switch (tipo.ToLower())
-            {
-                case "american_express":
-                    return (int)TarjetaTipo.Amex;
-                case "mastercard":
-                    return (int)TarjetaTipo.MasterCard;
-                case "visa":
-                    return (int)TarjetaTipo.Visa;
-                default:
-                    return 0;
-
+                return new ResultadoAgregarTarjeta(true, "La tarjeta se agregó correctamente.").AsJson();
             }
         }
 
@@ -510,7 +495,7 @@ namespace VendeAgroWeb
         {
             if (carrito == null || carrito.TotalCarrito <= 0.0)
             {
-                resultadoJson = ResultadoCargo.IncorrectoAsJson;
+                resultadoJson = new ResultadoCargo(false, ResultadoCargoTarjeta.ErrorInterno, mensaje: "El carrito de compras esta vacio").AsJson();
                 return false;
             }
 
@@ -518,15 +503,15 @@ namespace VendeAgroWeb
             var usuario = getUsuarioPortalActual(request);
             if (usuario.Id != id)
             {
-                resultadoJson = ResultadoCargo.IncorrectoAsJson;
+                resultadoJson = new ResultadoCargo(false, ResultadoCargoTarjeta.ErrorInterno, mensaje: "Error favor de hacer login").AsJson();
                 return false;
             }
             using (var _dbContext = new MercampoEntities())
             {
                 Startup.OpenDatabaseConnection(_dbContext);
-                if (_dbContext.Database.Connection.State != System.Data.ConnectionState.Open)
+                if (_dbContext.Database.Connection.State != ConnectionState.Open)
                 {
-                    resultadoJson = ResultadoCargo.IncorrectoAsJson;
+                    resultadoJson = new ResultadoCargo(false, ResultadoCargoTarjeta.ErrorInterno, mensaje: "Error en el servidor, vuelva a intentarlo de nuevo en unos minutos").AsJson();
                     return false;
                 }
 
@@ -535,7 +520,7 @@ namespace VendeAgroWeb
                     Customer cliente = Startup.OpenPayLib.CustomerService.Get(usuario.IdConekta);
                     if (cliente == null)
                     {
-                        resultadoJson = ResultadoCargo.IncorrectoAsJson;
+                        resultadoJson = new ResultadoCargo(false, ResultadoCargoTarjeta.ErrorInterno, mensaje: "Error en el servidor, vuelva a intentarlo de nuevo en unos minutos").AsJson();
                         return false;
                     }
 
@@ -550,14 +535,9 @@ namespace VendeAgroWeb
                     chargeRequest.SendEmail = true;
 
                     Charge cargo = Startup.OpenPayLib.ChargeService.Create(usuario.IdConekta, chargeRequest);
-                    if (cargo.ErrorMessage != null)
-                    {
-                        resultadoJson = ResultadoCargo.IncorrectoAsJson;
-                        return false;
-                    }
-                    ResultadoCargo resultado = new ResultadoCargo(ResultadoCargoTarjeta.Aprobado, cargo.OrderId, cargo.Authorization);
+                    ResultadoCargo resultado = new ResultadoCargo(true, ResultadoCargoTarjeta.Aprobado, cargo.OrderId, cargo.Authorization, "El cargo ha sido exitoso", (double)cargo.Amount);
                     AgregarAnuncios(carrito, usuario.Id);
-                    resultadoJson = Startup.SerializeResultadoCargo(resultado);
+                    resultadoJson = resultado.AsJson();
                     return true;
                 }
                 catch (OpenpayException e)
@@ -568,7 +548,7 @@ namespace VendeAgroWeb
                         res = ResultadoCargoTarjeta.Rechazado;
                     }
 
-                    resultadoJson = Startup.SerializeResultadoCargo(new ResultadoCargo(res, mensaje: e.Message));
+                    resultadoJson = new ResultadoCargo(false, res, mensaje: TarjetaResultadoHelpers.ObtenerMensajeError((OpenPayErrorCodes)e.ErrorCode)).AsJson();
                     return false;
                 }
 
@@ -753,6 +733,27 @@ namespace VendeAgroWeb
     }
 
     [DataContract]
+    public class ResultadoAgregarTarjeta
+    {
+        [DataMember]
+        public bool Exitoso { get; set; }
+
+        [DataMember]
+        public string Mensaje { get; set; }
+
+        public ResultadoAgregarTarjeta(bool exitoso, string mensaje)
+        {
+            Exitoso = exitoso;
+            Mensaje = mensaje;
+        }
+
+        public string AsJson()
+        {
+            return Startup.SerializeResultadoAgregarTarjeta(this);
+        }
+    }
+
+    [DataContract]
     public class ResultadoCargo
     {
         [DataMember]
@@ -764,16 +765,114 @@ namespace VendeAgroWeb
         [DataMember]
         public string Autorizacion { get; private set; }
 
+        [DataMember]
         public string Mensaje { get; private set; }
 
-        public ResultadoCargo(ResultadoCargoTarjeta resultado, string pedido = "", string autorizacion = "", string mensaje = "")
+        [DataMember]
+        public bool Exitoso { get; set; }
+
+        [DataMember]
+        public double Monto { get; set; }
+
+        public ResultadoCargo(bool exitoso, ResultadoCargoTarjeta resultado, string pedido = "", string autorizacion = "", string mensaje = "", double monto = 0)
         {
+            Exitoso = exitoso;
             Resultado = resultado;
             NoPedido = pedido;
             Autorizacion = autorizacion;
             Mensaje = mensaje;
+            Monto = monto;
         }
 
-        public static string IncorrectoAsJson => Startup.SerializeResultadoCargo(new ResultadoCargo(ResultadoCargoTarjeta.ErrorInterno));
+        public string AsJson()
+        {
+            return Startup.SerializeResultadoCargo(this);
+        }
+    }
+
+    public enum OpenPayErrorCodes
+    {
+        TarjetaRegistradaCliente = 2002,
+        ClienteYaExiste = 2003,
+        NumeroDeTarjetaInvalido = 2004,
+        FechaExpirada = 2005,
+        CodigoSeguridadInvalido = 2006,
+        TarjetaSoloPrueba = 2007,
+        TarjetaNoValidaPuntos = 2008,
+        TarjetaDeclinada = 3001,
+        TarjetaExpirada = 3002,
+        TarjetaSinFondos = 3003,
+        TarjetaRobada = 3004,
+        TarjetaFraude = 3005,
+        OperacionNoPermitida = 3006,
+        TarjetaNoSoportadaEnLinea = 3008,
+        TarjetaReportadaPerdida = 3009,
+        TarjetaRestringida = 3010,
+        TarjetaRetenida = 3011,
+        NecesitaAutorizacion = 3012
+    }
+
+    public static class TarjetaResultadoHelpers
+    {
+        public static string ObtenerMensajeError(OpenPayErrorCodes error)
+        {
+            switch (error)
+            {
+                case OpenPayErrorCodes.TarjetaRegistradaCliente:
+                    return "La tarjeta ya esta registrada con el cliente actual.";
+                case OpenPayErrorCodes.ClienteYaExiste:
+                    return "El cliente ya existe.";
+                case OpenPayErrorCodes.NumeroDeTarjetaInvalido:
+                    return "El número de tarjeta es invalido.";
+                case OpenPayErrorCodes.FechaExpirada:
+                    return "La fecha de expiración debe de ser mayor a la fecha actual.";
+                case OpenPayErrorCodes.CodigoSeguridadInvalido:
+                    return "El código de seguridad ingresado es invalido.";
+                case OpenPayErrorCodes.TarjetaSoloPrueba:
+                    return "La tarjeta ingresada es solo válida en modo de prueba.";
+                case OpenPayErrorCodes.TarjetaNoValidaPuntos:
+                    return "La tarjeta no es válida para utilizarse con puntos.";
+                case OpenPayErrorCodes.TarjetaDeclinada:
+                    return "La tarjeta fue declinada.";
+                case OpenPayErrorCodes.TarjetaExpirada:
+                    return "La tarjeta ha expirado.";
+                case OpenPayErrorCodes.TarjetaSinFondos:
+                    return "La tarjeta no tiene fondos suficientes.";
+                case OpenPayErrorCodes.TarjetaRobada:
+                    return "La tarjeta ha sido identificada como robada.";
+                case OpenPayErrorCodes.TarjetaFraude:
+                    return "La tarjeta ha sido identificada como fraudalenta.";
+                case OpenPayErrorCodes.OperacionNoPermitida:
+                    return "La operacion no esta permitida para este cliente o esta transacción";
+                case OpenPayErrorCodes.TarjetaNoSoportadaEnLinea:
+                    return "La tarjeta no soporta transacciones en línea";
+                case OpenPayErrorCodes.TarjetaReportadaPerdida:
+                    return "La tarjeta ha sido reportada como perdida.";
+                case OpenPayErrorCodes.TarjetaRestringida:
+                    return "El banco ha restringido la tarjeta";
+                case OpenPayErrorCodes.TarjetaRetenida:
+                    return "El banco ha solicitado que la tarjeta sea retenida. Favor de contactar al banco.";
+                case OpenPayErrorCodes.NecesitaAutorizacion:
+                    return "Se requere solicitar al banco autorización para realizar este pago.";
+                default:
+                    return "Error en el servidor, vuelva a intentarlo";
+            }
+        }
+
+        public static int GetTipoTarjeta(string tipo)
+        {
+            switch (tipo.ToLower())
+            {
+                case "american_express":
+                    return (int)TarjetaTipo.Amex;
+                case "mastercard":
+                    return (int)TarjetaTipo.MasterCard;
+                case "visa":
+                    return (int)TarjetaTipo.Visa;
+                default:
+                    return 0;
+
+            }
+        }
     }
 }

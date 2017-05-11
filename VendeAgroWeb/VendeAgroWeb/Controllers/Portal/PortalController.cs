@@ -560,7 +560,7 @@ namespace VendeAgroWeb.Controllers.Administrador
         }
 
         [HttpPost]
-        public bool AgregarTarjeta(int? id, string tokenTarjeta, string sessionId)
+        public string AgregarTarjeta(int? id, string tokenTarjeta, string sessionId)
         {
             return Startup.GetAplicacionUsuariosManager().AgregarTarjetaAsync(id.Value, tokenTarjeta, sessionId);
         }
