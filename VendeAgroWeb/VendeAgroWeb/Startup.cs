@@ -75,6 +75,19 @@ namespace VendeAgroWeb
             return Encoding.UTF8.GetString(json, 0, json.Length);
         }
 
+        public static string SerializeResultadoAgregarTarjeta(ResultadoAgregarTarjeta resultado)
+        {
+            //Create a stream to serialize the object to.
+            MemoryStream ms = new MemoryStream();
+
+            // Serializer the User object to the stream.
+            DataContractJsonSerializer ser = new DataContractJsonSerializer(typeof(ResultadoAgregarTarjeta));
+            ser.WriteObject(ms, resultado);
+            byte[] json = ms.ToArray();
+            ms.Close();
+            return Encoding.UTF8.GetString(json, 0, json.Length);
+        }
+
         public static CarritoDeCompra ReadToObject(string json)
         {
             MemoryStream ms = new MemoryStream(Encoding.UTF8.GetBytes(json));

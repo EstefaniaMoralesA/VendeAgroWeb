@@ -4,7 +4,13 @@
     ViewBag.Title = "Nueva Tarjeta";
     Layout = "Shared/_PortalLayout.cshtml";
 }
-
+<div class="procesando-pago-carrito procesando-pago col-sm-12" style="height: calc(100vh - 200px);">
+    <div class="procesando-pago-contenido proceso-pago-contenido-carrito">
+        <h3 style="text-align:center;">Estamos agregando tu tarjeta, favor de no recargar la p&aacute;gina.</h3>
+        <img class="loader-anuncios" src="~/img/loader.gif" />
+        <input type="hidden" id="valid" value="100" />
+    </div>
+</div>
 <div class="row">
     <div class="col-sm-12">
         <div class="row nueva-tarjeta-titulo col-sm-offset-2 col-sm-8" style="margin-top: 60px;">
@@ -108,9 +114,9 @@
             $("#codigo").removeClass("has-error");
         }
 
-        if (!(OpenPay.card.validateExpiry(mes, anio))) {
+        if (!(OpenPay.card.validateExpiry(mes, normalizeYear(anio)))) {
             valido = false;
-            cadenaError += "    - Introduce una fecha de vencimiento v&aacute;lida. (año 4 digitos)</br>";
+            cadenaError += "    - Introduce una fecha de vencimiento v&aacute;lida. (año 2 digitos)</br>";
             $("#mes").addClass("has-error");
             $("#anio").addClass("has-error");
         }
@@ -123,40 +129,41 @@
             $(".error-tarjeta").html(cadenaError).show('');
             return;
         }
-        $("#anio").val(anio.substr(2,2));
+        $("#anio").val(anio);
         $(".error-tarjeta").hide('');
-        $(".procesando-pago").show('');
         var num = $("#numero").unmask();
         var deviceSessionId = OpenPay.deviceData.setup("forma-pago", "deviceIdHiddenFieldName");
-        console.log("device id: " + deviceSessionId);
+        $(".procesando-pago").show();
         OpenPay.token.extractFormAndCreate('forma-pago', success_callback, error_callback);
     });
 
     var success_callback = function (token) {
         var sessionId = $("#deviceIdHiddenFieldName").val();
-        $(".procesando-pago").hide('');
         var idUsuario = $('#id-usuario').val();
 
         $.ajax({
             type: 'POST',
-            data: { id: idUsuario, tokenTarjeta: token.data.id, sessionId: sessionId},
+            data: { id: idUsuario, tokenTarjeta: token.data.id, sessionId: sessionId },
             url: '/Portal/AgregarTarjeta',
             success: function (response) {
-                if (response) {
+                response = JSON.parse(response);
+                if (response.Exitoso) {
                     window.location = "Perfil";
                     return;
                 }
                 else {
-                    $(".error-row").html("Hubo un error al modificar el nombre. Porfavor vuelva a intentarlo.").show('');
+                    $(".error-tarjeta").html(response.Mensaje).show('');
+                    $(".procesando-pago").hide();
                     return;
                 }
             },
             error: function (err) {
-                $(".error-row").html("Hubo un error al modificar. Porfavor vuelva a intentarlo.").show('');
+                $(".procesando-pago").hide();
+                $(".error-tarjeta").html("Error en el servidor, vuelva a intentarlo de nuevo en unos minutos").show('');
                 return;
             }
         });
-        return token;
+        return;
     };
 
 
@@ -165,8 +172,33 @@
         var desc = response.data.description != undefined ?
         response.data.description : response.message;
         console.log("error: " + desc);
-        $(".procesando-pago").hide('');
+        $(".procesando-pago").hide();
         $(".error-tarjeta").html(desc).show('');
         return;
     };
+
+    function normalizeYear(anio) {
+        if (anio.length === 4) return anio;
+
+        if (anio.length != 2) return anio;
+
+        var d = new Date();
+        var n = d.getFullYear().toString();
+        var dig = n.substr(0, 2);
+        console.log(dig);
+        return dig + anio;
+    }
 </script>
+<style>
+    .procesando-pago-contenido {
+        position: relative;
+        top: 50%;
+        left: 50%;
+        padding: 0;
+        transform: translate(-50%,-50%);
+        -moz-transform: translate(-50%,-50%);
+        -webkit-transform: translate(-50%,-50%);
+        -ms-transform: translate(-50%,-50%);
+        -o-transform: translate(-50%,-50%);
+    }
+</style>

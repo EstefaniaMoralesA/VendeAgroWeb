@@ -31,7 +31,13 @@ overflow-y:hidden !important;">
 
     </div>
 </div>
-
+<div class="procesando-pago-carrito procesando-pago col-sm-11">
+    <div class="procesando-pago-contenido proceso-pago-contenido-carrito">
+        <h3 style="text-align:center;">Estamos agregando tu tarjeta, favor de no recargar la p&aacute;gina.</h3>
+        <img class="loader-anuncios" src="~/img/loader.gif" />
+        <input type="hidden" id="valid" value="100" />
+    </div>
+</div>
 <div class="procesando-pago-carrito col-sm-11">
     <div class="procesando-pago-contenido proceso-pago-contenido-carrito">
         <h3 style="text-align:center;">Estamos procesando tu pago, favor de no recargar la p&aacute;gina.</h3>
@@ -54,10 +60,6 @@ overflow-y:hidden !important;">
             </div>
             <h2 class="mi-cuenta-titulo">Mis Tarjetas</h2>
             @{
-                <div class="row">
-                    <div class="alert alert-danger" id="error-pago" style="display:none;">
-                    </div>
-                </div>
                 if (Model.Usuario.Tarjetas.Count() <= 0)
                 {
                     <div class="row">
@@ -108,7 +110,12 @@ overflow-y:hidden !important;">
                         <a id="btn-agregar-tarjeta" class="btn pagar-boton agregar-tarjeta-pago botones-grad" style="width: 100%; margin-top: 20px; margin-bottom: 25px; color: white;">Nueva Tarjeta</a>
                     </div>
                                                     }
+
             }
+            <div class="row">
+                <div class="alert alert-danger" id="error-pago" style="display:none;">
+                </div>
+            </div>
             <div id="forma-tarjeta-nueva" style="display: none; margin-top: 30px;">
                 <div class="row">
                     <div class="col-sm-12">
@@ -156,7 +163,7 @@ overflow-y:hidden !important;">
                     </div>
                 </div>
             </div>
-            <input type="checkbox" class="terminos" name="terminos"> <label style="font-size:20px;" for="terminos">Acepto los <a>T&eacute;rminos y condiciones</a></label>
+            <input type="checkbox" class="terminos" name="terminos"> <label style="font-size:20px;" for="terminos">Acepto los <a target="_blank" href="~/Content/Terminos_Condiciones.pdf">T&eacute;rminos y condiciones</a></label>
             <a id="pagar" class="btn btn-primary agregar-tarjeta-boton pagar-boton">Pagar</a>
         </div>
     </div>
@@ -273,13 +280,12 @@ overflow-y:hidden !important;">
         var num = $("#numero").unmask();
         console.log("device id: " + deviceSessionId);
         var deviceSessionId = OpenPay.deviceData.setup("forma-pago", "deviceIdHiddenFieldName");
-        $(".procesando-pago").show('');
+        $(".procesando-pago").show();
         OpenPay.token.extractFormAndCreate('forma-pago', success_callback, error_callback);
     });
 
     var success_callback = function (token) {
         var sessionId = $("#deviceIdHiddenFieldName").val();
-        $(".procesando-pago").hide('');
         var idUsuario = $('#id-usuario').val();
 
         $.ajax({
@@ -287,21 +293,24 @@ overflow-y:hidden !important;">
             data: { id: idUsuario, tokenTarjeta: token.data.id, sessionId: sessionId },
             url: '/Portal/AgregarTarjeta',
             success: function (response) {
-                if (response) {
+                response = JSON.parse(response);
+                if (response.Exitoso) {
                     location.reload();
                     return;
                 }
                 else {
-                    $("#error-pago").html("Hubo un error al agregar la tarjeta. Porfavor vuelva a intentarlo.").show('');
+                    $("#error-pago").html(response.Mensaje).show('');
+                    $(".procesando-pago").hide();
                     return;
                 }
             },
             error: function (err) {
-                $("#error-pago").html("Hubo un error al agregar la tarjeta. Porfavor vuelva a intentarlo.").show('');
+                $("#error-pago").html("Error en el servidor, vuelva a intentarlo de nuevo en unos minutos").show('');
+                $(".procesando-pago").hide();
                 return;
             }
         });
-        return token;
+        return;
     };
 
     $('#myModal').on('hidden.bs.modal', function () {
@@ -323,19 +332,19 @@ overflow-y:hidden !important;">
             success: function (response) {
                 console.log(response);
                 response = JSON.parse(response);
-                if (response.Resultado == 0) {
-                    window.location = "/Home/PagoRecibido?resultado=" + response.Resultado + "&numero=" + response.NoPedido + "&autorizacion=" + response.Autorizacion;
+                if (response.Exitoso) {
+                    window.location = "/Home/PagoRecibido?resultado=" + response.Resultado + "&numero=" + response.NoPedido + "&autorizacion=" + response.Autorizacion + "&monto=" + response.Monto;
                     return;
                 }
                 else {
                     $(".procesando-pago-carrito").hide('');
-                    $("#error-pago").html("Hubo un error procesar el pago. Porfavor vuelva a intentarlo.").show('');
+                    $("#error-pago").html(response.Mensaje).show('');
                     return;
                 }
             },
             error: function (err) {
                 $(".procesando-pago-carrito").hide('');
-                $("#error-pago").html("Hubo un error al procesar el pago. Porfavor vuelva a intentarlo.").show('');
+                $("#error-pago").html().show("Error en el servidor, vuelva a intentarlo de nuevo en unos minutos");
                 return;
             }
         });
@@ -345,7 +354,7 @@ overflow-y:hidden !important;">
         var desc = response.data.description != undefined ?
         response.data.description : response.message;
         console.log("error: " + desc);
-        $(".procesando-pago").hide('');
+        $(".procesando-pago").hide();
         $(".error-tarjeta").html(desc).show('');
         return;
     };
