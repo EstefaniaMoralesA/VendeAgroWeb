@@ -18,7 +18,7 @@ namespace VendeAgroWeb
             _credenciales = new NetworkCredential
             {
                 UserName = "mercampomx@gmail.com",
-                Password = "Mercampomx2306"
+                Password = "ejmupozkjsjhbito"
             };
         }
 
@@ -38,8 +38,10 @@ namespace VendeAgroWeb
 
             using (var smtp = new SmtpClient())
             {
+                smtp.UseDefaultCredentials = false;
                 smtp.Credentials = _credenciales;
                 smtp.Host = "smtp.gmail.com";
+                smtp.Port = 587;
                 smtp.EnableSsl = true;
                 try
                 {
