@@ -81,42 +81,85 @@
     </div>
 
     <div class="col-sm-6">
-        <h2 style="margin-top:7px;">Informaci&oacute;n general</h2>
-        <hr />
-        <h3><span>T&iacute;tulo: </span>@Model.Anuncio.Titulo</h3>
-        <h4><span>Precio: </span>$@Model.Precio</h4>
-        <p><span>Descripci&oacute;n: </span>@Model.Descripcion</p>
-        <p><span><strong>Fecha de inicio: </strong></span>@Model.FechaInicio.Value.ToString("dd-MM-yyyy")</p>
-        <p><span><strong>Fecha de fin: </strong></span>@Model.FechaFin.Value.ToString("dd-MM-yyyy")</p>
-        <hr />
-        <h2 style="margin-top:15px;">Detalles de compra</h2>
-        <hr />
-        <table class="table table-bordered">
-            <tbody>
-                @{
-                    if (Model.Anuncio.Paquete != null)
-                    {
-                        <tr>
-                            <td><strong>Paquete</strong></td>
-                            <td>@Model.Anuncio.Paquete.Nombre</td>
-                        </tr>
-                    }
-                }
-
-                <tr>
-                    <td><strong>Beneficios</strong></td>
-                    <td>
-                        @{
-                            foreach (var item in Model.Anuncio.Beneficios)
-                            {
-                                <p><span class="glyphicon glyphicon-check"></span>@item.Descripcion</p>
-                            }
+            <h2 style="margin-top:7px;">Informaci&oacute;n general</h2>
+            <table class="table table-bordered">
+                <tbody>
+                    <tr>
+                        <td><strong>Titulo</strong></td>
+                        <td>@Model.Anuncio.Titulo</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Precio: </strong></td>
+                        <td>$@Model.Precio</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Descripci&oacute;n: </strong></td>
+                        <td>@Model.Descripcion</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Categor&iacute;a: </strong></td>
+                        <td>@Model.Categoria</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Subcategor&iacute;a: </strong></td>
+                        <td>@Model.Subcategoria</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Pa&iacute;s: </strong></td>
+                        <td>@Model.Pais</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Estado: </strong></td>
+                        <td>@Model.Estado</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Fecha de inicio: </strong></td>
+                        <td>@Model.FechaInicio.Value.ToString("dd-MM-yyyy")</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Fecha de fin: </strong></td>
+                        <td>@Model.FechaFin.Value.ToString("dd-MM-yyyy")</td>
+                    </tr>
+                </tbody>
+            </table>
+            <h2 style="margin-top:15px;">Detalles de compra</h2>
+            <table class="table table-bordered">
+                <tbody>
+                    @{
+                        if (Model.Anuncio.Paquete != null)
+                        {
+                            <tr>
+                                <td><strong>Paquete</strong></td>
+                                <td>@Model.Anuncio.Paquete.Nombre</td>
+                            </tr>
                         }
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
+                    }
+
+                    <tr>
+                        <td><strong>Beneficios</strong></td>
+                        <td>
+                            @{
+                                foreach (var item in Model.Anuncio.Beneficios)
+                                {
+                                    <p><span class="glyphicon glyphicon-check"></span>@item.Descripcion</p>
+                                }
+                            }
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        @{
+            if (Model.Anuncio.Estado == EstadoAnuncio.NoAprobado)
+            {
+                <h2 style="color:red; margin-top:7px;">Razones no aprobado</h2>
+                <p style="color:red;">@Model.RazonRechazo</p>
+                <div class="form-group" style="text-align:center;">
+                    <a style="width:50%;" data-id="@Model.Anuncio.Id" id="boton-modificar" class="btn btn-success">Modificar</a>
+                </div>
+            }
+        }
+
+</div>
 </div>
 
 @Scripts.Render("~/bundles/lightslider/js")
@@ -157,4 +200,24 @@
             console.log($(imagenGrande).attr("src"));
         });
     }
+
+    $(".boton-modificar").click(function () {
+        var id = $(this).data("id");
+        $.ajax({
+            type: 'POST',
+            url: '/Portal/ModificarAnuncio?id=' + id,
+            success: function (response) {
+                if (response == "True") {
+                    location.reload();
+                    return;
+                }
+                alert("Error en la base de datos, vuelva a intentarlo.");
+
+            },
+            error: function (e) {
+                alert("Se presento un error, volver a intentarlo");
+            }
+
+        })
+    });
 </script>

@@ -84,7 +84,7 @@
                     <div class="col-sm-4 col-md-3">
                         <div class="col-xs-12">
                             <div class="row" style="margin-top:25px;">
-                                <a class="btn btn-default menu-grad btn-renovar">
+                                <a class="btn btn-default menu-grad btn-renovar" href="/Portal/RenovarAnuncio?id=@item.Id">
                                     <p>Renovar</p>
                                 </a>
                             </div>
@@ -119,9 +119,7 @@
                         <div class="col-sm-4 col-md-3">
                             <div class="col-xs-12">
                                 <div class="row" style="margin-top:25px;">
-                                    <a class="btn btn-success btn-renovar">
-                                        <p>Modificar</p>
-                                    </a>
+                                    <a class="btn btn-success btn-modificar btn-renovar" href="/Portal/ModificarAnuncio?id=@item.Id">Modificar</a>
                                 </div>
                                 <div class="row">
                                     <div class="mis-anuncios-paquete-container">
@@ -136,7 +134,7 @@
                                                 <div class="movil-anuncio-titulo movil-mis-anuncios ofertas-anuncio-titulo">
                                                     <div class="row mis-anuncios-anuncio-titulo mis-anuncios-titulo anuncio-no-aprobado">
                                                         <p class="titulo">@item.Titulo</p>
-                                                        <p class="estado"><strong><span class="glyphicon glyphicon-check"></span></strong>Rechazado</p>
+                                                        <p class="estado"><strong><span class="glyphicon glyphicon-remove"></span></strong> Rechazado</p>
                                                     </div>
                                                 </div>
                                             </div>

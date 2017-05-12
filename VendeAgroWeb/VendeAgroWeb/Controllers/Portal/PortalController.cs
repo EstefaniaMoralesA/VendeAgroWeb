@@ -198,7 +198,7 @@ namespace VendeAgroWeb.Controllers.Administrador
                             {
                                 fotos.Add(new FotoViewModel(foto.principal, foto.ruta));
                             }
-                            model = new AnuncioDetallesViewModel(anuncioModel, anuncio.precio, anuncio.descripcion, fotos, anuncio.fecha_inicio, anuncio.fecha_fin, rutaVideo);
+                            model = new AnuncioDetallesViewModel(anuncioModel, anuncio.precio, anuncio.descripcion, anuncio.Subcategoria.Categoria.nombre, anuncio.Subcategoria.nombre, anuncio.Estado1.Pai.nombre, anuncio.Estado1.nombre, fotos, anuncio.fecha_inicio, anuncio.fecha_fin, rutaVideo, anuncio.razonRechazo);
                         }
                     }
                 }
@@ -211,6 +211,61 @@ namespace VendeAgroWeb.Controllers.Administrador
 
             return View(model);
         }
+
+        public async Task<ActionResult> ModificarAnuncio(int? id)
+        {
+            if (id == null)
+            {
+                return RedirectToAction("MisAnuncios", "Portal");
+            }
+
+            bool estado = true;
+            ModificarAnuncioViewModel model = null;
+
+            await Task.Run(() =>
+            {
+                using (var _dbContext = new MercampoEntities())
+                {
+                    Startup.OpenDatabaseConnection(_dbContext);
+                    if (_dbContext.Database.Connection.State != ConnectionState.Open)
+                    {
+                        estado = false;
+                    }
+                    else
+                    {
+
+                        var anuncio = _dbContext.Anuncios.Where(a => a.id == id).FirstOrDefault();
+
+                        List<FotoViewModel> fotos = new List<FotoViewModel>();
+                        FotoViewModel fotoPrincipal = null;
+
+                        foreach (var foto in anuncio.Fotos_Anuncio)
+                        {
+                            if (foto.principal == true)
+                            {
+                                fotoPrincipal = new FotoViewModel(foto.id, true, foto.ruta);
+                                continue;
+                            }
+                            fotos.Add(new FotoViewModel(foto.id, false, foto.ruta));
+                        }
+
+                        model = new ModificarAnuncioViewModel(anuncio.id, anuncio.titulo, anuncio.Usuario.nombre + " " + anuncio.Usuario.apellidos, anuncio.precio, new CategoriaModificarAnuncioViewModel(anuncio.Subcategoria.idCategoria, anuncio.Subcategoria.Categoria.nombre),
+                            new SubcategoriaModificarAnuncioViewModel(anuncio.idSubcategoria, anuncio.Subcategoria.nombre), new PaisModificarAnuncioViewModel(anuncio.Estado1.idPais, anuncio.Estado1.Pai.nombre), new EstadoModificarAnuncioViewModel(anuncio.idEstado, anuncio.Estado1.nombre),
+                            anuncio.descripcion, fotoPrincipal, fotos, anuncio.Videos_Anuncio.Where(v => v.idAnuncio == id).FirstOrDefault()?.ruta, anuncio.razonRechazo);
+
+
+                        _dbContext.Database.Connection.Close();
+                    }
+                }
+
+            });
+            if (!estado)
+            {
+                return RedirectToAction("MisAnuncios", "Portal");
+            }
+            return View(model);
+        }
+
 
         public async Task<ActionResult> AnunciosActivosPartial()
         {

@@ -1,0 +1,755 @@
+﻿@model VendeAgroWeb.Models.Portal.ModificarAnuncioViewModel
+
+@{
+    ViewBag.Title = "Modificar Anuncio";
+    Layout = "Shared/_PortalLayout.cshtml";
+}
+
+
+<div class="row">
+    <div class="col-sm-6 col-sm-offset-3">
+        <div class="alert alert-danger" style="display:none;">
+            <strong><span class="glyphicon glyphicon-remove"></span></strong><span class="alert-content"></span>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-sm-12" style="text-align: center;">
+        <h2 class="mis-anuncios-titulo">Modificar Anuncio</h2>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-sm-offset-3 col-sm-6">
+        <div class="row">
+            @using (Html.BeginForm())
+            {
+                @Html.AntiForgeryToken()
+
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                <div class="alert alert-danger error-nuevo-anuncio" style="display:none;">
+                </div>
+                <p class="nuevo-anuncio-cliente"><span>Razon Rechazo: </span>@Model.RazonRechazo</p>
+
+                <input class="form-control" id="id-anuncio" value="@Model.Id" type="hidden" />
+                <div class="form-group form-nuevo-anuncio form-titulo">
+                    <input class="form-control" placeholder="Título del anuncio" id="anuncio-titulo" value="@Model.Titulo" />
+                </div>
+                <div class="form-group form-nuevo-anuncio form-precio">
+                    <input class="form-control" type="text" onkeypress='return (event.charCode >= 48 && event.charCode <= 57) || event.charCode == 46' placeholder="Precio del producto" id="anuncio-precio" value="@Model.Precio" />
+                </div>
+                <div class="form-group form-nuevo-anuncio form-descripcion">
+                    <textarea cols="20" data-val="true" class="form-control" placeholder="Descripción del producto" id="anuncio-descripcion" name="Descripcion" rows="2">@Model.Descripcion</textarea>
+                </div>
+
+                <div class="col-sm-12">
+                    <div class="row">
+                        <div class="col-sm-6" style="padding-left: 0px;">
+                            <div id="categoria-dropdown" class="dropdown">
+                                <button id="btn-categoria" class="btn btn-default dropdown-anuncio dropdown-toggle" style="font-size:14px;" type="button" data-toggle="dropdown">
+                                    @Model.Categoria.Nombre
+                                    <span class="caret nuevo-anuncio-caret categoria-caret"></span>
+                                </button>
+                                <ul id="categorias" class="dropdown-menu"></ul>
+                            </div>
+                        </div>
+                        <div class="col-sm-6" style="padding-right: 0px;">
+                            <div id="subcategoria-dropdown" class="dropdown">
+                                <button id="btn-subcategoria" class="btn btn-default dropdown-anuncio dropdown-toggle" style="font-size:14px;" type="button" data-toggle="dropdown">
+                                    @Model.Subcategoria.Nombre
+                                    <span class="caret nuevo-anuncio-caret subcategoria-caret"></span>
+                                </button>
+                                <ul id="subcategorias" class="dropdown-menu"></ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-6" style="padding-left: 0px;">
+                            <div id="paises-dropdown" class="dropdown">
+                                <button id="btn-pais" class="btn btn-default dropdown-anuncio dropdown-toggle" style="font-size:14px;" type="button" data-toggle="dropdown">
+                                    @Model.Pais.Nombre
+                                    <span class="caret nuevo-anuncio-caret pais-caret"></span>
+                                </button>
+                                <ul id="paises" class="dropdown-menu"></ul>
+                            </div>
+                        </div>
+                        <div class="col-sm-6" style="padding-right: 0px;">
+                            <div id="estados-dropdown" class="dropdown">
+                                <button id="btn-estados" class="btn btn-default dropdown-anuncio dropdown-toggle" style="font-size:14px;" type="button" data-toggle="dropdown">
+                                    @Model.Estado.Nombre
+                                    <span class="caret nuevo-anuncio-caret estado-caret"></span>
+                                </button>
+                                <ul id="estados" class="dropdown-menu"></ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row" style="margin-top: 20px;">
+                        <div class="alert alert-danger error-extension" style="display:none;">
+
+                        </div>
+                        <div class="table-responsive">
+                            <table id="tabla-fotos" class="table table-responsive">
+                                <tbody>
+                                    <tr class="row-tabla-foto">
+                                        <td class="foto-tabla-titulo">Foto de display</td>
+                                        <td>
+                                            <iframe id="img-0" frameborder="0" width="225" height="177" class="iframe-foto" scrolling="no" onload="resizeImg(this)" src="@Model.FotoPrincipal.Ruta"></iframe>
+                                        </td>
+                                        <td>
+                                            <div class="form-group">
+                                                <div class="btn btn-success image-preview-input" id="img-inp-btn">
+                                                    <span class="glyphicon glyphicon-folder-open"></span>
+                                                    <span style="padding-left: 3px;" class="image-preview-input-title">Modificar</span>
+                                                    @{
+                                                        var cont = 0;
+                                                        <input class="input-absoluto" type="file" onchange="loadFile(event, @cont)">
+
+                                                    }
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td></td>
+                                    </tr>
+                                    @{
+                                        cont = 1;
+                                        foreach (var foto in Model.Fotos)
+                                        {
+                                            <tr style="text-align: center; vertical-align: middle;">
+                                                <td style="vertical-align: middle;" class="foto-tabla-titulo">Foto</td>
+                                                <td>
+                                                    <iframe id="img-@cont" frameborder="0" width="225" height="177" class="iframe-foto" scrolling="no" onload="resizeImg(this)" src="@foto.Ruta"></iframe>
+                                                </td>
+                                                <td style="vertical-align: middle;"><input type="button" value="Eliminar" onclick="deleteRow(this, @foto.Id)" class="btn btn-danger btn-banner-desactivar btn-10-caracteres btn-categorias-desactivar" style="margin-bottom: 15px;"></td>
+                                            </tr>
+                                            cont++;
+                                        }
+                                    }
+                                    <tr style="border-top: 2px white solid;border-bottom: lightgrey 1px solid;" class="row-tabla-foto">
+                                        <td colspan="4">
+                                            <div style="margin-top:5px !important;" class="progress">
+                                                <div class="progress-bar" id="progress-principal" role="progressbar" aria-valuenow="0"
+                                                     aria-valuemin="0" aria-valuemax="100" style="width:0%">
+                                                    <span class="sr-only">0%</span>
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <div class="row" style="margin-top: 20px;">
+                        <div class="alert alert-danger error-extensiones" style="display:none;">
+
+                        </div>
+
+                        <div class="alert alert-danger error-extension-video" style="display:none;">
+
+                        </div>
+
+                        <div class="panel panel-default">
+                            <div class="panel-heading"><strong>Fotos y video del anuncio</strong></div>
+                            <div class="panel-body">
+                                <form action="" method="post" enctype="multipart/form-data" id="js-upload-form">
+                                    <div class="form-inline">
+                                        <h4>Agregar más fotos desde tu computadora</h4>
+                                        <div class="form-group">
+                                            <div class="btn btn-default image-preview-input" style="position: relative;">
+                                                <span class="glyphicon glyphicon-folder-open"></span>
+                                                <span style="padding-left: 3px;" class="image-preview-input-title">Elegir fotos</span>
+                                                <input class="input-absoluto" type="file" name="files[]" id="js-upload-files" onchange="actualizaFotos(event)" multiple>
+                                            </div>
+                                            <label><span id="num-fotos">0</span> foto(s) seleccionada(s)</label>
+                                        </div>
+                                        <div class="progress">
+                                            <div class="progress-bar" id="progress-fotos" role="progressbar" aria-valuenow="0"
+                                                 aria-valuemin="0" aria-valuemax="100" style="width:0%">
+                                                <span class="sr-only">0%</span>
+                                            </div>
+                                        </div>
+                                        <h4>Selecciona el video desde tu computadora</h4>
+                                        <div class="form-group">
+                                            <div class="btn btn-default image-preview-input" style="position: relative;">
+                                                <span class="glyphicon glyphicon-folder-open"></span>
+                                                <span style="padding-left: 3px;" class="image-preview-input-title">Elegir video</span>
+                                                <input class="input-absoluto" type="file" onchange="actualizaVideo(event)">
+                                            </div>
+                                            <label id="video-no-seleccionado">No se ha seleccionado el video</label>
+                                            <label id="video-seleccionado" style="display:none;">1 video seleccionado</label>
+                                        </div>
+                                        <div class="progress">
+                                            <div class="progress-bar" id="progress-video" role="progressbar" aria-valuenow="0"
+                                                 aria-valuemin="0" aria-valuemax="100" style="width:0%">
+                                                <span class="sr-only">0%</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row" style="margin-left:0px; margin-right: 0px;">
+                    <div class="form-group boton-guardar-container">
+                        <div class="row" style="text-align: center; margin-top: 20px;">
+                            <input id="guardar-nuevo-anuncio" type="submit" value="Guardar" class="btn btn-primary btn-lg btn-login" />
+                            <a class="btn btn-default btn-lg btn-cancelar-nuevo-anuncio" href="/Portal/MisAnuncios" style="margin-top:10px">Cancelar</a>
+                        </div>
+                    </div>
+                </div>
+                                        }
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
+
+<script>
+    var idAnuncio;
+    var titulo;
+    var precio;
+    var descripcion;
+    var meses;
+    var idCategoria = @Model.Categoria.Id;
+    var idSubcategoria = @Model.Subcategoria.Id;
+    var idPais = @Model.Pais.Id;
+    var idEstado = @Model.Estado.Id;
+    var fotoDisplayId = @Model.FotoPrincipal.Id;
+    var fotoDisplay = null;
+    var fotos = [];
+    var fotosEliminadas = [];
+    var fotosEliminadasRutas = [];
+    var video = null;
+    var fotosFinal = [];
+    var fotoDisplayFinal = null;
+    var videoFinal = '';
+    var validoCategoria = true;
+    var validoSubcategoria = true;
+    var validoPais = true;
+    var validoEstado = true;
+    var numeroSubidosEsperado = 1;
+    var numeroSubidos = 0;
+    var cambioFotoDeDisplay = false;
+
+    $(document).ready(function () {
+        fotoDisplay = $('#img-0').attr('src');
+        fotoDisplayFinal = $('#img-0').attr('src');
+    });
+
+    function resizeImg(obj) {
+        var doc = obj.contentWindow.document;
+        doc.body.children[0].style.width = '100%';
+        doc.body.children[0].style.height = '177px';
+    }
+
+    $("#btn-categoria").click(function () {
+        getCategorias();
+    });
+
+    $("#btn-subcategoria").click(function () {
+        getSubcategorias();
+    });
+
+    $("#btn-pais").click(function () {
+        getPaises();
+    });
+
+    $("#btn-estados").click(function () {
+        getEstados();
+    });
+
+    function deleteRow(r, id)
+    {
+        var ruta = $('.foto').attr('src');
+        fotosEliminadasRutas.push(ruta);
+        fotosEliminadas.push(id);
+        var i = r.parentNode.parentNode.rowIndex;
+        document.getElementById("tabla-fotos").deleteRow(i);
+    }
+
+    function categoriasClick(elemento) {
+        if (validoCategoria) {
+            $("#btn-categoria:first-child").html(elemento.text() + '<span class="caret nuevo-anuncio-caret categoria-caret"></span>');
+        }
+        else {
+            $("#btn-categoria:first-child").html(elemento.text() + '<span class="caret has-error-caret categoria-caret"></span>');
+        }
+        idCategoria = elemento.data('id');
+    }
+
+    function subcategoriasClick(elemento) {
+        if (validoSubcategoria) {
+            $("#btn-subcategoria:first-child").html(elemento.text() + '<span class="caret nuevo-anuncio-caret subcategoria-caret"></span>');
+        }
+        else {
+            $("#btn-subcategoria:first-child").html(elemento.text() + '<span class="caret has-error-caret subcategoria-caret"></span>');
+        }
+        idSubcategoria = elemento.data('id');
+    }
+
+    function paisesClick(elemento) {
+        if (validoPais) {
+            $("#btn-pais:first-child").html(elemento.text() + '<span class="caret nuevo-anuncio-caret pais-caret"></span>');
+        }
+        else {
+            $("#btn-pais:first-child").html(elemento.text() + '<span class="caret has-error-caret pais-caret"></span>');
+        }
+        idPais = elemento.data('id');
+    }
+
+    function estadosClick(elemento) {
+        if (validoEstado) {
+            $("#btn-estados:first-child").html(elemento.text() + '<span class="caret nuevo-anuncio-caret estado-caret"></span>');
+        }
+        else {
+            $("#btn-estados:first-child").html(elemento.text() + '<span class="caret has-error-caret estado-caret"></span>');
+        }
+        idEstado = elemento.data('id');
+    }
+
+    function getCategorias() {
+        $.ajax({
+            type: "POST",
+            data: {},
+            url: '/Administrador/CategoriasAnuncioPartial',
+            success: function (result) {
+                $("#categorias").html(result);
+            },
+            error: function (msg) {
+                console.log(msg);
+                alert("Error en categorias: " + msg);
+            }
+        });
+    }
+
+    function getSubcategorias() {
+        $.ajax({
+            type: "POST",
+            data: {},
+            url: '/Administrador/SubcategoriasAnuncioPartial?idCategoria=' + idCategoria,
+            success: function (result) {
+                $("#subcategorias").html(result);
+            },
+            error: function (msg) {
+                console.log(msg);
+                alert("Error en subcategorias: " + msg);
+            }
+        });
+    }
+
+    function getPaises() {
+        $.ajax({
+            type: "POST",
+            data: {},
+            url: '/Administrador/PaisesAnuncioPartial',
+            success: function (result) {
+                $("#paises").html(result);
+            },
+            error: function (msg) {
+                console.log(msg);
+                alert("Error en paises: " + msg);
+            }
+        });
+    }
+
+    function getEstados() {
+        $.ajax({
+            type: "POST",
+            data: {},
+            url: '/Administrador/EstadosAnuncioPartial?idPais=' + idPais,
+            success: function (result) {
+                $("#estados").html(result);
+            },
+            error: function (msg) {
+                console.log(msg);
+                alert("Error en estados: " + msg);
+            }
+        });
+    }
+
+    function subirVideo(videoInt) {
+        if (videoInt == null || videoInt == undefined) return;
+        if (window.FormData !== undefined) {
+            var data = new FormData();
+            data.append("video", videoInt);
+
+            $.ajax({
+                type: "POST",
+                url: '/Administrador/SubirVideo',
+                data: data,
+                xhr: function () {  // Custom XMLHttpRequest
+                    var myXhr = $.ajaxSettings.xhr();
+                    if (myXhr.upload) { // Check if upload property exists
+                        myXhr.upload.addEventListener('progress', progressVideo, false); // For handling the progress of the upload
+                    }
+                    return myXhr;
+                },
+                cache: false,
+                contentType: false,
+                processData: false,
+                success: function (result) {
+                    videoFinal = JSON.parse(result);
+                    numeroSubidos++;
+                },
+                error: function (xhr, status, p3, p4) {
+                    var err = "Error " + " " + status + " " + p3 + " " + p4;
+                    if (xhr.responseText && xhr.responseText[0] == "{")
+                        err = JSON.parse(xhr.responseText).Message;
+                    console.log(err);
+                }
+            });
+        } else {
+            alert("This browser doesn't support HTML5 file uploads!");
+        }
+    }
+
+    function subirFotos(fotosInt, tipo) {
+        if (fotosInt.length <= 0) return;
+        if (window.FormData !== undefined) {
+            var data = new FormData();
+            for (var x = 0; x < fotosInt.length; x++) {
+                data.append("file" + tipo + x, fotosInt[x]);
+            }
+
+            $.ajax({
+                type: "POST",
+                url: '/Administrador/SubirFotos',
+                data: data,
+                xhr: function () {  // Custom XMLHttpRequest
+                    var myXhr = $.ajaxSettings.xhr();
+                    if (myXhr.upload) { // Check if upload property exists
+                        if (tipo == 0)
+                            myXhr.upload.addEventListener('progress', progressPrincipal, false); // For handling the progress of the upload
+                        else
+                            myXhr.upload.addEventListener('progress', progressFotos, false); // For handling the progress of the upload
+                    }
+                    return myXhr;
+                },
+                cache: false,
+                contentType: false,
+                processData: false,
+                success: function (result) {
+                    if (tipo == 0) {
+                        fotoDisplayFinal = JSON.parse(result)[0];
+                    }
+                    else {
+                        fotosFinal = JSON.parse(result);
+                    }
+
+                    numeroSubidos++;
+                },
+                error: function (xhr, status, p3, p4) {
+                    var err = "Error " + " " + status + " " + p3 + " " + p4;
+                    if (xhr.responseText && xhr.responseText[0] == "{")
+                        err = JSON.parse(xhr.responseText).Message;
+                    console.log(err);
+                }
+            });
+        } else {
+            alert("This browser doesn't support HTML5 file uploads!");
+        }
+    }
+
+    function agregarAnuncio() {
+
+        var nuevoAnuncio = {
+            jid: idAnuncio,
+            jtitulo: titulo,
+            jprecio: precio,
+            jdescripcion: descripcion,
+            jmeses: meses,
+            jestado: idEstado,
+            jidSubcategoria: idSubcategoria,
+            jfotoDisplayId: fotoDisplayId,
+            jfotoDisplay: fotoDisplayFinal,
+            jfotos: fotosFinal,
+            jvideo: videoFinal,
+            jfotosEliminadas: fotosEliminadas,
+            jfotosEliminadasRutas: fotosEliminadasRutas
+        };
+
+        $.ajax({
+            type: "POST",
+            data: { "json": JSON.stringify(nuevoAnuncio) },
+            url: "/Portal/ModificarAnuncio",
+            success: function (result) {
+                window.location = "MisAnuncios";
+            },
+            error: function (msg) {
+                console.log(msg);
+            }
+        });
+    }
+
+    function loadFile(event, num) {
+        $(".error-extension").html('').hide('');
+        if (!validExtension(event.target.files[0])) {
+            $("#img-" + num).val("");
+            mostrarErrorExtension("La extensión de la imagen no es válida");
+            $("#img-" + num).attr("src", "/img/foto-vacia.png");
+            return;
+        }
+
+        if (event.target.files.length == 0) {
+            $("#img-" + num).attr("src", "/img/foto-vacia.png");
+            return;
+        }
+        var foto = URL.createObjectURL(event.target.files[0]);
+        fotoDisplay = event.target.files[0];
+        cambioFotoDeDisplay = true;
+        $("#img-" + num).attr("src", foto);
+    };
+
+    function validExtension(imagen) {
+        var ext = imagen.name.split('.').pop().toLowerCase();
+        if ($.inArray(ext, ['gif', 'png', 'jpg', 'jpeg']) == -1) {
+            return false;
+        }
+        return true;
+    }
+
+    function validExtensionVideo(video) {
+        var ext = video.name.split('.').pop().toLowerCase();
+        if ($.inArray(ext, ['mp4', 'mpeg4']) == -1) {
+            return false;
+        }
+        return true;
+    }
+
+    function validaTamanoVideo(video) {
+        if (video.fileSize > 20800) {
+            return false;
+        }
+        return true;
+    }
+
+
+    function actualizaFotos(event) {
+        $(".error-extensiones").html('').hide('');
+        if (event.target.files.length <= 0) {
+            return;
+        }
+
+        fotos = [];
+        var uploadFiles = event.target.files;
+
+        for (var i = 0; i < uploadFiles.length; i++) {
+            if (!validExtension(uploadFiles[i])) {
+                mostrarErrorExtensiones("La extensión de una o más de las imágenes seleccionadas no es válida");
+                return;
+            }
+            fotos.push(uploadFiles[i]);
+        }
+        $("#num-fotos").html(fotos.length);
+    }
+
+    function actualizaVideo(event) {
+        $(".error-extension-video").html('').hide('');
+        var videoExt = event.target.files[0];
+        if (videoExt === undefined) {
+            return;
+        }
+        if (!validExtensionVideo(videoExt)) {
+            mostrarErrorExtensionVideo("La extensión del video no es válida");
+            return;
+        }
+        if (!validaTamanoVideo(videoExt)) {
+            mostrarErrorExtensionVideo("El tamaño del video debe ser menor a 20 MB");
+            return;
+        }
+        $("#video-no-seleccionado").hide();
+        $("#video-seleccionado").show();
+        video = videoExt;
+    }
+
+    function mostrarErrorExtension(cadenaErrorExtension) {
+        $(".error-extension").html(cadenaErrorExtension).show('');
+    }
+
+    function mostrarErrorExtensiones(cadenaErrorExtension) {
+        $(".error-extensiones").html(cadenaErrorExtension).show('');
+    }
+
+    function mostrarErrorExtensionVideo(cadenaErrorExtension) {
+        $(".error-extension-video").html(cadenaErrorExtension).show('');
+    }
+
+    $("#guardar-nuevo-anuncio").click(function () {
+        idAnuncio = $("#id-anuncio").val();
+        var cadenaError = "<strong>Error:</strong> </br>";
+        var valido = true;
+
+        titulo = $("#anuncio-titulo").val();
+
+        if (titulo == '') {
+            valido = false;
+            $('.form-titulo').addClass('has-error');
+            cadenaError += "    - Introduzca un t&iacutetulo v&aacute;lido. </br>";
+        }
+        else {
+            if (titulo.length > 30) {
+                valido = false;
+                $('.form-titulo').addClass('has-error');
+                cadenaError += "    - La longitud del t&iacute;tulo no puede ser mayor a 30 caracteres. </br>";
+            }
+            else {
+                $('.form-titulo').removeClass('has-error');
+            }
+        }
+
+        precio = $("#anuncio-precio").val();
+
+        if (precio == '') {
+            valido = false;
+            $('.form-precio').addClass('has-error');
+            cadenaError += "    - Introduzca un precio v&aacute;lido. </br>";
+        }
+        else {
+            $('.form-precio').removeClass('has-error');
+        }
+
+        descripcion = $("#anuncio-descripcion").val();
+
+        if (descripcion == '') {
+            valido = false;
+            $('.form-descripcion').addClass('has-error');
+            cadenaError += "    - Introduzca una descripci&oacute;n v&aacute;lida. </br>";
+        }
+        else {
+            if (descripcion.length > 500) {
+                valido = false;
+                $('.form-descripcion').addClass('has-error');
+                cadenaError += "    - La longitud de la descripci&oacute;n no puede ser mayor a 500 caracteres. </br>";
+            }
+            else {
+                $('.form-descripcion').removeClass('has-error');
+            }
+        }
+
+        if (idCategoria == null) {
+            valido = false;
+            cadenaError += "    - Introduzca una categor&iacute;a v&aacute;lida. </br>";
+            $('#btn-categoria').addClass('has-error-dropdown');
+            $('.categoria-caret').removeClass('nuevo-anuncio-caret');
+            $('.categoria-caret').addClass('has-error-caret');
+            validoCategoria = false;
+        }
+        else {
+            $('#btn-categoria').removeClass('has-error-dropdown');
+            $('.categoria-caret').removeClass('has-error-caret');
+            $('.categoria-caret').addClass('nuevo-anuncio-caret');
+        }
+
+        if (idSubcategoria == null) {
+            valido = false;
+            cadenaError += "    - Introduzca una subcategor&iacute;a v&aacute;lida. </br>";
+            $('#btn-subcategoria').addClass('has-error-dropdown');
+            $('.subcategoria-caret').removeClass('nuevo-anuncio-caret');
+            $('.subcategoria-caret').addClass('has-error-caret');
+            validoSubcategoria = false;
+        }
+        else {
+            $('#btn-subcategoria').removeClass('has-error-dropdown');
+            $('.subcategoria-caret').removeClass('has-error-caret');
+            $('.subcategoria-caret').addClass('nuevo-anuncio-caret');
+        }
+
+        if (idPais == null) {
+            valido = false;
+            cadenaError += "    - Introduzca un pa&iacute;s v&aacute;lido. </br>";
+            $('#btn-pais').addClass('has-error-dropdown');
+            $('.pais-caret').removeClass('nuevo-anuncio-caret');
+            $('.pais-caret').addClass('has-error-caret');
+            validoPais = false;
+        }
+        else {
+            $('#btn-pais').removeClass('has-error-dropdown');
+            $('.pais-caret').removeClass('has-error-caret');
+            $('.pais-caret').addClass('nuevo-anuncio-caret');
+        }
+
+        if (idEstado == null) {
+            valido = false;
+            cadenaError += "    - Introduzca un estado v&aacute;lido. </br>";
+            $('#btn-estados').addClass('has-error-dropdown');
+            $('.estado-caret').removeClass('nuevo-anuncio-caret');
+            $('.estado-caret').addClass('has-error-caret');
+            validoEstado = false;
+        }
+        else {
+            $('#btn-estados').removeClass('has-error-dropdown');
+            $('.estado-caret').removeClass('has-error-caret');
+            $('.estado-caret').addClass('nuevo-anuncio-caret');
+        }
+
+        if (!valido) {
+            $(".error-nuevo-anuncio").html(cadenaError).show('');
+            return;
+        }
+
+        if (video != null) {
+            numeroSubidosEsperado++;
+        }
+
+
+        if (fotos.length > 0) {
+            numeroSubidosEsperado++;
+        }
+
+        $(".error-nuevo-anuncio").hide('');
+        var arreglo = [];
+        if(cambioFotoDeDisplay == true){
+            arreglo.push(fotoDisplay);
+            subirFotos(arreglo, 0);
+        }
+        subirFotos(fotos, 1);
+        subirVideo(video);
+        checarDone();
+    });
+
+    function checarDone() {
+        if (numeroSubidosEsperado === numeroSubidos) {
+            agregarAnuncio();
+            return;
+        }
+        var t = setTimeout(checarDone, 500);
+    }
+
+    function progressPrincipal(e) {
+        var val = Math.floor(e.loaded / e.total * 100);
+        $('#progress-principal').css('width', val + '%').attr('aria-valuenow', val);
+        $('#progress-principal').html(val + "%");
+    }
+
+    function progressFotos(e) {
+        if (e.lengthComputable) {
+            //$('.progress-bar').attr('aria-valuenow',''+e.loaded.toString());
+            var val = Math.floor(e.loaded / e.total * 100);
+            $('#progress-fotos').css('width', val + '%').attr('aria-valuenow', val);
+            $('#progress-fotos').html(val + "%");
+            // console.log(e.loaded/e.total*100);
+        }
+    }
+
+    function progressVideo(e) {
+        if (e.lengthComputable) {
+            //$('.progress-bar').attr('aria-valuenow',''+e.loaded.toString());
+            var val = Math.floor(e.loaded / e.total * 100);
+            $('#progress-video').css('width', val + '%').attr('aria-valuenow', val);
+            $('#progress-video').html(val + "%");
+            // console.log(e.loaded/e.total*100);
+        }
+    }
+
+</script>
+<style>
+    .progress {
+        margin-bottom: 15px !important;
+        margin-top: 15px !important;
+    }
+</style>

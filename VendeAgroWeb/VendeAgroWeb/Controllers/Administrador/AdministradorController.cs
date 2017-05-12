@@ -1083,6 +1083,40 @@ namespace VendeAgroWeb.Controllers.Administrador
 
         }
 
+        [HttpPost]
+        [AllowAnonymous]
+        public async Task<bool> RechazarAnuncio(int? id, string rechazo)
+        {
+            if (id == null)
+            {
+                return false;
+            }
+            return await Task.Run(() =>
+            {
+                using (var _dbContext = new MercampoEntities())
+                {
+                    Startup.OpenDatabaseConnection(_dbContext);
+                    if (_dbContext.Database.Connection.State != ConnectionState.Open)
+                    {
+                        return false;
+                    }
+
+                    var anuncio = _dbContext.Anuncios.Where(a => a.id == id).FirstOrDefault();
+
+                    if (anuncio == null)
+                    {
+                        return false;
+                    }
+
+                    anuncio.estado = (int)EstadoAnuncio.NoAprobado;
+                    anuncio.razonRechazo = rechazo;
+                    _dbContext.SaveChanges();
+                    return true;
+                }
+            });
+
+        }
+
         public async Task<ActionResult> DesactivarAnuncio(int? id)
         {
             if (await Startup.GetAplicacionUsuariosManager().VerificarAdminSesionAsync() == LoginStatus.Incorrecto)
@@ -1175,7 +1209,8 @@ namespace VendeAgroWeb.Controllers.Administrador
                             {
                                 fotos.Add(new FotoViewModel(foto.principal, foto.ruta));
                             }
-                            model = new AnuncioDetallesViewModel(anuncioViewModel, anuncio.descripcion, fotos, anuncio.fecha_inicio, anuncio.fecha_fin, paqueteViewModel, listaBeneficios, rutaVideo);
+
+                            model = new AnuncioDetallesViewModel(anuncioViewModel, anuncio.descripcion, fotos, anuncio.fecha_inicio, anuncio.fecha_fin, paqueteViewModel, listaBeneficios, rutaVideo, anuncio.razonRechazo);
                         }
                     }
                 }

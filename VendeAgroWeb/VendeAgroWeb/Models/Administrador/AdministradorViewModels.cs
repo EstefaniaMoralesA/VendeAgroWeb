@@ -809,10 +809,11 @@ namespace VendeAgroWeb.Models.Administrador
         private AnuncioPaqueteViewModel _paquete;
         private ICollection<BeneficioViewModel> _beneficios;
         private string _video;
+        private string _razonRechazo;
 
         public AnuncioDetallesViewModel(AnuncioViewModel anuncio,
             string descripcion, List<FotoViewModel> fotos, DateTime? fechaInicio, 
-            DateTime? fechaFin, AnuncioPaqueteViewModel paquete, ICollection<BeneficioViewModel> beneficios, string video)
+            DateTime? fechaFin, AnuncioPaqueteViewModel paquete, ICollection<BeneficioViewModel> beneficios, string video, string razonRechazo)
         {
             _anuncio = anuncio;
             _descripcion = descripcion;
@@ -822,6 +823,7 @@ namespace VendeAgroWeb.Models.Administrador
             _fechaFin = fechaFin;
             _beneficios = beneficios;
             _video = video;
+            _razonRechazo = razonRechazo;
         }
 
         public bool TieneVideo
@@ -893,6 +895,14 @@ namespace VendeAgroWeb.Models.Administrador
             get
             {
                 return _beneficios;
+            }
+        }
+
+        public string RazonRechazo
+        {
+            get
+            {
+                return _razonRechazo;
             }
         }
     }
