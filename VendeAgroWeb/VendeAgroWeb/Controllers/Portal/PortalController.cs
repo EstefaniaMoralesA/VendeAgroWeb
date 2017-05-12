@@ -212,6 +212,103 @@ namespace VendeAgroWeb.Controllers.Administrador
             return View(model);
         }
 
+        [HttpPost]
+        public async Task<bool> ModificarAnuncio(string json)
+        {
+            var anuncio = JObject.Parse(json);
+            var id = (int)anuncio["jid"];
+            var titulo = (string)anuncio["jtitulo"];
+            var descripcion = (string)anuncio["jdescripcion"];
+            var precio = (double)anuncio["jprecio"];
+            var idSubcategoria = (int)anuncio["jidSubcategoria"];
+            var idEstado = (int)anuncio["jestado"];
+            var fotoDisplayId = (int)anuncio["jfotoDisplayId"];
+            var fotoDisplay = (string)anuncio["jfotoDisplay"];
+            var fotos = (JArray)anuncio["jfotos"];
+            var fotosEliminadas = (JArray)anuncio["jfotos"];
+            var fotosEliminadasRutas = (JArray)anuncio["jfotos"];
+            var video = (string)anuncio["jvideo"];
+            bool estado = true;
+
+            return await Task.Run(() =>
+            {
+                using (var _dbContext = new MercampoEntities())
+                {
+                    Startup.OpenDatabaseConnection(_dbContext);
+                    if (_dbContext.Database.Connection.State != ConnectionState.Open)
+                    {
+                        ModelState.AddModelError("", "Error en la base de datos, vuelva a intentarlo");
+                        return false;
+                    }
+                    else
+                    {
+                        var anuncioDb = _dbContext.Anuncios.FirstOrDefault(a => a.id == id);
+
+                        if (anuncioDb == null)
+                        {
+                            ModelState.AddModelError("", "Error anuncio no encontrado, vuelva a intentarlo");
+                            estado = false;
+                        }
+                        else
+                        {
+                            anuncioDb.titulo = titulo;
+                            anuncioDb.descripcion = descripcion;
+                            anuncioDb.precio = precio;
+                            anuncioDb.idSubcategoria = idSubcategoria;
+                            anuncioDb.idEstado = idEstado;
+                            anuncioDb.estado = (int)EstadoAnuncio.PendientePorAprobar;
+
+                            foreach (var foto in fotosEliminadas)
+                            {
+                                var idFoto = (int)foto;
+                                var fotoActual = _dbContext.Fotos_Anuncio.FirstOrDefault(f => f.id == idFoto);
+                                _dbContext.Fotos_Anuncio.Remove(fotoActual);
+                            }
+
+                            //borrarFotos(fotosEliminadasRutas);
+
+                            var fotoDb = _dbContext.Fotos_Anuncio.FirstOrDefault(f => f.id == fotoDisplayId);
+
+                            if (fotoDb == null)
+                            {
+                                ModelState.AddModelError("", "Error anuncio no encontrado, vuelva a intentarlo");
+                                estado = false;
+                            }
+
+                            fotoDb.ruta = fotoDisplay;
+
+                            foreach (var item in fotos)
+                            {
+                                var url = (string)item;
+                                _dbContext.Fotos_Anuncio.Add(new Fotos_Anuncio
+                                {
+                                    ruta = url,
+                                    idAnuncio = anuncioDb.id,
+                                    principal = false
+                                });
+                            }
+
+                            if (!string.IsNullOrEmpty(video))
+                            {
+                                _dbContext.Videos_Anuncio.Add(new Videos_Anuncio
+                                {
+                                    ruta = video,
+                                    idAnuncio = anuncioDb.id
+                                });
+                            }
+
+                            _dbContext.SaveChanges();
+                        }
+
+                        _dbContext.SaveChanges();
+                    }
+
+                    _dbContext.Database.Connection.Close();
+                    return true;
+                }
+            });
+        }
+
         public async Task<ActionResult> ModificarAnuncio(int? id)
         {
             if (id == null)

@@ -171,7 +171,12 @@
 
     function startIntro() {
         var intro = introJs();
-
+        intro.setOption("nextLabel", " > ");
+        intro.setOption("prevLabel", " < ");
+        intro.setOption("doneLabel", " Listo ");
+        intro.setOption("doneLabel", " Listo ");
+        intro.setOption('showProgress', true);
+        intro.setOption('showBullets', false);
         intro.start();
     }
 </script>

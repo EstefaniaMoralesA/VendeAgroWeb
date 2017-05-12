@@ -120,7 +120,18 @@
                                                 <td>
                                                     <iframe id="img-@cont" frameborder="0" width="225" height="177" class="iframe-foto" scrolling="no" onload="resizeImg(this)" src="@foto.Ruta"></iframe>
                                                 </td>
-                                                <td style="vertical-align: middle;"><input type="button" value="Eliminar" onclick="deleteRow(this, @foto.Id)" class="btn btn-danger btn-banner-desactivar btn-10-caracteres btn-categorias-desactivar" style="margin-bottom: 15px;"></td>
+                                                <td>
+                                                    <div class="form-group">
+                                                        <div class="btn btn-success image-preview-input" id="img-inp-btn">
+                                                            <span class="glyphicon glyphicon-folder-open"></span>
+                                                            <span style="padding-left: 3px;" class="image-preview-input-title">Modificar</span>
+                                                            @{
+                                                                <input class="input-absoluto" type="file" onchange="loadFile(event, @cont)">
+
+                                                            }
+                                                        </div>
+                                                    </div>
+                                                </td>
                                             </tr>
                                             cont++;
                                         }
@@ -713,6 +724,7 @@
     });
 
     function checarDone() {
+        //alert("numeroSubidosEsperado " + numeroSubidosEsperado + "numero Subidos");
         if (numeroSubidosEsperado === numeroSubidos) {
             agregarAnuncio();
             return;
