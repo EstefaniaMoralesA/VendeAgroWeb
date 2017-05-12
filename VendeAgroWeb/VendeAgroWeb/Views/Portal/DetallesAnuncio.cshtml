@@ -154,7 +154,7 @@
                 <h2 style="color:red; margin-top:7px;">Razones no aprobado</h2>
                 <p style="color:red;">@Model.RazonRechazo</p>
                 <div class="form-group" style="text-align:center;">
-                    <a style="width:50%;" data-id="@Model.Anuncio.Id" id="boton-modificar" class="btn btn-success">Modificar</a>
+                    <a style="width:50%;" href="/Portal/ModificarAnuncio?id=@Model.Anuncio.Id" id="boton-modificar" class="btn btn-success">Modificar</a>
                 </div>
             }
         }
@@ -200,24 +200,4 @@
             console.log($(imagenGrande).attr("src"));
         });
     }
-
-    $(".boton-modificar").click(function () {
-        var id = $(this).data("id");
-        $.ajax({
-            type: 'POST',
-            url: '/Portal/ModificarAnuncio?id=' + id,
-            success: function (response) {
-                if (response == "True") {
-                    location.reload();
-                    return;
-                }
-                alert("Error en la base de datos, vuelva a intentarlo.");
-
-            },
-            error: function (e) {
-                alert("Se presento un error, volver a intentarlo");
-            }
-
-        })
-    });
 </script>
