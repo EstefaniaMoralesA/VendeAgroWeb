@@ -38,11 +38,10 @@ namespace VendeAgroWeb
 
             using (var smtp = new SmtpClient())
             {
+                smtp.Host = "relay-hosting.secureserver.net";
+                smtp.EnableSsl = false;
                 smtp.UseDefaultCredentials = false;
-                smtp.Credentials = _credenciales;
-                smtp.Host = "smtp.gmail.com";
-                smtp.Port = 587;
-                smtp.EnableSsl = true;
+                smtp.Port = 25;
                 try
                 {
                     await smtp.SendMailAsync(message);
