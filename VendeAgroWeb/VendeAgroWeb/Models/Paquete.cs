@@ -19,7 +19,6 @@ namespace VendeAgroWeb.Models
         {
             this.Anuncios = new HashSet<Anuncio>();
             this.Conekta_Paquete = new HashSet<Conekta_Paquete>();
-            this.Pago_Concepto = new HashSet<Pago_Concepto>();
         }
     
         public int id { get; set; }
@@ -36,7 +35,5 @@ namespace VendeAgroWeb.Models
         public virtual ICollection<Anuncio> Anuncios { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Conekta_Paquete> Conekta_Paquete { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Pago_Concepto> Pago_Concepto { get; set; }
     }
 }
