@@ -124,9 +124,14 @@
           </Key>
           <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="idPago" Type="int" Nullable="false" />
-          <Property Name="idPaquete" Type="int" />
-          <Property Name="idBeneficio" Type="int" />
           <Property Name="tipo" Type="bit" Nullable="false" />
+          <Property Name="descripcionBeneficio" Type="varchar" MaxLength="250" />
+          <Property Name="precioBeneficio" Type="float" />
+          <Property Name="tipoBeneficio" Type="int" />
+          <Property Name="nombrePaquete" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="mesesPaquete" Type="int" Nullable="false" />
+          <Property Name="precioPaquete" Type="float" Nullable="false" />
+          <Property Name="descripcionPaquete" Type="varchar" MaxLength="200" Nullable="false" />
         </EntityType>
         <EntityType Name="Pais">
           <Key>
@@ -347,18 +352,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Pago_Conc__idBen__66603565">
-          <End Role="Beneficio" Type="Self.Beneficio" Multiplicity="0..1" />
-          <End Role="Pago_Concepto" Type="Self.Pago_Concepto" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Beneficio">
-              <PropertyRef Name="id" />
-            </Principal>
-            <Dependent Role="Pago_Concepto">
-              <PropertyRef Name="idBeneficio" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK__Pago_Conc__idPag__6477ECF3">
           <End Role="Pago" Type="Self.Pago" Multiplicity="1">
             <OnDelete Action="Cascade" />
@@ -370,18 +363,6 @@
             </Principal>
             <Dependent Role="Pago_Concepto">
               <PropertyRef Name="idPago" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK__Pago_Conc__idPaq__656C112C">
-          <End Role="Paquete" Type="Self.Paquete" Multiplicity="0..1" />
-          <End Role="Pago_Concepto" Type="Self.Pago_Concepto" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Paquete">
-              <PropertyRef Name="id" />
-            </Principal>
-            <Dependent Role="Pago_Concepto">
-              <PropertyRef Name="idPaquete" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -491,16 +472,8 @@
             <End Role="Usuario" EntitySet="Usuario" />
             <End Role="Pago" EntitySet="Pago" />
           </AssociationSet>
-          <AssociationSet Name="FK__Pago_Conc__idBen__66603565" Association="Self.FK__Pago_Conc__idBen__66603565">
-            <End Role="Beneficio" EntitySet="Beneficio" />
-            <End Role="Pago_Concepto" EntitySet="Pago_Concepto" />
-          </AssociationSet>
           <AssociationSet Name="FK__Pago_Conc__idPag__6477ECF3" Association="Self.FK__Pago_Conc__idPag__6477ECF3">
             <End Role="Pago" EntitySet="Pago" />
-            <End Role="Pago_Concepto" EntitySet="Pago_Concepto" />
-          </AssociationSet>
-          <AssociationSet Name="FK__Pago_Conc__idPaq__656C112C" Association="Self.FK__Pago_Conc__idPaq__656C112C">
-            <End Role="Paquete" EntitySet="Paquete" />
             <End Role="Pago_Concepto" EntitySet="Pago_Concepto" />
           </AssociationSet>
           <AssociationSet Name="FK__Subcatego__idCat__6754599E" Association="Self.FK__Subcatego__idCat__6754599E">
@@ -586,7 +559,6 @@
           <Property Name="tipo" Type="Int32" Nullable="false" />
           <Property Name="numero" Type="Int32" />
           <NavigationProperty Name="Anuncio_Beneficio" Relationship="Self.FK__Anuncio_B__idBen__5CD6CB2B" FromRole="Beneficio" ToRole="Anuncio_Beneficio" />
-          <NavigationProperty Name="Pago_Concepto" Relationship="Self.FK__Pago_Conc__idBen__66603565" FromRole="Beneficio" ToRole="Pago_Concepto" />
         </EntityType>
         <EntityType Name="Categoria">
           <Key>
@@ -659,12 +631,15 @@
           </Key>
           <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="idPago" Type="Int32" Nullable="false" />
-          <Property Name="idPaquete" Type="Int32" />
-          <Property Name="idBeneficio" Type="Int32" />
           <Property Name="tipo" Type="Boolean" Nullable="false" />
-          <NavigationProperty Name="Beneficio" Relationship="Self.FK__Pago_Conc__idBen__66603565" FromRole="Pago_Concepto" ToRole="Beneficio" />
+          <Property Name="descripcionBeneficio" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
+          <Property Name="precioBeneficio" Type="Double" />
+          <Property Name="tipoBeneficio" Type="Int32" />
+          <Property Name="nombrePaquete" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="mesesPaquete" Type="Int32" Nullable="false" />
+          <Property Name="precioPaquete" Type="Double" Nullable="false" />
+          <Property Name="descripcionPaquete" Type="String" MaxLength="200" FixedLength="false" Unicode="false" Nullable="false" />
           <NavigationProperty Name="Pago" Relationship="Self.FK__Pago_Conc__idPag__6477ECF3" FromRole="Pago_Concepto" ToRole="Pago" />
-          <NavigationProperty Name="Paquete" Relationship="Self.FK__Pago_Conc__idPaq__656C112C" FromRole="Pago_Concepto" ToRole="Paquete" />
         </EntityType>
         <EntityType Name="Pai">
           <Key>
@@ -689,7 +664,6 @@
           <Property Name="porcentajeAhorro" Type="Double" Nullable="false" />
           <NavigationProperty Name="Anuncios" Relationship="Self.FK__Anuncio__idPaque__14270015" FromRole="Paquete" ToRole="Anuncio" />
           <NavigationProperty Name="Conekta_Paquete" Relationship="Self.FK__Conekta_P__idPaq__60A75C0F" FromRole="Paquete" ToRole="Conekta_Paquete" />
-          <NavigationProperty Name="Pago_Concepto" Relationship="Self.FK__Pago_Conc__idPaq__656C112C" FromRole="Paquete" ToRole="Pago_Concepto" />
         </EntityType>
         <EntityType Name="Subcategoria">
           <Key>
@@ -857,18 +831,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Pago_Conc__idBen__66603565">
-          <End Role="Beneficio" Type="Self.Beneficio" Multiplicity="0..1" />
-          <End Role="Pago_Concepto" Type="Self.Pago_Concepto" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Beneficio">
-              <PropertyRef Name="id" />
-            </Principal>
-            <Dependent Role="Pago_Concepto">
-              <PropertyRef Name="idBeneficio" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK__Subcatego__idCat__6754599E">
           <End Role="Categoria" Type="Self.Categoria" Multiplicity="0..1">
             <OnDelete Action="Cascade" />
@@ -951,18 +913,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Pago_Conc__idPaq__656C112C">
-          <End Role="Paquete" Type="Self.Paquete" Multiplicity="0..1" />
-          <End Role="Pago_Concepto" Type="Self.Pago_Concepto" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Paquete">
-              <PropertyRef Name="id" />
-            </Principal>
-            <Dependent Role="Pago_Concepto">
-              <PropertyRef Name="idPaquete" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK__Usuario_T__idUsu__68487DD7">
           <End Role="Usuario" Type="Self.Usuario" Multiplicity="1">
             <OnDelete Action="Cascade" />
@@ -1029,10 +979,6 @@
             <End Role="Beneficio" EntitySet="Beneficios" />
             <End Role="Anuncio_Beneficio" EntitySet="Anuncio_Beneficio" />
           </AssociationSet>
-          <AssociationSet Name="FK__Pago_Conc__idBen__66603565" Association="Self.FK__Pago_Conc__idBen__66603565">
-            <End Role="Beneficio" EntitySet="Beneficios" />
-            <End Role="Pago_Concepto" EntitySet="Pago_Concepto" />
-          </AssociationSet>
           <AssociationSet Name="FK__Subcatego__idCat__6754599E" Association="Self.FK__Subcatego__idCat__6754599E">
             <End Role="Categoria" EntitySet="Categorias" />
             <End Role="Subcategoria" EntitySet="Subcategorias" />
@@ -1055,10 +1001,6 @@
           </AssociationSet>
           <AssociationSet Name="FK__Pago_Conc__idPag__6477ECF3" Association="Self.FK__Pago_Conc__idPag__6477ECF3">
             <End Role="Pago" EntitySet="Pagoes" />
-            <End Role="Pago_Concepto" EntitySet="Pago_Concepto" />
-          </AssociationSet>
-          <AssociationSet Name="FK__Pago_Conc__idPaq__656C112C" Association="Self.FK__Pago_Conc__idPaq__656C112C">
-            <End Role="Paquete" EntitySet="Paquetes" />
             <End Role="Pago_Concepto" EntitySet="Pago_Concepto" />
           </AssociationSet>
           <AssociationSet Name="FK__Usuario_T__idUsu__68487DD7" Association="Self.FK__Usuario_T__idUsu__68487DD7">
@@ -1201,9 +1143,14 @@
               <MappingFragment StoreEntitySet="Pago_Concepto">
                 <ScalarProperty Name="id" ColumnName="id" />
                 <ScalarProperty Name="idPago" ColumnName="idPago" />
-                <ScalarProperty Name="idPaquete" ColumnName="idPaquete" />
-                <ScalarProperty Name="idBeneficio" ColumnName="idBeneficio" />
                 <ScalarProperty Name="tipo" ColumnName="tipo" />
+                <ScalarProperty Name="descripcionBeneficio" ColumnName="descripcionBeneficio" />
+                <ScalarProperty Name="precioBeneficio" ColumnName="precioBeneficio" />
+                <ScalarProperty Name="tipoBeneficio" ColumnName="tipoBeneficio" />
+                <ScalarProperty Name="nombrePaquete" ColumnName="nombrePaquete" />
+                <ScalarProperty Name="mesesPaquete" ColumnName="mesesPaquete" />
+                <ScalarProperty Name="precioPaquete" ColumnName="precioPaquete" />
+                <ScalarProperty Name="descripcionPaquete" ColumnName="descripcionPaquete" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

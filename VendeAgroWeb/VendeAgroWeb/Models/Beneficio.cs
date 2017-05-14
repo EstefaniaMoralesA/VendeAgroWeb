@@ -18,7 +18,6 @@ namespace VendeAgroWeb.Models
         public Beneficio()
         {
             this.Anuncio_Beneficio = new HashSet<Anuncio_Beneficio>();
-            this.Pago_Concepto = new HashSet<Pago_Concepto>();
         }
     
         public int id { get; set; }
@@ -29,7 +28,5 @@ namespace VendeAgroWeb.Models
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Anuncio_Beneficio> Anuncio_Beneficio { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Pago_Concepto> Pago_Concepto { get; set; }
     }
 }
