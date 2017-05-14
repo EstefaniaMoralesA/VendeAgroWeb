@@ -182,6 +182,7 @@ namespace VendeAgroWeb.Controllers.Home
             {
                 return View(new ResultadoCargo(false, ResultadoCargoTarjeta.ErrorInterno));
             }
+
             return View(new ResultadoCargo(true, (ResultadoCargoTarjeta)resultado.Value, numero, autorizacion, mensaje: "", monto: monto.Value));
         }
 

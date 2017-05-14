@@ -567,9 +567,37 @@ namespace VendeAgroWeb.Controllers.Administrador
             return PartialView("_OlvidasteContrasena");
         }
 
-        public ActionResult MisPagos()
+        public async Task<ICollection<PagoViewModel>> ObtenerPagos(int id)
         {
-            return View();
+            return await Task.Run(() =>
+            {
+                using (var _dbContext = new MercampoEntities())
+                {
+                    Startup.OpenDatabaseConnection(_dbContext);
+                    if (_dbContext.Database.Connection.State != ConnectionState.Open)
+                    {
+                        return null;
+                    }
+
+                    List<PagoViewModel> lista = new List<PagoViewModel>();
+                    var pagos = _dbContext.Pagoes.Where(p => p.idUsuario == id);
+
+                    foreach (var item in pagos)
+                    {
+                        lista.Add(new PagoViewModel(item.id, item.total, item.fecha, item.digitosTarjeta));
+                    }
+
+                    _dbContext.Database.Connection.Close();
+                    return lista;
+                }
+            });
+        }
+
+        public async Task<ActionResult> MisPagos()
+        {
+            var id = Startup.GetAplicacionUsuariosManager().getUsuarioPortalActual(Request).Id;
+            MisPagosViewModel model = new MisPagosViewModel(await ObtenerPagos(id));
+            return View(model);
         }
 
         public async Task<ActionResult> Perfil()

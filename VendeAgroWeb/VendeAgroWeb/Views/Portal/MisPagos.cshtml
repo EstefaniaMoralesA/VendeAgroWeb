@@ -1,4 +1,6 @@
-﻿@{
+﻿@model VendeAgroWeb.Models.Portal.MisPagosViewModel
+
+@{
     ViewBag.Title = "Mis Pagos";
     Layout = "Shared/_PortalLayout.cshtml";
 }
@@ -6,7 +8,7 @@
 
 <div class="row" style="text-align: center;">
     <div class="col-sm-12 boton-atras-container">
-        
+
         <div class="col-sm-10 col-sm-offset-1 col-xs-12 mis-anuncios-titulo-container" style="display: inline-block">
             <h2 class="mis-anuncios-titulo">Mis Pagos</h2>
         </div>
@@ -15,6 +17,43 @@
                 <p>atrás</p>
                 <span class="glyphicon glyphicon-chevron-left" />
             </a>
+        </div>
+
+        <div class="row" style="margin-top:30px">
+            <div class="col-sm-offset-1 col-sm-10">
+                <div class="row" style="margin-top:20px">
+                    <div class="table-responsive">
+                        <table class="table table-striped table-responsive">
+                            <thead>
+                                <tr>
+                                    <th>Fecha</th>
+                                    <th>Total</th>
+                                    <th>Tarjeta</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @{
+                                    if (Model.Pagos.Count() < 1)
+                                    {
+                                        <tr><td colspan="9">No hay pagos registrados en el sistema.</td></tr>
+                                    }
+                                    else
+                                    {
+                                        foreach (var pago in Model.Pagos)
+                                        {
+                                            <tr>
+                                                <td>@pago.Fecha</td>
+                                                <td>@pago.Total</td>
+                                                <td>@pago.DigitosTarjeta</td>
+                                            </tr>
+                                        }
+                                    }
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </div>

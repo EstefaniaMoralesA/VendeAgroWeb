@@ -80,7 +80,7 @@ namespace VendeAgroWeb
                         return OlvidoContrasenaStatus.MailInexistente;
                     }
 
-                    string mailMensaje = "<p>Estimado {0},</p>" +
+                    string mailMensaje = "<p>Estimado/a {0},</p>" +
                     "<p>Para cambiar tu contraseña da click <a href=\'" + Startup.getBaseUrl() + "/Administrador/CambiarContrasena?token=" + "{1}\'>AQUÍ</a></p>";
 
                     var result = await Startup.GetServicioEmail().SendAsync(string.Format(mailMensaje, usuario.nombre, usuario.password), "Recuperar Contraseña Mercampo", usuario.email);
@@ -113,7 +113,7 @@ namespace VendeAgroWeb
                         return OlvidoContrasenaStatus.MailInexistente;
                     }
 
-                    string mailMensaje = "<p>Estimado {0},</p>" +
+                    string mailMensaje = "<p>Estimado/a {0},</p>" +
                     "<p>Para cambiar tu contraseña da click <a href=\'" + Startup.getBaseUrl() + "/Portal/CambiarContrasena?token=" + "{1}\'>AQUÍ</a></p>";
 
                     var result = await Startup.GetServicioEmail().SendAsync(string.Format(mailMensaje, usuario.nombre, usuario.password), "Recuperar Contraseña Mercampo", usuario.email);
@@ -231,7 +231,7 @@ namespace VendeAgroWeb
                     setCookie("VendeAgroUser", tokenSesion, response);
 
                     var usuarioRegistrado = _dbContext.Usuarios.Where(u => u.email == model.Email).FirstOrDefault();
-                    string mailMensaje = "<p>Estimado {0} gracias por registrarte en mercampo.mx</p>" +
+                    string mailMensaje = "<p>Estimado/a {0} gracias por registrarte en mercampo.mx</p>" +
                     "<p>Para completar tu registro y poder hacer login da click <a href=\'" + Startup.getBaseUrl() + "/Portal/ConfirmarMail?token=" + "{1}\'>AQUÍ</a></p>";
 
                     var result = await Startup.GetServicioEmail().SendAsync(string.Format(mailMensaje, model.Nombre + " " + model.Apellidos, tokenEmail), "Registro Mercampo", model.Email);
@@ -262,7 +262,7 @@ namespace VendeAgroWeb
                         return AproboAnuncioStatus.MailInexistente;
                     }
 
-                    string mailMensaje = "<p>Estimado {0},</p>" +
+                    string mailMensaje = "<p>Estimado/a {0},</p>" +
                     "<p>Tu anuncio " + tituloAnuncio + " ha sido aprobado y publicado. Para consultarlo, da click <a href=\'" + Startup.getBaseUrl() + "/Home/AnuncioDetalles?id=" + idAnuncio + "{1}\'>AQUÍ</a></p>";
 
                     var result = await Startup.GetServicioEmail().SendAsync(string.Format(mailMensaje, usuario.nombre, usuario.password), "Tu Anuncio ha sido Aprobado en Mercampo", usuario.email);
@@ -569,7 +569,9 @@ namespace VendeAgroWeb
 
                     Charge cargo = Startup.OpenPayLib.ChargeService.Create(usuario.IdConekta, chargeRequest);
                     ResultadoCargo resultado = new ResultadoCargo(true, ResultadoCargoTarjeta.Aprobado, cargo.OrderId, cargo.Authorization, "El cargo ha sido exitoso", (double)cargo.Amount);
+                    Usuario_Tarjeta tarjeta = _dbContext.Usuario_Tarjeta.Where(t => t.tokenTarjeta == tarjetaToken).FirstOrDefault();
                     AgregarAnuncios(carrito, usuario.Id);
+                    AgregarPago(usuario.Id, tarjeta, (double)cargo.Amount, cargo.Authorization, carrito);
                     resultadoJson = resultado.AsJson();
                     return true;
                 }
@@ -587,6 +589,58 @@ namespace VendeAgroWeb
 
             }
 
+        }
+
+        private bool AgregarPago(int idUsuario, Usuario_Tarjeta tarjeta, double total, string referencia, CarritoDeCompra carrito)
+        {
+            using (var _dbContext = new MercampoEntities())
+            {
+                Startup.OpenDatabaseConnection(_dbContext);
+                if (_dbContext.Database.Connection.State != ConnectionState.Open)
+                {
+                    return false;
+                }
+
+                Pago newPago = _dbContext.Pagoes.Add(new Pago
+                {
+                    idUsuario = idUsuario, 
+                    tipoTarjeta = tarjeta.tipoTarjeta,
+                    digitosTarjeta = int.Parse(tarjeta.digitosTarjeta),
+                    total = total, 
+                    fecha = DateTime.Now,
+                    Referencia = referencia
+                });
+                _dbContext.SaveChanges();
+
+                foreach (var paquete in carrito.Paquetes)
+                {
+                    if (paquete.Beneficios.Count() < 1)
+                    {
+                        Pago_Concepto pagoConcepto = _dbContext.Pago_Concepto.Add(new Pago_Concepto
+                        {
+                            idPago = newPago.id,
+                            idPaquete = paquete.Id,
+                            tipo = paquete.EsRenovacion()
+                        });
+                        continue;
+                    }
+                    
+                    foreach (var beneficio in paquete.Beneficios)
+                    {
+                        Pago_Concepto pagoConcepto = _dbContext.Pago_Concepto.Add(new Pago_Concepto
+                        {
+                            idPago = newPago.id, 
+                            idPaquete = paquete.Id, 
+                            idBeneficio = beneficio.Id, 
+                            tipo = paquete.EsRenovacion()
+                        });
+                    }
+                }
+
+                _dbContext.SaveChanges();
+                _dbContext.Database.Connection.Close();
+                return true;
+            }
         }
 
         private bool AgregarAnuncios(CarritoDeCompra carrito, int idUsuario)
