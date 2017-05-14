@@ -368,6 +368,7 @@
     <Content Include="fonts\Nexa Bold.otf" />
     <Content Include="fonts\Nexa Light.otf" />
     <Content Include="Content\Aviso_Privacidad_Mercampo.pdf" />
+    <Content Include="Content\Terminos_Condiciones.pdf" />
     <EntityDeploy Include="Models\DatabaseModel.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
       <LastGenOutput>DatabaseModel.Designer.cs</LastGenOutput>
@@ -375,7 +376,6 @@
     <Content Include="Models\DatabaseModel.edmx.diagram">
       <DependentUpon>DatabaseModel.edmx</DependentUpon>
     </Content>
-    <Content Include="Content\Terminos_Condiciones.pdf" />
     <None Include="Properties\PublishProfiles\GoDaddy.pubxml" />
     <None Include="Properties\PublishProfiles\mercampo.mx - Web Deploy.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />

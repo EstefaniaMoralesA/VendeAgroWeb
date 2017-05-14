@@ -112,11 +112,11 @@
           <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="idUsuario" Type="int" Nullable="false" />
           <Property Name="tipoTarjeta" Type="int" Nullable="false" />
-          <Property Name="digitosTarjeta" Type="int" Nullable="false" />
+          <Property Name="digitosTarjeta" Type="varchar" MaxLength="6" Nullable="false" />
           <Property Name="total" Type="float" Nullable="false" />
           <Property Name="fecha" Type="date" Nullable="false" />
           <Property Name="tipo" Type="int" Nullable="false" />
-          <Property Name="Referencia" Type="varchar" MaxLength="40" Nullable="false" />
+          <Property Name="Referencia" Type="varchar" MaxLength="80" Nullable="false" />
         </EntityType>
         <EntityType Name="Pago_Concepto">
           <Key>
@@ -645,11 +645,11 @@
           <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="idUsuario" Type="Int32" Nullable="false" />
           <Property Name="tipoTarjeta" Type="Int32" Nullable="false" />
-          <Property Name="digitosTarjeta" Type="Int32" Nullable="false" />
+          <Property Name="digitosTarjeta" Type="String" MaxLength="6" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="total" Type="Double" Nullable="false" />
           <Property Name="fecha" Type="DateTime" Nullable="false" Precision="0" />
           <Property Name="tipo" Type="Int32" Nullable="false" />
-          <Property Name="Referencia" Type="String" MaxLength="40" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Referencia" Type="String" MaxLength="80" FixedLength="false" Unicode="false" Nullable="false" />
           <NavigationProperty Name="Usuario" Relationship="Self.FK__Pago__idUsuario__6383C8BA" FromRole="Pago" ToRole="Usuario" />
           <NavigationProperty Name="Pago_Concepto" Relationship="Self.FK__Pago_Conc__idPag__6477ECF3" FromRole="Pago" ToRole="Pago_Concepto" />
         </EntityType>
