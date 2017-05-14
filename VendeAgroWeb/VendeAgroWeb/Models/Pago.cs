@@ -23,7 +23,7 @@ namespace VendeAgroWeb.Models
         public int id { get; set; }
         public int idUsuario { get; set; }
         public int tipoTarjeta { get; set; }
-        public int digitosTarjeta { get; set; }
+        public string digitosTarjeta { get; set; }
         public double total { get; set; }
         public System.DateTime fecha { get; set; }
         public int tipo { get; set; }
