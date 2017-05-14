@@ -90,60 +90,76 @@ namespace VendeAgroWeb.Controllers.Home
 
         public async Task<ActionResult> BeneficiosExtra(int? idPaquete, int? anuncio)
         {
-            if (!idPaquete.HasValue) return RedirectToAction("CarritoDeCompra");
-            if (!anuncio.HasValue) return RedirectToAction("CarritoDeCompra");
+            if (!idPaquete.HasValue || !anuncio.HasValue) return RedirectToAction("CarritoDeCompra");
             var paquete = await ObtenerPaquete(idPaquete);
             if (paquete == null)
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest, "Id de paquete invalido");
             string nombreAnuncio = string.Empty;
+            Anuncio_Beneficio ofertaDelDia = null;
             var carrito = Startup.GetCarritoDeCompra(Request.Cookies);
-            if (anuncio.Value != -1)
-            {
-                var usuario = Startup.GetAplicacionUsuariosManager().getUsuarioPortalActual(Request);
-                if (usuario == null)
-                {
-                    return new HttpStatusCodeResult(HttpStatusCode.BadRequest, "Para renovar un anuncio debe de hacer login");
-                }
-
-                string value;
-                if (!ValidaAnuncio(anuncio.Value, usuario.Id, out value))
-                {
-                    return new HttpStatusCodeResult(HttpStatusCode.BadRequest, "El id del anuncio a renovar es invalido");
-                }
-                nombreAnuncio = value;
-                PaqueteCarrito outPaqueteCarrito;
-                if (carrito.ActualizaRenovacionSiExiste(anuncio.Value, nombreAnuncio, paquete, out outPaqueteCarrito))
-                {
-                    Startup.UpdateCarritoCookie(carrito, Response);
-                    return View(new BeneficiosExtraViewModel(outPaqueteCarrito, await ObtenerBeneficios(), carrito.TotalCarrito));
-                }
-            }
-
-            var paqueteCarrito = carrito.insertarPaqueteEnCarrito(paquete.Id, paquete.Nombre, paquete.Meses, paquete.Precio, anuncio.Value, nombreAnuncio);
-            Startup.UpdateCarritoCookie(carrito, Response);
-            BeneficiosExtraViewModel model = new BeneficiosExtraViewModel(paqueteCarrito, await ObtenerBeneficios(), carrito.TotalCarrito);
-            return View(model);
-        }
-
-        private bool ValidaAnuncio(int idAnuncio, int idUsuario, out string nombreAnuncio)
-        {
-            nombreAnuncio = string.Empty;
+            Anuncio value = null;
             using (MercampoEntities _dbContext = new MercampoEntities())
             {
                 Startup.OpenDatabaseConnection(_dbContext);
                 if (_dbContext.Database.Connection.State != ConnectionState.Open)
                 {
-                    return false;
+                    return new HttpStatusCodeResult(HttpStatusCode.InternalServerError, "Error interno, favor de volver a intentarlo");
                 }
 
-                Anuncio anuncio = _dbContext.Anuncios.Where(a => a.id == idAnuncio).FirstOrDefault();
-
-                if (anuncio == null || anuncio.idUsuario != idUsuario)
+                if (anuncio.Value != -1)
                 {
-                    return false;
+                    var usuario = Startup.GetAplicacionUsuariosManager().getUsuarioPortalActual(Request);
+                    if (usuario == null)
+                    {
+                        return new HttpStatusCodeResult(HttpStatusCode.BadRequest, "Para renovar un anuncio debe de hacer login");
+                    }
+
+                    if (!ValidaAnuncio(anuncio.Value, usuario.Id, ref value, _dbContext))
+                    {
+                        return new HttpStatusCodeResult(HttpStatusCode.BadRequest, "El id del anuncio a renovar es invalido");
+                    }
+                    nombreAnuncio = value.titulo;
+                    ofertaDelDia = value.Anuncio_Beneficio.Where(ab => ab.Beneficio.tipo == (int)BeneficiosExtraTipo.OfertaDelDia).FirstOrDefault();
+                    PaqueteCarrito outPaqueteCarrito;
+                    if (carrito.ActualizaRenovacionSiExiste(anuncio.Value, nombreAnuncio, paquete, ofertaDelDia != null,out outPaqueteCarrito))
+                    {
+                        Startup.UpdateCarritoCookie(carrito, Response);
+                        if (ofertaDelDia != null)
+                        {
+                            return RedirectToAction("CarritoDeCompra");
+                        }
+                        return View(new BeneficiosExtraViewModel(outPaqueteCarrito, await ObtenerBeneficios(), carrito.TotalCarrito));
+                    }
                 }
-                nombreAnuncio = anuncio.titulo;
+
+                var paqueteCarrito = carrito.insertarPaqueteEnCarrito(paquete.Id, paquete.Nombre, paquete.Meses, paquete.Precio, anuncio.Value, nombreAnuncio);
+                if (value != null && anuncio.Value != -1)
+                {
+                    foreach (var anuncioBeneficio in value.Anuncio_Beneficio)
+                    {
+                        var beneficio = anuncioBeneficio.Beneficio;
+                        carrito.Paquetes[paqueteCarrito.Index].agregaBeneficioAPaquete(new BeneficioCarrito(beneficio.id, beneficio.descripcion, beneficio.precio, beneficio.tipo, beneficio.numero));
+                    }
+                }
+                Startup.UpdateCarritoCookie(carrito, Response);
+                if (ofertaDelDia != null)
+                {
+                    return RedirectToAction("CarritoDeCompra");
+                }
+                BeneficiosExtraViewModel model = new BeneficiosExtraViewModel(paqueteCarrito, await ObtenerBeneficios(), carrito.TotalCarrito);
+                return View(model);
             }
+        }
+
+        private bool ValidaAnuncio(int idAnuncio, int idUsuario, ref Anuncio anuncio, MercampoEntities _dbContext)
+        {
+            Anuncio anuncioTemp = _dbContext.Anuncios.Where(a => a.id == idAnuncio && a.estado == (int)EstadoAnuncio.Vencido).FirstOrDefault();
+
+            if (anuncioTemp == null || anuncioTemp.idUsuario != idUsuario)
+            {
+                return false;
+            }
+            anuncio = anuncioTemp;
             return true;
         }
 

@@ -37,7 +37,7 @@ namespace VendeAgroWeb
             return total;
         }
 
-        public bool ActualizaRenovacionSiExiste(int idAnuncio, string nombreAnuncio, PaginaPaqueteViewModel paqueteNuevo, out PaqueteCarrito outPaquete)
+        public bool ActualizaRenovacionSiExiste(int idAnuncio, string nombreAnuncio, PaginaPaqueteViewModel paqueteNuevo, bool ofertaDelDia, out PaqueteCarrito outPaquete)
         {
             var paquete = Paquetes.Where(p => p.IdAnuncio == idAnuncio && string.Compare(nombreAnuncio, p.NombreAnuncio, StringComparison.CurrentCulture) == 0).FirstOrDefault();
             if(paquete == null)
@@ -46,11 +46,19 @@ namespace VendeAgroWeb
                 return false;
             }
 
+            if (!ofertaDelDia)
+            {
+                var copia = paquete.Beneficios.Where(b => b.Tipo == (int)BeneficiosExtraTipo.OfertaDelDia).FirstOrDefault();
+                if (copia != null)
+                {
+                    paquete.borraBeneficioDePaquete(copia.Id);
+                }
+            }
+
             paquete.Nombre = paqueteNuevo.Nombre;
             paquete.Precio = paqueteNuevo.Precio;
             paquete.Id = paqueteNuevo.Id;
             paquete.Meses = paqueteNuevo.Meses;
-            paquete.Beneficios.Clear();
             Paquetes[paquete.Index] = paquete;
             outPaquete = paquete;
             return true;
