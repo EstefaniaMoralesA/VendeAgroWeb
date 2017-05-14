@@ -605,7 +605,7 @@ namespace VendeAgroWeb
                 {
                     idUsuario = idUsuario, 
                     tipoTarjeta = tarjeta.tipoTarjeta,
-                    digitosTarjeta = int.Parse(tarjeta.digitosTarjeta),
+                    digitosTarjeta = tarjeta.digitosTarjeta,
                     total = total, 
                     fecha = DateTime.Now,
                     Referencia = referencia

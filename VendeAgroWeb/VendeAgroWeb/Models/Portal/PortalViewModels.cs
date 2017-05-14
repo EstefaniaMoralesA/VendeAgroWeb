@@ -703,7 +703,7 @@ namespace VendeAgroWeb.Models.Portal
         private int _id;
         private double _total;
         private DateTime _fecha;
-        private int _digitosTarjeta;
+        private string _digitosTarjeta;
 
         public int Id
         {
@@ -729,7 +729,7 @@ namespace VendeAgroWeb.Models.Portal
             }
         }
 
-        public int DigitosTarjeta
+        public string DigitosTarjeta
         {
             get
             {
@@ -737,7 +737,7 @@ namespace VendeAgroWeb.Models.Portal
             }
         }
 
-        public PagoViewModel(int id, double total, DateTime fecha, int digitosTarjeta) {
+        public PagoViewModel(int id, double total, DateTime fecha, string digitosTarjeta) {
             _id = id;
             _total = total;
             _fecha = fecha;
