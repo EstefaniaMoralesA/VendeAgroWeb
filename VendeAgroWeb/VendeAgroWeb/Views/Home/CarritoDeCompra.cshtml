@@ -100,7 +100,12 @@
                                                     <p class="beneficio-carrito-texto">@i.Descripcion</p>
                                                 </td>
                                                 <td class="borrar-carrito table-carrito-data">
-                                                    <a href="EliminaBeneficioDePaquete?index=@cont&id=@i.Id"><img style="width:100%;" src="~/img/delete.png" /></a>
+                                                    @{
+                                                        if (!item.EsRenovacion() || i.Tipo == (int)VendeAgroWeb.Models.Pagina.BeneficiosExtraTipo.OfertaDelDia)
+                                                        {
+                                                            <a href="EliminaBeneficioDePaquete?index=@cont&id=@i.Id"><img style="width:100%;" src="~/img/delete.png" /></a>
+                                                        }
+                                                    }
                                                 </td>
                                                 <td class="precio-carrito td-precio-carrito table-carrito-data">
                                                     <p><span>$</span>@i.Precio</p>

@@ -20,6 +20,10 @@
             var cont = 0;
             foreach (var item in Model.Beneficios)
             {
+                if(Model.Paquete.EsRenovacion() && item.Tipo != (int)VendeAgroWeb.Models.Pagina.BeneficiosExtraTipo.OfertaDelDia)
+                {
+                    continue;
+                }
                 <div class="row">
                     <div class="col-sm-9 check-container">
                         <div class="checkbox check-beneficio">
