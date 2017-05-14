@@ -619,8 +619,11 @@ namespace VendeAgroWeb
                         Pago_Concepto pagoConcepto = _dbContext.Pago_Concepto.Add(new Pago_Concepto
                         {
                             idPago = newPago.id,
-                            idPaquete = paquete.Id,
-                            tipo = paquete.EsRenovacion()
+                            tipo = paquete.EsRenovacion(), 
+                            nombrePaquete = paquete.Nombre,
+                            mesesPaquete = paquete.Meses,
+                            precioPaquete = paquete.Precio,
+                            descripcionPaquete = string.Empty
                         });
                         continue;
                     }
@@ -630,9 +633,14 @@ namespace VendeAgroWeb
                         Pago_Concepto pagoConcepto = _dbContext.Pago_Concepto.Add(new Pago_Concepto
                         {
                             idPago = newPago.id, 
-                            idPaquete = paquete.Id, 
-                            idBeneficio = beneficio.Id, 
-                            tipo = paquete.EsRenovacion()
+                            tipo = paquete.EsRenovacion(),
+                            nombrePaquete = paquete.Nombre,
+                            mesesPaquete = paquete.Meses,
+                            precioPaquete = paquete.Precio,
+                            descripcionPaquete = string.Empty,
+                            descripcionBeneficio = beneficio.Descripcion,
+                            precioBeneficio = beneficio.Precio, 
+                            tipoBeneficio = beneficio.Tipo
                         });
                     }
                 }

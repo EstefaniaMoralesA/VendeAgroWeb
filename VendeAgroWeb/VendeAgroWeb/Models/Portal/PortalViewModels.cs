@@ -758,8 +758,13 @@ namespace VendeAgroWeb.Models.Portal
     public class PagoConceptoViewModel
     {
         private bool _tipo;
-        private PaqueteViewModel _paquete;
-        private BeneficioViewModel _beneficio;
+        private string _descripcionBeneficio;
+        private double? _precioBeneficio;
+        private int? _tipoBeneficio;
+        private string _nombrePaquete;
+        private int _mesesPaquete;
+        private double _precioPaquete;
+        private string _descripcionPaquete;
 
         public bool Tipo
         {
@@ -769,33 +774,70 @@ namespace VendeAgroWeb.Models.Portal
             }
         }
 
-        public PaqueteViewModel Paquete
+        public string DescripcionBeneficio
         {
             get
             {
-                return _paquete;
+                return _descripcionBeneficio;
             }
         }
 
-        public BeneficioViewModel Beneficio
+        public double? PrecioBeneficio
         {
             get
             {
-                return _beneficio;
+                return _precioBeneficio;
             }
         }
 
-        public PagoConceptoViewModel(bool tipo, PaqueteViewModel paquete)
+        public string NombrePaquete
         {
-            _tipo = tipo;
-            _paquete = paquete;
+            get
+            {
+                return _nombrePaquete;
+            }
         }
 
-        public PagoConceptoViewModel(bool tipo, PaqueteViewModel paquete, BeneficioViewModel beneficio)
+        public int MesesPaquete
+        {
+            get
+            {
+                return _mesesPaquete;
+            }
+        }
+
+        public double PrecioPaquete
+        {
+            get
+            {
+                return _precioPaquete;
+            }
+        }
+
+        public string DescripcionPaquete
+        {
+            get
+            {
+                return _descripcionPaquete;
+            }
+        }
+
+        public PagoConceptoViewModel(bool tipo, string nombrePaquete, int mesesPaquete, double precioPaquete)
         {
             _tipo = tipo;
-            _paquete = paquete;
-            _beneficio = beneficio;
+            _nombrePaquete = nombrePaquete;
+            _mesesPaquete = mesesPaquete;
+            _precioPaquete = precioPaquete;
+        }
+
+        public PagoConceptoViewModel(bool tipo, string nombrePaquete, int mesesPaquete, double precioPaquete, string descripcionBeneficio, double? precioBeneficio)
+        {
+            _tipo = tipo;
+            _nombrePaquete = nombrePaquete;
+            _mesesPaquete = mesesPaquete;
+            _precioPaquete = precioPaquete;
+            _descripcionBeneficio = descripcionBeneficio;
+            _precioBeneficio = precioBeneficio;
         }
     }
 

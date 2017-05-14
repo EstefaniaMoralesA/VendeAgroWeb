@@ -628,14 +628,12 @@ namespace VendeAgroWeb.Controllers.Administrador
                             List<PagoConceptoViewModel> listaConceptos = new List<PagoConceptoViewModel>();
                             foreach (var concepto in conceptos)
                             {
-                                PaqueteViewModel paquete = new PaqueteViewModel(concepto.Paquete.id, concepto.Paquete.nombre, concepto.Paquete.meses);
-                                if (concepto.Beneficio == null)
+                                if (concepto.descripcionBeneficio == null)
                                 {
-                                    listaConceptos.Add(new PagoConceptoViewModel(concepto.tipo, paquete));
+                                    listaConceptos.Add(new PagoConceptoViewModel(concepto.tipo, concepto.nombrePaquete, concepto.mesesPaquete, concepto.precioPaquete));
                                     continue;
                                 }
-                                BeneficioViewModel beneficio = new BeneficioViewModel(concepto.Beneficio.id, concepto.Beneficio.descripcion, concepto.Beneficio.precio);
-                                listaConceptos.Add(new PagoConceptoViewModel(concepto.tipo, paquete, beneficio));
+                                listaConceptos.Add(new PagoConceptoViewModel(concepto.tipo, concepto.nombrePaquete, concepto.mesesPaquete, concepto.precioPaquete, concepto.descripcionBeneficio, concepto.precioBeneficio));
                             }
 
                             model = new DetallesPagoViewModel(listaConceptos);
