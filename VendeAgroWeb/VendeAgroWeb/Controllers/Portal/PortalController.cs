@@ -584,7 +584,7 @@ namespace VendeAgroWeb.Controllers.Administrador
 
                     foreach (var item in pagos)
                     {
-                        lista.Add(new PagoViewModel(item.id, item.total, item.fecha, item.digitosTarjeta));
+                        lista.Add(new PagoViewModel(item.id, item.total, item.fecha, item.digitosTarjeta, item.Referencia));
                     }
 
                     _dbContext.Database.Connection.Close();
@@ -592,6 +592,66 @@ namespace VendeAgroWeb.Controllers.Administrador
                 }
             });
         }
+
+        public async Task<ActionResult> DetallesPago(int? id)
+        {
+            if (Startup.GetAplicacionUsuariosManager().VerificarPortalSesion() == LoginStatus.Incorrecto)
+            {
+                return RedirectToAction("Index", "Home");
+            }
+
+            if (id == null)
+            {
+                return HttpNotFound("Parámetro inválido se espera un id de un pago");
+            }
+
+            HttpNotFoundResult result = null;
+            DetallesPagoViewModel model = null;
+            await Task.Run(() =>
+            {
+                using (var _dbContext = new MercampoEntities())
+                {
+                    Startup.OpenDatabaseConnection(_dbContext);
+                    if (_dbContext.Database.Connection.State != ConnectionState.Open)
+                    {
+                        result = HttpNotFound("Error en la base de datos");
+                    }
+                    else
+                    {
+                        var conceptos = _dbContext.Pago_Concepto.Where(p => p.id == id);
+                        if (conceptos == null)
+                        {
+                            result = HttpNotFound("No se encontro el pago con el id solicitado");
+                        }
+                        else
+                        {
+                            List<PagoConceptoViewModel> listaConceptos = new List<PagoConceptoViewModel>();
+                            foreach (var concepto in conceptos)
+                            {
+                                PaqueteViewModel paquete = new PaqueteViewModel(concepto.Paquete.id, concepto.Paquete.nombre, concepto.Paquete.meses);
+                                if (concepto.Beneficio == null)
+                                {
+                                    listaConceptos.Add(new PagoConceptoViewModel(concepto.tipo, paquete));
+                                    continue;
+                                }
+                                BeneficioViewModel beneficio = new BeneficioViewModel(concepto.Beneficio.id, concepto.Beneficio.descripcion, concepto.Beneficio.precio);
+                                listaConceptos.Add(new PagoConceptoViewModel(concepto.tipo, paquete, beneficio));
+                            }
+
+                            model = new DetallesPagoViewModel(listaConceptos);
+                        }
+                    }
+                }
+            });
+
+            if (result != null)
+            {
+                return result;
+            }
+
+            return View(model);
+        }
+
 
         public async Task<ActionResult> MisPagos()
         {

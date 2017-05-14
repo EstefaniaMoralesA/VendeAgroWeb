@@ -499,6 +499,7 @@
     <Content Include="Views\Home\CarritoLogin.cshtml" />
     <Content Include="Views\Home\PagoRecibido.cshtml" />
     <Content Include="Views\Portal\ModificarAnuncio.cshtml" />
+    <Content Include="Views\Portal\DetallesPago.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

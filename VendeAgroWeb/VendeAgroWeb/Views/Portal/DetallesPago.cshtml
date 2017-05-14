@@ -1,0 +1,41 @@
+﻿@model VendeAgroWeb.Models.Portal.DetallesPagoViewModel
+
+    @{
+        ViewBag.Title = "Detalles de Pago";
+        Layout = "Shared/_PortalLayout.cshtml";
+    }
+
+<div class="row" style="text-align: center;">
+    <div class="col-sm-12 boton-atras-container">
+        <div class="col-sm-10 col-sm-offset-1 col-xs-12 mis-anuncios-titulo-container" style="display: inline-block">
+            <h2 class="mis-anuncios-titulo">Detalles Pago</h2>
+        </div>
+        <div class="col-sm-offset-2 col-sm-8" style="margin-top:30px;">
+            <div class="table-responsive tabla-carrito">
+                <table class="table table-borderless table-responsive">
+                    <thead class="botones-grad">
+                        <tr>
+                            <th class="tabla-carrito-titulo">Nombre</th>
+                            <th class="tabla-carrito-titulo" style="min-width: 70px;"></th>
+                            <th class="tabla-carrito-titulo">Precio</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @{
+                            int cont = 0;
+                            foreach (var item in Model.Conceptos)
+                            {
+                                <tr>
+                                    <td class="paquete-carrito table-carrito-data">
+                                        <p class="beneficio-carrito-texto">@item.Paquete.Nombre</p>
+                                    </td>
+                                    <td class="precio-carrito td-precio-carrito table-carrito-data"></td>
+                                </tr>
+                            }
+                        }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+</div>

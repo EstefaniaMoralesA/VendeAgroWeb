@@ -704,6 +704,7 @@ namespace VendeAgroWeb.Models.Portal
         private double _total;
         private DateTime _fecha;
         private string _digitosTarjeta;
+        private string _referencia;
 
         public int Id
         {
@@ -737,11 +738,82 @@ namespace VendeAgroWeb.Models.Portal
             }
         }
 
-        public PagoViewModel(int id, double total, DateTime fecha, string digitosTarjeta) {
+        public string Referencia
+        {
+            get
+            {
+                return _referencia;
+            }
+        }
+
+        public PagoViewModel(int id, double total, DateTime fecha, string digitosTarjeta, string referencia) {
             _id = id;
             _total = total;
             _fecha = fecha;
             _digitosTarjeta = digitosTarjeta;
+            _referencia = referencia;
+        }
+    }
+
+    public class PagoConceptoViewModel
+    {
+        private bool _tipo;
+        private PaqueteViewModel _paquete;
+        private BeneficioViewModel _beneficio;
+
+        public bool Tipo
+        {
+            get
+            {
+                return _tipo;
+            }
+        }
+
+        public PaqueteViewModel Paquete
+        {
+            get
+            {
+                return _paquete;
+            }
+        }
+
+        public BeneficioViewModel Beneficio
+        {
+            get
+            {
+                return _beneficio;
+            }
+        }
+
+        public PagoConceptoViewModel(bool tipo, PaqueteViewModel paquete)
+        {
+            _tipo = tipo;
+            _paquete = paquete;
+        }
+
+        public PagoConceptoViewModel(bool tipo, PaqueteViewModel paquete, BeneficioViewModel beneficio)
+        {
+            _tipo = tipo;
+            _paquete = paquete;
+            _beneficio = beneficio;
+        }
+    }
+
+    public class DetallesPagoViewModel
+    {
+        private ICollection<PagoConceptoViewModel> _conceptos;
+
+        public ICollection<PagoConceptoViewModel> Conceptos
+        {
+            get
+            {
+                return _conceptos;
+            }
+        }
+
+        public DetallesPagoViewModel(ICollection<PagoConceptoViewModel> conceptos)
+        {
+            _conceptos = conceptos;
         }
     }
 
