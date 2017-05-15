@@ -10,32 +10,72 @@
         <div class="col-sm-10 col-sm-offset-1 col-xs-12 mis-anuncios-titulo-container" style="display: inline-block">
             <h2 class="mis-anuncios-titulo">Detalles Pago</h2>
         </div>
+       
         <div class="col-sm-offset-2 col-sm-8" style="margin-top:30px;">
+            <div class="row">
+                <div class="col-xs-6" style="display: inline-block; text-align: left;">
+                    <a class="btn btn-default menu-grad mis-anuncios-atras" href="/Portal/MisPagos">
+                        <p>atrás</p>
+                        <span class="glyphicon glyphicon-chevron-left" />
+                    </a>
+                </div>
+            </div>
+            
+        <div class="row row-no-margen" style="margin-top:30px;">
             <div class="table-responsive tabla-carrito">
                 <table class="table table-borderless table-responsive">
                     <thead class="botones-grad">
                         <tr>
                             <th class="tabla-carrito-titulo">Nombre</th>
-                            <th class="tabla-carrito-titulo" style="min-width: 70px;"></th>
                             <th class="tabla-carrito-titulo">Precio</th>
                         </tr>
                     </thead>
                     <tbody>
                         @{
-                            int cont = 0;
+                            string paqueteActual = null;
                             foreach (var item in Model.Conceptos)
                             {
-                                <tr>
-                                    <td class="paquete-carrito table-carrito-data">
-                                        <p class="beneficio-carrito-texto">@item.NombrePaquete</p>
-                                    </td>
-                                    <td class="precio-carrito td-precio-carrito table-carrito-data"></td>
-                                </tr>
+                                if (item.NombrePaquete != paqueteActual)
+                                {
+                                    <tr style="border-top-style: dashed; border-width: 2px;border-color: #04612d;">
+                                        <td class="paquete-carrito table-carrito-data">
+                                            <h2 style="font-size: 24px !important;">@item.MesesPaquete<span> @(item.MesesPaquete == 1 ? "MES" : "MESES")</span></h2>
+                                            <ul>
+                                                <li>@item.NombrePaquete</li>
+                                                @{
+                                                    if (item.Tipo)
+                                                    {
+                                                        <li>Renovacion: @item.NombrePaquete</li>
+                                                    }
+                                                }
+                                            </ul>
+
+                                        </td>
+                                        <td style="vertical-align: middle;" class="precio-carrito td-precio-carrito table-carrito-data">@item.PrecioPaquete</td>
+                                    </tr>
+                                    paqueteActual = item.NombrePaquete;
+                                }
+                                if (item.DescripcionBeneficio != null)
+                                {
+                                    <tr>
+                                        <td class="paquete-carrito table-carrito-data">
+                                            <p class="beneficio-carrito-texto">@item.DescripcionBeneficio</p>
+                                        </td>
+                                        <td style="vertical-align: middle;" class="precio-carrito td-precio-carrito table-carrito-data">@item.PrecioBeneficio</td>
+                                    </tr>
+                                }
                             }
+                            <tr style="border-top-style: dashed; border-width: 2px;border-color: #04612d;">
+                                    <td></td>
+                                    <td class="carrito-de-compra-titulo-total td-precio-carrito">
+                                        <h2><span>$</span>@Model.Total</h2>
+                                    </td>
+                            </tr>
                         }
                         </tbody>
                     </table>
                 </div>
             </div>
         </div>
+    </div>
 </div>

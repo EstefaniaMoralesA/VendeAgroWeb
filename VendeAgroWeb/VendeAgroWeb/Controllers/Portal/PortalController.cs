@@ -593,7 +593,7 @@ namespace VendeAgroWeb.Controllers.Administrador
             });
         }
 
-        public async Task<ActionResult> DetallesPago(int? id)
+        public async Task<ActionResult> DetallesPago(int? id, double total)
         {
             if (Startup.GetAplicacionUsuariosManager().VerificarPortalSesion() == LoginStatus.Incorrecto)
             {
@@ -618,7 +618,7 @@ namespace VendeAgroWeb.Controllers.Administrador
                     }
                     else
                     {
-                        var conceptos = _dbContext.Pago_Concepto.Where(p => p.id == id);
+                        var conceptos = _dbContext.Pago_Concepto.Where(p => p.idPago == id);
                         if (conceptos == null)
                         {
                             result = HttpNotFound("No se encontro el pago con el id solicitado");
@@ -636,7 +636,7 @@ namespace VendeAgroWeb.Controllers.Administrador
                                 listaConceptos.Add(new PagoConceptoViewModel(concepto.tipo, concepto.nombrePaquete, concepto.mesesPaquete, concepto.precioPaquete, concepto.descripcionBeneficio, concepto.precioBeneficio));
                             }
 
-                            model = new DetallesPagoViewModel(listaConceptos);
+                            model = new DetallesPagoViewModel(total, listaConceptos);
                         }
                     }
                 }

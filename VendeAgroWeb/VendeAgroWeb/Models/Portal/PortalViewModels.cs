@@ -843,6 +843,7 @@ namespace VendeAgroWeb.Models.Portal
 
     public class DetallesPagoViewModel
     {
+        private double _total;
         private ICollection<PagoConceptoViewModel> _conceptos;
 
         public ICollection<PagoConceptoViewModel> Conceptos
@@ -853,8 +854,17 @@ namespace VendeAgroWeb.Models.Portal
             }
         }
 
-        public DetallesPagoViewModel(ICollection<PagoConceptoViewModel> conceptos)
+        public double Total
         {
+            get
+            {
+                return _total;
+            }
+        }
+
+        public DetallesPagoViewModel(double total, ICollection<PagoConceptoViewModel> conceptos)
+        {
+            _total = total;
             _conceptos = conceptos;
         }
     }
