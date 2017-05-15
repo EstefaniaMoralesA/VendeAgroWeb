@@ -35,6 +35,9 @@ namespace VendeAgroWeb
             bundles.Add(new ScriptBundle("~/bundles/intro").Include(
                        "~/Scripts/intro.js"));
 
+            bundles.Add(new ScriptBundle("~/bundles/dataTable").Include(
+                       "~/Scripts/DataTables.min.js"));
+
             // Use the development version of Modernizr to develop with and learn from. Then, when you're
             // ready for production, use the build tool at http://modernizr.com to pick only the tests you need.
             bundles.Add(new ScriptBundle("~/bundles/modernizr").Include(
@@ -64,6 +67,11 @@ namespace VendeAgroWeb
             bundles.Add(new StyleBundle("~/Content/introjs.css").Include(
                       "~/Content/introjs.css"
                ));
+
+            bundles.Add(new StyleBundle("~/Content/dataTable").Include(
+                      "~/Content/DataTables.min.css"
+               ));
+
 
             bundles.Add(new StyleBundle("~/owl/css").Include(
                      "~/Content/owl.carousel.css",
