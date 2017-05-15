@@ -67,6 +67,12 @@ namespace VendeAgroWeb.Controllers.Home
             }
         }
 
+        [HttpPost]
+        public ActionResult LoginPartial()
+        {
+            return PartialView("_Login");
+        }
+
         public ActionResult OfertasDelDia()
         {
             return View();

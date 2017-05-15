@@ -143,6 +143,71 @@ namespace VendeAgroWeb
             });
 
         }
+        public async Task<CambiarContrasenaStatus> CambiarContrasenaPortalAsync(string password, string token)
+        {
+            return await Task.Run(() =>
+            {
+                if (token == null)
+                {
+                    return CambiarContrasenaStatus.TokenInvalido;
+                }
+
+                using (var _dbContext = new MercampoEntities())
+                {
+                    Startup.OpenDatabaseConnection(_dbContext);
+                    if (_dbContext.Database.Connection.State != System.Data.ConnectionState.Open)
+                    {
+                        return CambiarContrasenaStatus.Error;
+                    }
+
+                    var usuario = _dbContext.Usuarios.Where(u => u.password == token).FirstOrDefault();
+
+                    if (usuario == null)
+                    {
+                        _dbContext.Database.Connection.Close();
+                        return CambiarContrasenaStatus.TokenInvalido;
+                    }
+
+                    usuario.password = password;
+                    _dbContext.SaveChanges();
+
+                    _dbContext.Database.Connection.Close();
+                    return CambiarContrasenaStatus.ContrasenaActualizada;
+                }
+            });
+        }
+
+
+        public async Task<CambiarContrasenaStatus> VerificarTokenCambiarContrasenaPortalAsync(string token)
+        {
+            return await Task.Run(() =>
+            {
+                if (token == null)
+                {
+                    return CambiarContrasenaStatus.TokenInvalido;
+                }
+
+                using (var _dbContext = new MercampoEntities())
+                {
+                    Startup.OpenDatabaseConnection(_dbContext);
+                    if (_dbContext.Database.Connection.State != System.Data.ConnectionState.Open)
+                    {
+                        return CambiarContrasenaStatus.Error;
+                    }
+
+                    var usuario = _dbContext.Usuarios.Where(u => u.password == token).FirstOrDefault();
+
+                    if (usuario == null)
+                    {
+                        _dbContext.Database.Connection.Close();
+                        return CambiarContrasenaStatus.TokenInvalido;
+                    }
+
+                    _dbContext.Database.Connection.Close();
+                    return CambiarContrasenaStatus.UrlValido;
+                }
+            });
+        }
 
         public async Task<CambiarContrasenaStatus> VerificarTokenCambiarContrasenaAdminAsync(string token)
         {

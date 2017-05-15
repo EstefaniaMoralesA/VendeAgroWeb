@@ -559,18 +559,34 @@ namespace VendeAgroWeb.Controllers.Administrador
             return View("_Registro", model);
         }
 
-        public async Task<ActionResult> OlvidasteContrasenaPartial()
+        public ActionResult OlvidasteContrasenaPartial()
         {
             OlvidasteContrasenaViewModel model = new OlvidasteContrasenaViewModel();
             return PartialView("_OlvidasteContrasena", model);
         }
 
         [HttpPost]
-        public async Task<ActionResult> OlvidasteContrasena(string email)
+        public async Task<string> OlvidasteContrasena(string email)
         {
             var resultado = await Startup.GetAplicacionUsuariosManager().OlvidoContrasenaPortalAsync(email);
-            ViewData["ResultadoMail"] = resultado.ToString();
-            return PartialView("_OlvidasteContrasena");
+            return resultado.ToString();
+        }
+
+        public async Task<ActionResult> CambiarContrasena(string token)
+        {
+            var resultado = await Startup.GetAplicacionUsuariosManager().VerificarTokenCambiarContrasenaPortalAsync(token);
+            ViewData["ResultadoUrl"] = resultado.ToString();
+            ViewData["Token"] = token;
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> CambiarContrasena(Models.Administrador.CambiarContrasenaViewModel model)
+        {
+            var resultado = await Startup.GetAplicacionUsuariosManager().CambiarContrasenaPortalAsync(AplicacionUsuariosManager.Hash(model.Password), model.Token);
+            ViewData["ResultadoUrl"] = resultado.ToString();
+            return View();
         }
 
         public async Task<ICollection<PagoViewModel>> ObtenerPagos(int id)

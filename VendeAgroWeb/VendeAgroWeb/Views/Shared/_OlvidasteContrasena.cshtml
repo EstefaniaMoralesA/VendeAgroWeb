@@ -1,16 +1,19 @@
 ﻿@model VendeAgroWeb.Models.Portal.OlvidasteContrasenaViewModel
 
+
 <div class="row">
     <div class="col-sm-12">
         <div class="col-sm-6 col-sm-offset-3">
             <div class="logo-login" style="text-align: center;">
                 <img src="~/img/logo.png" />
             </div>
+            <div class="alert alert-danger" style="margin-top:20px;display:none;">
+                
+            </div>
 
             @using (Html.BeginForm())
             {
                 @Html.AntiForgeryToken()
-
                 <div class="form-horizontal olvido-forma">
                     @Html.ValidationSummary(true, "", new { @class = "text-danger" })
                     <div class="login-campos">
@@ -59,9 +62,9 @@
             return;
         }
 
-        window.setTimeout(function () {
-            $(".olvido-forma").html('<p style="text-align:center;font-size:20px;" class="loader-anuncios">Estamos enviando el correo electr&oacute;nico para la recuperaci&oacute;n...</p>');
-        }, 100);
+        //window.setTimeout(function () {
+        //    $(".olvido-forma").html('<p style="text-align:center;font-size:20px;" class="loader-anuncios">Estamos enviando el correo electr&oacute;nico para la recuperaci&oacute;n...</p>');
+        //}, 100);
 
         console.log(email);
         $.ajax({
@@ -69,7 +72,17 @@
             data: {},
             url: '/Portal/OlvidasteContrasena?email=' + email,
             success: function (response) {
-                console.log("entro");
+                if (response == "Error")
+                {
+                    $(".alert").html("Error interno, vuelva a intentarlo").show();
+                    return;
+                }
+                if (response == "MailInexistente")
+                {
+                    $(".alert").html("<strong>Error!</strong><span> el mail que introdujo no existe.</span>").show();
+                    return;
+                }
+                $(".alert").hide();
                 $(".olvido-forma").html('<p style="text-align:center;font-size:20px;" class="loader-anuncios">Se ha enviado el correo electr&oacute;nico para la recuperaci&oacute;n.</p>');
                 return;
             },

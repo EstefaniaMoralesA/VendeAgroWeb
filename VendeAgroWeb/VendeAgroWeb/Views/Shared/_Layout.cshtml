@@ -25,7 +25,7 @@
         <div id="login" class="modal fade" role="dialog">
             <div class="modal-dialog modal-registro-container">
                 <div id="modalLogin" class="modal-content modal-registro botones-grad">
-                    @Html.Partial("_Login")
+                    @Html.Partial("_Login");
                 </div>
             </div>
         </div>
@@ -50,9 +50,26 @@
     function abrirModalLogin(a) {
         if ($('#login').hasClass('in')) {
             $('#login').modal('hide');
+            reiniciaLogin();
             return;
         }
         $('#login').modal('show');
+    }
+
+    function reiniciaLogin()
+    {
+        $.ajax({
+            type: "POST",
+            url: "/Home/LoginPartial",
+            success: function (response)
+            {
+                $("#modalLogin").html(response);
+            },
+            error: function ()
+            {
+
+            }
+        });
     }
 
     function abrirModalPago(a) {
