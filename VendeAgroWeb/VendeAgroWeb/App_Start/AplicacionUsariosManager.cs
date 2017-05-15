@@ -54,8 +54,26 @@ namespace VendeAgroWeb
 
         internal async Task<ConfirmacionMailStatus> ConfirmarMailPortalAsync(string token)
         {
-            return await Task.Run(() =>
+            return await Task<ConfirmacionMailStatus>.Run(() =>
             {
+                using (MercampoEntities _dbContext = new MercampoEntities())
+                {
+                    Startup.OpenDatabaseConnection(_dbContext);
+                    if(_dbContext.Database.Connection.State != ConnectionState.Open)
+                    {
+                        return ConfirmacionMailStatus.Error;
+                    }
+
+                    var usuario = _dbContext.Usuarios.Where(u => u.tokenEmail == token).FirstOrDefault();
+                    if(usuario == null)
+                    {
+                        return ConfirmacionMailStatus.TokenInvalido;
+                    }
+
+                    usuario.confirmaEmail = true;
+                    usuario.tokenEmail = getToken();
+                    _dbContext.SaveChanges();
+                }
                 return ConfirmacionMailStatus.MailConfirmado;
             });
         }
@@ -214,23 +232,20 @@ namespace VendeAgroWeb
                     var tokenId = CrearClienteConektaId(model.Nombre, model.Apellidos, model.Email, model.Celular);
                     string tokenSesion = getToken();
                     string tokenEmail = getToken();
-                    _dbContext.Usuarios.Add(new Usuario
+                    var usuarioRegistrado = _dbContext.Usuarios.Add(new Usuario
                     {
                         nombre = model.Nombre,
                         apellidos = model.Apellidos,
                         telefono = model.Celular,
                         password = Hash(model.Password),
                         email = model.Email,
-                        confirmaEmail = true,
+                        confirmaEmail = false,
                         tokenSesion = tokenSesion,
                         tokenEmail = tokenEmail,
                         idConekta = tokenId
                     });
 
                     _dbContext.SaveChanges();
-                    setCookie("VendeAgroUser", tokenSesion, response);
-
-                    var usuarioRegistrado = _dbContext.Usuarios.Where(u => u.email == model.Email).FirstOrDefault();
                     string mailMensaje = "<p>Estimado/a {0} gracias por registrarte en mercampo.mx</p>" +
                     "<p>Para completar tu registro y poder hacer login da click <a href=\'" + Startup.getBaseUrl() + "/Portal/ConfirmarMail?token=" + "{1}\'>AQUÍ</a></p>";
 
@@ -342,7 +357,9 @@ namespace VendeAgroWeb
 
                     if (!usuario.confirmaEmail)
                     {
-                        //TO DO: Reenviar token
+                        string mailMensaje = "<p>Estimado/a {0} gracias por registrarte en mercampo.mx</p>" +
+                        "<p>Para completar tu registro y poder hacer login da click <a href=\'" + Startup.getBaseUrl() + "/Portal/ConfirmarMail?token=" + "{1}\'>AQUÍ</a></p>";
+                        var result = Startup.GetServicioEmail().SendAsync(string.Format(mailMensaje, usuario.nombre + " " + usuario.apellidos, usuario.tokenEmail), "Registro Mercampo", usuario.email);
                         return LoginStatus.ConfirmacionMail;
                     }
 
@@ -398,7 +415,7 @@ namespace VendeAgroWeb
         {
             byte[] time = BitConverter.GetBytes(DateTime.UtcNow.ToBinary());
             byte[] key = Guid.NewGuid().ToByteArray();
-            return Convert.ToBase64String(time.Concat(key).ToArray());
+            return HttpUtility.UrlDecode(Convert.ToBase64String(time.Concat(key).ToArray()));
         }
 
         public static void setCookie(string name, string value, HttpResponseBase response)

@@ -1,0 +1,57 @@
+﻿@{
+    ViewBag.Title = "Cambiar Mail";
+    Layout = "../Administrador/Shared/_LoginLayout.cshtml";
+}
+
+@{
+    var resultadoUrl = ViewData["ResultadoMail"].ToString();
+}
+
+@{
+    if (resultadoUrl == ConfirmacionMailStatus.TokenInvalido.ToString())
+    {
+        <div class="row" style="margin-top:20px;">
+            <div class="col-lg-6 col-lg-offset-3">
+                <div class="alert alert-danger" style="text-align:center;">
+                    <strong>Error!</strong> El token es inv&aacute;lido.    <span class="glyphicon glyphicon-remove-circle"></span>
+                </div>
+            </div>
+        </div>
+    }
+    else
+    {
+        if (resultadoUrl == ConfirmacionMailStatus.MailConfirmado.ToString())
+        {
+            <div class="row" style="margin-top:20px;">
+                <div class="col-lg-6 col-lg-offset-3">
+                    <div class="alert alert-success" style="text-align:center;">
+                        El mail se actualizó correctamente.<strong>   <span class="glyphicon glyphicon-check"></span></strong>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-sm-6 col-sm-offset-3 login-boton-container">
+                <a href="/Home/Index?abrirLogin=1" class="btn btn-default btn-lg btn-login">Ir a login</a>
+            </div>
+        }
+        else
+        {
+            if (resultadoUrl == ConfirmacionMailStatus.Error.ToString())
+            {
+                <div class="row" style="margin-top:20px;margin-bottom:20px;">
+                    <div class="col-lg-6 col-lg-offset-3">
+                        <div class="alert alert-danger" style="text-align:center;">
+                            <strong>Error!</strong> se produjo un error, vuelva a intentarlo.
+                        </div>
+                    </div>
+                </div>
+            }
+        }
+    }
+
+}
+
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
