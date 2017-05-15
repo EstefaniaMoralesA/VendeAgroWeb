@@ -15,7 +15,7 @@ namespace VendeAgroWeb.Controllers.Home
 
     public class HomeController : Controller
     {
-        public ActionResult Index()
+        public ActionResult Index(int? abrirLogin)
         {
             using (MercampoEntities _dbContext = new MercampoEntities())
             {

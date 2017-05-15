@@ -44,9 +44,15 @@ namespace VendeAgroWeb.Controllers.Administrador
             return await Startup.GetAplicacionUsuariosManager().RegistroUsuarioAsync(model);
         }
 
-        public async Task<ActionResult> ConfrimarMail(string token)
+        public async Task<ActionResult> ConfirmarMail(string token)
         {
+            if (token == null)
+            {
+                ViewData["ResultadoMail"] = ConfirmacionMailStatus.TokenInvalido;
+                return View();
+            }
             var result = await Startup.GetAplicacionUsuariosManager().ConfirmarMailPortalAsync(token);
+            ViewData["ResultadoMail"] = result;
             return View();
         }
 

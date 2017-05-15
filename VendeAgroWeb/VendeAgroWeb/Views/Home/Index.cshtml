@@ -103,6 +103,11 @@
     var tamanosRedistribuidos = false;
 
     $(document).ready(function () {
+        var _abrirLogin = getUrlParameter('abrirLogin');
+        if (typeof _abrirLogin != 'undefined' && _abrirLogin == 1)
+        {
+            abrirModalLogin(1);
+        }
         setSlider();
         getAnunciosDestacados(0);
         getAnunciosDestacadosMovil(0);
@@ -432,4 +437,19 @@
     });
 
     function offsetBottom(el, i) { i = i || 0; return $(el)[i].getBoundingClientRect().bottom }
+
+    var getUrlParameter = function getUrlParameter(sParam) {
+        var sPageURL = decodeURIComponent(window.location.search.substring(1)),
+            sURLVariables = sPageURL.split('&'),
+            sParameterName,
+            i;
+
+        for (i = 0; i < sURLVariables.length; i++) {
+            sParameterName = sURLVariables[i].split('=');
+
+            if (sParameterName[0] === sParam) {
+                return sParameterName[1] === undefined ? true : sParameterName[1];
+            }
+        }
+    };
 </script>
