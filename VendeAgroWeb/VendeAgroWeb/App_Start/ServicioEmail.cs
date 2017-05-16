@@ -39,12 +39,11 @@ namespace VendeAgroWeb
             using (var smtp = new SmtpClient())
             {
                 smtp.Host = "relay-hosting.secureserver.net";
-                smtp.EnableSsl = false;
-                smtp.UseDefaultCredentials = false;
                 smtp.Port = 25;
                 try
                 {
-                    await smtp.SendMailAsync(message);
+                    smtp.Send(message);
+                    message = null;
                 }
                 catch(SmtpException e)
                 {

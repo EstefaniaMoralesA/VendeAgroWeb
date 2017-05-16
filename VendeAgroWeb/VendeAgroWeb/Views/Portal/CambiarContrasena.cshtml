@@ -1,0 +1,93 @@
+﻿@model VendeAgroWeb.Models.Administrador.CambiarContrasenaViewModel
+
+@{
+    ViewBag.Title = "Cambiar Contraseña";
+    Layout = "../Administrador/Shared/_LoginLayout.cshtml";
+}
+
+@{
+    var resultadoUrl = ViewData["ResultadoUrl"] as string;
+}
+
+@{
+    if (resultadoUrl == CambiarContrasenaStatus.TokenInvalido.ToString())
+    {
+        <div class="row" style="margin-top:20px;">
+            <div class="col-lg-6 col-lg-offset-3">
+                <div class="alert alert-danger" style="text-align:center;">
+                    <strong>Error!</strong> El token es inv&aacute;lido.    <span class="glyphicon glyphicon-remove-circle"></span>
+                </div>
+            </div>
+        </div>
+    }
+    else
+    {
+        if (resultadoUrl == CambiarContrasenaStatus.ContrasenaActualizada.ToString())
+        {
+            <div class="row" style="margin-top:20px;">
+                <div class="col-lg-6 col-lg-offset-3">
+                    <div class="alert alert-success" style="text-align:center;">
+                        La contrase&ntilde;a se actualizo correctamente  <strong>   <span class="glyphicon glyphicon-check"></span></strong>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-sm-6 col-sm-offset-3 login-boton-container">
+                <a href="/Home/Index?abrirLogin=1" class="btn btn-default btn-lg btn-login">Ir a login</a>
+            </div>
+        }
+        else
+        {
+            if (resultadoUrl == CambiarContrasenaStatus.Error.ToString())
+            {
+                <div class="row" style="margin-top:20px;margin-bottom:20px;">
+                    <div class="col-lg-6 col-lg-offset-3">
+                        <div class="alert alert-danger" style="text-align:center;">
+                            <strong>Error!</strong> se produjo un error, vuelva a intentarlo.
+                        </div>
+                    </div>
+                </div>
+            }
+
+            <div class="row">
+                <div class="col-lg-6 col-lg-offset-3">
+                    <div class="login-form">
+                        @using (Html.BeginForm())
+                        {
+                            @Html.AntiForgeryToken()
+
+                            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+                            <input type="hidden" value="@ViewData["Token"]" name="Token" />
+
+                                <div class="form-group">
+                                    @Html.EditorFor(model => model.Password, new { htmlAttributes = new { @class = "form-control", placeholder = "Introduce la nueva contraseña", id = "login-pass" } })
+                                    @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })
+                                    <label class="login-field-icon glyphicon glyphicon-lock" for="login-pass"></label>
+                                </div>
+
+                                <div class="form-group">
+                                    @Html.EditorFor(model => model.ConfirmaPassword, new { htmlAttributes = new { @class = "form-control", placeholder = "Confirma la contraseña", id = "login-confirma-pass" } })
+                                    @Html.ValidationMessageFor(model => model.ConfirmaPassword, "", new { @class = "text-danger" })
+                                    <label class="login-field-icon glyphicon glyphicon-lock" for="login-confirma-pass"></label>
+                                </div>
+
+                                <div class="form-group">
+                                    <div class="col-sm-6 col-sm-offset-3 login-boton-container">
+                                        <input type="submit" value="Guardar" class="btn btn-primary btn-lg btn-login" />
+                                    </div>
+                                </div>
+                        }
+                    </div>
+                </div>
+            </div>
+
+        }
+    }
+
+}
+
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

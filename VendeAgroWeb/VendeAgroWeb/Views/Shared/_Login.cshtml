@@ -7,6 +7,11 @@
 }
 
 <div class="row login-cliente-container" id="login-cliente">
+    <div class="loader-login" style="display:none;">
+        <div class="col-sm-12">
+            <img href="~/img/loader.gif" />
+        </div>
+    </div>
     <div class="login-completo">
         <div class="col-sm-6 col-sm-offset-3">
             <div class="logo-login" style="text-align: center;">
@@ -96,18 +101,23 @@
         if(!valido){
             return;
         }
-
+        $(".login-completo").hide();
+        $(".loader-login").show();
         $.ajax({
             type: 'POST',
             data:{ email: email, password: password},
             url: '/Portal/Login',
             success: function(response){
                 $("#alerta").html('').hide();
-                if(response == "Incorrecto"){
+                if (response == "Incorrecto") {
+                    $(".login-completo").show();
+                    $(".loader-login").hide();
                     $("#alerta").html("Contraseña o email incorrecto.").show();
                     return;
                 }
-                else if(response == "ConfirmacionMail"){
+                else if (response == "ConfirmacionMail") {
+                    $(".login-completo").show();
+                    $(".loader-login").hide();
                     $("#alerta").html("Confirmacion de email pendiente.").show();
                     return;
                 }
@@ -116,7 +126,9 @@
                 }
                 else
                 {
-                    window.location = "/Portal";
+                    window.setTimeout(function () {
+                        window.location = "/Portal";
+                    }, 2000);
                 }
             },
             error: function(err){
@@ -136,7 +148,7 @@
                 return;
             },
             error: function(err){
-               
+
             }
         });
     });

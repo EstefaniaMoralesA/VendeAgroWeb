@@ -503,6 +503,7 @@
     <Content Include="Views\Portal\ModificarAnuncio.cshtml" />
     <Content Include="Views\Portal\DetallesPago.cshtml" />
     <Content Include="Views\Portal\ConfirmarMail.cshtml" />
+    <Content Include="Views\Portal\CambiarContrasena.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
