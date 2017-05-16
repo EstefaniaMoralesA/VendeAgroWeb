@@ -8,8 +8,8 @@
 
 <div class="row login-cliente-container" id="login-cliente">
     <div class="loader-login" style="display:none;">
-        <div class="col-sm-12">
-            <img href="~/img/loader.gif" />
+        <div class="col-sm-12" style="text-align:center;">
+            <img src="~/img/loader.gif" />
         </div>
     </div>
     <div class="login-completo">
@@ -126,9 +126,7 @@
                 }
                 else
                 {
-                    window.setTimeout(function () {
-                        window.location = "/Portal";
-                    }, 2000);
+                    window.location = "/Portal";
                 }
             },
             error: function(err){
