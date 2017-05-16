@@ -481,8 +481,6 @@
             jfotosEliminadasRutas: fotosEliminadasRutas
         };
 
-        alert(nuevoAnuncio);
-
         $.ajax({
             type: "POST",
             data: { "json": JSON.stringify(nuevoAnuncio) },
@@ -736,7 +734,6 @@
 
     function checarDone() {
         if (numeroSubidosEsperado === numeroSubidos) {
-            alert("numeroSubidosEsperado " + numeroSubidosEsperado + "numero Subidos " + numeroSubidos);
             agregarAnuncio();
             return;
         }
