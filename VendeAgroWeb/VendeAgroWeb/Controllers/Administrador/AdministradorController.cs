@@ -1088,8 +1088,6 @@ namespace VendeAgroWeb.Controllers.Administrador
             });
         }
 
-        }
-
         [HttpPost]
         [AllowAnonymous]
         public async Task<bool> RechazarAnuncio(int? id, string rechazo)
