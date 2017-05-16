@@ -136,7 +136,7 @@
                                             cont++;
                                         }
 
-                                        @for (int i = 1; i < (Model.NumFotos - (cont-1)); i++)
+                                        for (int i = 0; i < (Model.NumFotos - cont); i++)
                                             {
                                                 <tr class="row-tabla-foto">
                                                     <td class="foto-tabla-titulo">Foto</td>
@@ -146,7 +146,7 @@
                                                             <div class="btn btn-success image-preview-input" id="img-inp-btn">
                                                                 <span class="glyphicon glyphicon-folder-open"></span>
                                                                 <span style="padding-left: 3px;" class="image-preview-input-title">Modificar</span>
-                                                                <input class="input-absoluto" type="file" id="imagen" onchange="loadFile(event, @i)">
+                                                                <input class="input-absoluto" type="file" id="imagen" onchange="loadFile(event, @i+1)">
                                                             </div>
                                                         </div>
                                                     </td>
