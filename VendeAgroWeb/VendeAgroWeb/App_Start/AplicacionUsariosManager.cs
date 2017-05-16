@@ -101,7 +101,7 @@ namespace VendeAgroWeb
                     string mailMensaje = "<p>Estimado/a {0},</p>" +
                     "<p>Para cambiar tu contraseña da click <a href=\'" + Startup.getBaseUrl() + "/Administrador/CambiarContrasena?token=" + "{1}\'>AQUÍ</a></p>";
 
-                    var result = await Startup.GetServicioEmail().SendAsync(string.Format(mailMensaje, usuario.nombre, usuario.password), "Recuperar Contraseña Mercampo", usuario.email);
+                    var result = await Startup.GetServicioEmail().SendAsync(string.Format(mailMensaje, usuario.nombre, usuario.password), "Recuperar Contraseña Administrador Mercampo", usuario.email);
 
                     _dbContext.Database.Connection.Close();
                     return OlvidoContrasenaStatus.MailEnviado;

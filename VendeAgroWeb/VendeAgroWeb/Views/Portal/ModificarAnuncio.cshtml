@@ -93,7 +93,7 @@
                                 <tbody>
                                     <tr class="row-tabla-foto">
                                         <td class="foto-tabla-titulo">Foto de display</td>
-                                        <td>
+                                        <td id="td-img-display">
                                             <iframe id="img-0" frameborder="0" width="225" height="177" class="iframe-foto" scrolling="no" onload="resizeImg(this)" src="@Model.FotoPrincipal.Ruta"></iframe>
                                         </td>
                                         <td>
@@ -117,12 +117,16 @@
                                         {
                                             <tr style="text-align: center; vertical-align: middle;">
                                                 <td style="vertical-align: middle;" class="foto-tabla-titulo">Foto</td>
-                                                <td>
+                                                <td id="td-img-@cont">
                                                     <iframe id="img-@cont" frameborder="0" width="225" height="177" class="iframe-foto" scrolling="no" onload="resizeImg(this)" src="@foto.Ruta"></iframe>
                                                 </td>
                                                 <td>
                                                     <div class="form-group">
-                                                        <div class="btn btn-success image-preview-input" id="img-inp-btn">
+                                                        <div class="btn btn-danger image-preview-input img-btn-delete-@cont" onclick="deleteImg(@cont, @foto.Id)">
+                                                            <span class="glyphicon glyphicon-trash"></span>
+                                                            <span style="padding-left: 3px;" class="image-preview-input-title">Eliminar</span>
+                                                        </div>
+                                                        <div class="btn btn-success image-preview-input img-file-buton-@cont" id="img-inp-btn" style="display:none;">
                                                             <span class="glyphicon glyphicon-folder-open"></span>
                                                             <span style="padding-left: 3px;" class="image-preview-input-title">Modificar</span>
                                                             @{
@@ -140,13 +144,13 @@
                                             {
                                                 <tr class="row-tabla-foto">
                                                     <td class="foto-tabla-titulo">Foto</td>
-                                                    <td><img class="img-selected-@i foto-vacia" src="~/img/foto-vacia.png" /></td>
+                                                    <td><img class="img-selected-@(i*100) foto-vacia" src="~/img/foto-vacia.png" /></td>
                                                     <td>
                                                         <div class="form-group">
                                                             <div class="btn btn-success image-preview-input" id="img-inp-btn">
                                                                 <span class="glyphicon glyphicon-folder-open"></span>
                                                                 <span style="padding-left: 3px;" class="image-preview-input-title">Modificar</span>
-                                                                <input class="input-absoluto" type="file" id="imagen" onchange="loadFile(event, @i)">
+                                                                <input class="input-absoluto" type="file" id="imagen" onchange="loadFile(event, @(i*100))">
                                                             </div>
                                                         </div>
                                                     </td>
@@ -197,7 +201,7 @@
                 <div class="row" style="margin-left:0px; margin-right: 0px;">
                     <div class="form-group boton-guardar-container">
                         <div class="row" style="text-align: center; margin-top: 20px;">
-                            <input id="guardar-nuevo-anuncio" type="submit" value="Guardar" class="btn btn-primary btn-lg btn-login" />
+                            <input id="guardar-nuevo-anuncio" value="Guardar" class="btn btn-primary btn-lg btn-login" />
                             <a class="btn btn-default btn-lg btn-cancelar-nuevo-anuncio" href="/Portal/MisAnuncios" style="margin-top:10px">Cancelar</a>
                         </div>
                     </div>
@@ -265,13 +269,15 @@
         getEstados();
     });
 
-    function deleteRow(r, id)
+    function deleteImg(id, idFoto)
     {
-        var ruta = $('.foto').attr('src');
+        var ruta = $('#img-'+id).attr('src');
         fotosEliminadasRutas.push(ruta);
-        fotosEliminadas.push(id);
-        var i = r.parentNode.parentNode.rowIndex;
-        document.getElementById("tabla-fotos").deleteRow(i);
+        fotosEliminadas.push(idFoto);
+        $(".img-file-buton-" + id).show();
+        $(".img-btn-delete-" + id).hide();
+        $("#td-img-" + id).html('<img class="img-selected-' + id + ' foto-vacia" src="/img/foto-vacia.png" />');
+
     }
 
     function categoriasClick(elemento) {
@@ -428,7 +434,7 @@
                         if (tipo == 0)
                             myXhr.upload.addEventListener('progress', progressPrincipal, false); // For handling the progress of the upload
                         else
-                            myXhr.upload.addEventListener('progress', progressFotos, false); // For handling the progress of the upload
+                            myXhr.upload.addEventListener('progress', progressPrincipal, false); // For handling the progress of the upload
                     }
                     return myXhr;
                 },
@@ -495,11 +501,13 @@
         if (!validExtension(event.target.files[0])) {
             $("#imagen").val("");
             mostrarErrorExtension("La extensión de la imagen no es válida");
+            if (i == 0) return;
             $(".img-selected-" + i).attr("src", "/img/foto-vacia.png");
             return;
         }
 
         if (event.target.files.length == 0) {
+            if (i == 0) return;
             $(".img-selected-" + i).attr("src", "/img/foto-vacia.png");
             return;
         }
@@ -507,12 +515,14 @@
         if(i == 0)
         {
             fotoDisplay = event.target.files[0];
+            $("#td-img-display").html('<img class="foto-vacia" src="' + foto + '" />');
+            cambioFotoDeDisplay = true;
         }
         else
         {
             fotos.push(event.target.files[0]);
+            $(".img-selected-" + i).attr("src", foto);
         }
-        $(".img-selected-" + i).attr("src", foto);
     };
 
 
@@ -715,6 +725,7 @@
         $(".error-nuevo-anuncio").hide('');
         var arreglo = [];
         if(cambioFotoDeDisplay == true){
+            numeroSubidosEsperado++;
             arreglo.push(fotoDisplay);
             subirFotos(arreglo, 0);
         }
@@ -733,9 +744,11 @@
     }
 
     function progressPrincipal(e) {
-        var val = Math.floor(e.loaded / e.total * 100);
-        $('#progress-principal').css('width', val + '%').attr('aria-valuenow', val);
-        $('#progress-principal').html(val + "%");
+        if (e.lengthComputable) {
+            var val = Math.floor(e.loaded / e.total * 100);
+            $('#progress-principal').css('width', val + '%').attr('aria-valuenow', val);
+            $('#progress-principal').html(val + "%");
+        }
     }
 
     function progressFotos(e) {
