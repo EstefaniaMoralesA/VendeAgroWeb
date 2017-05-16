@@ -762,7 +762,7 @@ namespace VendeAgroWeb
             }
         }
 
-        private string CrearClienteConektaId(string nombre, string apellidos, string email, string telefono)
+        public string CrearClienteConektaId(string nombre, string apellidos, string email, string telefono)
         {
             if (nombre == null || email == null)
             {

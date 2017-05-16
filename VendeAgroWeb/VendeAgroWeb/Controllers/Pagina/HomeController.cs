@@ -24,6 +24,7 @@ namespace VendeAgroWeb.Controllers.Home
                 {
                     return View();
                 }
+
                 var ultimo = _dbContext.Accesos.Where(a => a.activo == true).FirstOrDefault();
                 var necesitaActualizarAnuncios = false;
                 if (ultimo == null)
