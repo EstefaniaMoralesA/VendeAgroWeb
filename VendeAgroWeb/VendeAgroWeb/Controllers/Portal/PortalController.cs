@@ -352,9 +352,27 @@ namespace VendeAgroWeb.Controllers.Administrador
                             fotos.Add(new FotoViewModel(foto.id, false, foto.ruta));
                         }
 
+                        int numFotos = 3;
+                        bool video = false;
+
+                        var beneficios = _dbContext.Anuncio_Beneficio.Where(a => a.idAnuncio == id);
+
+                        foreach (var beneficio in beneficios)
+                        {
+                            if (beneficio.idBeneficio == 2)
+                            {
+                                numFotos += 5;
+                                continue;
+                            }
+                            if (beneficio.idBeneficio == 3)
+                            {
+                                video = true;
+                            }
+                        }
+
                         model = new ModificarAnuncioViewModel(anuncio.id, anuncio.titulo, anuncio.Usuario.nombre + " " + anuncio.Usuario.apellidos, anuncio.precio, new CategoriaModificarAnuncioViewModel(anuncio.Subcategoria.idCategoria, anuncio.Subcategoria.Categoria.nombre),
                             new SubcategoriaModificarAnuncioViewModel(anuncio.idSubcategoria, anuncio.Subcategoria.nombre), new PaisModificarAnuncioViewModel(anuncio.Estado1.idPais, anuncio.Estado1.Pai.nombre), new EstadoModificarAnuncioViewModel(anuncio.idEstado, anuncio.Estado1.nombre),
-                            anuncio.descripcion, fotoPrincipal, fotos, anuncio.Videos_Anuncio.Where(v => v.idAnuncio == id).FirstOrDefault()?.ruta, anuncio.razonRechazo);
+                            anuncio.descripcion, fotoPrincipal, fotos, anuncio.Videos_Anuncio.Where(v => v.idAnuncio == id).FirstOrDefault()?.ruta, anuncio.razonRechazo, numFotos, video);
 
 
                         _dbContext.Database.Connection.Close();

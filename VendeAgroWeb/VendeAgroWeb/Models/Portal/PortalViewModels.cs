@@ -553,6 +553,8 @@ namespace VendeAgroWeb.Models.Portal
         private PaisModificarAnuncioViewModel _pais;
         private EstadoModificarAnuncioViewModel _estado;
         private string _descripcion;
+        private int _numFotos;
+        private bool _tieneVideo;
         private FotoViewModel _fotoPrincipal;
         private List<FotoViewModel> _fotos;
         private string _video;
@@ -663,8 +665,24 @@ namespace VendeAgroWeb.Models.Portal
             }
         }
 
+        public int NumFotos
+        {
+            get
+            {
+                return _numFotos;
+            }
+        }
+
+        public bool TieneVideo
+        {
+            get
+            {
+                return _tieneVideo;
+            }
+        }
+
         public ModificarAnuncioViewModel(int id, string titulo, string usuarioNombre, double? precio, CategoriaModificarAnuncioViewModel categoria, SubcategoriaModificarAnuncioViewModel subcategoria,
-            PaisModificarAnuncioViewModel pais, EstadoModificarAnuncioViewModel estado, string descripcion, FotoViewModel fotoPrincipal, List<FotoViewModel> fotos, string video, string razonRechazo)
+            PaisModificarAnuncioViewModel pais, EstadoModificarAnuncioViewModel estado, string descripcion, FotoViewModel fotoPrincipal, List<FotoViewModel> fotos, string video, string razonRechazo, int numFotos, bool tieneVideo)
         {
             _id = id;
             _titulo = titulo;
@@ -679,6 +697,8 @@ namespace VendeAgroWeb.Models.Portal
             _fotos = fotos;
             _video = video;
             _razonRechazo = razonRechazo;
+            _numFotos = numFotos;
+            _tieneVideo = tieneVideo;
         }
     }
 

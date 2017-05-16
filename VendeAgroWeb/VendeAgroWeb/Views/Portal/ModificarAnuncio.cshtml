@@ -135,6 +135,23 @@
                                             </tr>
                                             cont++;
                                         }
+
+                                        @for (int i = 1; i < (Model.NumFotos - (cont-1)); i++)
+                                            {
+                                                <tr class="row-tabla-foto">
+                                                    <td class="foto-tabla-titulo">Foto</td>
+                                                    <td><img class="img-selected-@i foto-vacia" src="~/img/foto-vacia.png" /></td>
+                                                    <td>
+                                                        <div class="form-group">
+                                                            <div class="btn btn-success image-preview-input" id="img-inp-btn">
+                                                                <span class="glyphicon glyphicon-folder-open"></span>
+                                                                <span style="padding-left: 3px;" class="image-preview-input-title">Modificar</span>
+                                                                <input class="input-absoluto" type="file" id="imagen" onchange="loadFile(event, @i)">
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            }
                                     }
                                     <tr style="border-top: 2px white solid;border-bottom: lightgrey 1px solid;" class="row-tabla-foto">
                                         <td colspan="4">
@@ -151,56 +168,6 @@
                         </div>
                     </div>
 
-                    <div class="row" style="margin-top: 20px;">
-                        <div class="alert alert-danger error-extensiones" style="display:none;">
-
-                        </div>
-
-                        <div class="alert alert-danger error-extension-video" style="display:none;">
-
-                        </div>
-
-                        <div class="panel panel-default">
-                            <div class="panel-heading"><strong>Fotos y video del anuncio</strong></div>
-                            <div class="panel-body">
-                                <form action="" method="post" enctype="multipart/form-data" id="js-upload-form">
-                                    <div class="form-inline">
-                                        <h4>Agregar más fotos desde tu computadora</h4>
-                                        <div class="form-group">
-                                            <div class="btn btn-default image-preview-input" style="position: relative;">
-                                                <span class="glyphicon glyphicon-folder-open"></span>
-                                                <span style="padding-left: 3px;" class="image-preview-input-title">Elegir fotos</span>
-                                                <input class="input-absoluto" type="file" name="files[]" id="js-upload-files" onchange="actualizaFotos(event)" multiple>
-                                            </div>
-                                            <label><span id="num-fotos">0</span> foto(s) seleccionada(s)</label>
-                                        </div>
-                                        <div class="progress">
-                                            <div class="progress-bar" id="progress-fotos" role="progressbar" aria-valuenow="0"
-                                                 aria-valuemin="0" aria-valuemax="100" style="width:0%">
-                                                <span class="sr-only">0%</span>
-                                            </div>
-                                        </div>
-                                        <h4>Selecciona el video desde tu computadora</h4>
-                                        <div class="form-group">
-                                            <div class="btn btn-default image-preview-input" style="position: relative;">
-                                                <span class="glyphicon glyphicon-folder-open"></span>
-                                                <span style="padding-left: 3px;" class="image-preview-input-title">Elegir video</span>
-                                                <input class="input-absoluto" type="file" onchange="actualizaVideo(event)">
-                                            </div>
-                                            <label id="video-no-seleccionado">No se ha seleccionado el video</label>
-                                            <label id="video-seleccionado" style="display:none;">1 video seleccionado</label>
-                                        </div>
-                                        <div class="progress">
-                                            <div class="progress-bar" id="progress-video" role="progressbar" aria-valuenow="0"
-                                                 aria-valuemin="0" aria-valuemax="100" style="width:0%">
-                                                <span class="sr-only">0%</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
                 </div>
 
                 <div class="row" style="margin-left:0px; margin-right: 0px;">
