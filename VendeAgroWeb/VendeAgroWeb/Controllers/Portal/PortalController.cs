@@ -231,8 +231,8 @@ namespace VendeAgroWeb.Controllers.Administrador
             var fotoDisplayId = (int)anuncio["jfotoDisplayId"];
             var fotoDisplay = (string)anuncio["jfotoDisplay"];
             var fotos = (JArray)anuncio["jfotos"];
-            var fotosEliminadas = (JArray)anuncio["jfotos"];
-            var fotosEliminadasRutas = (JArray)anuncio["jfotos"];
+            var fotosEliminadas = (JArray)anuncio["jfotosEliminadas"];
+            var fotosEliminadasRutas = (JArray)anuncio["jfotosEliminadasRutas"];
             var video = (string)anuncio["jvideo"];
             bool estado = true;
 
@@ -271,7 +271,10 @@ namespace VendeAgroWeb.Controllers.Administrador
                                 _dbContext.Fotos_Anuncio.Remove(fotoActual);
                             }
 
-                            //borrarFotos(fotosEliminadasRutas);
+                            foreach (var foto in fotosEliminadasRutas)
+                            {
+                                borrarFoto((string)foto);
+                            }
 
                             var fotoDb = _dbContext.Fotos_Anuncio.FirstOrDefault(f => f.id == fotoDisplayId);
 
@@ -281,7 +284,11 @@ namespace VendeAgroWeb.Controllers.Administrador
                                 estado = false;
                             }
 
-                            fotoDb.ruta = fotoDisplay;
+                            if (fotoDb.ruta != fotoDisplay)
+                            {
+                                borrarFoto(fotoDb.ruta);
+                                fotoDb.ruta = fotoDisplay;
+                            }
 
                             foreach (var item in fotos)
                             {
@@ -313,6 +320,17 @@ namespace VendeAgroWeb.Controllers.Administrador
                     return true;
                 }
             });
+        }
+
+        private void borrarFoto(string r)
+        {
+            r = r.Replace('/', '\\');
+            string baseDir = AppDomain.CurrentDomain.BaseDirectory;
+            string ruta = System.IO.Path.Combine(baseDir.Substring(0, baseDir.Length-1), r.Substring(1,r.Length-1));
+            if (System.IO.File.Exists(ruta))
+            {
+                System.IO.File.Delete(ruta);
+            }
         }
 
         public async Task<ActionResult> ModificarAnuncio(int? id)
@@ -437,6 +455,10 @@ namespace VendeAgroWeb.Controllers.Administrador
                     var anuncios = _dbContext.Anuncios.Where(a => ((EstadoAnuncio)a.estado != EstadoAnuncio.Vencido && a.idUsuario == id) || ((EstadoAnuncio)a.estado == EstadoAnuncio.Vacio && a.idUsuario == id));
                     foreach (var item in anuncios)
                     {
+                        if (!item.activo && item.estado == (int)EstadoAnuncio.Aprobado)
+                        {
+                            continue;
+                        }
                         var paquete = _dbContext.Paquetes.Where(p => p.id == item.idPaquete).FirstOrDefault();
 
                         PaqueteViewModel paqueteViewModel = null;
