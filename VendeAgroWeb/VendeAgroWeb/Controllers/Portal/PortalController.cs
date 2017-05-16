@@ -322,6 +322,13 @@ namespace VendeAgroWeb.Controllers.Administrador
                 return RedirectToAction("MisAnuncios", "Portal");
             }
 
+            var usuario = Startup.GetAplicacionUsuariosManager().getUsuarioPortalActual(Request);
+
+            if (usuario == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.Forbidden, "Debes iniciar sesi&oacute;n");
+            }
+
             bool estado = true;
             ModificarAnuncioViewModel model = null;
 
@@ -336,44 +343,55 @@ namespace VendeAgroWeb.Controllers.Administrador
                     }
                     else
                     {
+                        var anuncio = _dbContext.Anuncios.Where(a => a.id == id && a.estado == (int)EstadoAnuncio.NoAprobado).FirstOrDefault();
 
-                        var anuncio = _dbContext.Anuncios.Where(a => a.id == id).FirstOrDefault();
-
-                        List<FotoViewModel> fotos = new List<FotoViewModel>();
-                        FotoViewModel fotoPrincipal = null;
-
-                        foreach (var foto in anuncio.Fotos_Anuncio)
+                        if (anuncio == null)
                         {
-                            if (foto.principal == true)
-                            {
-                                fotoPrincipal = new FotoViewModel(foto.id, true, foto.ruta);
-                                continue;
-                            }
-                            fotos.Add(new FotoViewModel(foto.id, false, foto.ruta));
+                            estado = false;
+                        }
+                        else if (usuario.Id != anuncio.idUsuario)
+                        {
+                            estado = false;
                         }
 
-                        int numFotos = 3;
-                        bool video = false;
-
-                        var beneficios = _dbContext.Anuncio_Beneficio.Where(a => a.idAnuncio == id);
-
-                        foreach (var beneficio in beneficios)
+                        else
                         {
-                            if (beneficio.idBeneficio == 2)
+                            List<FotoViewModel> fotos = new List<FotoViewModel>();
+                            FotoViewModel fotoPrincipal = null;
+
+                            foreach (var foto in anuncio.Fotos_Anuncio)
                             {
-                                numFotos += 5;
-                                continue;
+                                if (foto.principal == true)
+                                {
+                                    fotoPrincipal = new FotoViewModel(foto.id, true, foto.ruta);
+                                    continue;
+                                }
+                                fotos.Add(new FotoViewModel(foto.id, false, foto.ruta));
                             }
-                            if (beneficio.idBeneficio == 3)
+
+                            int numFotos = 3;
+                            bool video = false;
+
+                            var beneficios = _dbContext.Anuncio_Beneficio.Where(a => a.idAnuncio == id);
+
+                            foreach (var beneficio in beneficios)
                             {
-                                video = true;
+                                if (beneficio.idBeneficio == 2)
+                                {
+                                    numFotos += 5;
+                                    continue;
+                                }
+                                if (beneficio.idBeneficio == 3)
+                                {
+                                    video = true;
+                                }
                             }
+
+                            model = new ModificarAnuncioViewModel(anuncio.id, anuncio.titulo, anuncio.Usuario.nombre + " " + anuncio.Usuario.apellidos, anuncio.precio, new CategoriaModificarAnuncioViewModel(anuncio.Subcategoria.idCategoria, anuncio.Subcategoria.Categoria.nombre),
+                                new SubcategoriaModificarAnuncioViewModel(anuncio.idSubcategoria, anuncio.Subcategoria.nombre), new PaisModificarAnuncioViewModel(anuncio.Estado1.idPais, anuncio.Estado1.Pai.nombre), new EstadoModificarAnuncioViewModel(anuncio.idEstado, anuncio.Estado1.nombre),
+                                anuncio.descripcion, fotoPrincipal, fotos, anuncio.Videos_Anuncio.Where(v => v.idAnuncio == id).FirstOrDefault()?.ruta, anuncio.razonRechazo, numFotos, video);
+
                         }
-
-                        model = new ModificarAnuncioViewModel(anuncio.id, anuncio.titulo, anuncio.Usuario.nombre + " " + anuncio.Usuario.apellidos, anuncio.precio, new CategoriaModificarAnuncioViewModel(anuncio.Subcategoria.idCategoria, anuncio.Subcategoria.Categoria.nombre),
-                            new SubcategoriaModificarAnuncioViewModel(anuncio.idSubcategoria, anuncio.Subcategoria.nombre), new PaisModificarAnuncioViewModel(anuncio.Estado1.idPais, anuncio.Estado1.Pai.nombre), new EstadoModificarAnuncioViewModel(anuncio.idEstado, anuncio.Estado1.nombre),
-                            anuncio.descripcion, fotoPrincipal, fotos, anuncio.Videos_Anuncio.Where(v => v.idAnuncio == id).FirstOrDefault()?.ruta, anuncio.razonRechazo, numFotos, video);
-
 
                         _dbContext.Database.Connection.Close();
                     }

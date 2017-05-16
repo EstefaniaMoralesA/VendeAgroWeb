@@ -146,7 +146,7 @@
                                                             <div class="btn btn-success image-preview-input" id="img-inp-btn">
                                                                 <span class="glyphicon glyphicon-folder-open"></span>
                                                                 <span style="padding-left: 3px;" class="image-preview-input-title">Modificar</span>
-                                                                <input class="input-absoluto" type="file" id="imagen" onchange="loadFile(event, @i+1)">
+                                                                <input class="input-absoluto" type="file" id="imagen" onchange="loadFile(event, @i)">
                                                             </div>
                                                         </div>
                                                     </td>
@@ -165,6 +165,30 @@
                                     </tr>
                                 </tbody>
                             </table>
+                            @if (Model.TieneVideo)
+                            {
+                                <div class="panel panel-default">
+                                    <div class="panel-heading"><strong>Video del anuncio</strong></div>
+                                    <div class="panel-body">
+                                        <table class="table table-responsive" style="margin-top: 30px;">
+                                            <tbody>
+                                                <tr class="row-tabla-foto">
+                                                    <td class="foto-tabla-titulo">Video del anuncio</td>
+                                                    <td>
+                                                        <div class="form-group">
+                                                            <div class="btn btn-success image-preview-input" id="img-inp-btn">
+                                                                <span class="glyphicon glyphicon-folder-open"></span>
+                                                                <span style="padding-left: 3px;" class="image-preview-input-title">Modificar</span>
+                                                                <input class="input-absoluto" type="file" id="imagen" onchange="loadFile(event)">
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            }
                         </div>
                     </div>
 
@@ -210,7 +234,7 @@
     var validoSubcategoria = true;
     var validoPais = true;
     var validoEstado = true;
-    var numeroSubidosEsperado = 1;
+    var numeroSubidosEsperado = 0;
     var numeroSubidos = 0;
     var cambioFotoDeDisplay = false;
 
@@ -451,6 +475,8 @@
             jfotosEliminadasRutas: fotosEliminadasRutas
         };
 
+        alert(nuevoAnuncio);
+
         $.ajax({
             type: "POST",
             data: { "json": JSON.stringify(nuevoAnuncio) },
@@ -464,24 +490,31 @@
         });
     }
 
-    function loadFile(event, num) {
+    function loadFile(event, i) {
         $(".error-extension").html('').hide('');
         if (!validExtension(event.target.files[0])) {
-            $("#img-" + num).val("");
+            $("#imagen").val("");
             mostrarErrorExtension("La extensión de la imagen no es válida");
-            $("#img-" + num).attr("src", "/img/foto-vacia.png");
+            $(".img-selected-" + i).attr("src", "/img/foto-vacia.png");
             return;
         }
 
         if (event.target.files.length == 0) {
-            $("#img-" + num).attr("src", "/img/foto-vacia.png");
+            $(".img-selected-" + i).attr("src", "/img/foto-vacia.png");
             return;
         }
         var foto = URL.createObjectURL(event.target.files[0]);
-        fotoDisplay = event.target.files[0];
-        cambioFotoDeDisplay = true;
-        $("#img-" + num).attr("src", foto);
+        if(i == 0)
+        {
+            fotoDisplay = event.target.files[0];
+        }
+        else
+        {
+            fotos.push(event.target.files[0]);
+        }
+        $(".img-selected-" + i).attr("src", foto);
     };
+
 
     function validExtension(imagen) {
         var ext = imagen.name.split('.').pop().toLowerCase();
@@ -691,8 +724,8 @@
     });
 
     function checarDone() {
-        //alert("numeroSubidosEsperado " + numeroSubidosEsperado + "numero Subidos");
         if (numeroSubidosEsperado === numeroSubidos) {
+            alert("numeroSubidosEsperado " + numeroSubidosEsperado + "numero Subidos " + numeroSubidos);
             agregarAnuncio();
             return;
         }
