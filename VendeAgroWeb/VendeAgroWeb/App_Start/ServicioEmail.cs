@@ -40,9 +40,6 @@ namespace VendeAgroWeb
             {
                 smtp.UseDefaultCredentials = false;
                 smtp.EnableSsl = false;
-                smtp.Host = "smtpout.secureserver.net";
-                smtp.DeliveryMethod = SmtpDeliveryMethod.Network;
-                smtp.Credentials = _credenciales;
                 try
                 {
                     smtp.Send(message);
