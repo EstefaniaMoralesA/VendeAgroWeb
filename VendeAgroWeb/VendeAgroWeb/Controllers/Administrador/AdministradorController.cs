@@ -1055,7 +1055,7 @@ namespace VendeAgroWeb.Controllers.Administrador
             {
                 return false;
             }
-            return await Task.Run(() =>
+            return await Task.Run(async () =>
             {
                 using (var _dbContext = new MercampoEntities())
                 {
@@ -1077,9 +1077,16 @@ namespace VendeAgroWeb.Controllers.Administrador
                     anuncio.activo = true;
                     anuncio.estado = (int)EstadoAnuncio.Aprobado;
                     _dbContext.SaveChanges();
+
+                    Usuario usuario = anuncio.Usuario;
+                    string mailMensaje = "<p>Estimado/a " + usuario.nombre + "<,/p>" + 
+                   "<p>Tu anuncio " + anuncio.titulo + " ha sido aprobado y publicado. Para consultarlo, da click <a href=\'" + Startup.getBaseUrl() + "/Home/AnuncioDetalles?id=" + anuncio.id + "\'>AQUÍ</a></p>";
+
+                    var result = await Startup.GetServicioEmail().SendAsync(mailMensaje, "Tu Anuncio ha sido Aprobado", usuario.email);
                     return true;
                 }
             });
+        }
 
         }
 
