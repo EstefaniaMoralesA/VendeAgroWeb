@@ -17,8 +17,8 @@ namespace VendeAgroWeb
             _mailSalida = "buzon@mercampo.mx";
             _credenciales = new NetworkCredential
             {
-                UserName = "mercampomx@gmail.com",
-                Password = "ejmupozkjsjhbito"
+                UserName = "buzon@mercampo.mx",
+                Password = "mercampo"
             };
         }
 
@@ -38,8 +38,11 @@ namespace VendeAgroWeb
 
             using (var smtp = new SmtpClient())
             {
-                smtp.Host = "relay-hosting.secureserver.net";
-                smtp.Port = 25;
+                smtp.UseDefaultCredentials = false;
+                smtp.EnableSsl = false;
+                smtp.Host = "smtpout.secureserver.net";
+                smtp.DeliveryMethod = SmtpDeliveryMethod.Network;
+                smtp.Credentials = _credenciales;
                 try
                 {
                     smtp.Send(message);
