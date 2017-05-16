@@ -1117,7 +1117,7 @@ namespace VendeAgroWeb.Controllers.Administrador
                     anuncio.razonRechazo = rechazo;
 
                     Usuario usuario = anuncio.Usuario;
-                    string mailMensaje = "<p>Estimado/a " + usuario.nombre + "<,/p>" +
+                    string mailMensaje = "<p>Estimado/a " + usuario.nombre + "</p>" +
                    "<p>Tu anuncio " + anuncio.titulo + " ha sido rechazado por la siguiente raz&oacute;n:<br>" + rechazo + ".<br>Para modificarlo y que pueda estar en la plataforma de Mercampo, da click <a href=\'" + Startup.getBaseUrl() + "/Portal/ModificarAnuncio?id=" + anuncio.id + "\'>AQUÍ</a></p>";
 
                     var result = await Startup.GetServicioEmail().SendAsync(mailMensaje, "Tu Anuncio ha sido Rechazado", usuario.email);

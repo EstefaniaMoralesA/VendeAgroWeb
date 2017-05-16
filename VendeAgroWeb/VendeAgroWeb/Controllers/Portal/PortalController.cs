@@ -326,7 +326,7 @@ namespace VendeAgroWeb.Controllers.Administrador
 
             if (usuario == null)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.Forbidden, "Debes iniciar sesi&oacute;n");
+                RedirectToAction("Index", "Home", new { abrirLogin = -1});
             }
 
             bool estado = true;
@@ -437,6 +437,9 @@ namespace VendeAgroWeb.Controllers.Administrador
                     var anuncios = _dbContext.Anuncios.Where(a => ((EstadoAnuncio)a.estado != EstadoAnuncio.Vencido && a.idUsuario == id) || ((EstadoAnuncio)a.estado == EstadoAnuncio.Vacio && a.idUsuario == id));
                     foreach (var item in anuncios)
                     {
+                        if (!item.activo && item.estado == (int)EstadoAnuncio.Aprobado) {
+                            continue;
+                        }
                         var paquete = _dbContext.Paquetes.Where(p => p.id == item.idPaquete).FirstOrDefault();
 
                         PaqueteViewModel paqueteViewModel = null;
