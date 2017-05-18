@@ -17,8 +17,8 @@ namespace VendeAgroWeb
             _mailSalida = "buzon@mercampo.mx";
             _credenciales = new NetworkCredential
             {
-                UserName = "buzon@mercampo.mx",
-                Password = "mercampo"
+                UserName = "mercampomx@outlook.com",
+                Password = "mercampo.MX123"
             };
         }
 
@@ -30,7 +30,7 @@ namespace VendeAgroWeb
             MailMessage message = new MailMessage();
             message.To.Add(new MailAddress(destinatario));  // replace with valid value
             message.Sender = new MailAddress(_mailSalida, "mercampo.mx");
-            message.From = new MailAddress(_mailSalida, "mercampo.mx");  // replace with valid value
+            message.From = new MailAddress(_mailSalida);  // replace with valid value
             message.ReplyToList.Add(new MailAddress(_mailSalida, "mercampo.mx"));
             message.Subject = asunto;
             message.Body = mensaje;
@@ -38,14 +38,16 @@ namespace VendeAgroWeb
 
             using (var smtp = new SmtpClient())
             {
-                smtp.UseDefaultCredentials = false;
-                smtp.EnableSsl = false;
+                smtp.Credentials = _credenciales;
+                smtp.Host = "smtp-mail.outlook.com";
+                smtp.Port = 587;
+                smtp.EnableSsl = true;
                 try
                 {
                     smtp.Send(message);
                     message = null;
                 }
-                catch(SmtpException e)
+                catch (SmtpException e)
                 {
                     Console.WriteLine(e.Message);
                     return false;

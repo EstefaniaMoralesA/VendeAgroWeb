@@ -19,6 +19,7 @@ namespace VendeAgroWeb.Controllers.Home
         {
             using (MercampoEntities _dbContext = new MercampoEntities())
             {
+                
                 Startup.OpenDatabaseConnection(_dbContext);
                 if (_dbContext.Database.Connection.State != ConnectionState.Open)
                 {
