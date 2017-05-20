@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Mail;
@@ -10,49 +11,37 @@ namespace VendeAgroWeb
 {
     public class ServicioEmail
     {
-        private string _mailSalida;
-        private NetworkCredential _credenciales;
         public ServicioEmail()
         {
-            _mailSalida = "buzon@mercampo.mx";
-            _credenciales = new NetworkCredential
-            {
-                UserName = "mercampomx@outlook.com",
-                Password = "mercampo.MX123"
-            };
         }
 
         public string MailContacto => "buzon@mercampo.mx";
 
         public async Task<bool> SendAsync(string mensaje, string asunto, string destinatario)
         {
-            // Plug in your email service here to send an email.
-            MailMessage message = new MailMessage();
-            message.To.Add(new MailAddress(destinatario));  // replace with valid value
-            message.Sender = new MailAddress(_mailSalida, "mercampo.mx");
-            message.From = new MailAddress(_mailSalida);  // replace with valid value
-            message.ReplyToList.Add(new MailAddress(_mailSalida, "mercampo.mx"));
-            message.Subject = asunto;
-            message.Body = mensaje;
-            message.IsBodyHtml = true;
+            var httpWebRequest = (HttpWebRequest)WebRequest.Create("http://mercampomail.azurewebsites.net/api/mail/send/" +
+                destinatario + "/" + asunto);
+            httpWebRequest.ContentType = "application/x-www-form-urlencoded";
+            httpWebRequest.Method = "POST";
 
-            using (var smtp = new SmtpClient())
+            using (var streamWriter = new StreamWriter(httpWebRequest.GetRequestStream()))
             {
-                smtp.Credentials = _credenciales;
-                smtp.Host = "smtp-mail.outlook.com";
-                smtp.Port = 587;
-                smtp.EnableSsl = true;
-                try
+                streamWriter.Write("body=" + mensaje);
+                streamWriter.Flush();
+                streamWriter.Close();
+            }
+
+            var httpResponse = (HttpWebResponse)httpWebRequest.GetResponse();
+            using (var streamReader = new StreamReader(httpResponse.GetResponseStream()))
+            {
+                string result = streamReader.ReadToEnd();
+                if (result.Equals("Error"))
                 {
-                    smtp.Send(message);
-                    message = null;
-                }
-                catch (SmtpException e)
-                {
-                    Console.WriteLine(e.Message);
+                    httpResponse.Close();
                     return false;
                 }
             }
+            httpResponse.Close();
             return true;
         }
     }
