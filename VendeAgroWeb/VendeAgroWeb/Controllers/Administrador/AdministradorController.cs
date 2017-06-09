@@ -1912,7 +1912,7 @@ namespace VendeAgroWeb.Controllers.Administrador
 
 
         [HttpPost]
-        public async Task<bool> NuevoAnuncio(string json)
+        public async Task<string> NuevoAnuncio(string json)
         {
             string serverPath = Server.MapPath("~/img/Uploads/Images");
             var path = Path.Combine(serverPath, "NuevoAnuncioLog.txt");
@@ -1943,7 +1943,7 @@ namespace VendeAgroWeb.Controllers.Administrador
                             {
                                 streamW.WriteLine("error en la base de datos");
                                 ModelState.AddModelError("", "Error en la base de datos, vuelva a intentarlo");
-                                return false;
+                                return "false";
                             }
                             else
                             {
@@ -2007,13 +2007,13 @@ namespace VendeAgroWeb.Controllers.Administrador
 
                             _dbContext.Database.Connection.Close();
                             streamW.WriteLine("Cree anuncio");
-                            return true;
+                            return "true";
                         }
                     }
                     catch (Exception e)
                     {
                         streamW.WriteLine("Hubo un errror @@@: " + e.ToString());
-                        return false;
+                        return e.ToString();
                     }
                 });
             }
