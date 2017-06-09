@@ -2010,7 +2010,7 @@ namespace VendeAgroWeb.Controllers.Administrador
                             return "true";
                         }
                     }
-                    catch (Exception e)
+                    catch (ArgumentNullException e)
                     {
                         streamW.WriteLine("Hubo un errror @@@: " + e.ToString());
                         return e.ToString();
