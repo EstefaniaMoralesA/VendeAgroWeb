@@ -1919,22 +1919,23 @@ namespace VendeAgroWeb.Controllers.Administrador
             using (StreamWriter streamW = new StreamWriter(path))
             {
                 streamW.WriteLine("Empece a crear el anuncio: " + json);
-                var anuncio = JObject.Parse(json);
-                var titulo = (string)anuncio["jtitulo"];
-                var descripcion = (string)anuncio["jdescripcion"];
-                var precio = (double)anuncio["jprecio"];
-                var idUsuario = (int)anuncio["jidUsuario"];
-                var idSubcategoria = (int)anuncio["jidSubcategoria"];
-                var idEstado = (int)anuncio["jestado"];
-                var meses = (int)anuncio["jmeses"];
-                var fotoDisplay = (string)anuncio["jfotoDisplay"];
-                var fotos = (JArray)anuncio["jfotos"];
-                var video = (string)anuncio["jvideo"];
-                streamW.WriteLine("Parsee el json");
+                
                 return await Task.Run(() =>
                 {
                     try
                     {
+                        var anuncio = JObject.Parse(json);
+                        var titulo = (string)anuncio["jtitulo"];
+                        var descripcion = (string)anuncio["jdescripcion"];
+                        var precio = (double)anuncio["jprecio"];
+                        var idUsuario = (int)anuncio["jidUsuario"];
+                        var idSubcategoria = (int)anuncio["jidSubcategoria"];
+                        var idEstado = (int)anuncio["jestado"];
+                        var meses = (int)anuncio["jmeses"];
+                        var fotoDisplay = (string)anuncio["jfotoDisplay"];
+                        var fotos = (JArray)anuncio["jfotos"];
+                        var video = (string)anuncio["jvideo"];
+                        streamW.WriteLine("Parsee el json");
                         using (var _dbContext = new MercampoEntities())
                         {
                             Startup.OpenDatabaseConnection(_dbContext);
