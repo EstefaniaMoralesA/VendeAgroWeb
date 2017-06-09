@@ -1079,7 +1079,7 @@ namespace VendeAgroWeb.Controllers.Administrador
                     _dbContext.SaveChanges();
 
                     Usuario usuario = anuncio.Usuario;
-                    string mailMensaje = "<p>Estimado/a " + usuario.nombre + "<,/p>" + 
+                    string mailMensaje = "<p>Estimado/a " + usuario.nombre + "<,/p>" +
                    "<p>Tu anuncio " + anuncio.titulo + " ha sido aprobado y publicado. Para consultarlo, da click <a href=\'" + Startup.getBaseUrl() + "/Home/AnuncioDetalles?id=" + anuncio.id + "\'>AQUÍ</a></p>";
 
                     var result = await Startup.GetServicioEmail().SendAsync(mailMensaje, "Tu Anuncio ha sido Aprobado", usuario.email);
@@ -1737,8 +1737,8 @@ namespace VendeAgroWeb.Controllers.Administrador
                             fotos.Add(new FotoViewModel(foto.id, false, foto.ruta));
                         }
 
-                        model = new ModificarAnuncioViewModel(anuncio.id, anuncio.titulo, anuncio.Usuario.nombre + " " + anuncio.Usuario.apellidos, anuncio.precio, new CategoriaModificarAnuncioViewModel(anuncio.Subcategoria.idCategoria, anuncio.Subcategoria.Categoria.nombre), 
-                            new SubcategoriaModificarAnuncioViewModel(anuncio.idSubcategoria, anuncio.Subcategoria.nombre), new PaisModificarAnuncioViewModel(anuncio.Estado1.idPais, anuncio.Estado1.Pai.nombre), new EstadoModificarAnuncioViewModel(anuncio.idEstado, anuncio.Estado1.nombre), 
+                        model = new ModificarAnuncioViewModel(anuncio.id, anuncio.titulo, anuncio.Usuario.nombre + " " + anuncio.Usuario.apellidos, anuncio.precio, new CategoriaModificarAnuncioViewModel(anuncio.Subcategoria.idCategoria, anuncio.Subcategoria.Categoria.nombre),
+                            new SubcategoriaModificarAnuncioViewModel(anuncio.idSubcategoria, anuncio.Subcategoria.nombre), new PaisModificarAnuncioViewModel(anuncio.Estado1.idPais, anuncio.Estado1.Pai.nombre), new EstadoModificarAnuncioViewModel(anuncio.idEstado, anuncio.Estado1.nombre),
                             anuncio.descripcion, fotoPrincipal, fotos, anuncio.Videos_Anuncio.Where(v => v.idAnuncio == id).FirstOrDefault()?.ruta);
 
 
@@ -1818,42 +1818,50 @@ namespace VendeAgroWeb.Controllers.Administrador
         public string SubirFotos()
         {
             List<string> fotos = new List<string>();
-            try
+            using (StreamWriter streamW = new StreamWriter("mylog.txt"))
             {
-                foreach (string file in Request.Files)
+                try
                 {
-                    var fileContent = Request.Files[file];
-                    if (fileContent != null && fileContent.ContentLength > 0)
+                    streamW.WriteLine("Empece a subir fotos");
+                    foreach (string file in Request.Files)
                     {
-                        // get a stream
-                        var stream = fileContent.InputStream;
-                        // and optionally write the file to disk
-                        var fileExtension = Path.GetExtension(fileContent.FileName);
-                        var guid = Guid.NewGuid().ToString();
-                        var name = AplicacionUsuariosManager.Hash(Guid.NewGuid().ToString());
-                        string serverPath = Server.MapPath("~/img/Uploads/Images");
-
-                        if (!Directory.Exists(serverPath))
+                        streamW.WriteLine("Archivo: " + file);
+                        var fileContent = Request.Files[file];
+                        if (fileContent != null && fileContent.ContentLength > 0)
                         {
-                            Directory.CreateDirectory(serverPath);
+                            // get a stream
+                            var stream = fileContent.InputStream;
+                            // and optionally write the file to disk
+                            var fileExtension = Path.GetExtension(fileContent.FileName);
+                            var guid = Guid.NewGuid().ToString();
+                            var name = AplicacionUsuariosManager.Hash(Guid.NewGuid().ToString());
+                            string serverPath = Server.MapPath("~/img/Uploads/Images");
+
+                            if (!Directory.Exists(serverPath))
+                            {
+                                Directory.CreateDirectory(serverPath);
+                            }
+
+                            var path = Path.Combine(serverPath, $"{name}{fileExtension}");
+                            streamW.WriteLine("Path: " + path);
+                            using (var fileStream = System.IO.File.Create(path))
+                            {
+                                stream.CopyTo(fileStream);
+                            }
+
+                            fotos.Add($"/img/Uploads/Images/{name}{fileExtension}");
                         }
-
-                        var path = Path.Combine(serverPath, $"{name}{fileExtension}");
-
-                        using (var fileStream = System.IO.File.Create(path))
-                        {
-                            stream.CopyTo(fileStream);
-                        }
-
-                        fotos.Add($"/img/Uploads/Images/{name}{fileExtension}");
                     }
                 }
+                catch (Exception e)
+                {
+                    Response.StatusCode = (int)HttpStatusCode.BadRequest;
+                    streamW.WriteLine("Hubo un error @@@@: " + e.ToString());
+                    return new JavaScriptSerializer().Serialize(Json(e.Message).Data);
+                }
+                streamW.WriteLine("Termine subir fotos");
             }
-            catch (Exception e)
-            {
-                Response.StatusCode = (int)HttpStatusCode.BadRequest;
-                return new JavaScriptSerializer().Serialize(Json(e.Message).Data);
-            }
+
 
             return new JavaScriptSerializer().Serialize(Json(fotos).Data);
         }
@@ -1906,86 +1914,106 @@ namespace VendeAgroWeb.Controllers.Administrador
         [HttpPost]
         public async Task<bool> NuevoAnuncio(string json)
         {
-            var anuncio = JObject.Parse(json);
-            var titulo = (string)anuncio["jtitulo"];
-            var descripcion = (string)anuncio["jdescripcion"];
-            var precio = (double)anuncio["jprecio"];
-            var idUsuario = (int)anuncio["jidUsuario"];
-            var idSubcategoria = (int)anuncio["jidSubcategoria"];
-            var idEstado = (int)anuncio["jestado"];
-            var meses = (int)anuncio["jmeses"];
-            var fotoDisplay = (string)anuncio["jfotoDisplay"];
-            var fotos = (JArray)anuncio["jfotos"];
-            var video = (string)anuncio["jvideo"];
-
-            return await Task.Run(() =>
+            using (StreamWriter streamW = new StreamWriter("NuevoAnuncioLog.txt"))
             {
-                using (var _dbContext = new MercampoEntities())
+                streamW.WriteLine("Empece a crear el anuncio: " + json);
+                var anuncio = JObject.Parse(json);
+                var titulo = (string)anuncio["jtitulo"];
+                var descripcion = (string)anuncio["jdescripcion"];
+                var precio = (double)anuncio["jprecio"];
+                var idUsuario = (int)anuncio["jidUsuario"];
+                var idSubcategoria = (int)anuncio["jidSubcategoria"];
+                var idEstado = (int)anuncio["jestado"];
+                var meses = (int)anuncio["jmeses"];
+                var fotoDisplay = (string)anuncio["jfotoDisplay"];
+                var fotos = (JArray)anuncio["jfotos"];
+                var video = (string)anuncio["jvideo"];
+                streamW.WriteLine("Parsee el json");
+                return await Task.Run(() =>
                 {
-                    Startup.OpenDatabaseConnection(_dbContext);
-                    if (_dbContext.Database.Connection.State != ConnectionState.Open)
+                    try
                     {
-                        ModelState.AddModelError("", "Error en la base de datos, vuelva a intentarlo");
+                        using (var _dbContext = new MercampoEntities())
+                        {
+                            Startup.OpenDatabaseConnection(_dbContext);
+                            if (_dbContext.Database.Connection.State != ConnectionState.Open)
+                            {
+                                streamW.WriteLine("error en la base de datos");
+                                ModelState.AddModelError("", "Error en la base de datos, vuelva a intentarlo");
+                                return false;
+                            }
+                            else
+                            {
+                                var nuevoAnuncio = _dbContext.Anuncios.Add(new Anuncio
+                                {
+                                    titulo = titulo,
+                                    descripcion = descripcion,
+                                    precio = precio,
+                                    activo = true,
+                                    idUsuario = idUsuario,
+                                    idSubcategoria = idSubcategoria,
+                                    idEstado = idEstado,
+                                    estado = (int)EstadoAnuncio.Aprobado,
+                                    clicks = 0,
+                                    vistas = 0,
+                                    fecha_inicio = DateTime.Now,
+                                    fecha_fin = DateTime.Now.AddMonths(meses),
+                                });
+                                streamW.WriteLine("Cree el anuncio");
+
+                                _dbContext.Fotos_Anuncio.Add(new Fotos_Anuncio
+                                {
+                                    ruta = fotoDisplay,
+                                    idAnuncio = nuevoAnuncio.id,
+                                    principal = true
+                                });
+
+                                streamW.WriteLine("Agregue la foto principal");
+
+                                _dbContext.Anuncio_Beneficio.Add(new Anuncio_Beneficio
+                                {
+                                    idAnuncio = nuevoAnuncio.id,
+                                    idBeneficio = 4
+                                });
+
+                                streamW.WriteLine("Agregue los beneficios");
+                                foreach (var item in fotos)
+                                {
+                                    var url = (string)item;
+                                    _dbContext.Fotos_Anuncio.Add(new Fotos_Anuncio
+                                    {
+                                        ruta = url,
+                                        idAnuncio = nuevoAnuncio.id,
+                                        principal = false
+                                    });
+                                    streamW.WriteLine("Cree foto: " + url);
+                                }
+
+                                if (!string.IsNullOrEmpty(video))
+                                {
+                                    _dbContext.Videos_Anuncio.Add(new Videos_Anuncio
+                                    {
+                                        ruta = video,
+                                        idAnuncio = nuevoAnuncio.id
+                                    });
+                                }
+
+                                _dbContext.SaveChanges();
+                                streamW.WriteLine("Guarde cambios.");
+                            }
+
+                            _dbContext.Database.Connection.Close();
+                            streamW.WriteLine("Cree anuncio");
+                            return true;
+                        }
+                    }
+                    catch (Exception e)
+                    {
+                        streamW.WriteLine("Hubo un errror @@@: " + e.ToString());
                         return false;
                     }
-                    else
-                    {
-                        var nuevoAnuncio = _dbContext.Anuncios.Add(new Anuncio
-                        {
-                            titulo = titulo,
-                            descripcion = descripcion,
-                            precio = precio,
-                            activo = true,
-                            idUsuario = idUsuario,
-                            idSubcategoria = idSubcategoria,
-                            idEstado = idEstado,
-                            estado = (int)EstadoAnuncio.Aprobado,
-                            clicks = 0,
-                            vistas = 0,
-                            fecha_inicio = DateTime.Now,
-                            fecha_fin = DateTime.Now.AddMonths(meses),
-                        });
-
-                        _dbContext.Fotos_Anuncio.Add(new Fotos_Anuncio
-                        {
-                            ruta = fotoDisplay,
-                            idAnuncio = nuevoAnuncio.id,
-                            principal = true
-                        });
-
-                        _dbContext.Anuncio_Beneficio.Add(new Anuncio_Beneficio
-                        {
-                            idAnuncio = nuevoAnuncio.id,
-                            idBeneficio = 4
-                        });
-
-                        foreach (var item in fotos)
-                        {
-                            var url = (string)item;
-                            _dbContext.Fotos_Anuncio.Add(new Fotos_Anuncio
-                            {
-                                ruta = url,
-                                idAnuncio = nuevoAnuncio.id,
-                                principal = false
-                            });
-                        }
-
-                        if (!string.IsNullOrEmpty(video))
-                        {
-                            _dbContext.Videos_Anuncio.Add(new Videos_Anuncio
-                            {
-                                ruta = video,
-                                idAnuncio = nuevoAnuncio.id
-                            });
-                        }
-
-                        _dbContext.SaveChanges();
-                    }
-
-                    _dbContext.Database.Connection.Close();
-                    return true;
-                }
-            });
+                });
+            }
         }
 
         [HttpPost]
@@ -2039,12 +2067,13 @@ namespace VendeAgroWeb.Controllers.Administrador
                                 var fotoActual = _dbContext.Fotos_Anuncio.FirstOrDefault(f => f.id == idFoto);
                                 _dbContext.Fotos_Anuncio.Remove(fotoActual);
                             }
-                            
-                            //borrarFotos(fotosEliminadasRutas);
 
-                            var fotoDb = _dbContext.Fotos_Anuncio.FirstOrDefault(f => f.id == fotoDisplayId);
+                        //borrarFotos(fotosEliminadasRutas);
 
-                            if (fotoDb == null) {
+                        var fotoDb = _dbContext.Fotos_Anuncio.FirstOrDefault(f => f.id == fotoDisplayId);
+
+                            if (fotoDb == null)
+                            {
                                 ModelState.AddModelError("", "Error anuncio no encontrado, vuelva a intentarlo");
                                 estado = false;
                             }

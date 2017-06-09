@@ -426,10 +426,11 @@
             data: { "json": JSON.stringify(nuevoAnuncio) },
             url: "/Administrador/NuevoAnuncio",
             success: function (result) {
+                alert(result);
                 window.location = "Anuncios";
             },
             error: function (msg) {
-                console.log(msg);
+                alert(msg);
             }
         });
     }
