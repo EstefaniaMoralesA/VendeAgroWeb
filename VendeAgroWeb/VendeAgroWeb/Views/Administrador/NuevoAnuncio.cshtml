@@ -429,8 +429,9 @@
                 alert(result);
                 window.location = "Anuncios";
             },
-            error: function (msg) {
-                alert(msg);
+            error: function (xhr, ajaxOptions, thrownError) {
+                alert(xhr.status);
+                alert(xhr.responseText);
             }
         });
     }
