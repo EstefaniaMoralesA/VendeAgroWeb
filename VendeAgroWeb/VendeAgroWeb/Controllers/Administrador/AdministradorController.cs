@@ -1818,7 +1818,8 @@ namespace VendeAgroWeb.Controllers.Administrador
         public string SubirFotos()
         {
             List<string> fotos = new List<string>();
-            using (StreamWriter streamW = new StreamWriter("mylog.txt"))
+            string serverPath = Server.MapPath("~/img/Uploads/Images");
+            using (StreamWriter streamW = new StreamWriter(Path.Combine(serverPath, "mylog.txt")))
             {
                 try
                 {
@@ -1835,7 +1836,6 @@ namespace VendeAgroWeb.Controllers.Administrador
                             var fileExtension = Path.GetExtension(fileContent.FileName);
                             var guid = Guid.NewGuid().ToString();
                             var name = AplicacionUsuariosManager.Hash(Guid.NewGuid().ToString());
-                            string serverPath = Server.MapPath("~/img/Uploads/Images");
 
                             if (!Directory.Exists(serverPath))
                             {
@@ -1914,7 +1914,9 @@ namespace VendeAgroWeb.Controllers.Administrador
         [HttpPost]
         public async Task<bool> NuevoAnuncio(string json)
         {
-            using (StreamWriter streamW = new StreamWriter("NuevoAnuncioLog.txt"))
+            string serverPath = Server.MapPath("~/img/Uploads/Images");
+            var path = Path.Combine(serverPath, "NuevoAnuncioLog.txt");
+            using (StreamWriter streamW = new StreamWriter(path))
             {
                 streamW.WriteLine("Empece a crear el anuncio: " + json);
                 var anuncio = JObject.Parse(json);
