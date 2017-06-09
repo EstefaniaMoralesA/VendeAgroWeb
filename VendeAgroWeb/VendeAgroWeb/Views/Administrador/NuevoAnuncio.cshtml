@@ -408,7 +408,6 @@
     }
 
     function agregarAnuncio() {
-
         var nuevoAnuncio = {
             jtitulo: titulo,
             jprecio: precio,
@@ -418,7 +417,8 @@
             jidSubcategoria: idSubcategoria,
             jfotoDisplay: fotoDisplayFinal,
             jfotos: fotosFinal,
-            jvideo: videoFinal
+            jvideo: videoFinal,
+            jidUsuario: $("#id-usuario").val()
         };
         alert(JSON.stringify(nuevoAnuncio));
         $.ajax({
