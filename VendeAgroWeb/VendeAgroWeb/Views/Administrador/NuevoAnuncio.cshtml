@@ -399,6 +399,7 @@
                     var err = "Error " + " " + status + " " + p3 + " " + p4;
                     if (xhr.responseText && xhr.responseText[0] == "{")
                         err = JSON.parse(xhr.responseText).Message;
+                    alert(err);
                     console.log(err);
                 }
             });
@@ -415,6 +416,7 @@
             jdescripcion: descripcion,
             jmeses: meses,
             jestado: idEstado,
+            jidUsuario: idUsuario,
             jidSubcategoria: idSubcategoria,
             jfotoDisplay: fotoDisplayFinal,
             jfotos: fotosFinal,

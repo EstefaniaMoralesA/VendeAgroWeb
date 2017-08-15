@@ -531,11 +531,6 @@ namespace VendeAgroWeb.Models.Administrador
             }
         }
 
-        public NuevoAnuncioViewModel()
-        {
-
-        }
-
         public NuevoAnuncioViewModel(int idUsuario, string nombreUsuario) {
             _idUsuario = idUsuario;
             _nombreUsuario = nombreUsuario;
