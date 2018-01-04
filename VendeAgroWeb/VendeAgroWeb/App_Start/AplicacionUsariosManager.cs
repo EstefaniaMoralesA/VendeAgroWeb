@@ -618,10 +618,20 @@ namespace VendeAgroWeb
                     chargeRequest.SendEmail = true;
 
                     Charge cargo = Startup.OpenPayLib.ChargeService.Create(usuario.IdConekta, chargeRequest);
-                    ResultadoCargo resultado = new ResultadoCargo(true, ResultadoCargoTarjeta.Aprobado, cargo.OrderId, cargo.Authorization, "El cargo ha sido exitoso", (double)cargo.Amount);
                     Usuario_Tarjeta tarjeta = _dbContext.Usuario_Tarjeta.Where(t => t.tokenTarjeta == tarjetaToken).FirstOrDefault();
-                    AgregarAnuncios(carrito, usuario.Id);
+                    try
+                    {
+                        AgregarAnuncios(carrito, usuario.Id);
+                    }
+                    catch (Exception)
+                    {
+                        Charge charge = Startup.OpenPayLib.ChargeService.Refund(cargo.CustomerId, cargo.Id, "Devolucion del cargo de Mercampo.mx", cargo.Amount);
+                        resultadoJson = new ResultadoCargo(false, ResultadoCargoTarjeta.ErrorInterno, mensaje: "Hubo un error interno, favor de volver a intentarlo").AsJson();
+                        return false;
+                    }
+
                     AgregarPago(usuario.Id, tarjeta, (double)cargo.Amount, cargo.Authorization, carrito);
+                    ResultadoCargo resultado = new ResultadoCargo(true, ResultadoCargoTarjeta.Aprobado, cargo.OrderId, cargo.Authorization, "El cargo ha sido exitoso", (double)cargo.Amount);
                     resultadoJson = resultado.AsJson();
                     return true;
                 }
@@ -636,9 +646,7 @@ namespace VendeAgroWeb
                     resultadoJson = new ResultadoCargo(false, res, mensaje: TarjetaResultadoHelpers.ObtenerMensajeError((OpenPayErrorCodes)e.ErrorCode)).AsJson();
                     return false;
                 }
-
             }
-
         }
 
         private bool AgregarPago(int idUsuario, Usuario_Tarjeta tarjeta, double total, string referencia, CarritoDeCompra carrito)
